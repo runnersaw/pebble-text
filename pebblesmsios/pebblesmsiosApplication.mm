@@ -4,6 +4,7 @@
 @interface pebblesmsiosApplication: UIApplication <UIApplicationDelegate, PBPebbleCentralDelegate> {
 	UIWindow *_window;
 	RootViewController *_viewController;
+	PBWatch *connectedWatch;
 }
 @property (nonatomic, retain) UIWindow *window;
 @end
