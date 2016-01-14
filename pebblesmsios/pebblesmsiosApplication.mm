@@ -7,6 +7,7 @@
 	PBWatch *_connectedWatch;
 }
 @property (nonatomic, retain) UIWindow *window;
+@property (nonatomic, retain) PBWatch *connectedWatch;
 @end
 
 @implementation pebblesmsiosApplication
