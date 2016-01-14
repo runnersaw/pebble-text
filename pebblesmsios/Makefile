@@ -7,7 +7,7 @@ APPLICATION_NAME = pebblesmsios
 
 pebblesmsios_CFLAGS = -I./External
 pebblesmsios_FILES = main.m pebblesmsiosApplication.mm RootViewController.mm
-pebblesmsios_FRAMEWORKS = UIKit CoreGraphics ExternalAccessory CoreBluetooth 
+pebblesmsios_FRAMEWORKS = UIKit CoreGraphics ExternalAccessory CoreBluetooth PebbleKit
 
 include $(THEOS)/makefiles/common.mk
 
