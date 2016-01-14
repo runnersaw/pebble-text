@@ -7,8 +7,8 @@ include $(THEOS)/makefiles/common.mk
 
 APPLICATION_NAME = pebblesmsios
 pebblesmsios_FILES = main.m pebblesmsiosApplication.mm RootViewController.mm
-pebblesmsios_FRAMEWORKS = UIKit CoreGraphics ExternalAccessory CoreBluetooth 
-PebbleActivator_CFLAGS = -F./
+pebblesmsios_FRAMEWORKS = UIKit CoreGraphics ExternalAccessory CoreBluetooth PebbleKit 
+pebblesmsios_CFLAGS = -F./
 pebblesmsios_LDFLAGS += -F./ -ObjC -Wl 
 
 include $(THEOS_MAKE_PATH)/application.mk
