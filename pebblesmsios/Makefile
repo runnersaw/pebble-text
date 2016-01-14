@@ -8,5 +8,7 @@ include $(THEOS)/makefiles/common.mk
 APPLICATION_NAME = pebblesmsios
 pebblesmsios_FILES = main.m pebblesmsiosApplication.mm RootViewController.mm
 pebblesmsios_FRAMEWORKS = UIKit CoreGraphics
+pebblesmsios_PRIVATE_FRAMEWORKS = PebbleKit
+pebblesmsios_LDFLAGS += -Wl,-segalign,4000,-F./
 
 include $(THEOS_MAKE_PATH)/application.mk
