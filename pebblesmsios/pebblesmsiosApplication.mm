@@ -32,16 +32,41 @@
 }
 
 - (void)pebbleCentral:(PBPebbleCentral*)central watchDidConnect:(PBWatch*)watch isNew:(BOOL)isNew {
-  NSLog(@"Pebble connected: %@", [watch name]);
-  self.connectedWatch = watch;
+	NSLog(@"Pebble connected: %@", [watch name]);
+	self.connectedWatch = watch;
+
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Pebble connected"
+	                                            message:[watch name]
+	                                           delegate:self
+	                                  cancelButtonTitle:@"Cancel"
+	                                  otherButtonTitles:@"Say Hello",nil];
+	[alert show];
+	[alert release];
 }
 
 - (void)pebbleCentral:(PBPebbleCentral*)central watchDidDisconnect:(PBWatch*)watch {
-  NSLog(@"Pebble disconnected: %@", [watch name]);
+	NSLog(@"Pebble disconnected: %@", [watch name]);
 
-  if ([watch isEqual:self.connectedWatch]) {
-    self.connectedWatch = nil;
-  }
+	if ([watch isEqual:self.connectedWatch]) {
+		self.connectedWatch = nil;
+	}
+
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Pebble disconnected"
+	                                            message:@"OOPS"
+	                                           delegate:self
+	                                  cancelButtonTitle:@"Cancel"
+	                                  otherButtonTitles:@"Say Hello",nil];
+	[alert show];
+	[alert release];
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        NSLog(@"Cancel Tapped.");
+    }
+    else if (buttonIndex == 1) {
+        NSLog(@"OK Tapped. Hello World!");
+    }
 }
 
 @end
