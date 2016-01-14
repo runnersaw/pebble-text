@@ -9,6 +9,7 @@
 @end
 
 @interface pebblesmsiosApplication <PBPebbleCentralDelegate>
+@end
 
 @implementation pebblesmsiosApplication
 @synthesize window = _window;
