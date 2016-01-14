@@ -1,14 +1,11 @@
 #import "RootViewController.h"
 #import "PebbleKit.h"
 
-@interface pebblesmsiosApplication: UIApplication <UIApplicationDelegate> {
+@interface pebblesmsiosApplication: UIApplication <UIApplicationDelegate, PBPebbleCentralDelegate> {
 	UIWindow *_window;
 	RootViewController *_viewController;
 }
 @property (nonatomic, retain) UIWindow *window;
-@end
-
-@interface pebblesmsiosApplication <PBPebbleCentralDelegate>
 @end
 
 @implementation pebblesmsiosApplication
