@@ -4,6 +4,6 @@
 @implementation RootViewController
 - (void)loadView {
 	self.view = [[[UIView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]] autorelease];
-	self.view.backgroundColor = [UIColor redColor];
+	self.view.backgroundColor = [UIColor blueColor];
 }
 @end
