@@ -1,7 +1,7 @@
 {
     CFBundleExecutable = "pebbletextios";
     CFBundleIconFile = icon.png;
-    CFBundleIdentifier = "com,sawyervaughan.pebble-text-ios";
+    CFBundleIdentifier = "com,sawyervaughan.pebbletextios";
     CFBundleInfoDictionaryVersion = 6.0;
     CFBundlePackageType = APPL;
     CFBundleSignature = "????";
