@@ -1,7 +1,7 @@
 #import "RootViewController.h"
 //#import <PebbleKit/PebbleKit.h>
 
-@interface pebblesmsiosApplication: UIApplication <UIApplicationDelegate, PBPebbleCentralDelegate> {
+@interface pebblesmsiosApplication: UIApplication <UIApplicationDelegate> {//, PBPebbleCentralDelegate> {
 	UIWindow *_window;
 	RootViewController *_viewController;
 	//PBWatch *_connectedWatch;
