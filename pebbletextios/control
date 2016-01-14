@@ -1,0 +1,9 @@
+Package: com,sawyervaughan.pebble-text-ios
+Name: pebble-text-ios
+Depends: 
+Version: 0.0.1
+Architecture: iphoneos-arm
+Description: An awesome application!
+Maintainer: Sawyer Vaughan
+Author: Sawyer Vaughan
+Section: Utilities
