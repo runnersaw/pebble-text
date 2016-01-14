@@ -13,6 +13,6 @@
     DTSDKName = iphoneos3.0;
     LSRequiresIPhoneOS = 1;
     MinimumOSVersion = 3.0;
-    UISupportedExternalAccessoryProtocols = [ "com.getpebble.public" ];
-    UIBackgroundModes = [ "external-accessory", "bluetooth-peripheral", "bluetooth-central" ];
+    UISupportedExternalAccessoryProtocols = ("com.getpebble.public");
+    UIBackgroundModes = ("external-accessory", "bluetooth-peripheral", "bluetooth-central");
 }
