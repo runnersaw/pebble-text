@@ -8,6 +8,8 @@
 @property (nonatomic, retain) UIWindow *window;
 @end
 
+@interface pebblesmsiosApplication <PBPebbleCentralDelegate>
+
 @implementation pebblesmsiosApplication
 @synthesize window = _window;
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
