@@ -1,4 +1,5 @@
 #import "RootViewController.h"
+#import "PebbleKit.h"
 
 @interface pebblesmsiosApplication: UIApplication <UIApplicationDelegate> {
 	UIWindow *_window;
@@ -14,6 +15,10 @@
 	_viewController = [[RootViewController alloc] init];
 	[_window addSubview:_viewController.view];
 	[_window makeKeyAndVisible];
+
+  	[PBPebbleCentral defaultCentral].delegate = self;
+
+  	[[PBPebbleCentral defaultCentral] run];
 }
 
 - (void)dealloc {
@@ -21,6 +26,20 @@
 	[_window release];
 	[super dealloc];
 }
+
+- (void)pebbleCentral:(PBPebbleCentral*)central watchDidConnect:(PBWatch*)watch isNew:(BOOL)isNew {
+  NSLog(@"Pebble connected: %@", [watch name]);
+  self.connectedWatch = watch;
+}
+
+- (void)pebbleCentral:(PBPebbleCentral*)central watchDidDisconnect:(PBWatch*)watch {
+  NSLog(@"Pebble disconnected: %@", [watch name]);
+
+  if ([watch isEqual:self.connectedWatch]) {
+    self.connectedWatch = nil;
+  }
+}
+
 @end
 
 // vim:ft=objc
