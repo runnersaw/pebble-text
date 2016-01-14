@@ -12,7 +12,7 @@
 
 @implementation pebblesmsiosApplication
 @synthesize window = _window;
-@synthesize connectedWatch = _connectedWatch;
+//@synthesize connectedWatch = _connectedWatch;
 
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
 	_window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
