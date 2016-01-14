@@ -1,9 +1,0 @@
-Package: com,sawyervaughan.pebbletextios
-Name: pebbletextios
-Depends: 
-Version: 0.0.1
-Architecture: iphoneos-arm
-Description: An awesome application!
-Maintainer: Sawyer Vaughan
-Author: Sawyer Vaughan
-Section: Utilities
