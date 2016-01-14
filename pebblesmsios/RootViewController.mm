@@ -1,4 +1,5 @@
 #import "RootViewController.h"
+@import PebbleKit;
 
 @implementation RootViewController
 - (void)loadView {
