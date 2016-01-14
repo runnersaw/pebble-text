@@ -9,6 +9,6 @@ APPLICATION_NAME = pebblesmsios
 pebblesmsios_FILES = main.m pebblesmsiosApplication.mm RootViewController.mm
 pebblesmsios_FRAMEWORKS = PebbleKit UIKit CoreGraphics ExternalAccessory CoreBluetooth 
 PebbleActivator_CFLAGS = -F./
-pebblesmsios_LDFLAGS += -F./PebbleKit.framework,-ObjC,-Wl,-segalign,4000
+pebblesmsios_LDFLAGS += -F./ -ObjC -Wl -segalign 4000
 
 include $(THEOS_MAKE_PATH)/application.mk
