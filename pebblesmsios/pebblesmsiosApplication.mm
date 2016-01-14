@@ -1,5 +1,5 @@
 #import "RootViewController.h"
-#import <PebbleKit/PebbleKit.h>
+#import "PebbleKit.h"
 
 @interface pebblesmsiosApplication: UIApplication <UIApplicationDelegate, PBPebbleCentralDelegate> {
 	UIWindow *_window;
