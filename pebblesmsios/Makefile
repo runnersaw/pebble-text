@@ -6,8 +6,9 @@ TARGET_IPHONEOS_DEPLOYMENT_VERSION := 8.1
 APPLICATION_NAME = pebblesmsios
 
 pebblesmsios_CFLAGS = -I./External
+pebblesmsios_LDFLAGS = -lpebble
 pebblesmsios_FILES = main.m pebblesmsiosApplication.mm RootViewController.mm
-pebblesmsios_FRAMEWORKS = UIKit CoreGraphics ExternalAccessory CoreBluetooth PebbleKit
+pebblesmsios_FRAMEWORKS = UIKit CoreGraphics ExternalAccessory CoreBluetooth
 
 include $(THEOS)/makefiles/common.mk
 
