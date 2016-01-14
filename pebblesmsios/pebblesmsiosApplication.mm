@@ -1,7 +1,7 @@
 #import "RootViewController.h"
 //#import <PebbleKit/PebbleKit.h>
 
-@interface pebblesmsiosApplication: UIApplication <UIApplicationDelegate> {//, PBPebbleCentralDelegate> {
+@interface pebblesmsiosApplication: UIApplication <UIApplicationDelegate, PBPebbleCentralDelegate> {
 	UIWindow *_window;
 	RootViewController *_viewController;
 	//PBWatch *_connectedWatch;
@@ -20,7 +20,7 @@
 	[_window addSubview:_viewController.view];
 	[_window makeKeyAndVisible];
 
-  	//[PBPebbleCentral defaultCentral].delegate = self;
+  	[PBPebbleCentral defaultCentral].delegate = self;
 
   	//[[PBPebbleCentral defaultCentral] run];
 }
@@ -31,7 +31,7 @@
 	[super dealloc];
 }
 
-/*- (void)pebbleCentral:(PBPebbleCentral*)central watchDidConnect:(PBWatch*)watch isNew:(BOOL)isNew {
+- (void)pebbleCentral:(PBPebbleCentral*)central watchDidConnect:(PBWatch*)watch isNew:(BOOL)isNew {
 	NSLog(@"Pebble connected: %@", [watch name]);
 	self.connectedWatch = watch;
 
@@ -67,7 +67,7 @@
     else if (buttonIndex == 1) {
         NSLog(@"OK Tapped. Hello World!");
     }
-}*/
+}
 
 @end
 
