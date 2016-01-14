@@ -4,13 +4,15 @@
 @interface pebblesmsiosApplication: UIApplication <UIApplicationDelegate, PBPebbleCentralDelegate> {
 	UIWindow *_window;
 	RootViewController *_viewController;
-	PBWatch *connectedWatch;
+	PBWatch *_connectedWatch;
 }
 @property (nonatomic, retain) UIWindow *window;
 @end
 
 @implementation pebblesmsiosApplication
 @synthesize window = _window;
+@synthesize connectedWatch = _connectedWatch;
+
 - (void)applicationDidFinishLaunching:(UIApplication *)application {
 	_window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	_viewController = [[RootViewController alloc] init];
