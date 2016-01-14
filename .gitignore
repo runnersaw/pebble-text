@@ -32,4 +32,4 @@
 *.dSYM/
 
 # Theos
-./pebbletextios/theos
+./pebblesmsios/theos
