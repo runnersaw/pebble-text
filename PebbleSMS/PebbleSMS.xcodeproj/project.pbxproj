@@ -7,13 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		210435A16096F345F61B5ACB /* Pods_PebbleSMS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C588560B4331D0DBB9EB12 /* Pods_PebbleSMS.framework */; };
 		BCDEC4CA1C62FCE60055F366 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCDEC4C91C62FCE60055F366 /* AppDelegate.swift */; };
 		BCDEC4CC1C62FCE60055F366 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCDEC4CB1C62FCE60055F366 /* ViewController.swift */; };
-		BCDEC4CF1C62FCE60055F366 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BCDEC4CD1C62FCE60055F366 /* Main.storyboard */; };
 		BCDEC4D11C62FCE60055F366 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BCDEC4D01C62FCE60055F366 /* Assets.xcassets */; };
 		BCDEC4D41C62FCE60055F366 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BCDEC4D21C62FCE60055F366 /* LaunchScreen.storyboard */; };
 		BCDEC4DF1C62FCE60055F366 /* PebbleSMSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCDEC4DE1C62FCE60055F366 /* PebbleSMSTests.swift */; };
 		BCDEC4EA1C62FCE60055F366 /* PebbleSMSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCDEC4E91C62FCE60055F366 /* PebbleSMSUITests.swift */; };
+		BCE10B4F1C63D0E5002E2BD1 /* ContactsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE10B4E1C63D0E5002E2BD1 /* ContactsHandler.swift */; };
+		BCE10B511C63DA3F002E2BD1 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCE10B501C63DA3F002E2BD1 /* CoreTelephony.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,10 +36,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		407E94AF2ED30D622F9E8D26 /* Pods-PebbleSMS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PebbleSMS.release.xcconfig"; path = "Pods/Target Support Files/Pods-PebbleSMS/Pods-PebbleSMS.release.xcconfig"; sourceTree = "<group>"; };
+		7DB9D19D2BD3B6245AC9122A /* Pods-PebbleSMS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PebbleSMS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PebbleSMS/Pods-PebbleSMS.debug.xcconfig"; sourceTree = "<group>"; };
 		BCDEC4C61C62FCE60055F366 /* PebbleSMS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PebbleSMS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCDEC4C91C62FCE60055F366 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BCDEC4CB1C62FCE60055F366 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		BCDEC4CE1C62FCE60055F366 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		BCDEC4D01C62FCE60055F366 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BCDEC4D31C62FCE60055F366 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BCDEC4D51C62FCE60055F366 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -47,6 +50,9 @@
 		BCDEC4E51C62FCE60055F366 /* PebbleSMSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PebbleSMSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCDEC4E91C62FCE60055F366 /* PebbleSMSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PebbleSMSUITests.swift; sourceTree = "<group>"; };
 		BCDEC4EB1C62FCE60055F366 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BCE10B4E1C63D0E5002E2BD1 /* ContactsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsHandler.swift; sourceTree = "<group>"; };
+		BCE10B501C63DA3F002E2BD1 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		E4C588560B4331D0DBB9EB12 /* Pods_PebbleSMS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PebbleSMS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +60,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BCE10B511C63DA3F002E2BD1 /* CoreTelephony.framework in Frameworks */,
+				210435A16096F345F61B5ACB /* Pods_PebbleSMS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,6 +82,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7E1E8060120F536C52E75597 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7DB9D19D2BD3B6245AC9122A /* Pods-PebbleSMS.debug.xcconfig */,
+				407E94AF2ED30D622F9E8D26 /* Pods-PebbleSMS.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		BCDEC4BD1C62FCE60055F366 = {
 			isa = PBXGroup;
 			children = (
@@ -81,6 +98,8 @@
 				BCDEC4DD1C62FCE60055F366 /* PebbleSMSTests */,
 				BCDEC4E81C62FCE60055F366 /* PebbleSMSUITests */,
 				BCDEC4C71C62FCE60055F366 /* Products */,
+				7E1E8060120F536C52E75597 /* Pods */,
+				C2DF9A75745E28EA28A0B1F2 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -99,10 +118,10 @@
 			children = (
 				BCDEC4C91C62FCE60055F366 /* AppDelegate.swift */,
 				BCDEC4CB1C62FCE60055F366 /* ViewController.swift */,
-				BCDEC4CD1C62FCE60055F366 /* Main.storyboard */,
 				BCDEC4D01C62FCE60055F366 /* Assets.xcassets */,
 				BCDEC4D21C62FCE60055F366 /* LaunchScreen.storyboard */,
 				BCDEC4D51C62FCE60055F366 /* Info.plist */,
+				BCE10B4E1C63D0E5002E2BD1 /* ContactsHandler.swift */,
 			);
 			path = PebbleSMS;
 			sourceTree = "<group>";
@@ -125,6 +144,15 @@
 			path = PebbleSMSUITests;
 			sourceTree = "<group>";
 		};
+		C2DF9A75745E28EA28A0B1F2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BCE10B501C63DA3F002E2BD1 /* CoreTelephony.framework */,
+				E4C588560B4331D0DBB9EB12 /* Pods_PebbleSMS.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -132,9 +160,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = BCDEC4EE1C62FCE60055F366 /* Build configuration list for PBXNativeTarget "PebbleSMS" */;
 			buildPhases = (
+				9D064611AA63A97A23E2488B /* Check Pods Manifest.lock */,
 				BCDEC4C21C62FCE60055F366 /* Sources */,
 				BCDEC4C31C62FCE60055F366 /* Frameworks */,
 				BCDEC4C41C62FCE60055F366 /* Resources */,
+				7E599BB1FB152E539BCCECB7 /* Embed Pods Frameworks */,
+				F31BAB6EA294656E864B1A61 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -231,7 +262,6 @@
 			files = (
 				BCDEC4D41C62FCE60055F366 /* LaunchScreen.storyboard in Resources */,
 				BCDEC4D11C62FCE60055F366 /* Assets.xcassets in Resources */,
-				BCDEC4CF1C62FCE60055F366 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -251,6 +281,54 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		7E599BB1FB152E539BCCECB7 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PebbleSMS/Pods-PebbleSMS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9D064611AA63A97A23E2488B /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		F31BAB6EA294656E864B1A61 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PebbleSMS/Pods-PebbleSMS-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		BCDEC4C21C62FCE60055F366 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -258,6 +336,7 @@
 			files = (
 				BCDEC4CC1C62FCE60055F366 /* ViewController.swift in Sources */,
 				BCDEC4CA1C62FCE60055F366 /* AppDelegate.swift in Sources */,
+				BCE10B4F1C63D0E5002E2BD1 /* ContactsHandler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -293,14 +372,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		BCDEC4CD1C62FCE60055F366 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				BCDEC4CE1C62FCE60055F366 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		BCDEC4D21C62FCE60055F366 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -397,9 +468,11 @@
 		};
 		BCDEC4EF1C62FCE60055F366 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7DB9D19D2BD3B6245AC9122A /* Pods-PebbleSMS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = PebbleSMS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sawyervaughan.PebbleSMS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -408,9 +481,11 @@
 		};
 		BCDEC4F01C62FCE60055F366 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 407E94AF2ED30D622F9E8D26 /* Pods-PebbleSMS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = PebbleSMS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sawyervaughan.PebbleSMS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -484,6 +559,7 @@
 				BCDEC4F01C62FCE60055F366 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		BCDEC4F11C62FCE60055F366 /* Build configuration list for PBXNativeTarget "PebbleSMSTests" */ = {
 			isa = XCConfigurationList;
@@ -492,6 +568,7 @@
 				BCDEC4F31C62FCE60055F366 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		BCDEC4F41C62FCE60055F366 /* Build configuration list for PBXNativeTarget "PebbleSMSUITests" */ = {
 			isa = XCConfigurationList;
@@ -500,6 +577,7 @@
 				BCDEC4F61C62FCE60055F366 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

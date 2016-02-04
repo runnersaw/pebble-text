@@ -7,15 +7,30 @@
 //
 
 import UIKit
+import PebbleKit
+import CoreTelephony
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, PBPebbleCentralDelegate {
 
     var window: UIWindow?
-
+    var controller = ViewController()
+    var uuid = NSUUID(UUIDString: "6241e7d9-6f60-494a-896f-e585923c2c67")
+    var connectedWatch : PBWatch?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        PBPebbleCentral.defaultCentral().delegate = self
+        PBPebbleCentral.defaultCentral().appUUID = self.uuid
+        
+        self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        self.window!.rootViewController = controller
+        self.window!.makeKeyAndVisible()
+        
+        PBPebbleCentral.defaultCentral().run()
+        
+        print(ContactsHandler.getAllContacts())
+        
         return true
     }
 
@@ -41,6 +56,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-
+    func pebbleCentral(central: PBPebbleCentral, watchDidConnect watch: PBWatch, isNew: Bool) {
+        print("pebble connected \(watch.name)")
+        self.connectedWatch = watch
+        watch.appMessagesAddReceiveUpdateHandler({ (watch, message) -> Bool in
+            print("recieved message \(message)")
+            return true
+        })
+        watch.appMessagesLaunch { (watch, error) -> Void in
+            if (error != nil) {
+                print("Error launching app")
+            } else {
+                print("Launched app!")
+                let dict : [NSNumber : AnyObject] = [0:"Hello"]
+                watch.appMessagesPushUpdate(dict, onSent: { (watch, update, error) -> Void in
+                    if (error != nil) {
+                        print(error)
+                    } else {
+                        print("Update sent \(update)")
+                    }
+                })
+            }
+        }
+    }
+    
+    func pebbleCentral(central: PBPebbleCentral, watchDidDisconnect watch: PBWatch) {
+        print("pebble disconnected \(watch.name)")
+    }
+    
+    func sendSMS() {
+        //CTMessageCenter.sharedMessageCenter().sendSMSWithText("Hello", serviceCenter:nil, toAddress:"+!7208791626")
+    }
 }
 
