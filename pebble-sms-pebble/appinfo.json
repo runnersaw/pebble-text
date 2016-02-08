@@ -2,15 +2,24 @@
   "uuid": "6241e7d9-6f60-494a-896f-e585923c2c67",
   "shortName": "pebble-sms-pebble",
   "longName": "pebble-sms-pebble",
-  "companyName": "MakeAwesomeHappen",
+  "companyName": "Sawyer Vaughan",
   "versionLabel": "1.0",
   "sdkVersion": "3",
-  "targetPlatforms": ["aplite", "basalt", "chalk"],
+  "targetPlatforms": ["basalt", "chalk"],
   "watchapp": {
     "watchface": false
   },
   "appKeys": {
-    "dummy": 0
+    "DICTATED_NAME_KEY": 0,
+    "IS_CONTACT_CORRECT_KEY": 1,
+    "IS_NUMBER_CORRECT_KEY": 2,
+    "FINAL_MESSAGE_KEY": 3,
+    "STATE_KEY": 4,
+    "CONTACT_NAME_KEY": 5,
+    "CONTACT_NUMBER_KEY": 6,
+    "MESSAGE_CONFIRMATION_KEY": 7,
+    "ATTEMPT_NUMBER_KEY": 8,
+    "CONNECTION_TEST_KEY": 9
   },
   "resources": {
     "media": []
