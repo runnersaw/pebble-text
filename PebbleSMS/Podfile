@@ -1,0 +1,15 @@
+platform :ios, '8.0'
+use_frameworks!
+
+target 'PebbleSMS' do
+	pod 'PebbleKit'
+end
+
+target 'PebbleSMSTests' do
+
+end
+
+target 'PebbleSMSUITests' do
+
+end
+
