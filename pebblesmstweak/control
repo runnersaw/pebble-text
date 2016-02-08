@@ -1,0 +1,9 @@
+Package: com.sawyervaughan.pebblesmstweak
+Name: pebblesmstweak
+Depends: mobilesubstrate, com.rpetrich.rocketbootstrap (>= 1.0.2)
+Version: 0.0.1
+Architecture: iphoneos-arm
+Description: An awesome MobileSubstrate tweak!
+Maintainer: Sawyer Vaughan
+Author: Sawyer Vaughan
+Section: Tweaks
