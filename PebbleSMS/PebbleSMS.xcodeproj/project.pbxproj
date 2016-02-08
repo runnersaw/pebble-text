@@ -8,14 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		210435A16096F345F61B5ACB /* Pods_PebbleSMS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4C588560B4331D0DBB9EB12 /* Pods_PebbleSMS.framework */; };
+		BC2BAB951C66A9EE00F4B45B /* NumberHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC2BAB941C66A9EE00F4B45B /* NumberHandler.swift */; };
+		BC2BAB981C66C02300F4B45B /* SEEPhoneNumberFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = BC2BAB971C66C02300F4B45B /* SEEPhoneNumberFormatter.m */; };
+		BC2BAB9A1C66C0AB00F4B45B /* SEEPhoneNumberFormatter.html in Resources */ = {isa = PBXBuildFile; fileRef = BC2BAB991C66C0AB00F4B45B /* SEEPhoneNumberFormatter.html */; };
+		BC4EEE801C65CE9200B7B375 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4EEE7F1C65CE9200B7B375 /* Contact.swift */; };
+		BC4EEE821C668DD700B7B375 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4EEE811C668DD700B7B375 /* main.swift */; };
 		BCDEC4CA1C62FCE60055F366 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCDEC4C91C62FCE60055F366 /* AppDelegate.swift */; };
 		BCDEC4CC1C62FCE60055F366 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCDEC4CB1C62FCE60055F366 /* ViewController.swift */; };
 		BCDEC4D11C62FCE60055F366 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BCDEC4D01C62FCE60055F366 /* Assets.xcassets */; };
 		BCDEC4D41C62FCE60055F366 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BCDEC4D21C62FCE60055F366 /* LaunchScreen.storyboard */; };
 		BCDEC4DF1C62FCE60055F366 /* PebbleSMSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCDEC4DE1C62FCE60055F366 /* PebbleSMSTests.swift */; };
 		BCDEC4EA1C62FCE60055F366 /* PebbleSMSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCDEC4E91C62FCE60055F366 /* PebbleSMSUITests.swift */; };
-		BCE10B4F1C63D0E5002E2BD1 /* ContactsHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE10B4E1C63D0E5002E2BD1 /* ContactsHandler.swift */; };
-		BCE10B511C63DA3F002E2BD1 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BCE10B501C63DA3F002E2BD1 /* CoreTelephony.framework */; };
+		BCE10B4F1C63D0E5002E2BD1 /* ContactHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCE10B4E1C63D0E5002E2BD1 /* ContactHandler.swift */; };
+		BCE10B541C63E518002E2BD1 /* SMSSender.m in Sources */ = {isa = PBXBuildFile; fileRef = BCE10B531C63E518002E2BD1 /* SMSSender.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +43,12 @@
 /* Begin PBXFileReference section */
 		407E94AF2ED30D622F9E8D26 /* Pods-PebbleSMS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PebbleSMS.release.xcconfig"; path = "Pods/Target Support Files/Pods-PebbleSMS/Pods-PebbleSMS.release.xcconfig"; sourceTree = "<group>"; };
 		7DB9D19D2BD3B6245AC9122A /* Pods-PebbleSMS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PebbleSMS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PebbleSMS/Pods-PebbleSMS.debug.xcconfig"; sourceTree = "<group>"; };
+		BC2BAB941C66A9EE00F4B45B /* NumberHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NumberHandler.swift; sourceTree = "<group>"; };
+		BC2BAB961C66C02300F4B45B /* SEEPhoneNumberFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SEEPhoneNumberFormatter.h; sourceTree = "<group>"; };
+		BC2BAB971C66C02300F4B45B /* SEEPhoneNumberFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SEEPhoneNumberFormatter.m; sourceTree = "<group>"; };
+		BC2BAB991C66C0AB00F4B45B /* SEEPhoneNumberFormatter.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = SEEPhoneNumberFormatter.html; sourceTree = "<group>"; };
+		BC4EEE7F1C65CE9200B7B375 /* Contact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
+		BC4EEE811C668DD700B7B375 /* main.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		BCDEC4C61C62FCE60055F366 /* PebbleSMS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PebbleSMS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCDEC4C91C62FCE60055F366 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BCDEC4CB1C62FCE60055F366 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -50,8 +61,11 @@
 		BCDEC4E51C62FCE60055F366 /* PebbleSMSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PebbleSMSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCDEC4E91C62FCE60055F366 /* PebbleSMSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PebbleSMSUITests.swift; sourceTree = "<group>"; };
 		BCDEC4EB1C62FCE60055F366 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BCE10B4E1C63D0E5002E2BD1 /* ContactsHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsHandler.swift; sourceTree = "<group>"; };
+		BCE10B4E1C63D0E5002E2BD1 /* ContactHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactHandler.swift; sourceTree = "<group>"; };
 		BCE10B501C63DA3F002E2BD1 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		BCE10B521C63E036002E2BD1 /* PebbleSMS-bridging-header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PebbleSMS-bridging-header.h"; sourceTree = "<group>"; };
+		BCE10B531C63E518002E2BD1 /* SMSSender.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SMSSender.m; sourceTree = "<group>"; };
+		BCE10B551C63E53C002E2BD1 /* SMSSender.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SMSSender.h; sourceTree = "<group>"; };
 		E4C588560B4331D0DBB9EB12 /* Pods_PebbleSMS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PebbleSMS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -60,7 +74,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BCE10B511C63DA3F002E2BD1 /* CoreTelephony.framework in Frameworks */,
 				210435A16096F345F61B5ACB /* Pods_PebbleSMS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -121,7 +134,16 @@
 				BCDEC4D01C62FCE60055F366 /* Assets.xcassets */,
 				BCDEC4D21C62FCE60055F366 /* LaunchScreen.storyboard */,
 				BCDEC4D51C62FCE60055F366 /* Info.plist */,
-				BCE10B4E1C63D0E5002E2BD1 /* ContactsHandler.swift */,
+				BCE10B4E1C63D0E5002E2BD1 /* ContactHandler.swift */,
+				BCE10B521C63E036002E2BD1 /* PebbleSMS-bridging-header.h */,
+				BCE10B531C63E518002E2BD1 /* SMSSender.m */,
+				BCE10B551C63E53C002E2BD1 /* SMSSender.h */,
+				BC4EEE7F1C65CE9200B7B375 /* Contact.swift */,
+				BC4EEE811C668DD700B7B375 /* main.swift */,
+				BC2BAB941C66A9EE00F4B45B /* NumberHandler.swift */,
+				BC2BAB961C66C02300F4B45B /* SEEPhoneNumberFormatter.h */,
+				BC2BAB971C66C02300F4B45B /* SEEPhoneNumberFormatter.m */,
+				BC2BAB991C66C0AB00F4B45B /* SEEPhoneNumberFormatter.html */,
 			);
 			path = PebbleSMS;
 			sourceTree = "<group>";
@@ -260,6 +282,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC2BAB9A1C66C0AB00F4B45B /* SEEPhoneNumberFormatter.html in Resources */,
 				BCDEC4D41C62FCE60055F366 /* LaunchScreen.storyboard in Resources */,
 				BCDEC4D11C62FCE60055F366 /* Assets.xcassets in Resources */,
 			);
@@ -334,9 +357,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC2BAB981C66C02300F4B45B /* SEEPhoneNumberFormatter.m in Sources */,
 				BCDEC4CC1C62FCE60055F366 /* ViewController.swift in Sources */,
+				BC2BAB951C66A9EE00F4B45B /* NumberHandler.swift in Sources */,
 				BCDEC4CA1C62FCE60055F366 /* AppDelegate.swift in Sources */,
-				BCE10B4F1C63D0E5002E2BD1 /* ContactsHandler.swift in Sources */,
+				BC4EEE821C668DD700B7B375 /* main.swift in Sources */,
+				BC4EEE801C65CE9200B7B375 /* Contact.swift in Sources */,
+				BCE10B541C63E518002E2BD1 /* SMSSender.m in Sources */,
+				BCE10B4F1C63D0E5002E2BD1 /* ContactHandler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -476,6 +504,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sawyervaughan.PebbleSMS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "./PebbleSMS/PebbleSMS-bridging-header.h";
 			};
 			name = Debug;
 		};
@@ -489,6 +518,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sawyervaughan.PebbleSMS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "./PebbleSMS/PebbleSMS-bridging-header.h";
 			};
 			name = Release;
 		};
