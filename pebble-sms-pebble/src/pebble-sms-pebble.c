@@ -39,8 +39,22 @@ static void destroy_bitmaps() {
   gbitmap_destroy(abc_icon);
 }
 
+void change_state(int state) {
+  s_state = state;
+
+  if (s_state == BEGINNING_STATE || s_state == DICTATED_NAME_STATE || s_state == CREATING_FINAL_MESSAGE_STATE) {
+    action_bar_layer_set_icon(s_actionbar, BUTTON_ID_UP, abc_icon);
+    action_bar_layer_set_icon(s_actionbar, BUTTON_ID_SELECT, microphone_icon);
+    action_bar_layer_set_icon(s_actionbar, BUTTON_ID_DOWN, recent_icon);
+  } else {
+    action_bar_layer_set_icon(s_actionbar, BUTTON_ID_UP, check_icon);
+    action_bar_layer_set_icon(s_actionbar, BUTTON_ID_SELECT, NULL);
+    action_bar_layer_set_icon(s_actionbar, BUTTON_ID_DOWN, x_icon);
+  }
+}
+
 static void reset_all() {
-  s_state = BEGINNING_STATE;
+  change_state(BEGINNING_STATE);
   contact_number[0] = '\0';
   contact_name[0] = '\0';
   dictated_name[0] = '\0';
@@ -96,27 +110,6 @@ static void send_final_message() {
   }
   dict_write_int(iter, STATE_KEY, &s_state, 1, 0);
   app_message_outbox_send();
-}
-
-void change_state(int state) {
-  s_state = state;
-
-  if (s_state == BEGINNING_STATE || s_state == DICTATED_NAME_STATE || s_state == CREATING_FINAL_MESSAGE_STATE) {
-    action_bar_layer_set_icon(s_actionbar, BUTTON_ID_UP, abc_icon);
-    action_bar_layer_set_icon(s_actionbar, BUTTON_ID_SELECT, microphone_icon);
-    action_bar_layer_set_icon(s_actionbar, BUTTON_ID_DOWN, recent_icon);
-  } else {
-    action_bar_layer_set_icon(s_actionbar, BUTTON_ID_UP, check_icon);
-    action_bar_layer_set_icon(s_actionbar, BUTTON_ID_SELECT, NULL);
-    action_bar_layer_set_icon(s_actionbar, BUTTON_ID_DOWN, x_icon);
-  }
-#define DICTATED_NAME_STATE 1
-#define CHECKING_CONTACT_STATE 2
-#define CREATING_FINAL_MESSAGE_STATE 3
-#define CONFIRMING_FINAL_MESSAGE_STATE 4
-#define FINAL_MESSAGE_STATE 5
-#define GETTING_RECENT_CONTACTS_STATE 6
-#define GETTING_PRESETS_STATE 7
 }
 
 void contact_chosen_from_recent(char *name, char *number) {
@@ -232,12 +225,6 @@ static void dictation_session_callback(DictationSession *session, DictationSessi
       text_layer_set_text(s_primary_layer, contact_name);
       text_layer_set_text(s_secondary_layer, dictated_message);
     }
-  } else {
-    // Display the reason for any error
-    static char s_failed_buff[128];
-    snprintf(s_failed_buff, sizeof(s_failed_buff), "Transcription failed. Reason: %d", 
-             (int)status);
-    text_layer_set_text(s_primary_layer, s_failed_buff);
   }
 }
 
@@ -263,9 +250,9 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
   Tuple *messageConfirmationDict = dict_find(iterator, MESSAGE_CONFIRMATION_KEY);
   if (s_state == FINAL_MESSAGE_STATE && messageConfirmationDict) {
     reset_all();
-    text_layer_set_text(s_instruction_layer, "Sent");
+    text_layer_set_text(s_instruction_layer, "Choose recipient");
     text_layer_set_text(s_primary_layer, "");
-    text_layer_set_text(s_secondary_layer, "");
+    text_layer_set_text(s_secondary_layer, "Sent");
   }
 
   Tuple *recentContactsName = dict_find(iterator, RECENT_CONTACTS_NAME_KEY);
