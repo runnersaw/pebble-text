@@ -100,6 +100,23 @@ static void send_final_message() {
 
 void change_state(int state) {
   s_state = state;
+
+  if (s_state == BEGINNING_STATE || s_state == DICTATED_NAME_STATE || s_state == CREATING_FINAL_MESSAGE_STATE) {
+    action_bar_layer_set_icon(s_actionbar, BUTTON_ID_UP, abc_icon);
+    action_bar_layer_set_icon(s_actionbar, BUTTON_ID_SELECT, microphone_icon);
+    action_bar_layer_set_icon(s_actionbar, BUTTON_ID_DOWN, recent_icon);
+  } else {
+    action_bar_layer_set_icon(s_actionbar, BUTTON_ID_UP, check_icon);
+    action_bar_layer_set_icon(s_actionbar, BUTTON_ID_SELECT, NULL);
+    action_bar_layer_set_icon(s_actionbar, BUTTON_ID_DOWN, x_icon);
+  }
+#define DICTATED_NAME_STATE 1
+#define CHECKING_CONTACT_STATE 2
+#define CREATING_FINAL_MESSAGE_STATE 3
+#define CONFIRMING_FINAL_MESSAGE_STATE 4
+#define FINAL_MESSAGE_STATE 5
+#define GETTING_RECENT_CONTACTS_STATE 6
+#define GETTING_PRESETS_STATE 7
 }
 
 void contact_chosen_from_recent(char *name, char *number) {
@@ -306,9 +323,9 @@ static void window_load(Window *window) {
   s_actionbar = action_bar_layer_create();
   action_bar_layer_add_to_window(s_actionbar, window);
   
-  // todo
-  //action_bar_layer_set_icon(s_actionbar, BUTTON_ID_UP, hit_icon);
-  //action_bar_layer_set_icon(s_actionbar, BUTTON_ID_DOWN, done_icon);
+  action_bar_layer_set_icon(s_actionbar, BUTTON_ID_UP, abc_icon);
+  action_bar_layer_set_icon(s_actionbar, BUTTON_ID_SELECT, microphone_icon);
+  action_bar_layer_set_icon(s_actionbar, BUTTON_ID_DOWN, recent_icon);
 
   s_dictation_session = dictation_session_create(sizeof(dictated_message), dictation_session_callback, NULL);
 
