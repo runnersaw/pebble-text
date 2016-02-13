@@ -10,7 +10,7 @@ include theos/makefiles/common.mk
 TWEAK_NAME = pebblesmstweak
 pebblesmstweak_FILES = Tweak.xm
 pebblesmstweak_FRAMEWORKS = UIKit AddressBook
-pebblesmstweak_PRIVATE_FRAMEWORKS = CoreTelephony ChatKit AppSupport
+pebblesmstweak_PRIVATE_FRAMEWORKS = CoreTelephony ChatKit AppSupport IMCore IMFoundation
 pebblesmstweak_LDFLAGS += -Wl,-segalign,4000
 pebblesmstweak_LIBRARIES = rocketbootstrap
 
