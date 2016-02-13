@@ -22,6 +22,12 @@
 #define GETTING_RECENT_CONTACTS_STATE 6
 #define GETTING_PRESETS_STATE 7
 
+static GBitmap *check_icon;
+static GBitmap *x_icon;
+static GBitmap *recent_icon;
+static GBitmap *microphone_icon;
+static GBitmap *abc_icon;
+
 void change_state(int state);
 void contact_chosen_from_recent(char *name, char *number);
 void tertiary_text_chosen(char *text);

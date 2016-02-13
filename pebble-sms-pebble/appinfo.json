@@ -9,6 +9,35 @@
   "watchapp": {
     "watchface": false
   },
+  "resources": {
+    "media": [
+      {
+        "file": "images/abc.png",
+        "name": "ABC_ICON",
+        "type": "bitmap"
+      },
+      {
+        "file": "images/x.png",
+        "name": "X_ICON",
+        "type": "bitmap"
+      },
+      {
+        "file": "images/check.png",
+        "name": "CHECK_ICON",
+        "type": "bitmap"
+      },
+      {
+        "file": "images/microphone.png",
+        "name": "MICROPHONE_ICON",
+        "type": "bitmap"
+      },
+      {
+        "file": "images/clock.png",
+        "name": "RECENT_ICON",
+        "type": "bitmap"
+      }
+    ]
+  },
   "appKeys": {
     "DICTATED_NAME_KEY": 0,
     "IS_CONTACT_CORRECT_KEY": 1,
@@ -21,9 +50,7 @@
     "ATTEMPT_NUMBER_KEY": 8,
     "CONNECTION_TEST_KEY": 9,
     "RECENT_CONTACTS_NAME_KEY": 10,
-    "RECENT_CONTACTS_NUMBER_KEY": 11
-  },
-  "resources": {
-    "media": []
+    "RECENT_CONTACTS_NUMBER_KEY": 11,
+    "PRESETS_KEY": 12
   }
 }

@@ -23,6 +23,22 @@ static short has_contact = false;
 static short contact_try = 0;
 static short is_connected = false;
 
+static void create_bitmaps() {
+  check_icon = gbitmap_create_with_resource(RESOURCE_ID_CHECK_ICON);
+  x_icon = gbitmap_create_with_resource(RESOURCE_ID_X_ICON);
+  recent_icon = gbitmap_create_with_resource(RESOURCE_ID_RECENT_ICON);
+  abc_icon = gbitmap_create_with_resource(RESOURCE_ID_ABC_ICON);
+  microphone_icon = gbitmap_create_with_resource(RESOURCE_ID_MICROPHONE_ICON);
+}
+
+static void destroy_bitmaps() {
+  gbitmap_destroy(check_icon);
+  gbitmap_destroy(x_icon);
+  gbitmap_destroy(recent_icon);
+  gbitmap_destroy(microphone_icon);
+  gbitmap_destroy(abc_icon);
+}
+
 static void reset_all() {
   s_state = BEGINNING_STATE;
   contact_number[0] = '\0';
@@ -260,6 +276,8 @@ static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
 }
 
 static void window_load(Window *window) {
+  create_bitmaps();
+
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
 
@@ -300,6 +318,7 @@ static void window_load(Window *window) {
 }
 
 static void window_unload(Window *window) {
+  destroy_bitmaps();
   text_layer_destroy(s_instruction_layer);
   text_layer_destroy(s_primary_layer);
   text_layer_destroy(s_secondary_layer);
