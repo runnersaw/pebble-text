@@ -1,7 +1,7 @@
 {
   "uuid": "6241e7d9-6f60-494a-896f-e585923c2c67",
-  "shortName": "pebble-sms-pebble",
-  "longName": "pebble-sms-pebble",
+  "shortName": "TextSender",
+  "longName": "TextSender for Pebble",
   "companyName": "Sawyer Vaughan",
   "versionLabel": "1.0",
   "sdkVersion": "3",

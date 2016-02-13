@@ -4,11 +4,11 @@
   
 static Window *s_tertiary_window;
 static TextLayer *s_entered_text_layer;
-static TextLayer *s_background_layer;
 static TextLayer *s_up_button_layer;
 static TextLayer *s_select_button_layer;
 static TextLayer *s_down_button_layer;
 static TextLayer *s_tertiary_instruction_layer;
+static ActionBarLayer *s_tertiary_actionbar;
 
 static char ai[] = "a-i";
 static char jr[] = "j-r";
@@ -364,32 +364,51 @@ void config_provider(Window *window) {
 }
 
 static void tertiary_window_load(Window *window) {
-  s_tertiary_instruction_layer = text_layer_create(GRect(0, 0, 110, 80));
+  Layer *window_layer = window_get_root_layer(window);
+  GRect bounds = layer_get_bounds(window_layer);
+
+  s_tertiary_instruction_layer = text_layer_create(GRect(0, 0, bounds.size.w - ACTION_BAR_WIDTH, 80));
   text_layer_set_text_color(s_tertiary_instruction_layer, GColorBlack);
   text_layer_set_text(s_tertiary_instruction_layer, "Hold select to confirm, up for numbers, and down for caps.");
 
-  s_entered_text_layer = text_layer_create(GRect(0, 80, 110, 128));
+  #if defined(PBL_ROUND)
+  s_entered_text_layer = text_layer_create(GRect(0, 80, bounds.size.w - ACTION_BAR_WIDTH, 100));
+  #else
+  s_entered_text_layer = text_layer_create(GRect(0, 80, bounds.size.w - ACTION_BAR_WIDTH, 80));
+  #endif
   text_layer_set_background_color(s_entered_text_layer, GColorClear);
   text_layer_set_text_color(s_entered_text_layer, GColorBlack);
   text_layer_set_text(s_entered_text_layer, "");
   
-  s_background_layer = text_layer_create(GRect(110, 0, 34, 168));
-  text_layer_set_background_color(s_background_layer, GColorBlack);
-  
-  s_up_button_layer = text_layer_create(GRect(115, 0, 24, 20));
+  #if defined(PBL_ROUND)
+  s_up_button_layer = text_layer_create(GRect(146, 54, 24, 20));
+  #else
+  s_up_button_layer = text_layer_create(GRect(117, 22, 24, 20));
+  #endif
   text_layer_set_background_color(s_up_button_layer, GColorClear);
   text_layer_set_text_color(s_up_button_layer, GColorWhite);
   text_layer_set_text(s_up_button_layer, "A-I");
   
-  s_select_button_layer = text_layer_create(GRect(115, 64, 24, 20));
+  #if defined(PBL_ROUND)
+  s_select_button_layer = text_layer_create(GRect(144, 80, 24, 20));
+  #else
+  s_select_button_layer = text_layer_create(GRect(117, 74, 24, 20));
+  #endif
   text_layer_set_background_color(s_select_button_layer, GColorClear);
   text_layer_set_text_color(s_select_button_layer, GColorWhite);
   text_layer_set_text(s_select_button_layer, "J-R");
   
-  s_down_button_layer = text_layer_create(GRect(115, 128, 24, 20));
+  #if defined(PBL_ROUND)
+  s_down_button_layer = text_layer_create(GRect(146, 106, 24, 20));
+  #else
+  s_down_button_layer = text_layer_create(GRect(117, 124, 24, 20));
+  #endif
   text_layer_set_background_color(s_down_button_layer, GColorClear);
   text_layer_set_text_color(s_down_button_layer, GColorWhite);
   text_layer_set_text(s_down_button_layer, "S-_");
+
+  s_tertiary_actionbar = action_bar_layer_create();
+  action_bar_layer_add_to_window(s_tertiary_actionbar, window);
 
   // Improve the layout to be more like a watchface
   text_layer_set_text_alignment(s_tertiary_instruction_layer, GTextAlignmentCenter);
@@ -401,16 +420,24 @@ static void tertiary_window_load(Window *window) {
   // Add it as a child layer to the Window's root layer
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_tertiary_instruction_layer));
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_entered_text_layer));
-  layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_background_layer));
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_up_button_layer));
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_select_button_layer));
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_down_button_layer));
+  #if defined(PBL_ROUND)
+  text_layer_enable_screen_text_flow_and_paging(s_tertiary_instruction_layer, 2);
+  text_layer_enable_screen_text_flow_and_paging(s_entered_text_layer, 2);
+  #endif
   
   window_set_click_config_provider(window, (ClickConfigProvider) config_provider);
 }
 
 static void tertiary_window_unload(Window *window) {
   text_layer_destroy(s_entered_text_layer);
+  text_layer_destroy(s_tertiary_instruction_layer);
+  text_layer_destroy(s_select_button_layer);
+  text_layer_destroy(s_up_button_layer);
+  text_layer_destroy(s_down_button_layer);
+  action_bar_layer_destroy(s_tertiary_actionbar);
   // Destroy Window
   window_destroy(s_tertiary_window);
 }

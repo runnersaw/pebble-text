@@ -285,19 +285,37 @@ static void window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
 
+  #if defined(PBL_ROUND)
+  s_instruction_layer = text_layer_create((GRect) { .origin = { 0, 5 }, .size = { bounds.size.w - ACTION_BAR_WIDTH, 60 }});
+  #else
   s_instruction_layer = text_layer_create((GRect) { .origin = { 0, 10 }, .size = { bounds.size.w - ACTION_BAR_WIDTH, 55 }});
+  #endif
   text_layer_set_text(s_instruction_layer, "Choose recipient");
   text_layer_set_text_alignment(s_instruction_layer, GTextAlignmentCenter);
   layer_add_child(window_layer, text_layer_get_layer(s_instruction_layer));
   text_layer_set_font(s_instruction_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
+  #if defined(PBL_ROUND)
+  text_layer_enable_screen_text_flow_and_paging(s_instruction_layer, 2);
+  #endif
 
+  #if defined(PBL_ROUND)
+  s_primary_layer = text_layer_create((GRect) { .origin = { 0, 70 }, .size = { bounds.size.w - ACTION_BAR_WIDTH, 50 }});
+  #else
   s_primary_layer = text_layer_create((GRect) { .origin = { 0, 69 }, .size = { bounds.size.w - ACTION_BAR_WIDTH, 45 }});
+  #endif
   text_layer_set_text(s_primary_layer, "");
   text_layer_set_text_alignment(s_primary_layer, GTextAlignmentCenter);
   layer_add_child(window_layer, text_layer_get_layer(s_primary_layer));
   text_layer_set_font(s_primary_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD));
+  #if defined(PBL_ROUND)
+  text_layer_enable_screen_text_flow_and_paging(s_primary_layer, 2);
+  #endif
 
+  #if defined(PBL_ROUND)
+  s_secondary_layer = text_layer_create((GRect) { .origin = { 0, 125 }, .size = { bounds.size.w - ACTION_BAR_WIDTH, 50 }});
+  #else
   s_secondary_layer = text_layer_create((GRect) { .origin = { 0, 118 }, .size = { bounds.size.w - ACTION_BAR_WIDTH, 45 }});
+  #endif
   if (is_connected) {
     text_layer_set_text(s_secondary_layer, "Connected");
   } else {
@@ -306,6 +324,9 @@ static void window_load(Window *window) {
   text_layer_set_text_alignment(s_secondary_layer, GTextAlignmentCenter);
   layer_add_child(window_layer, text_layer_get_layer(s_secondary_layer));
   text_layer_set_font(s_primary_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD));
+  #if defined(PBL_ROUND)
+  text_layer_enable_screen_text_flow_and_paging(s_secondary_layer, 2);
+  #endif
 
   s_actionbar = action_bar_layer_create();
   action_bar_layer_add_to_window(s_actionbar, window);
