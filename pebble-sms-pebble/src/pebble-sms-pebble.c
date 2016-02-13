@@ -1,24 +1,8 @@
 #include <pebble.h>
-
-// OUTGOING
-#define DICTATED_NAME_KEY 0
-#define IS_CONTACT_CORRECT_KEY 1
-#define IS_NUMBER_CORRECT_KEY 2
-#define FINAL_MESSAGE_KEY 3
-#define STATE_KEY 4
-#define CONTACT_NAME_KEY 5
-#define CONTACT_NUMBER_KEY 6
-#define MESSAGE_CONFIRMATION_KEY 7
-#define ATTEMPT_NUMBER_KEY 8
-#define CONNECTION_TEST_KEY 9
-
-// define states
-#define BEGINNING_STATE 0
-#define DICTATED_NAME_STATE 1
-#define CHECKING_CONTACT_STATE 2
-#define CREATING_FINAL_MESSAGE_STATE 3
-#define CONFIRMING_FINAL_MESSAGE_STATE 4
-#define FINAL_MESSAGE_STATE 5
+#include "recentContactChooser.h"
+#include "pebble-sms-pebble.h"
+#include "tertiaryText.h"
+#include "presetChooser.h"
 
 static Window *window;
 static TextLayer *s_instruction_layer;
@@ -28,26 +12,39 @@ static DictationSession *s_dictation_session;
 static ActionBarLayer *s_actionbar;
 
 // Declare a buffer for the DictationSession
-static char s_last_text[512];
 static int s_state = BEGINNING_STATE;
-static char number[20];
+static char contact_number[20];
 static char contact_name[100];
 static char dictated_name[100];
 static char dictated_message[512];
 
 static short has_contact = false;
 
-static short contact_try = 1;
+static short contact_try = 0;
+static short is_connected = false;
 
 static void reset_all() {
-  s_last_text[0] = '\0';
   s_state = BEGINNING_STATE;
-  number[0] = '\0';
+  contact_number[0] = '\0';
   contact_name[0] = '\0';
   dictated_name[0] = '\0';
   dictated_message[0] = '\0';
   has_contact = false;
-  contact_try = 1;
+  contact_try = 0;
+}
+
+static void get_recent_contacts() {
+  DictionaryIterator *iter;
+  app_message_outbox_begin(&iter);
+  dict_write_int(iter, STATE_KEY, &s_state, 1, 0);
+  app_message_outbox_send();
+}
+
+static void get_presets() {
+  DictionaryIterator *iter;
+  app_message_outbox_begin(&iter);
+  dict_write_int(iter, STATE_KEY, &s_state, 1, 0);
+  app_message_outbox_send();
 }
 
 static void get_contact() {
@@ -70,7 +67,7 @@ static void send_final_message() {
   DictionaryIterator *iter;
   app_message_outbox_begin(&iter);
   dict_write_cstring(iter, CONTACT_NAME_KEY, contact_name);
-  dict_write_cstring(iter, CONTACT_NUMBER_KEY, number);
+  dict_write_cstring(iter, CONTACT_NUMBER_KEY, contact_number);
   DictionaryResult res = dict_write_cstring(iter, FINAL_MESSAGE_KEY, dictated_message);
   if (res == DICT_OK) {
     APP_LOG(APP_LOG_LEVEL_INFO, "added");
@@ -85,8 +82,47 @@ static void send_final_message() {
   app_message_outbox_send();
 }
 
-static void change_state(int state) {
+void change_state(int state) {
   s_state = state;
+}
+
+void contact_chosen_from_recent(char *name, char *number) {
+  snprintf(contact_name, sizeof(contact_name), "%s", name);
+  snprintf(contact_number, sizeof(contact_number), "%s", number);
+
+  change_state(CREATING_FINAL_MESSAGE_STATE);
+  text_layer_set_text(s_instruction_layer, "Create message");
+  text_layer_set_text(s_primary_layer, contact_name);
+  text_layer_set_text(s_secondary_layer, contact_number);
+}
+
+void tertiary_text_chosen(char *text) {
+  if (s_state == BEGINNING_STATE) {
+    snprintf(dictated_name, sizeof(dictated_name), "%s", text);
+    text_layer_set_text(s_instruction_layer, "Loading Contact...");
+    text_layer_set_text(s_primary_layer, dictated_name);
+    text_layer_set_text(s_secondary_layer, "");
+    change_state(CHECKING_CONTACT_STATE);
+    get_contact();
+  }
+
+  if (s_state == CREATING_FINAL_MESSAGE_STATE) {
+    change_state(CONFIRMING_FINAL_MESSAGE_STATE);
+    snprintf(dictated_message, sizeof(dictated_message), "%s", text);
+    text_layer_set_text(s_instruction_layer, "Confirm message");
+    text_layer_set_text(s_primary_layer, contact_name);
+    text_layer_set_text(s_secondary_layer, dictated_message);
+  }
+}
+
+void preset_chosen(char *text) {
+  if (s_state == CREATING_FINAL_MESSAGE_STATE || s_state == GETTING_PRESETS_STATE) {
+    change_state(CONFIRMING_FINAL_MESSAGE_STATE);
+    snprintf(dictated_message, sizeof(dictated_message), "%s", text);
+    text_layer_set_text(s_instruction_layer, "Confirm message");
+    text_layer_set_text(s_primary_layer, contact_name);
+    text_layer_set_text(s_secondary_layer, dictated_message);
+  }
 }
 
 static void select_click_handler(ClickRecognizerRef recognizer, void *context) {  
@@ -101,19 +137,32 @@ static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
 }
 
 static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
-  if (s_state == CHECKING_CONTACT_STATE && has_contact) {
-    change_state(CONFIRMING_FINAL_MESSAGE_STATE);
-    get_contact();
+  if (s_state == BEGINNING_STATE) {
+    tertiary_init();
+  } else if (s_state == CHECKING_CONTACT_STATE && has_contact) {
+    change_state(CREATING_FINAL_MESSAGE_STATE);
+    text_layer_set_text(s_instruction_layer, "Create message");
+  } else if (s_state == CREATING_FINAL_MESSAGE_STATE) {
+    tertiary_init();
   } else if (s_state == CONFIRMING_FINAL_MESSAGE_STATE) {
+    change_state(FINAL_MESSAGE_STATE);
     send_final_message();
   }
 }
 
 static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
-  if (s_state == CHECKING_CONTACT_STATE && has_contact) {
+  if (s_state == BEGINNING_STATE) {
+    recent_contact_chooser_init();
+    change_state(GETTING_RECENT_CONTACTS_STATE);
+    get_recent_contacts();
+  } else if (s_state == CHECKING_CONTACT_STATE && has_contact) {
+    contact_try++;
     get_contact();
     has_contact = false;
-    contact_try++;
+  } else if (s_state == CREATING_FINAL_MESSAGE_STATE) {
+    preset_init();
+    change_state(GETTING_PRESETS_STATE);
+    get_presets();
   } else if (s_state == CONFIRMING_FINAL_MESSAGE_STATE) {
     dictated_message[0] = '\0';
     change_state(CREATING_FINAL_MESSAGE_STATE);
@@ -132,14 +181,11 @@ static void dictation_session_callback(DictationSession *session, DictationSessi
   APP_LOG(APP_LOG_LEVEL_INFO, "Dictation status: %d", (int)status);
 
   if(status == DictationSessionStatusSuccess) {
-    // Display the dictated text
-    snprintf(s_last_text, sizeof(s_last_text), "%s", transcription);
-
     // just dictated name
     if (s_state == BEGINNING_STATE) {
       snprintf(dictated_name, sizeof(dictated_name), "%s", transcription);
       text_layer_set_text(s_instruction_layer, "Loading Contact...");
-      text_layer_set_text(s_primary_layer, s_last_text);
+      text_layer_set_text(s_primary_layer, dictated_name);
       text_layer_set_text(s_secondary_layer, "");
       change_state(CHECKING_CONTACT_STATE);
       get_contact();
@@ -163,30 +209,41 @@ static void dictation_session_callback(DictationSession *session, DictationSessi
 }
 
 static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
-  APP_LOG(APP_LOG_LEVEL_INFO, "Message received!");
-  Tuple *contactNameDict = dict_find(iterator, CONTACT_NAME_KEY);
-  Tuple *contactNumberDict = dict_find(iterator, CONTACT_NUMBER_KEY);
-  Tuple *messageConfirmationDict = dict_find(iterator, MESSAGE_CONFIRMATION_KEY);
+  APP_LOG(APP_LOG_LEVEL_INFO, "Recieved message");
   Tuple *connectionTestDict = dict_find(iterator, CONNECTION_TEST_KEY);
-
   if ((s_state == BEGINNING_STATE || s_state == DICTATED_NAME_STATE || (s_state == CHECKING_CONTACT_STATE && !has_contact)) && connectionTestDict) {
-    text_layer_set_text(s_secondary_layer, connectionTestDict->value->cstring);
+    is_connected = true;
+    text_layer_set_text(s_secondary_layer, "Connected");
   }
 
+  Tuple *contactNameDict = dict_find(iterator, CONTACT_NAME_KEY);
+  Tuple *contactNumberDict = dict_find(iterator, CONTACT_NUMBER_KEY);
   if (s_state == CHECKING_CONTACT_STATE && contactNameDict && contactNumberDict) {
     has_contact = true;
     snprintf(contact_name, sizeof(contact_name), "%s", (char *)contactNameDict->value->cstring);
-    snprintf(number, sizeof(number), "%s", (char *)contactNumberDict->value->cstring);
+    snprintf(contact_number, sizeof(contact_number), "%s", (char *)contactNumberDict->value->cstring);
     text_layer_set_text(s_instruction_layer, "Confirm contact");
     text_layer_set_text(s_primary_layer, contact_name);
-    text_layer_set_text(s_secondary_layer, number);
+    text_layer_set_text(s_secondary_layer, contact_number);
   }
 
+  Tuple *messageConfirmationDict = dict_find(iterator, MESSAGE_CONFIRMATION_KEY);
   if (s_state == FINAL_MESSAGE_STATE && messageConfirmationDict) {
     reset_all();
     text_layer_set_text(s_instruction_layer, "Sent");
     text_layer_set_text(s_primary_layer, "");
     text_layer_set_text(s_secondary_layer, "");
+  }
+
+  Tuple *recentContactsName = dict_find(iterator, RECENT_CONTACTS_NAME_KEY);
+  Tuple *recentContactsNumber = dict_find(iterator, RECENT_CONTACTS_NUMBER_KEY);
+  if (s_state == GETTING_RECENT_CONTACTS_STATE && recentContactsName && recentContactsNumber) {
+    set_recent_contacts(recentContactsName->value->cstring, recentContactsNumber->value->cstring);
+  }
+
+  Tuple *presets = dict_find(iterator, PRESETS_KEY);
+  if (s_state == GETTING_PRESETS_STATE && presets) {
+    set_presets(presets->value->cstring);
   }
 }
 
@@ -206,20 +263,24 @@ static void window_load(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
 
-  s_instruction_layer = text_layer_create((GRect) { .origin = { 0, 10 }, .size = { bounds.size.w - ACTION_BAR_WIDTH, 50 }});
+  s_instruction_layer = text_layer_create((GRect) { .origin = { 0, 10 }, .size = { bounds.size.w - ACTION_BAR_WIDTH, 55 }});
   text_layer_set_text(s_instruction_layer, "Choose recipient");
   text_layer_set_text_alignment(s_instruction_layer, GTextAlignmentCenter);
   layer_add_child(window_layer, text_layer_get_layer(s_instruction_layer));
   text_layer_set_font(s_instruction_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
 
-  s_primary_layer = text_layer_create((GRect) { .origin = { 0, 64 }, .size = { bounds.size.w - ACTION_BAR_WIDTH, 45 }});
+  s_primary_layer = text_layer_create((GRect) { .origin = { 0, 69 }, .size = { bounds.size.w - ACTION_BAR_WIDTH, 45 }});
   text_layer_set_text(s_primary_layer, "");
   text_layer_set_text_alignment(s_primary_layer, GTextAlignmentCenter);
   layer_add_child(window_layer, text_layer_get_layer(s_primary_layer));
   text_layer_set_font(s_primary_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD));
 
-  s_secondary_layer = text_layer_create((GRect) { .origin = { 0, 113 }, .size = { bounds.size.w - ACTION_BAR_WIDTH, 45 }});
-  text_layer_set_text(s_secondary_layer, "Not connected");
+  s_secondary_layer = text_layer_create((GRect) { .origin = { 0, 118 }, .size = { bounds.size.w - ACTION_BAR_WIDTH, 45 }});
+  if (is_connected) {
+    text_layer_set_text(s_secondary_layer, "Connected");
+  } else {
+    text_layer_set_text(s_secondary_layer, "Not connected");
+  }
   text_layer_set_text_alignment(s_secondary_layer, GTextAlignmentCenter);
   layer_add_child(window_layer, text_layer_get_layer(s_secondary_layer));
   text_layer_set_font(s_primary_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD));
@@ -231,7 +292,7 @@ static void window_load(Window *window) {
   //action_bar_layer_set_icon(s_actionbar, BUTTON_ID_UP, hit_icon);
   //action_bar_layer_set_icon(s_actionbar, BUTTON_ID_DOWN, done_icon);
 
-  s_dictation_session = dictation_session_create(sizeof(s_last_text), dictation_session_callback, NULL);
+  s_dictation_session = dictation_session_create(sizeof(dictated_message), dictation_session_callback, NULL);
 
   window_set_click_config_provider(window, click_config_provider);
 
