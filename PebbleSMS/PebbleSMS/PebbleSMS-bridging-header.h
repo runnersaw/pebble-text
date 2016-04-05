@@ -6,5 +6,8 @@
 //  Copyright © 2016 Sawyer Vaughan. All rights reserved.
 //
 
-#import "SMSSender.h"
+#import "PSMSSender.h"
 #import "SEEPhoneNumberFormatter.h"
+#import "PSMSRecentContactHandler.h"
+#import "PSMSInitListener.h"
+#import "PSMSLogger.h"

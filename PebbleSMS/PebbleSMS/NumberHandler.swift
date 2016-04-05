@@ -14,6 +14,10 @@ class NumberHandler {
         return SEEPhoneNumberFormatter.formatPhoneNumber(phone, withCountryCode: countryCode, style: .E164)
     }
     
+    class func phoneFromNumberNoCountry(phone: String) -> String {
+        return SEEPhoneNumberFormatter.formatPhoneNumber(phone, withLocale: nil, style: .E164)
+    }
+    
     class func prefixFromCountryCode(countryCode: String) -> String {
         return ""
     }

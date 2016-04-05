@@ -14,7 +14,7 @@
 
 #endif /* SMSSender_h */
 
-@interface SMSSender : NSObject
+@interface PSMSSender : NSObject
 
 - (void)sendSMS:(NSString *)number withText:(NSString *)text;
 

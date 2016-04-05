@@ -12,21 +12,19 @@ import AddressBook
 
 class ContactHandler {
     var adbk : ABAddressBook?
-    var contacts : Dictionary<String, String> = Dictionary<String,String>()
-    var contactNames : Array<String> = Array<String>()
+    static var contacts = ContactHandler.getAllContacts()
     
-    class func searchContacts(name: String, tries: Int=1) -> Contact? {
-        let contacts = ContactHandler.getAllContacts()
-        var matches = [Contact]()
-        for contact in contacts {
-            if contact.name.lowercaseString.containsString(name.lowercaseString) {
-                matches.append(contact)
+    class func searchContacts(name: String, tries: Int=1) -> Contact {
+        if tries == 0 {
+            for contact in contacts {
+                contact.computeLevenshtein(name)
             }
+            contacts.sortInPlace({ (c1, c2) -> Bool in
+                return c1.currentLevenshtein < c2.currentLevenshtein
+            })
         }
-        if (matches.count > 0) {
-            return matches[tries % matches.count]
-        }
-        return nil
+        
+        return contacts[tries % contacts.count]
     }
     
     class func getAllContacts() -> Array<Contact> {
@@ -38,7 +36,7 @@ class ContactHandler {
         do {
             allContainers = try contactStore.containersMatchingPredicate(nil)
         } catch {
-            print("Error fetching containers")
+            PSMSLogger().log("Error fetching containers")
         }
         
         var results: [CNContact] = []
@@ -51,7 +49,7 @@ class ContactHandler {
                 let containerResults = try contactStore.unifiedContactsMatchingPredicate(fetchPredicate, keysToFetch: keys)
                 results.appendContentsOf(containerResults)
             } catch {
-                print("Error fetching results for container")
+                PSMSLogger().log("Error fetching results for container")
             }
         }
         
@@ -72,6 +70,23 @@ class ContactHandler {
         return res
     }
     
+    class func getRecentNamesCompressed() -> String {
+        let recentHandler = PSMSRecentContactHandler()
+        let names = recentHandler.getRecentNames() as AnyObject as! [String]
+        return names.joinWithSeparator("\n")
+    }
+    
+    class func getRecentPhonesCompressed() -> String {
+        let recentHandler = PSMSRecentContactHandler()
+        let phones = recentHandler.getRecentPhones() as AnyObject as! [String]
+        var p = [String]()
+        for phone in phones {
+            p.append(NumberHandler.phoneFromNumberNoCountry(phone))
+        }
+        return p.joinWithSeparator("\n")
+    }
+    
+    
     func createAddressBook() -> Bool {
         // creates the address book if it doesn't exist
         if self.adbk != nil {
@@ -80,7 +95,7 @@ class ContactHandler {
         var err : Unmanaged<CFError>? = nil
         let adbk : ABAddressBook? = ABAddressBookCreateWithOptions(nil, &err).takeRetainedValue()
         if adbk == nil {
-            print(err)
+            PSMSLogger().log(err.debugDescription)
             self.adbk = nil
             return false
         }
