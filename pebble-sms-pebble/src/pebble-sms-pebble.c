@@ -152,6 +152,9 @@ void preset_chosen(char *text) {
 }
 
 static void select_click_handler(ClickRecognizerRef recognizer, void *context) {  
+  if (!is_connected) {
+    return;
+  }
   // Start dictation UI
   if (s_state == BEGINNING_STATE) {
     dictation_session_start(s_dictation_session);
@@ -163,6 +166,9 @@ static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
 }
 
 static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
+  if (!is_connected) {
+    return;
+  }
   if (s_state == BEGINNING_STATE) {
     tertiary_init();
   } else if (s_state == CHECKING_CONTACT_STATE && has_contact) {
@@ -177,6 +183,9 @@ static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
 }
 
 static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
+  if (!is_connected) {
+    return;
+  }
   if (s_state == BEGINNING_STATE) {
     recent_contact_chooser_init();
     change_state(GETTING_RECENT_CONTACTS_STATE);
@@ -272,7 +281,7 @@ static void inbox_dropped_callback(AppMessageResult reason, void *context) {
 }
 
 static void outbox_failed_callback(DictionaryIterator *iterator, AppMessageResult reason, void *context) {
-  APP_LOG(APP_LOG_LEVEL_ERROR, "Outbox send failed!");
+  APP_LOG(APP_LOG_LEVEL_ERROR, "Outbox send failed! %d", reason);
 }
 
 static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {

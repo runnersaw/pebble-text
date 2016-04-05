@@ -1,14 +1,17 @@
 {
-  "uuid": "6241e7d9-6f60-494a-896f-e585923c2c67",
+  "uuid": "36bf8b7a-a043-4e1b-8518-b6bb389ec110",
   "shortName": "TextSender",
   "longName": "TextSender for Pebble",
   "companyName": "Sawyer Vaughan",
   "versionLabel": "1.0",
   "sdkVersion": "3",
+  "enableMultiJS": true, 
+  "projectType": "native",
   "targetPlatforms": ["basalt", "chalk"],
   "watchapp": {
     "watchface": false
   },
+  "capabilities": [""],
   "resources": {
     "media": [
       {
@@ -51,6 +54,7 @@
     "CONNECTION_TEST_KEY": 9,
     "RECENT_CONTACTS_NAME_KEY": 10,
     "RECENT_CONTACTS_NUMBER_KEY": 11,
-    "PRESETS_KEY": 12
+    "PRESETS_KEY": 12, 
+    "IS_PEBBLE_SMS_KEY": 94375
   }
 }
