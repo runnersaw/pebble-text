@@ -1,9 +1,9 @@
 Package: com.sawyervaughan.pebblesmstweak
-Name: pebblesmstweak
+Name: TextSender for Pebble
 Depends: mobilesubstrate, com.rpetrich.rocketbootstrap (>= 1.0.2)
-Version: 0.0.1
+Version: 1.0.0
 Architecture: iphoneos-arm
-Description: An awesome MobileSubstrate tweak!
+Description: This app allows you to send texts directly from your Pebble Time watch. You can choose a contact by inputting text, dictating, or choosing a recent contact. You can then dictate a message, type with the watch, or select from a customizable list of presets. 
 Maintainer: Sawyer Vaughan
 Author: Sawyer Vaughan
 Section: Tweaks

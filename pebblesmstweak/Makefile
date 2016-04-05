@@ -15,6 +15,3 @@ pebblesmstweak_LDFLAGS += -Wl,-segalign,4000
 pebblesmstweak_LIBRARIES = rocketbootstrap
 
 include $(THEOS_MAKE_PATH)/tweak.mk
-
-after-install::
-	install.exec "killall -9 SpringBoard"
