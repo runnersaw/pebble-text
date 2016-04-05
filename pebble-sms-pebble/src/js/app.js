@@ -1,27 +1,20 @@
 Pebble.addEventListener('ready', function() {
-  // PebbleKit JS is ready!
-  console.log('PebbleKit JS reaaady!');
-  
   var connectionTest = {
     'CONNECTION_TEST_KEY': 1
   };
   Pebble.sendAppMessage(
     connectionTest, 
     function(e) {
-      console.log('sent');
+      console.log('TextSender: Sent connection test');
     },
     function(e) {
-      console.log('failed to send');
+      console.log('TextSender: Error sending');
     });
 });
 
 // Listen for when an AppMessage is received
 Pebble.addEventListener('appmessage',
   function(e) {
-    console.log('AppMessage received!');
-    console.log(e);
-    console.log(JSON.stringify(e, null, 4));
-    
     // Assemble dictionary using our keys
     var dictionary = e.payload;
     dictionary.IS_PEBBLE_SMS_KEY = 1;
@@ -30,10 +23,10 @@ Pebble.addEventListener('appmessage',
     Pebble.sendAppMessage(
       dictionary,
       function(e) {
-        console.log('Weather info sent to Pebble successfully!');
+        console.log('TextSender: Forwarded to Pebble, will be processed by app');
       },
       function(e) {
-        console.log('Error sending weather info to Pebble!');
+        console.log('TextSender: Error sending!');
       }
     );
   }
