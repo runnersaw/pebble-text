@@ -1,6 +1,0 @@
-framework module Pods_PebbleSMS {
-  umbrella header "Pods-PebbleSMS-umbrella.h"
-
-  export *
-  module * { export * }
-}
