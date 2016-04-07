@@ -25,7 +25,9 @@
 static GBitmap *check_icon;
 static GBitmap *x_icon;
 static GBitmap *recent_icon;
+#if defined(PBL_MICROPHONE)
 static GBitmap *microphone_icon;
+#endif
 static GBitmap *abc_icon;
 
 void change_state(int state);

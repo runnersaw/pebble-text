@@ -8,7 +8,9 @@ static Window *window;
 static TextLayer *s_instruction_layer;
 static TextLayer *s_primary_layer;
 static TextLayer *s_secondary_layer;
+#if defined(PBL_MICROPHONE)
 static DictationSession *s_dictation_session;
+#endif
 static ActionBarLayer *s_actionbar;
 
 // Declare a buffer for the DictationSession
@@ -28,14 +30,18 @@ static void create_bitmaps() {
   x_icon = gbitmap_create_with_resource(RESOURCE_ID_X_ICON);
   recent_icon = gbitmap_create_with_resource(RESOURCE_ID_RECENT_ICON);
   abc_icon = gbitmap_create_with_resource(RESOURCE_ID_ABC_ICON);
+  #if defined(PBL_MICROPHONE)
   microphone_icon = gbitmap_create_with_resource(RESOURCE_ID_MICROPHONE_ICON);
+  #endif
 }
 
 static void destroy_bitmaps() {
   gbitmap_destroy(check_icon);
   gbitmap_destroy(x_icon);
   gbitmap_destroy(recent_icon);
+  #if defined(PBL_MICROPHONE)
   gbitmap_destroy(microphone_icon);
+  #endif
   gbitmap_destroy(abc_icon);
 }
 
@@ -44,7 +50,9 @@ void change_state(int state) {
 
   if (s_state == BEGINNING_STATE || s_state == DICTATED_NAME_STATE || s_state == CREATING_FINAL_MESSAGE_STATE) {
     action_bar_layer_set_icon(s_actionbar, BUTTON_ID_UP, abc_icon);
+    #if defined(PBL_MICROPHONE)
     action_bar_layer_set_icon(s_actionbar, BUTTON_ID_SELECT, microphone_icon);
+    #endif
     action_bar_layer_set_icon(s_actionbar, BUTTON_ID_DOWN, recent_icon);
   } else {
     action_bar_layer_set_icon(s_actionbar, BUTTON_ID_UP, check_icon);
@@ -89,7 +97,7 @@ static void get_contact() {
 static void send_connection_test() {
   DictionaryIterator *iter;
   app_message_outbox_begin(&iter);
-  dict_write_cstring(iter, CONNECTION_TEST_KEY, "AM_I_CONNECTED");
+  dict_write_cstring(iter, CONNECTION_TEST_KEY, "C");
   app_message_outbox_send();
 }
 
@@ -156,6 +164,7 @@ static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
     return;
   }
   // Start dictation UI
+  #if defined(PBL_MICROPHONE)
   if (s_state == BEGINNING_STATE) {
     dictation_session_start(s_dictation_session);
   }
@@ -163,6 +172,7 @@ static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
   if (s_state == CREATING_FINAL_MESSAGE_STATE) {
     dictation_session_start(s_dictation_session);
   }
+  #endif
 }
 
 static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
@@ -210,6 +220,7 @@ static void click_config_provider(void *context) {
   window_single_click_subscribe(BUTTON_ID_DOWN, down_click_handler);
 }
 
+#if defined(PBL_MICROPHONE)
 static void dictation_session_callback(DictationSession *session, DictationSessionStatus status, 
                                        char *transcription, void *context) {
   // Print the results of a transcription attempt                                     
@@ -236,6 +247,7 @@ static void dictation_session_callback(DictationSession *session, DictationSessi
     }
   }
 }
+#endif
 
 static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
   APP_LOG(APP_LOG_LEVEL_INFO, "Recieved message");
@@ -341,10 +353,14 @@ static void window_load(Window *window) {
   action_bar_layer_add_to_window(s_actionbar, window);
   
   action_bar_layer_set_icon(s_actionbar, BUTTON_ID_UP, abc_icon);
+  #if defined(PBL_MICROPHONE)
   action_bar_layer_set_icon(s_actionbar, BUTTON_ID_SELECT, microphone_icon);
+  #endif
   action_bar_layer_set_icon(s_actionbar, BUTTON_ID_DOWN, recent_icon);
 
+  #if defined(PBL_MICROPHONE)
   s_dictation_session = dictation_session_create(sizeof(dictated_message), dictation_session_callback, NULL);
+  #endif
 
   window_set_click_config_provider(window, click_config_provider);
 
@@ -357,7 +373,9 @@ static void window_unload(Window *window) {
   text_layer_destroy(s_primary_layer);
   text_layer_destroy(s_secondary_layer);
   action_bar_layer_destroy(s_actionbar);
+  #if defined(PBL_MICROPHONE)
   dictation_session_destroy(s_dictation_session);
+  #endif
 }
 
 static void init(void) {

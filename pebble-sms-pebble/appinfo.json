@@ -7,7 +7,7 @@
   "sdkVersion": "3",
   "enableMultiJS": true, 
   "projectType": "native",
-  "targetPlatforms": ["basalt", "chalk"],
+  "targetPlatforms": ["aplite", "basalt", "chalk"],
   "watchapp": {
     "watchface": false
   },
