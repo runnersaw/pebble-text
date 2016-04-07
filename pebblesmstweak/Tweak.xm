@@ -123,8 +123,10 @@ static void openMessages() {
 
 %new
 - (void)sendMessageTo:(NSString *)number withText:(NSString *)text {
+    NSString *num = [@"+" stringByAppendingString:[[number componentsSeparatedByCharactersInSet: [[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""]];
+
     CKConversationList *conversationList = [CKConversationList sharedConversationList];
-    CKConversation *conversation = [conversationList conversationForExistingChatWithGroupID:number];
+    CKConversation *conversation = [conversationList conversationForExistingChatWithGroupID:num];
 
     //Make a new composition
     NSAttributedString* t = [[NSAttributedString alloc] initWithString:text];
@@ -871,6 +873,9 @@ static void openMessages() {
 
 - (void)applicationDidBecomeActive:(id)fp8 {
     %orig;
+
+    NSLog(@"PEBBLESMS: Trying to request authorization");
+    [%c(PBAddressBookAuthorizationManager) requestAuthorizationWithCompletion:NULL];
 }
 
 %end
