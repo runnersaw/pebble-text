@@ -16,10 +16,10 @@ static ClickConfigProvider previous_click_config_provider;
 
 #if defined(PBL_ROUND)
   #define CELL_HEIGHT 60
-  #define LOADING_CELL_HEIGHT 120
+  #define LOADING_CELL_HEIGHT 180
 #else
   #define CELL_HEIGHT 45
-  #define LOADING_CELL_HEIGHT 120
+  #define LOADING_CELL_HEIGHT 168
 #endif
 
 static Window *s_recent_menu_window;
@@ -117,6 +117,14 @@ static int16_t menu_get_cell_height_callback(MenuLayer *menu_layer, MenuIndex *c
   }
 }
 
+static void draw_loading(GContext *ctx, const Layer *layer, char *title, char* subtitle) {
+  GRect bounds = layer_get_bounds(layer);
+  GRect title_bounds = GRect(10,10,bounds.size.w-20,30);
+  GRect text_bounds = GRect(20,50,bounds.size.w-40,bounds.size.h-60);
+  graphics_draw_text(ctx, title, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD), title_bounds, GTextOverflowModeWordWrap, GTextAlignmentCenter, NULL);
+  graphics_draw_text(ctx, subtitle, fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD), text_bounds, GTextOverflowModeWordWrap, GTextAlignmentCenter, NULL);
+}
+
 static void draw_menu(GContext *ctx, const Layer *layer, char *title, char* subtitle) {
   menu_cell_basic_draw(ctx, layer, title, subtitle, NULL);
 }
@@ -127,7 +135,7 @@ static void menu_draw_row_callback(GContext *ctx, const Layer *cell_layer, MenuI
     save_contact_number(cell_index->row);
     draw_menu(ctx, cell_layer, current_contact, current_number);
   } else {
-    draw_menu(ctx, cell_layer, "Loading...", "If you just installed, this menu will populate as you send texts");
+    draw_loading(ctx, cell_layer, "Loading...", "If you just installed, this menu will populate as you send texts");
   }
 }
 

@@ -7,8 +7,10 @@ Pebble.addEventListener('ready', function() {
     function(e) {
       console.log('TextSender: Sent connection test');
     },
-    function(e) {
+    function(d, e) {
       console.log('TextSender: Error sending');
+      console.log(d);
+      console.log(e);
     });
 });
 
@@ -27,6 +29,7 @@ Pebble.addEventListener('appmessage',
       },
       function(e) {
         console.log('TextSender: Error sending!');
+        console.log(e);
       }
     );
   }

@@ -11,6 +11,7 @@
 #define RECENT_CONTACTS_NAME_KEY 10
 #define RECENT_CONTACTS_NUMBER_KEY 11
 #define PRESETS_KEY 12
+#define RECIEVED_FINAL_MESSAGE_KEY 13
 
 // define states
 #define BEGINNING_STATE 0
@@ -21,6 +22,7 @@
 #define FINAL_MESSAGE_STATE 5
 #define GETTING_RECENT_CONTACTS_STATE 6
 #define GETTING_PRESETS_STATE 7
+#define SENDING_FINAL_MESSAGE_STATE 8
 
 static GBitmap *check_icon;
 static GBitmap *x_icon;
