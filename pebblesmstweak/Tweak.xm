@@ -10,7 +10,8 @@
 #import <UIKit/UIApplication.h>
 #import "rocketbootstrap.h"
 
-#define SEND_DELAY 2.0
+#define SEND_DELAY 1.0
+#define NOTIFICATION_DELAY 0.2
 
 static NSString *bundleId = @"com.sawyervaughan.pebblesms";
 static NSString *messageNotificationString = @"com.sawyervaughan.pebblesms-messageNeedsSending";
@@ -169,7 +170,7 @@ static void openMessages() {
 @interface SMSApplication : UIApplication
 
 - (_Bool)application:(id)arg1 didFinishLaunchingWithOptions:(id)arg2;
-- (void)sendMessageTo:(NSString *)number withText:(NSString *)text;
+- (void)sendMessageTo:(NSString *)number withText:(NSString *)text notify:(BOOL)notify;
 - (void)handleMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo;
 - (void)handleSimpleMessageNamed:(NSString *)name;
 @end
@@ -190,18 +191,20 @@ static void openMessages() {
 }
 
 %new
-- (void)sendMessageTo:(NSString *)number withText:(NSString *)text {
+- (void)sendMessageTo:(NSString *)number withText:(NSString *)text notify:(BOOL)notify {
     NSString *num = [@"+" stringByAppendingString:[[number componentsSeparatedByCharactersInSet: [[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""]];
 
     CKConversationList *conversationList = [CKConversationList sharedConversationList];
     CKConversation *conversation = [conversationList conversationForExistingChatWithGroupID:num];
 
     if (conversation == NULL) {
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SEND_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            NSLog(@"PB Send not success");
-            NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
-            [center postNotificationName:messageFailedNotification object:distributedCenterName userInfo:nil deliverImmediately:YES];
-        });
+        if (notify) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                NSLog(@"PB Send not success");
+                NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
+                [center postNotificationName:messageFailedNotification object:distributedCenterName userInfo:nil deliverImmediately:YES];
+            });
+        }
         return;
     }
 
@@ -214,11 +217,13 @@ static void openMessages() {
     [conversation sendMessage:message newComposition:YES];
 
     // send success
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SEND_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        NSLog(@"PB Send success");
-        NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
-        [center postNotificationName:messageSendNotification object:distributedCenterName userInfo:nil deliverImmediately:YES];
-    });
+    if (notify) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            NSLog(@"PB Send success");
+            NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
+            [center postNotificationName:messageSendNotification object:distributedCenterName userInfo:nil deliverImmediately:YES];
+        });
+    }
 }
  
 %new
@@ -226,8 +231,9 @@ static void openMessages() {
     // Process userinfo (simple dictionary) and send message
     NSString *recipient = [userinfo objectForKey:@"recipient"];
     NSString *message = [userinfo objectForKey:@"message"];
+    NSNumber *notify = [userinfo objectForKey:@"notify"];
 
-    [self sendMessageTo:recipient withText:message];
+    [self sendMessageTo:recipient withText:message notify:[notify boolValue]];
 }
 
 %end
@@ -670,7 +676,7 @@ static void openMessages() {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SEND_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapCenterName];
         rocketbootstrap_distributedmessagingcenter_apply(c);
-        NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:text, @"message", number, @"recipient", nil];
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:text, @"message", number, @"recipient", [NSNumber numberWithBool:YES], @"notify", nil];
         [c sendMessageName:sendMessageCommand userInfo:dict]; 
     });
 
@@ -900,7 +906,7 @@ static void openMessages() {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SEND_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapCenterName];
         rocketbootstrap_distributedmessagingcenter_apply(c);
-        NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:text, @"message", number, @"recipient", nil];
+        NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:text, @"message", number, @"recipient", [NSNumber numberWithBool:NO], @"notify", nil];
         [c sendMessageName:sendMessageCommand userInfo:dict]; 
     });
 
