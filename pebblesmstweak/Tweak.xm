@@ -767,6 +767,7 @@ static void openMessages() {
 
 @interface PBAddressBookAuthorizationManager
 + (void)requestAuthorizationWithCompletion:(id)completion;
++ (int)authorizationStatus;
 @end
 
 @interface PBSMSReplyManager
@@ -997,6 +998,7 @@ static void openMessages() {
 - (void)applicationDidBecomeActive:(id)fp8 {
     %orig;
 
+    // NSLog(@"PB authorizationStatus %@", [[%c(PBAddressBookAuthorizationManager) authorizationStatus] class]);
     [%c(PBAddressBookAuthorizationManager) requestAuthorizationWithCompletion:NULL];
 }
 
@@ -1030,7 +1032,7 @@ static void openMessages() {
 
 %new
 - (void)failedCallbackWithNotification:(NSNotification *)myNotification {
-    NSLog(@"PB handleFailedNotification %@", [[%c(PBPebbleCentral) defaultCentral] class]);
+    // NSLog(@"PB handleFailedNotification %@", [[%c(PBPebbleCentral) defaultCentral] class]);
     PBPebbleCentral *central = [%c(PBPebbleCentral) defaultCentral];
     for (int i=0; i<[[central connectedWatches] count]; i++) {
         PBWatch *watch = [[central connectedWatches] objectAtIndex:i];
