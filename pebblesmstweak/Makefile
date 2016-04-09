@@ -3,9 +3,9 @@ export SDKVERSION=8.1
 ARCHS := armv7 arm64
 TARGET := iphone:clang
 TARGET_SDK_VERSION := 8.1
-TARGET_IPHONEOS_DEPLOYMENT_VERSION := 8.0
+TARGET_IPHONEOS_DEPLOYMENT_VERSION := 8.1
 
-include theos/makefiles/common.mk
+include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = pebblesmstweak
 pebblesmstweak_FILES = Tweak.xm

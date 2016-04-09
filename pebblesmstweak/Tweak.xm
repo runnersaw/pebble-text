@@ -10,8 +10,17 @@
 #import <UIKit/UIApplication.h>
 #import "rocketbootstrap.h"
 
+#define SEND_DELAY 2.0
+
 static NSString *bundleId = @"com.sawyervaughan.pebblesms";
 static NSString *messageNotificationString = @"com.sawyervaughan.pebblesms-messageNeedsSending";
+static NSString *sendMessageCommand = @"messageNeedsSending";
+static NSString *messageSendNotification = @"pebbleMessageSend";
+static NSString *messageFailedNotification = @"pebbleMessageFailed";
+static NSString *rocketbootstrapCenterName = @"com.sawyervaughan.pebblesms.sms";
+static NSString *distributedCenterName = @"com.sawyervaughan.pebblesms.pebble";
+
+static NSUUID *appUUID = [[NSUUID UUID] initWithUUIDString:@"36BF8B7A-A043-4E1B-8518-B6BB389EC110"];
 
 static int maxContacts = 5;
 
@@ -67,6 +76,15 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     }
 }
 
+@interface NSDistributedNotificationCenter
+
++ (id)defaultCenter;
+- (void)addObserver:(id)notificationObserver selector:(SEL)notificationSelector name:(NSString *)notificationName object:(NSString *)notificationSender;
+- (void)postNotificationName:(NSString *)notificationName object:(NSString *)notificationSender userInfo:(NSDictionary *)userInfo deliverImmediately:(BOOL)deliverImmediately;
+- (void)postNotificationName:(NSString *)notificationName object:(NSString *)notificationSender;
+
+@end
+
 @interface UIApplication (PebbleSMS)
 
 +(id)sharedApplication;
@@ -96,6 +114,58 @@ static void openMessages() {
 
 %end
 
+@interface PBPebbleCentral
+
++(id) defaultCentral;
++(void) setDebugLogsEnabled:(BOOL)arg1;
++(void) setLogLevel:(unsigned int)arg1;
+-(id) appUUID;
+-(id) connectedWatches;
+-(void) setAppUUID:(id)arg1;
+-(void) setTransportFilterPredicate:(id)arg;
+-(id) registeredWatches;
+-(void) removeRegisteredWatch:(id)arg;
+-(void) watchTransportManager:(id)arg1 didConnectTransport:(id)arg2;
+-(void) watchTransportManager:(id)arg1 didDisconnectTransport:(id)arg2;
+-(id) lastConnectedWatch;
+-(id) appUUIDs;
+-(void) registerForAutoReleaseOfSharedSessions;
+-(void) addAppUUID:(id)arg;
+-(void) candidateDidPair:(id)arg;
+-(BOOL) currentAppIsThePebbleApp;
+-(id) endpointsByUUID;
+-(void) startReconnectionService;
+-(id) reconnectionService;
+-(id) internalConnectedWatches;
+-(id) registerAndAddToConnectedWatchesForTransport:(id)arg;
+-(id) removeFromConnectedWatchesForTransport:(id)arg;
+-(id) findWatchForTransport:(id)arg1 inCollection:(id)arg2;
+-(id) transportFilterPredicate;
+-(id) dataLoggingService;
+-(void) handleApplicationWillResignActiveNotification:(id)arg;
+-(BOOL) isMobileAppInstalled;
+-(void) installMobileApp;
+-(void) unregisterAllWatches;
+-(void) setAppUUIDs:(id)arg;
+-(id) watchForTransport:(id)arg;
+-(id) dataLoggingServiceForAppUUID:(id)arg;
+-(id) classicWatchTransportManager;
+-(BOOL) hasValidAppUUID;
+-(id) store;
+-(void) setDelegate:(id)arg;
+-(void) dealloc;
+-(id) delegate;
+-(id) _init;
+-(void) run;
+-(id) internalQueue;
+-(BOOL) running;
+-(unsigned long long) capabilities;
+
+@end
+
+@interface CKMessage : NSObject
+@end
+
 @interface SMSApplication : UIApplication
 
 - (_Bool)application:(id)arg1 didFinishLaunchingWithOptions:(id)arg2;
@@ -108,15 +178,13 @@ static void openMessages() {
 
 - (_Bool)application:(id)arg1 didFinishLaunchingWithOptions:(id)arg2 {
 
-    NSLog(@"PB SMSApplication didFinishLaunchingWithOptions");
-
     BOOL s = %orig;
 
     // register to recieve notifications when messages need to be sent
-    CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:@"com.sawyervaughan.pebblesms"];
+    CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapCenterName];
     rocketbootstrap_distributedmessagingcenter_apply(c);
     [c runServerOnCurrentThread];
-    [c registerForMessageName:@"messageWithInfo" target:self selector:@selector(handleMessageNamed:withUserInfo:)];
+    [c registerForMessageName:sendMessageCommand target:self selector:@selector(handleMessageNamed:withUserInfo:)];
 
     return s;
 }
@@ -128,6 +196,15 @@ static void openMessages() {
     CKConversationList *conversationList = [CKConversationList sharedConversationList];
     CKConversation *conversation = [conversationList conversationForExistingChatWithGroupID:num];
 
+    if (conversation == NULL) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SEND_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            NSLog(@"PB Send not success");
+            NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
+            [center postNotificationName:messageFailedNotification object:distributedCenterName userInfo:nil deliverImmediately:YES];
+        });
+        return;
+    }
+
     //Make a new composition
     NSAttributedString* t = [[NSAttributedString alloc] initWithString:text];
     CKComposition* composition = [[CKComposition alloc] initWithText:t subject:nil];
@@ -135,6 +212,13 @@ static void openMessages() {
     // make message and send
     CKMessage *message = (CKMessage *)[conversation messageWithComposition:composition];
     [conversation sendMessage:message newComposition:YES];
+
+    // send success
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SEND_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        NSLog(@"PB Send success");
+        NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
+        [center postNotificationName:messageSendNotification object:distributedCenterName userInfo:nil deliverImmediately:YES];
+    });
 }
  
 %new
@@ -398,10 +482,14 @@ static void openMessages() {
 
 @interface PBWatch
 
-- (void)appMessagesPushUpdate:(id)fp8 onSent:(id)fp1001 uuid:(void *)fp12 launcher:(id)fp16;
+- (void)appMessagesPushUpdate:(id)fp8 onSent:(id)fp1001 uuid:(id)fp12 launcher:(id)fp16;
+- (void)appMessagesPushUpdate:(id)arg1 onSent:(id)arg2;
+- (void)appMessagesPushUpdate:(id)arg1 withUUID:(id)arg2 onSent:(id)arg3;
 - (void)send:(id)fp8 onDone:(id)fp1001 onTimeout:(void *)fp12 processInQueue:(id)fp10301;
 - (NSMutableDictionary *)getContactSearchResponse:(NSString *)name tries:(int)tries;
 - (NSMutableDictionary *)getSentResponse;
+- (NSMutableDictionary *)getFailedResponse;
+- (NSMutableDictionary *)getFinalRecievedResponse;
 - (NSMutableDictionary *)getConnectionResponse;
 - (NSMutableDictionary *)getRecentContactsResponse;
 - (NSMutableDictionary *)getPresets;
@@ -422,6 +510,7 @@ static void openMessages() {
 #define RECENT_CONTACTS_NAME_KEY [NSNumber numberWithInt:10]
 #define RECENT_CONTACTS_NUMBER_KEY [NSNumber numberWithInt:11]
 #define PRESETS_KEY [NSNumber numberWithInt:12]
+#define RECIEVED_FINAL_MESSAGE_KEY [NSNumber numberWithInt:13]
 #define IS_PEBBLE_SMS_KEY [NSNumber numberWithInt:94375]
 
 #define BEGINNING_STATE [NSNumber numberWithInt:0]
@@ -432,6 +521,7 @@ static void openMessages() {
 #define FINAL_MESSAGE_STATE [NSNumber numberWithInt:5]
 #define GETTING_RECENT_CONTACTS_STATE [NSNumber numberWithInt:6]
 #define GETTING_PRESETS_STATE [NSNumber numberWithInt:7]
+#define SENDING_FINAL_MESSAGE_STATE [NSNumber numberWithInt:8]
 
 %hook PBWatch
 
@@ -448,10 +538,30 @@ static void openMessages() {
 }
 
 %new
+- (NSMutableDictionary *)getFinalRecievedResponse {
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+
+    [dict setObject:@"Sending..." forKey:RECIEVED_FINAL_MESSAGE_KEY];
+    
+    return dict;
+}
+
+%new
 - (NSMutableDictionary *)getSentResponse {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
 
     [dict setObject:@"Sent" forKey:MESSAGE_CONFIRMATION_KEY];
+    [dict setObject:[NSNumber numberWithInt:1] forKey:IS_PEBBLE_SMS_KEY];
+    
+    return dict;
+}
+
+%new
+- (NSMutableDictionary *)getFailedResponse {
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+
+    [dict setObject:@"Sending failed" forKey:MESSAGE_CONFIRMATION_KEY];
+    [dict setObject:[NSNumber numberWithInt:1] forKey:IS_PEBBLE_SMS_KEY];
     
     return dict;
 }
@@ -486,9 +596,12 @@ static void openMessages() {
     return dict;
 }
 
-- (void)appMessagesPushUpdate:(id)fp8 onSent:(id)fp1001 uuid:(void *)fp12 launcher:(id)fp16 {
+- (void)appMessagesPushUpdate:(id)fp8 onSent:(id)fp1001 uuid:(id)fp12 launcher:(id)fp16 {
     NSMutableDictionary *message = (NSMutableDictionary *)fp8;
     id isSMS = [message objectForKey:IS_PEBBLE_SMS_KEY];
+    NSLog(@"PB sending %@", [message description]);
+    NSLog(@"PB sending %@", [fp12 description]);
+    NSLog(@"PB sending %@", [fp16 description]);
     if (isSMS != NULL && [isSMS intValue] == [[NSNumber numberWithInt:1] intValue]) {
         NSMutableDictionary *response;
         BOOL initialized = NO;
@@ -498,6 +611,13 @@ static void openMessages() {
         if (connectionTest != NULL) {
             response = [self getConnectionResponse];
             initialized = YES;
+        }
+
+        id confirmation = [message objectForKey:MESSAGE_CONFIRMATION_KEY];
+
+        if (confirmation != NULL) {
+            NSLog(@"PB sending confirmation %@", [message description]);
+            %orig;
         }
 
         if (state != NULL) {
@@ -520,19 +640,18 @@ static void openMessages() {
                 }
             }
             
-            if ([state intValue] == [FINAL_MESSAGE_STATE intValue]) {
+            if ([state intValue] == [SENDING_FINAL_MESSAGE_STATE intValue]) {
                 NSString *number = [message objectForKey:CONTACT_NUMBER_KEY];
                 NSString *m = [message objectForKey:FINAL_MESSAGE_KEY];
                 if (number != NULL && m != NULL) {
                     [%c(PBWatch) sendSMS:[%c(PBContact) phoneWithPrefix:number] withText:m];
-                    response = [self getSentResponse];
+                    response = [self getFinalRecievedResponse];
                     initialized = YES;
                 }
             }
         }
 
         if (initialized) {
-            NSLog(@"PBWatch response %@", [response description]);
             %orig(response, fp1001, fp12, fp16); 
         } else {
             %orig;
@@ -548,12 +667,11 @@ static void openMessages() {
     CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), (CFStringRef)messageNotificationString, nil, nil, YES);
 
     // send message after 5 seconds
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        NSLog(@"PEBBLESMS: Sending rocketbootstrap");
-        CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:@"com.sawyervaughan.pebblesms"];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SEND_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapCenterName];
         rocketbootstrap_distributedmessagingcenter_apply(c);
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:text, @"message", number, @"recipient", nil];
-        [c sendMessageName:@"messageWithInfo" userInfo:dict]; 
+        [c sendMessageName:sendMessageCommand userInfo:dict]; 
     });
 
 }
@@ -765,8 +883,6 @@ static void openMessages() {
 %hook PBSMSSessionManager
 
 - (id)sendSMSSendRequestWithMessage:(id)fp8 account:(id)fp12 transactionID:(id)fp16 {
-    %log; 
-
     PBSMSMessage *message = (PBSMSMessage *)fp8;
     NSString *text = [message text];
     NSString *number = (NSString *)[(PBPhoneNumber *)[[message recipients] objectAtIndex:0] stringValue];
@@ -781,12 +897,11 @@ static void openMessages() {
     CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), (CFStringRef)messageNotificationString, nil, nil, YES);
 
     // send message after 5 seconds
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        NSLog(@"PEBBLESMS: Sending rocketbootstrap");
-        CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:@"com.sawyervaughan.pebblesms"];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SEND_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapCenterName];
         rocketbootstrap_distributedmessagingcenter_apply(c);
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:text, @"message", number, @"recipient", nil];
-        [c sendMessageName:@"messageWithInfo" userInfo:dict]; 
+        [c sendMessageName:sendMessageCommand userInfo:dict]; 
     });
 
 }
@@ -846,6 +961,8 @@ static void openMessages() {
 - (BOOL)application:(id)fp8 openURL:(id)fp12 sourceApplication:(id)fp16 annotation:(id)fp20;
 - (BOOL)application:(id)fp8 didFinishLaunchingWithOptions:(id)fp12;
 - (BOOL)application:(id)fp8 willFinishLaunchingWithOptions:(id)fp12;
+- (void)sentCallbackWithNotification:(NSNotification *)myNotification;
+- (void)failedCallbackWithNotification:(NSNotification *)myNotification;
 
 @end
 
@@ -874,8 +991,52 @@ static void openMessages() {
 - (void)applicationDidBecomeActive:(id)fp8 {
     %orig;
 
-    NSLog(@"PEBBLESMS: Trying to request authorization");
     [%c(PBAddressBookAuthorizationManager) requestAuthorizationWithCompletion:NULL];
 }
+
+- (_Bool)application:(id)arg1 didFinishLaunchingWithOptions:(id)arg2 {
+
+    BOOL s = %orig;
+
+    // register to recieve notifications when messages need to be sent
+    NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
+    [center addObserver:self selector:@selector(sentCallbackWithNotification:) name:messageSendNotification object:distributedCenterName];
+    [center addObserver:self selector:@selector(failedCallbackWithNotification:) name:messageFailedNotification object:distributedCenterName];
+
+    return s;
+}
+
+%new
+- (void)sentCallbackWithNotification:(NSNotification *)myNotification {
+    NSLog(@"PB handleSendNotification %@", [[%c(PBPebbleCentral) defaultCentral] class]);
+    PBPebbleCentral *central = [%c(PBPebbleCentral) defaultCentral];
+    for (int i=0; i<[[central connectedWatches] count]; i++) {
+        PBWatch *watch = [[central connectedWatches] objectAtIndex:i];
+        [watch appMessagesPushUpdate:[watch getSentResponse] onSent:^(PBWatch *watch, NSDictionary *update, NSError *error){
+            if (error) {
+                NSLog(@"Error");
+            } else {
+                NSLog(@"sent");
+            }
+        } uuid:appUUID launcher:NULL];
+    }
+}
+
+%new
+- (void)failedCallbackWithNotification:(NSNotification *)myNotification {
+    NSLog(@"PB handleFailedNotification %@", [[%c(PBPebbleCentral) defaultCentral] class]);
+    PBPebbleCentral *central = [%c(PBPebbleCentral) defaultCentral];
+    for (int i=0; i<[[central connectedWatches] count]; i++) {
+        PBWatch *watch = [[central connectedWatches] objectAtIndex:i];
+        [watch appMessagesPushUpdate:[watch getFailedResponse] onSent:^(PBWatch *watch, NSDictionary *update, NSError *error){
+            if (error) {
+                NSLog(@"Error");
+            } else {
+                NSLog(@"sent");
+            }
+        } uuid:appUUID launcher:NULL];
+    }
+}
+
 
 %end
