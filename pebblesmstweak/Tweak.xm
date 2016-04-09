@@ -200,7 +200,7 @@ static void openMessages() {
     if (conversation == NULL) {
         if (notify) {
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                NSLog(@"PB Send not success");
+                // NSLog(@"PB Send not success");
                 NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
                 [center postNotificationName:messageFailedNotification object:distributedCenterName userInfo:nil deliverImmediately:YES];
             });
@@ -219,7 +219,7 @@ static void openMessages() {
     // send success
     if (notify) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            NSLog(@"PB Send success");
+            // NSLog(@"PB Send success");
             NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
             [center postNotificationName:messageSendNotification object:distributedCenterName userInfo:nil deliverImmediately:YES];
         });
@@ -457,7 +457,7 @@ static void openMessages() {
 
     NSString *n;
     if ([number rangeOfString:@"+"].location == NSNotFound) {
-        NSLog(@"PB prefix %@", callingCode);
+        // NSLog(@"PB prefix %@", callingCode);
         if (callingCode != NULL) {
             n = [callingCode stringByAppendingString:number];
         } else {
@@ -605,9 +605,9 @@ static void openMessages() {
 - (void)appMessagesPushUpdate:(id)fp8 onSent:(id)fp1001 uuid:(id)fp12 launcher:(id)fp16 {
     NSMutableDictionary *message = (NSMutableDictionary *)fp8;
     id isSMS = [message objectForKey:IS_PEBBLE_SMS_KEY];
-    NSLog(@"PB sending %@", [message description]);
-    NSLog(@"PB sending %@", [fp12 description]);
-    NSLog(@"PB sending %@", [fp16 description]);
+    // NSLog(@"PB sending %@", [message description]);
+    // NSLog(@"PB sending %@", [fp12 description]);
+    // NSLog(@"PB sending %@", [fp16 description]);
     if (isSMS != NULL && [isSMS intValue] == [[NSNumber numberWithInt:1] intValue]) {
         NSMutableDictionary *response;
         BOOL initialized = NO;
@@ -622,7 +622,7 @@ static void openMessages() {
         id confirmation = [message objectForKey:MESSAGE_CONFIRMATION_KEY];
 
         if (confirmation != NULL) {
-            NSLog(@"PB sending confirmation %@", [message description]);
+            // NSLog(@"PB sending confirmation %@", [message description]);
             %orig;
         }
 
@@ -1014,15 +1014,15 @@ static void openMessages() {
 
 %new
 - (void)sentCallbackWithNotification:(NSNotification *)myNotification {
-    NSLog(@"PB handleSendNotification %@", [[%c(PBPebbleCentral) defaultCentral] class]);
+    // NSLog(@"PB handleSendNotification %@", [[%c(PBPebbleCentral) defaultCentral] class]);
     PBPebbleCentral *central = [%c(PBPebbleCentral) defaultCentral];
     for (int i=0; i<[[central connectedWatches] count]; i++) {
         PBWatch *watch = [[central connectedWatches] objectAtIndex:i];
         [watch appMessagesPushUpdate:[watch getSentResponse] onSent:^(PBWatch *watch, NSDictionary *update, NSError *error){
             if (error) {
-                NSLog(@"Error");
+                // NSLog(@"Error");
             } else {
-                NSLog(@"sent");
+                // NSLog(@"sent");
             }
         } uuid:appUUID launcher:NULL];
     }
@@ -1036,9 +1036,9 @@ static void openMessages() {
         PBWatch *watch = [[central connectedWatches] objectAtIndex:i];
         [watch appMessagesPushUpdate:[watch getFailedResponse] onSent:^(PBWatch *watch, NSDictionary *update, NSError *error){
             if (error) {
-                NSLog(@"Error");
+                // NSLog(@"Error");
             } else {
-                NSLog(@"sent");
+                // NSLog(@"sent");
             }
         } uuid:appUUID launcher:NULL];
     }
