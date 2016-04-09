@@ -7,7 +7,6 @@
 static Window *window;
 static TextLayer *s_instruction_layer;
 static TextLayer *s_primary_layer;
-static TextLayer *s_secondary_layer;
 #if defined(PBL_MICROPHONE)
 static DictationSession *s_dictation_session;
 #endif
@@ -21,8 +20,7 @@ static char dictated_name[64];
 static char dictated_message[256];
 
 static char instruction_text[64];
-static char primary_text[64];
-static char secondary_text[256];
+static char primary_text[264];
 
 static short has_contact = false;
 
@@ -129,12 +127,10 @@ void contact_chosen_from_recent(char *name, char *number) {
   snprintf(contact_number, sizeof(contact_number), "%s", number);
 
   change_state(CREATING_FINAL_MESSAGE_STATE);
-  snprintf(instruction_text, sizeof(instruction_text), "%s", "Create message");
-  snprintf(primary_text, sizeof(primary_text), "%s", contact_name);
-  snprintf(secondary_text, sizeof(secondary_text), "%s", contact_number);
+  snprintf(instruction_text, sizeof(instruction_text), "%s", contact_name);
+  snprintf(primary_text, sizeof(primary_text), "%s", contact_number);
   text_layer_set_text(s_instruction_layer, instruction_text);
   text_layer_set_text(s_primary_layer, primary_text);
-  text_layer_set_text(s_secondary_layer, secondary_text);
 }
 
 void tertiary_text_chosen(char *text) {
@@ -143,10 +139,8 @@ void tertiary_text_chosen(char *text) {
 
     snprintf(instruction_text, sizeof(instruction_text), "%s", "Loading Contact...");
     snprintf(primary_text, sizeof(primary_text), "%s", dictated_name);
-    snprintf(secondary_text, sizeof(secondary_text), "%s", "");
     text_layer_set_text(s_instruction_layer, instruction_text);
     text_layer_set_text(s_primary_layer, primary_text);
-    text_layer_set_text(s_secondary_layer, secondary_text);
 
     change_state(CHECKING_CONTACT_STATE);
     get_contact();
@@ -156,12 +150,10 @@ void tertiary_text_chosen(char *text) {
     change_state(CONFIRMING_FINAL_MESSAGE_STATE);
     snprintf(dictated_message, sizeof(dictated_message), "%s", text);
 
-    snprintf(instruction_text, sizeof(instruction_text), "%s", "Confirm message");
-    snprintf(primary_text, sizeof(primary_text), "%s", contact_name);
-    snprintf(secondary_text, sizeof(secondary_text), "%s", dictated_message);
+    snprintf(instruction_text, sizeof(instruction_text), "%s", contact_name);
+    snprintf(primary_text, sizeof(primary_text), "%s", dictated_message);
     text_layer_set_text(s_instruction_layer, instruction_text);
     text_layer_set_text(s_primary_layer, primary_text);
-    text_layer_set_text(s_secondary_layer, secondary_text);
   }
 }
 
@@ -170,12 +162,10 @@ void preset_chosen(char *text) {
     change_state(CONFIRMING_FINAL_MESSAGE_STATE);
     snprintf(dictated_message, sizeof(dictated_message), "%s", text);
 
-    snprintf(instruction_text, sizeof(instruction_text), "%s", "Confirm message");
-    snprintf(primary_text, sizeof(primary_text), "%s", contact_name);
-    snprintf(secondary_text, sizeof(secondary_text), "%s", dictated_message);
+    snprintf(instruction_text, sizeof(instruction_text), "%s", contact_name);
+    snprintf(primary_text, sizeof(primary_text), "%s", dictated_message);
     text_layer_set_text(s_instruction_layer, instruction_text);
     text_layer_set_text(s_primary_layer, primary_text);
-    text_layer_set_text(s_secondary_layer, secondary_text);
   }
 }
 
@@ -205,6 +195,8 @@ static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
     change_state(CREATING_FINAL_MESSAGE_STATE);
     snprintf(instruction_text, sizeof(instruction_text), "%s", "Create message");
     text_layer_set_text(s_instruction_layer, instruction_text);
+    snprintf(primary_text, sizeof(primary_text), "%s", contact_name);
+    text_layer_set_text(s_primary_layer, primary_text);
   } else if (s_state == CREATING_FINAL_MESSAGE_STATE) {
     tertiary_init();
   } else if (s_state == CONFIRMING_FINAL_MESSAGE_STATE) {
@@ -231,6 +223,8 @@ static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
     get_presets();
   } else if (s_state == CONFIRMING_FINAL_MESSAGE_STATE) {
     dictated_message[0] = '\0';
+    snprintf(primary_text, sizeof(primary_text), "%s", dictated_message);
+    text_layer_set_text(s_primary_layer, primary_text);
     change_state(CREATING_FINAL_MESSAGE_STATE);
   }
 }
@@ -254,10 +248,8 @@ static void dictation_session_callback(DictationSession *session, DictationSessi
 
       snprintf(instruction_text, sizeof(instruction_text), "%s", "Loading Contact...");
       snprintf(primary_text, sizeof(primary_text), "%s", dictated_name);
-      snprintf(secondary_text, sizeof(secondary_text), "%s", "");
       text_layer_set_text(s_instruction_layer, instruction_text);
       text_layer_set_text(s_primary_layer, primary_text);
-      text_layer_set_text(s_secondary_layer, secondary_text);
 
       change_state(CHECKING_CONTACT_STATE);
       get_contact();
@@ -268,12 +260,10 @@ static void dictation_session_callback(DictationSession *session, DictationSessi
       change_state(CONFIRMING_FINAL_MESSAGE_STATE);
       snprintf(dictated_message, sizeof(dictated_message), "%s", transcription);
 
-      snprintf(instruction_text, sizeof(instruction_text), "%s", "Confirm message");
-      snprintf(primary_text, sizeof(primary_text), "%s", contact_name);
-      snprintf(secondary_text, sizeof(secondary_text), "%s", dictated_message);
+      snprintf(instruction_text, sizeof(instruction_text), "%s", contact_name);
+      snprintf(primary_text, sizeof(primary_text), "%s", dictated_message);
       text_layer_set_text(s_instruction_layer, instruction_text);
       text_layer_set_text(s_primary_layer, primary_text);
-      text_layer_set_text(s_secondary_layer, secondary_text);
     }
   }
 }
@@ -282,10 +272,10 @@ static void dictation_session_callback(DictationSession *session, DictationSessi
 static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
   // APP_LOG(APP_LOG_LEVEL_INFO, "recieved message");
   Tuple *connectionTestDict = dict_find(iterator, CONNECTION_TEST_KEY);
-  if ((s_state == BEGINNING_STATE || s_state == DICTATED_NAME_STATE || (s_state == CHECKING_CONTACT_STATE && !has_contact)) && connectionTestDict) {
+  if (s_state == BEGINNING_STATE && connectionTestDict) {
     is_connected = true;
-    snprintf(secondary_text, sizeof(secondary_text), "%s", "Connected");
-    text_layer_set_text(s_secondary_layer, secondary_text);
+    snprintf(primary_text, sizeof(primary_text), "%s", "Connected");
+    text_layer_set_text(s_primary_layer, primary_text);
   }
 
   Tuple *contactNameDict = dict_find(iterator, CONTACT_NAME_KEY);
@@ -295,12 +285,10 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     snprintf(contact_name, sizeof(contact_name), "%s", (char *)contactNameDict->value->cstring);
     snprintf(contact_number, sizeof(contact_number), "%s", (char *)contactNumberDict->value->cstring);
 
-    snprintf(instruction_text, sizeof(instruction_text), "%s", "Confirm contact");
-    snprintf(primary_text, sizeof(primary_text), "%s", contact_name);
-    snprintf(secondary_text, sizeof(secondary_text), "%s", contact_number);
+    snprintf(instruction_text, sizeof(instruction_text), "%s", contact_name);
+    snprintf(primary_text, sizeof(primary_text), "%s", contact_number);
     text_layer_set_text(s_instruction_layer, instruction_text);
     text_layer_set_text(s_primary_layer, primary_text);
-    text_layer_set_text(s_secondary_layer, secondary_text);
   }
 
   Tuple *recievedDict = dict_find(iterator, RECIEVED_FINAL_MESSAGE_KEY);
@@ -309,10 +297,8 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     
     snprintf(instruction_text, sizeof(instruction_text), "%s", recievedDict->value->cstring);
     snprintf(primary_text, sizeof(primary_text), "%s", "");
-    snprintf(secondary_text, sizeof(secondary_text), "%s", "");
     text_layer_set_text(s_instruction_layer, instruction_text);
     text_layer_set_text(s_primary_layer, primary_text);
-    text_layer_set_text(s_secondary_layer, secondary_text);
   }
 
   Tuple *messageConfirmationDict = dict_find(iterator, MESSAGE_CONFIRMATION_KEY);
@@ -320,11 +306,9 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     reset_all();
     
     snprintf(instruction_text, sizeof(instruction_text), "%s", "Choose recipient");
-    snprintf(primary_text, sizeof(primary_text), "%s", "");
-    snprintf(secondary_text, sizeof(secondary_text), "%s", messageConfirmationDict->value->cstring);
+    snprintf(primary_text, sizeof(primary_text), "%s", messageConfirmationDict->value->cstring);
     text_layer_set_text(s_instruction_layer, instruction_text);
     text_layer_set_text(s_primary_layer, primary_text);
-    text_layer_set_text(s_secondary_layer, secondary_text);
   }
 
   Tuple *recentContactsName = dict_find(iterator, RECENT_CONTACTS_NAME_KEY);
@@ -360,7 +344,7 @@ static void window_load(Window *window) {
   #if defined(PBL_ROUND)
   s_instruction_layer = text_layer_create((GRect) { .origin = { 0, 5 }, .size = { bounds.size.w - ACTION_BAR_WIDTH, 60 }});
   #else
-  s_instruction_layer = text_layer_create((GRect) { .origin = { 0, 10 }, .size = { bounds.size.w - ACTION_BAR_WIDTH, 55 }});
+  s_instruction_layer = text_layer_create((GRect) { .origin = { 0, 5 }, .size = { bounds.size.w - ACTION_BAR_WIDTH, 55 }});
   #endif
     
   snprintf(instruction_text, sizeof(instruction_text), "%s", "Choose recipient");
@@ -368,42 +352,25 @@ static void window_load(Window *window) {
   text_layer_set_text_alignment(s_instruction_layer, GTextAlignmentCenter);
   layer_add_child(window_layer, text_layer_get_layer(s_instruction_layer));
   text_layer_set_font(s_instruction_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24_BOLD));
+  text_layer_set_overflow_mode(s_instruction_layer, GTextOverflowModeWordWrap);
   #if defined(PBL_ROUND)
   text_layer_enable_screen_text_flow_and_paging(s_instruction_layer, 2);
   #endif
 
   #if defined(PBL_ROUND)
-  s_primary_layer = text_layer_create((GRect) { .origin = { 0, 70 }, .size = { bounds.size.w - ACTION_BAR_WIDTH, 50 }});
+  s_primary_layer = text_layer_create((GRect) { .origin = { 0, 70 }, .size = { bounds.size.w - ACTION_BAR_WIDTH, 100 }});
   #else
-  s_primary_layer = text_layer_create((GRect) { .origin = { 0, 69 }, .size = { bounds.size.w - ACTION_BAR_WIDTH, 45 }});
+  s_primary_layer = text_layer_create((GRect) { .origin = { 0, 65 }, .size = { bounds.size.w - ACTION_BAR_WIDTH, 100 }});
   #endif
 
-  snprintf(primary_text, sizeof(primary_text), "%s", "");
+  snprintf(primary_text, sizeof(primary_text), "%s", "Not connected");
   text_layer_set_text(s_primary_layer, primary_text);
   text_layer_set_text_alignment(s_primary_layer, GTextAlignmentCenter);
   layer_add_child(window_layer, text_layer_get_layer(s_primary_layer));
-  text_layer_set_font(s_primary_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD));
+  text_layer_set_font(s_primary_layer, fonts_get_system_font(FONT_KEY_GOTHIC_24));
+  text_layer_set_overflow_mode(s_primary_layer, GTextOverflowModeWordWrap);
   #if defined(PBL_ROUND)
   text_layer_enable_screen_text_flow_and_paging(s_primary_layer, 2);
-  #endif
-
-  #if defined(PBL_ROUND)
-  s_secondary_layer = text_layer_create((GRect) { .origin = { 0, 125 }, .size = { bounds.size.w - ACTION_BAR_WIDTH, 50 }});
-  #else
-  s_secondary_layer = text_layer_create((GRect) { .origin = { 0, 118 }, .size = { bounds.size.w - ACTION_BAR_WIDTH, 45 }});
-  #endif
-    
-  if (is_connected) {
-    snprintf(secondary_text, sizeof(secondary_text), "%s", "Connected");
-  } else {
-    snprintf(secondary_text, sizeof(secondary_text), "%s", "Not connected");
-  }
-  text_layer_set_text(s_secondary_layer, secondary_text);
-  text_layer_set_text_alignment(s_secondary_layer, GTextAlignmentCenter);
-  layer_add_child(window_layer, text_layer_get_layer(s_secondary_layer));
-  text_layer_set_font(s_primary_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18_BOLD));
-  #if defined(PBL_ROUND)
-  text_layer_enable_screen_text_flow_and_paging(s_secondary_layer, 2);
   #endif
 
   s_actionbar = action_bar_layer_create();
@@ -428,7 +395,6 @@ static void window_unload(Window *window) {
   destroy_bitmaps();
   text_layer_destroy(s_instruction_layer);
   text_layer_destroy(s_primary_layer);
-  text_layer_destroy(s_secondary_layer);
   action_bar_layer_destroy(s_actionbar);
   #if defined(PBL_MICROPHONE)
   dictation_session_destroy(s_dictation_session);
