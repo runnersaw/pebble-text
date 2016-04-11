@@ -53,7 +53,7 @@
 @interface SMSApplication : UIApplication
 - (BOOL)application:(id)arg1 didFinishLaunchingWithOptions:(id)arg2;
 - (void)sendMessageTo:(NSNumber *)personId number:(NSString *)number withText:(NSString *)text notify:(BOOL)notify;
-- (void)sendMessageToNumber:(NSString *)number withText:(NSString *)text notify:(BOOL)notify;
+- (void)sendMessageToNumber:(NSString *)number recordId:(NSNumber *)recordId withText:(NSString *)text notify:(BOOL)notify;
 - (void)sendMessageToNewNumber:(NSString *)number withText:(NSString *)text notify:(BOOL)notify;
 - (void)sendNewMessageTo:(NSNumber *)personId number:(NSString *)number withText:(NSString *)text notify:(BOOL)notify;
 - (void)handleMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo;
@@ -137,6 +137,7 @@
 - (id)contactsMatchingQuery:(id)fp8;
 - (id)searchContacts:(NSString *)search tries:(int)tries;
 - (id)contactWithPhoneNumber:(PBPhoneNumber *)phoneNumber;
+- (id)contactWithPrefixedPhoneNumber:(NSString *)phoneNumber;
 @end
 
 @interface PBPebbleCentral
@@ -379,7 +380,7 @@
 -(id) init;
 @end
 
-#define SEND_DELAY 3.0
+#define SEND_DELAY 4.0
 #define OPEN_PEBBLE_DELAY 10.0
 #define NOTIFICATION_DELAY 0.2
 
@@ -738,7 +739,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 }
 
 %new
-- (void)sendMessageToNumber:(NSString *)number withText:(NSString *)text notify:(BOOL)notify {
+- (void)sendMessageToNumber:(NSString *)number recordId:(NSNumber *)recordId withText:(NSString *)text notify:(BOOL)notify {
     // NSLog(@"PB sendmessageto number");
     NSString *num = [@"+" stringByAppendingString:[[number componentsSeparatedByCharactersInSet: [[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""]];
 
@@ -747,13 +748,14 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     NSLog(@"PEBBLESMS: conversation %@", [conversation class]);
 
     if (conversation == NULL) {
-        if (notify) {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                // NSLog(@"PB Send not success");
-                NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
-                [center postNotificationName:messageFailedNotification object:distributedCenterName userInfo:nil deliverImmediately:YES];
-            });
-        }
+        [self sendNewMessageTo:recordId number:number withText:text notify:notify];
+        // if (notify) {
+        //     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        //         // NSLog(@"PB Send not success");
+        //         NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
+        //         [center postNotificationName:messageFailedNotification object:distributedCenterName userInfo:nil deliverImmediately:YES];
+        //     });
+        // }
         return;
     }
 
@@ -778,7 +780,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 %new
 - (void)sendNewMessageTo:(NSNumber *)personId number:(NSString *)number withText:(NSString *)text notify:(BOOL)notify {
     // NSLog(@"PB sendmessageto personId");
-    NSLog(@"PEBBLESMS: sendMessageTo");
+    NSLog(@"PEBBLESMS: sendNewMessageTo");
     IMPerson *person = [[IMPerson alloc] initWithABRecordID:(ABRecordID)[personId intValue]];
     NSArray *handles = [%c(IMHandle) imHandlesForIMPerson:person];
     NSLog(@"PEBBLESMS: sendMessageTo %@", [handles class]);
@@ -935,7 +937,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
     if ([recent boolValue] && ![reply boolValue]) {
         NSLog(@"PEBBLESMS: sendMessageToNumber %@", number);
-        [self sendMessageToNumber:number withText:message notify:[notify boolValue]];
+        [self sendMessageToNumber:number recordId:recordId withText:message notify:[notify boolValue]];
     // } else if ([newNumber boolValue]) {
     //     [self sendMessageToNewNumber:number withText:message notify:[notify boolValue]];
     } else {
@@ -1069,6 +1071,41 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
         }
     }
     return NULL;
+}
+
+%new
+- (id)contactWithPrefixedPhoneNumber:(NSString *)phoneNumber {
+    PBContact *finalContact = NULL;
+    int highestCount = 0;
+
+    for (PBContact *contact in (NSArray *)[self allContacts]) {
+        for (PBLabeledValue *label in (NSArray *)[contact phoneNumbers]) {
+
+            NSString *number = [%c(PBContact) phoneWithPrefix:[(PBPhoneNumber *)[label value] stringValue]];
+            NSString *phone = [@"+" stringByAppendingString:[[phoneNumber componentsSeparatedByCharactersInSet: [[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""]];
+
+            if ([phone isEqualToString:number]) {
+                return contact;
+            }
+
+            int iterate = MIN([phone length], [number length]);
+            int i;
+            for (i=0;i<iterate; i++) {
+                int phoneIndex = [phone length] - i - 1;
+                int numberIndex = [number length] - i - 1;
+                if ([phone characterAtIndex:phoneIndex] != [number characterAtIndex:numberIndex]) {
+                    break;
+                }
+            }
+            if (i>highestCount) {
+                highestCount = i;
+                finalContact = contact;
+            }
+        }
+    }
+
+    NSLog(@"PEBBLESMS: finalContact == NULL %d", (finalContact == NULL));
+    return finalContact;
 }
 
 %new
@@ -1290,8 +1327,13 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     rocketbootstrap_distributedmessagingcenter_apply(c);
     [c sendMessageName:openMessagesCommand userInfo:NULL];
 
-
-    NSNumber *rId = [NSNumber numberWithInt:[recordId intValue]];
+    NSNumber *rId;
+    if (isRecentContact) {
+        PBContact *c = [[%c(PBAddressBook) addressBook] contactWithPrefixedPhoneNumber:number];
+        rId = [NSNumber numberWithInt:[[c recordId] intValue]];
+    } else {
+        rId = [NSNumber numberWithInt:[recordId intValue]];
+    }
     NSNumber *r = [NSNumber numberWithBool:isRecentContact];
     NSString *n = [NSMutableString stringWithString:number];
     NSString *t = [NSMutableString stringWithString:text];
@@ -1436,5 +1478,3 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 
 %end
-
-
