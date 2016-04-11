@@ -1,0 +1,10 @@
+{
+    entry = {
+		bundle = pebblesmstweak;
+		cell = PSLinkCell;
+		detail = PebbleSMSTweakListController;
+		icon = pebblesmstweak.png;
+		isController = 1;
+		label = "TextSender for Pebble";
+    };
+}

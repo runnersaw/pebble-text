@@ -11,6 +11,7 @@
 #import <AppSupport/CPDistributedMessagingCenter.h>
 #import <UIKit/UIApplication.h>
 #import "rocketbootstrap.h"
+// #import <objc/runtime.h>
 
 // NS EXTENSIONS
 
@@ -38,16 +39,23 @@
 -(BOOL)launchApplicationWithIdentifier:(id)arg1 suspended:(BOOL)arg2;
 @end
 
+// SPRINGBOARD
+
+@interface SpringBoard
+- (void)handleMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo;
+@end
+
 // SMS STUFF HEADERS
 
 @interface CKMessage : NSObject
 @end
 
 @interface SMSApplication : UIApplication
-- (_Bool)application:(id)arg1 didFinishLaunchingWithOptions:(id)arg2;
+- (BOOL)application:(id)arg1 didFinishLaunchingWithOptions:(id)arg2;
 - (void)sendMessageTo:(NSNumber *)personId number:(NSString *)number withText:(NSString *)text notify:(BOOL)notify;
 - (void)sendMessageToNumber:(NSString *)number withText:(NSString *)text notify:(BOOL)notify;
 - (void)sendMessageToNewNumber:(NSString *)number withText:(NSString *)text notify:(BOOL)notify;
+- (void)sendNewMessageTo:(NSNumber *)personId number:(NSString *)number withText:(NSString *)text notify:(BOOL)notify;
 - (void)handleMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo;
 @end
 
@@ -190,7 +198,7 @@
 - (NSMutableDictionary *)getConnectionResponse;
 - (NSMutableDictionary *)getRecentContactsResponse;
 - (NSMutableDictionary *)getPresets;
-+ (void)sendSMS:(PBContact *)contact number:(NSString *)number withText:(NSString *)text;
++ (void)sendSMS:(NSNumber *)recordId number:(NSString *)number withText:(NSString *)text;
 @end
 
 @interface PBAppDelegate
@@ -304,7 +312,7 @@
 - (id)smsReplyManager;
 - (id)linkedAccountsManager;
 - (id)SMSSessionManager;
-+ (void)sendSMS:(PBContact *)contact number:(NSString *)number withText:(NSString *)text;
++ (void)sendSMS:(NSNumber *)recordId number:(NSString *)number withText:(NSString *)text;
 - (id)sendSMSWithRecipients:(id)fp8 text:(id)fp12 transactionID:(id)fp16;
 - (id)initWithLinkedAccountsManager:(id)fp8 smsReplyManager:(id)fp12;
 @end
@@ -371,7 +379,8 @@
 -(id) init;
 @end
 
-#define SEND_DELAY 1.0
+#define SEND_DELAY 3.0
+#define OPEN_PEBBLE_DELAY 10.0
 #define NOTIFICATION_DELAY 0.2
 
 #define DICTATED_NAME_KEY [NSNumber numberWithInt:0]
@@ -401,24 +410,57 @@
 #define SENDING_FINAL_MESSAGE_STATE [NSNumber numberWithInt:8]
 
 static NSString *bundleId = @"com.sawyervaughan.pebblesms";
-static NSString *messageNotificationString = @"com.sawyervaughan.pebblesms-messageNeedsSending";
+// static NSString *messageNotificationString = @"com.sawyervaughan.pebblesms-messageNeedsSending";
 static NSString *sendMessageCommand = @"messageNeedsSending";
+static NSString *openMessagesCommand = @"messagesNeedsOpening";
+// static NSString *openPebbleCommand = @"pebbleNeedsOpening";
 static NSString *messageSendNotification = @"pebbleMessageSend";
 static NSString *messageFailedNotification = @"pebbleMessageFailed";
-static NSString *rocketbootstrapCenterName = @"com.sawyervaughan.pebblesms.sms";
+static NSString *rocketbootstrapSmsCenterName = @"com.sawyervaughan.pebblesms.sms";
+static NSString *rocketbootstrapSpringboardCenterName = @"com.sawyervaughan.pebblesms.springboard";
 static NSString *distributedCenterName = @"com.sawyervaughan.pebblesms.pebble";
+// static NSString *preferencesBundleId = @"com.sawyervaughan.pebblesmstweak";
+// static NSString *notificationString = @"com.sawyervaughan.pebblesmstweak-preferencesChanged";
 
 static NSUUID *appUUID = [[NSUUID UUID] initWithUUIDString:@"36BF8B7A-A043-4E1B-8518-B6BB389EC110"];
 
-static PBContact *currentContact = NULL;
+static NSNumber *currentContactId = NULL;
 static BOOL isRecentContact = NO;
 
 static int maxContacts = 10;
+static int maxPresets = 10;
 
-// RECENT CONTACTS
-
+static NSMutableArray *presets = [NSMutableArray array];
 static NSMutableArray *names = [NSMutableArray array];
 static NSMutableArray *phones = [NSMutableArray array];
+
+
+
+// static void openMessages() {
+//     [[UIApplication sharedApplication] launchApplicationWithIdentifier:@"com.apple.MobileSMS" suspended:YES];
+// }
+
+static void loadPrefs() {
+    [presets removeAllObjects];
+    NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:@"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesmstweak.plist"];
+
+    for (int i=0; i<maxPresets; i++) {
+        NSString *p = (NSString *)[dict objectForKey:[NSString stringWithFormat:@"preset%d", i]];
+
+        if (p && ![p isEqualToString:@""]) {
+            [presets addObject:p];
+        }
+    }
+
+    if ([presets count] == 0) {
+        [presets addObject:@"Yes"];
+        [presets addObject:@"No"];
+        [presets addObject:@"OK"];
+        [presets addObject:@"What's up?"];
+    }
+}
+
+// RECENT CONTACTS
 
 static void loadRecentRecipients() {
     NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:@"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.plist"];
@@ -438,12 +480,15 @@ static void loadRecentRecipients() {
 }
 
 static void saveRecentRecipient(NSString *name, NSString *phone) {
+    loadRecentRecipients();
+
     for (int i=[names count]-1;i>=0;i--) {
         if ([[names objectAtIndex:i] isEqualToString:name] || [[phones objectAtIndex:i] isEqualToString:phone]) {
             [names removeObjectAtIndex:i];
             [phones removeObjectAtIndex:i];
         }
     }
+
     [names insertObject:name atIndex:0];
     while ([names count] > maxContacts) {
         [names removeLastObject];
@@ -466,6 +511,13 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
     [defaults synchronize];
 }
+ 
+// %ctor {
+
+//     loadRecentRecipients();
+//     CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)openMessages, (CFStringRef)messageNotificationString, NULL, CFNotificationSuspensionBehaviorCoalesce);
+
+// }
 
 // LEVENSCHTEIN
 
@@ -548,36 +600,52 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 @end
 
-// MOBILESMS TWEAKING
-
-static void openMessages() {
-    [[UIApplication sharedApplication] launchApplicationWithIdentifier:@"com.apple.MobileSMS" suspended:YES];
-}
- 
-%ctor {
-
-    CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)openMessages, (CFStringRef)messageNotificationString, NULL, CFNotificationSuspensionBehaviorCoalesce);
-
-}
-
 %hook SpringBoard
 
 - (void)applicationDidFinishLaunching:(id)application {
     %orig;
+
+    // NSLog(@"PB registering for launching mobilesms");
     
     [[UIApplication sharedApplication] launchApplicationWithIdentifier:@"com.apple.MobileSMS" suspended:YES];
+    // [[UIApplication sharedApplication] launchApplicationWithIdentifier:@"com.getpebble.pebbletime" suspended:YES];
+
+    // register to recieve notifications when messages need to be sent
+    CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
+    rocketbootstrap_distributedmessagingcenter_apply(c);
+    [c runServerOnCurrentThread];
+    [c registerForMessageName:openMessagesCommand target:self selector:@selector(messagesMessageNamed:withUserInfo:)];
+    // [c registerForMessageName:openPebbleCommand target:self selector:@selector(pebbleMessageNamed:withUserInfo:)];
 }
+ 
+%new
+- (void)messagesMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo {
+    // NSLog(@"PB Launching messages!");
+    [[%c(UIApplication) sharedApplication] launchApplicationWithIdentifier:@"com.apple.MobileSMS" suspended:YES];
+}
+ 
+// %new
+// - (void)pebbleMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo {
+//     // NSLog(@"PB Launching pebble in 10 seconds!");
+//     // send message after 5 seconds
+//     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(OPEN_PEBBLE_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//         [[%c(UIApplication) sharedApplication] launchApplicationWithIdentifier:@"com.getpebble.pebbletime" suspended:YES];
+//     });
+// }
 
 %end
 
+// MOBILESMS TWEAKING
+
 %hook SMSApplication 
 
-- (_Bool)application:(id)arg1 didFinishLaunchingWithOptions:(id)arg2 {
+- (BOOL)application:(id)arg1 didFinishLaunchingWithOptions:(id)arg2 {
+    NSLog(@"PEBBLESMS: messages launched");
 
     BOOL s = %orig;
 
     // register to recieve notifications when messages need to be sent
-    CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapCenterName];
+    CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSmsCenterName];
     rocketbootstrap_distributedmessagingcenter_apply(c);
     [c runServerOnCurrentThread];
     [c registerForMessageName:sendMessageCommand target:self selector:@selector(handleMessageNamed:withUserInfo:)];
@@ -587,9 +655,11 @@ static void openMessages() {
 
 %new
 - (void)sendMessageTo:(NSNumber *)personId number:(NSString *)number withText:(NSString *)text notify:(BOOL)notify {
-    NSLog(@"PB sendmessageto personId");
+    // NSLog(@"PB sendmessageto personId");
+    NSLog(@"PEBBLESMS: sendMessageTo");
     IMPerson *person = [[IMPerson alloc] initWithABRecordID:(ABRecordID)[personId intValue]];
     NSArray *handles = [%c(IMHandle) imHandlesForIMPerson:person];
+    NSLog(@"PEBBLESMS: sendMessageTo %@", [handles class]);
 
     NSString *finalPhone = NULL;
     int highestCount = 0;
@@ -620,6 +690,7 @@ static void openMessages() {
             }
         }
     }
+    NSLog(@"PEBBLESMS: finalPhone == NULL %d", (finalPhone == NULL));
 
     if (finalPhone == NULL) {
         if (notify) {
@@ -632,8 +703,48 @@ static void openMessages() {
         return;
     }
 
-    CKConversationList *conversationList = [CKConversationList sharedConversationList];
+    CKConversationList *conversationList = [%c(CKConversationList) sharedConversationList];
     CKConversation *conversation = [conversationList conversationForExistingChatWithGroupID:finalPhone];
+    NSLog(@"PEBBLESMS: conversation %@", [conversation class]);
+
+    if (conversation == NULL) {
+        [self sendNewMessageTo:personId number:finalPhone withText:text notify:notify];
+        // if (notify) {
+        //     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        //         // NSLog(@"PB Send not success");
+        //         NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
+        //         [center postNotificationName:messageFailedNotification object:distributedCenterName userInfo:nil deliverImmediately:YES];
+        //     });
+        // }
+        return;
+    }
+
+    //Make a new composition
+    NSAttributedString* t = [[NSAttributedString alloc] initWithString:text];
+    CKComposition* composition = [[CKComposition alloc] initWithText:t subject:nil];
+
+    // make message and send
+    CKMessage *message = (CKMessage *)[conversation messageWithComposition:composition];
+    [conversation sendMessage:message newComposition:YES];
+
+    // send success
+    if (notify) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            NSLog(@"PEBBLESMS: Send success");
+            NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
+            [center postNotificationName:messageSendNotification object:distributedCenterName userInfo:nil deliverImmediately:YES];
+        });
+    }
+}
+
+%new
+- (void)sendMessageToNumber:(NSString *)number withText:(NSString *)text notify:(BOOL)notify {
+    // NSLog(@"PB sendmessageto number");
+    NSString *num = [@"+" stringByAppendingString:[[number componentsSeparatedByCharactersInSet: [[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""]];
+
+    CKConversationList *conversationList = [%c(CKConversationList) sharedConversationList];
+    CKConversation *conversation = [conversationList conversationForExistingChatWithGroupID:num];
+    NSLog(@"PEBBLESMS: conversation %@", [conversation class]);
 
     if (conversation == NULL) {
         if (notify) {
@@ -657,7 +768,7 @@ static void openMessages() {
     // send success
     if (notify) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            // NSLog(@"PB Send success");
+            NSLog(@"PEBBLESMS: Send success");
             NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
             [center postNotificationName:messageSendNotification object:distributedCenterName userInfo:nil deliverImmediately:YES];
         });
@@ -665,25 +776,48 @@ static void openMessages() {
 }
 
 %new
-- (void)sendMessageToNumber:(NSString *)number withText:(NSString *)text notify:(BOOL)notify {
-    NSLog(@"PB sendmessageto number");
-    NSString *num = [@"+" stringByAppendingString:[[number componentsSeparatedByCharactersInSet: [[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""]];
+- (void)sendNewMessageTo:(NSNumber *)personId number:(NSString *)number withText:(NSString *)text notify:(BOOL)notify {
+    // NSLog(@"PB sendmessageto personId");
+    NSLog(@"PEBBLESMS: sendMessageTo");
+    IMPerson *person = [[IMPerson alloc] initWithABRecordID:(ABRecordID)[personId intValue]];
+    NSArray *handles = [%c(IMHandle) imHandlesForIMPerson:person];
+    NSLog(@"PEBBLESMS: sendMessageTo %@", [handles class]);
 
-    CKConversationList *conversationList = [CKConversationList sharedConversationList];
-    CKConversation *conversation = [conversationList conversationForExistingChatWithGroupID:num];
+    IMHandle *finalHandle = NULL;
+    int highestCount = 0;
+    for (int i=0;i<[handles count];i++) {
+        IMHandle *h = [handles objectAtIndex:i];
 
-    if (conversation == NULL) {
-        if (notify) {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                // NSLog(@"PB Send not success");
-                NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
-                [center postNotificationName:messageFailedNotification object:distributedCenterName userInfo:nil deliverImmediately:YES];
-            });
+        if ([h phoneNumberRef] != NULL) {
+            NSString *p = [NSMutableString stringWithString:[[h phoneNumberRef] description]];
+            NSString *phone = [@"+" stringByAppendingString:[[p componentsSeparatedByCharactersInSet: [[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""]];
+
+            if ([phone isEqualToString:number]) {
+                finalHandle = h;
+                break;
+            }
+
+            int iterate = MIN([phone length], [number length]);
+            int i;
+            for (i=0;i<iterate; i++) {
+                int phoneIndex = [phone length] - i - 1;
+                int numberIndex = [number length] - i - 1;
+                if ([phone characterAtIndex:phoneIndex] != [number characterAtIndex:numberIndex]) {
+                    break;
+                }
+            }
+            if (i>highestCount) {
+                highestCount = i;
+                finalHandle = h;
+            }
         }
-        return;
     }
+    NSLog(@"PEBBLESMS: finalHandle == NULL %d", (finalHandle == NULL));
 
-    //Make a new composition
+    CKConversationList *conversationList = [%c(CKConversationList) sharedConversationList];
+    CKConversation *conversation = [conversationList conversationForHandles:@[finalHandle] displayName:[finalHandle nickname] joinedChatsOnly:NO create:YES];
+    NSLog(@"PB new conversation %@", [conversation class]);
+
     NSAttributedString* t = [[NSAttributedString alloc] initWithString:text];
     CKComposition* composition = [[CKComposition alloc] initWithText:t subject:nil];
 
@@ -704,40 +838,64 @@ static void openMessages() {
 %new
 - (void)sendMessageToNewNumber:(NSString *)number withText:(NSString *)text notify:(BOOL)notify {
     NSLog(@"PB sendmessageto newnumber");
-    // CKConversation *conversation = [conversationList conversationForHandles:@[h] displayName:[person nickname] joinedChatsOnly:NO create:YES];
-    // NSLog(@"PB conversationList %@", [conversation class]);
     // NSString *num = [@"+" stringByAppendingString:[[number componentsSeparatedByCharactersInSet: [[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""]];
 
-    // CKConversationList *conversationList = [CKConversationList sharedConversationList];
+    // CKConversationList *conversationList = [%c(CKConversationList) sharedConversationList];
     // id l = [%c(CKConversationList) sharedConversationList];
     // NSLog(@"PB conversationList %@", [l class]);
     // CKConversation *conversation = [conversationList conversationForExistingChatWithGroupID:num];
 
     // if (YES) {//conversation == NULL) {
+    //     // conversation = [conversationList conversationForHandles:@[h] displayName:[person nickname] joinedChatsOnly:NO create:YES];
+    //     // NSLog(@"PB conversationList %@", [conversation class]);
     //     // if (newNumber) { do this }
-    //     NSLog(@"PB new contact ? %d", (conversation == NULL));
+    //     // NSLog(@"PB new contact ? %d", (conversation == NULL));
     //     conversation = [[CKConversation alloc] init];
     //     CKConversation *c = [%c(CKConversation) newPendingConversation];
     //     NSLog(@"PB new conversation %@", [c class]);
     //     IMPerson *p = [[IMPerson alloc] init];
     //     NSLog(@"PB new conversation %@", [p class]);
-    //     id h = [%c(IMHandle) imHandlesForIMPerson:p];
+    //     id h = [[IMHandle alloc] init]; //[%c(IMHandle) imHandlesForIMPerson:p];
+    //     Ivar ivar = class_getInstanceVariable([h class], "_phoneNumberRef");
+    //     object_setIvar(h, ivar, num);
+    //     // CFPhoneNumberRef phoneRef = CFPhoneNumberCreate
     //     NSLog(@"PB new conversation %@", [h class]);
+    //     NSLog(@"PB new conversation %@", [[h phoneNumberRef] description]);
     //     CKEntity *e = [[CKEntity alloc] initWithIMHandle:h];
     //     NSLog(@"PB new conversation %@", [e class]);
     //     [c setPendingComposeRecipients:@[e]];
     //     NSLog(@"PB new conversation %@", [c class]);
     //     [c setRecipients:@[e]];
     //     NSLog(@"PB new conversation %@", [c class]);
-    //     // [conversation addRecipientHandles]
+    //     NSLog(@"PB new conversation %@", [[[conversation recipient] defaultIMHandle] description]);
+    //     conversation = [conversationList conversationForHandles:@[h] displayName:num joinedChatsOnly:NO create:YES];
+    //     NSLog(@"PB new conversation %@", [conversation class]);
+    //     NSLog(@"PB new conversation %@", [[[conversation recipient] defaultIMHandle] description]);
+
+    //     NSAttributedString* t = [[NSAttributedString alloc] initWithString:text];
+    //     CKComposition* composition = [[CKComposition alloc] initWithText:t subject:nil];
+
+    //     // make message and send
+    //     CKMessage *message = (CKMessage *)[conversation messageWithComposition:composition];
+    //     [conversation sendMessage:message newComposition:YES];
+
+    //     // send success
     //     if (notify) {
     //         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-    //             // NSLog(@"PB Send not success");
+    //             // NSLog(@"PB Send success");
     //             NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
-    //             [center postNotificationName:messageFailedNotification object:distributedCenterName userInfo:nil deliverImmediately:YES];
+    //             [center postNotificationName:messageSendNotification object:distributedCenterName userInfo:nil deliverImmediately:YES];
     //         });
     //     }
-    //     return;
+    //     // [conversation addRecipientHandles]
+    //     // if (notify) {
+    //     //     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    //     //         // NSLog(@"PB Send not success");
+    //     //         NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
+    //     //         [center postNotificationName:messageFailedNotification object:distributedCenterName userInfo:nil deliverImmediately:YES];
+    //     //     });
+    //     // }
+    //     // return;
     // }
 
     // //Make a new composition
@@ -760,7 +918,7 @@ static void openMessages() {
  
 %new
 - (void)handleMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo {
-    NSLog(@"PB sendmessageto %@", [userinfo description]);
+    // NSLog(@"PB sendmessageto %@", [userinfo description]);
     // Process userinfo (simple dictionary) and send message
     NSString *number = [userinfo objectForKey:@"number"];
     NSString *message = [userinfo objectForKey:@"message"];
@@ -776,10 +934,12 @@ static void openMessages() {
     }
 
     if ([recent boolValue] && ![reply boolValue]) {
+        NSLog(@"PEBBLESMS: sendMessageToNumber %@", number);
         [self sendMessageToNumber:number withText:message notify:[notify boolValue]];
-    } else if ([newNumber boolValue]) {
-        [self sendMessageToNewNumber:number withText:message notify:[notify boolValue]];
+    // } else if ([newNumber boolValue]) {
+    //     [self sendMessageToNewNumber:number withText:message notify:[notify boolValue]];
     } else {
+        NSLog(@"PEBBLESMS: sendMessageTo number %@", number);
         [self sendMessageTo:recordId number:number withText:message notify:[notify boolValue]];
     }
 }
@@ -792,19 +952,31 @@ static void openMessages() {
 
 - (void)sendMessage:(id)arg1 onService:(id)arg2 newComposition:(BOOL)arg3 {
     %orig;
+    
+    NSLog(@"PEBBLESMS: sentMessage");
     [self saveRecipient];
+    NSLog(@"PEBBLESMS: savedRecipient");
 }
 
 %new
 - (void)saveRecipient {
 
-    if ([[self handles] count] == 1) {
-        IMHandle *handle = (IMHandle *)[[self handles] objectAtIndex:0];
-        NSString *phone = (NSString *)[[handle phoneNumberRef] description];
-        NSString *name = (NSString *)[handle fullName];
-        saveRecentRecipient(name, phone);
-    }
+    NSArray *handles = [self handles];
+    NSLog(@"PEBBLESMS: handles %@", [handles class]);
+    if (handles != NULL) {
+        if ([handles count] == 1) {
+            IMHandle *handle = (IMHandle *)[handles objectAtIndex:0];
+            NSLog(@"PEBBLESMS: handle == NULL %d", (handle == NULL));
+            id p = [handle phoneNumberRef];
+            if (p) {
+                NSString *phone = [NSString stringWithString:(NSString *)[p description]];
+                NSString *name = [NSString stringWithString:(NSString *)[handle fullName]];
 
+                NSLog(@"PEBBLESMS: phone %@", [phone class]);
+                saveRecentRecipient(name, phone);
+            }
+        }
+    }
 }
 
 %end
@@ -816,10 +988,16 @@ static void openMessages() {
 - (void)account:(id)arg1 chat:(id)arg2 style:(unsigned char)arg3 chatProperties:(id)arg4 messageReceived:(id)arg5 {
     if ([arg5 isKindOfClass:[IMMessageItem class]]) {
         NSString *sender = [(IMMessageItem *)arg5 sender];
+        NSLog(@"PEBBLESMS: sender %@", [sender class]);
         if (![arg5 isFromMe]) {
-            CKConversationList *conversationList = [CKConversationList sharedConversationList];
-            CKConversation *conversation = [conversationList conversationForExistingChatWithGroupID:sender];
-            [conversation saveRecipient];
+            CKConversationList *conversationList = [%c(CKConversationList) sharedConversationList];
+            if (conversationList != NULL) {
+                CKConversation *conversation = [conversationList conversationForExistingChatWithGroupID:sender];
+                NSLog(@"PEBBLESMS: conversation %@", [conversation class]);
+                if (conversation != NULL) {
+                    [conversation saveRecipient];
+                }
+            }
         }
     }
     %orig;
@@ -934,7 +1112,7 @@ static void openMessages() {
     int i = 0;
     int contactIndex = 0;
 
-    while (i <= tries) {
+    while (i <= tries && contactIndex < [res count]) {
         c = [[res objectAtIndex:contactIndex] objectForKey:@"item"];
         contactIndex++;
         for (int j=0;j<[[c phoneNumbers] count];j++) {
@@ -960,14 +1138,20 @@ static void openMessages() {
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
 
     NSMutableDictionary *contact = [[%c(PBAddressBook) addressBook] searchContacts:name tries:tries];
-    [dict setObject:[[contact objectForKey:@"contact"] fullName] forKey:CONTACT_NAME_KEY];
-    NSString *num = [%c(PBContact) phoneWithPrefix:[contact objectForKey:@"number"]];
-    [dict setObject:num forKey:CONTACT_NUMBER_KEY];
+    PBContact *c = [contact objectForKey:@"contact"];
+    if (c != NULL) {
+        [dict setObject:[c fullName] forKey:CONTACT_NAME_KEY];
+        NSString *num = [%c(PBContact) phoneWithPrefix:[contact objectForKey:@"number"]];
+        [dict setObject:num forKey:CONTACT_NUMBER_KEY];
+    } else {
+        [dict setObject:@"No more contacts" forKey:CONTACT_NAME_KEY];
+        [dict setObject:@"" forKey:CONTACT_NUMBER_KEY];
+    }
 
-    currentContact = [contact objectForKey:@"contact"];
+    currentContactId = [[contact objectForKey:@"contact"] recordId];
     isRecentContact = NO;
-    NSLog(@"PB isRecentContact NO");
-    NSLog(@"PB Saved contact %@", [currentContact fullName]);
+    // NSLog(@"PB isRecentContact NO");
+    // NSLog(@"PB Saved contact %@", [[contact objectForKey:@"contact"] fullName]);
 
     return dict;
 }
@@ -1019,16 +1203,18 @@ static void openMessages() {
     [dict setObject:[names componentsJoinedByString:@"\n"] forKey:RECENT_CONTACTS_NAME_KEY];
     [dict setObject:[phones componentsJoinedByString:@"\n"] forKey:RECENT_CONTACTS_NUMBER_KEY];
     isRecentContact = YES;
-    NSLog(@"PB isRecentContact YES");
+    // NSLog(@"PB isRecentContact YES");
     
     return dict;
 }
 
 %new
 - (NSMutableDictionary *)getPresets {
+    loadPrefs();
+
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
 
-    [dict setObject:[@[@"Yes", @"No", @"OK"] componentsJoinedByString:@"\n"] forKey:PRESETS_KEY];
+    [dict setObject:[presets componentsJoinedByString:@"\n"] forKey:PRESETS_KEY];
     
     return dict;
 }
@@ -1045,18 +1231,12 @@ static void openMessages() {
             response = [self getConnectionResponse];
             initialized = YES;
         }
-        
-        // TODO
-        // id recentContactChosen = [message objectForKey:CONNECTION_TEST_KEY];
-        // if (connectionTest != NULL) {
-        //     response = [self getConnectionResponse];
-        //     initialized = YES;
-        // }
 
         id confirmation = [message objectForKey:MESSAGE_CONFIRMATION_KEY];
         if (confirmation != NULL) {
             // NSLog(@"PB sending confirmation %@", [message description]);
             %orig;
+            return;
         }
 
         NSNumber *state = [message objectForKey:STATE_KEY];
@@ -1084,7 +1264,7 @@ static void openMessages() {
                 NSString *number = [message objectForKey:CONTACT_NUMBER_KEY];
                 NSString *m = [message objectForKey:FINAL_MESSAGE_KEY];
                 if (number != NULL && m != NULL) {
-                    [%c(PBWatch) sendSMS:currentContact number:[%c(PBContact) phoneWithPrefix:number] withText:m];
+                    [%c(PBWatch) sendSMS:currentContactId number:[%c(PBContact) phoneWithPrefix:number] withText:m];
                     response = [self getFinalRecievedResponse];
                     initialized = YES;
                 }
@@ -1102,29 +1282,36 @@ static void openMessages() {
 }
 
 %new
-+ (void)sendSMS:(PBContact *)contact number:(NSString *)number withText:(NSString *)text {
-    NSLog(@"PB sendmessageto1");
++ (void)sendSMS:(NSNumber *)recordId number:(NSString *)number withText:(NSString *)text {
     // launch messages
-    CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), (CFStringRef)messageNotificationString, nil, nil, YES);
+    // CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), (CFStringRef)messageNotificationString, nil, nil, YES);
 
-    NSLog(@"PB sendmessageto2");
+    CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
+    rocketbootstrap_distributedmessagingcenter_apply(c);
+    [c sendMessageName:openMessagesCommand userInfo:NULL];
+
+
+    NSNumber *rId = [NSNumber numberWithInt:[recordId intValue]];
+    NSNumber *r = [NSNumber numberWithBool:isRecentContact];
+    NSString *n = [NSMutableString stringWithString:number];
+    NSString *t = [NSMutableString stringWithString:text];
+
     // send message after 5 seconds
+    // TODO: Think about changing these to static vars?
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SEND_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        NSLog(@"PB sendmessageto3");
-        CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapCenterName];
-        NSLog(@"PB sendmessageto4");
+        CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSmsCenterName];
         rocketbootstrap_distributedmessagingcenter_apply(c);
-        NSLog(@"PB sendmessageto5");
+
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-            text, @"message", 
-            number, @"number", 
+            t, @"message", 
+            n, @"number", 
             [NSNumber numberWithBool:YES], @"notify", 
             [NSNumber numberWithBool:NO], @"newNumber", 
-            [NSNumber numberWithInt:[[contact recordId] intValue]], @"recordId", 
-            [NSNumber numberWithBool:isRecentContact], @"isRecentContact",
+            rId, @"recordId", 
+            r, @"isRecentContact",
             [NSNumber numberWithBool:NO], @"isReply",
             nil];
-        NSLog(@"PB sendmessageto6");
+
         [c sendMessageName:sendMessageCommand userInfo:dict]; 
     });
 }
@@ -1140,31 +1327,37 @@ static void openMessages() {
     NSString *text = [message text];
     PBPhoneNumber *number = [[message recipients] objectAtIndex:0];
     PBContact *contact = [[%c(PBAddressBook) addressBook] contactWithPhoneNumber:number];
-    [%c(PBSMSSessionManager) sendSMS:contact number:[number stringValue] withText:text];
+    [%c(PBSMSSessionManager) sendSMS:[contact recordId] number:[number stringValue] withText:text];
     return NULL;
 }
 
 %new
-+ (void)sendSMS:(PBContact *)contact number:(NSString *)number withText:(NSString *)text {
-
++ (void)sendSMS:(NSNumber *)recordId number:(NSString *)number withText:(NSString *)text {
     // launch messages
-    CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), (CFStringRef)messageNotificationString, nil, nil, YES);
+    // CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), (CFStringRef)messageNotificationString, nil, nil, YES);
 
-    isRecentContact = NO;
+    CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
+    rocketbootstrap_distributedmessagingcenter_apply(c);
+    [c sendMessageName:openMessagesCommand userInfo:NULL];
 
+    NSString *n = [NSMutableString stringWithString:number];
+    NSString *t = [NSMutableString stringWithString:text];
+    NSNumber *rId = [NSNumber numberWithInt:[recordId intValue]];
     // send message after 5 seconds
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SEND_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapCenterName];
+        CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSmsCenterName];
         rocketbootstrap_distributedmessagingcenter_apply(c);
+
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-            text, @"message", 
-            number, @"number", 
+            t, @"message", 
+            n, @"number", 
             [NSNumber numberWithBool:NO], @"notify", 
             [NSNumber numberWithBool:NO], @"newNumber", 
-            [NSNumber numberWithInt:[[contact recordId] intValue]], @"recordId", 
-            [NSNumber numberWithBool:isRecentContact], @"isRecentContact",
+            rId, @"recordId", 
+            [NSNumber numberWithBool:NO], @"isRecentContact",
             [NSNumber numberWithBool:YES], @"isReply",
             nil];
+
         [c sendMessageName:sendMessageCommand userInfo:dict];
     });
 
@@ -1179,11 +1372,14 @@ static void openMessages() {
 - (void)applicationDidBecomeActive:(id)fp8 {
     %orig;
 
-    // NSLog(@"PB authorizationStatus %@", [[%c(PBAddressBookAuthorizationManager) authorizationStatus] class]);
-    [%c(PBAddressBookAuthorizationManager) requestAuthorizationWithCompletion:NULL];
+    if ([%c(PBAddressBookAuthorizationManager) authorizationStatus] == kABAuthorizationStatusNotDetermined) {
+        [%c(PBAddressBookAuthorizationManager) requestAuthorizationWithCompletion:^(){}];
+    }
 }
 
 - (BOOL)application:(id)arg1 didFinishLaunchingWithOptions:(id)arg2 {
+
+    // NSLog(@"PB pebble got launched");
 
     BOOL s = %orig;
 
@@ -1193,6 +1389,17 @@ static void openMessages() {
     [center addObserver:self selector:@selector(failedCallbackWithNotification:) name:messageFailedNotification object:distributedCenterName];
 
     return s;
+}
+
+- (void)applicationWillTerminate:(id)fp8 {
+    // relaunch self
+    %orig;
+
+    // NSLog(@"PB going to terminate, launch myself again pls. ");
+
+    // CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
+    // rocketbootstrap_distributedmessagingcenter_apply(c);
+    // [c sendMessageName:openPebbleCommand userInfo:NULL];
 }
 
 %new
@@ -1229,3 +1436,5 @@ static void openMessages() {
 
 
 %end
+
+

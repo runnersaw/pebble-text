@@ -18,3 +18,6 @@ include $(THEOS_MAKE_PATH)/tweak.mk
 
 after-install::
 	install.exec "killall -9 MobileSMS; killall -9 PebbleTime; killall -9 SpringBoard"
+	
+SUBPROJECTS += pebblesmstweak
+include $(THEOS_MAKE_PATH)/aggregate.mk
