@@ -381,7 +381,6 @@
 @end
 
 #define SEND_DELAY 4.0
-#define OPEN_PEBBLE_DELAY 10.0
 #define NOTIFICATION_DELAY 0.2
 
 #define DICTATED_NAME_KEY [NSNumber numberWithInt:0]
@@ -411,17 +410,13 @@
 #define SENDING_FINAL_MESSAGE_STATE [NSNumber numberWithInt:8]
 
 static NSString *bundleId = @"com.sawyervaughan.pebblesms";
-// static NSString *messageNotificationString = @"com.sawyervaughan.pebblesms-messageNeedsSending";
 static NSString *sendMessageCommand = @"messageNeedsSending";
 static NSString *openMessagesCommand = @"messagesNeedsOpening";
-// static NSString *openPebbleCommand = @"pebbleNeedsOpening";
 static NSString *messageSendNotification = @"pebbleMessageSend";
 static NSString *messageFailedNotification = @"pebbleMessageFailed";
 static NSString *rocketbootstrapSmsCenterName = @"com.sawyervaughan.pebblesms.sms";
 static NSString *rocketbootstrapSpringboardCenterName = @"com.sawyervaughan.pebblesms.springboard";
 static NSString *distributedCenterName = @"com.sawyervaughan.pebblesms.pebble";
-// static NSString *preferencesBundleId = @"com.sawyervaughan.pebblesmstweak";
-// static NSString *notificationString = @"com.sawyervaughan.pebblesmstweak-preferencesChanged";
 
 static NSUUID *appUUID = [[NSUUID UUID] initWithUUIDString:@"36BF8B7A-A043-4E1B-8518-B6BB389EC110"];
 
@@ -434,12 +429,6 @@ static int maxPresets = 10;
 static NSMutableArray *presets = [NSMutableArray array];
 static NSMutableArray *names = [NSMutableArray array];
 static NSMutableArray *phones = [NSMutableArray array];
-
-
-
-// static void openMessages() {
-//     [[UIApplication sharedApplication] launchApplicationWithIdentifier:@"com.apple.MobileSMS" suspended:YES];
-// }
 
 static void loadPrefs() {
     [presets removeAllObjects];
@@ -512,13 +501,6 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
     [defaults synchronize];
 }
- 
-// %ctor {
-
-//     loadRecentRecipients();
-//     CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)openMessages, (CFStringRef)messageNotificationString, NULL, CFNotificationSuspensionBehaviorCoalesce);
-
-// }
 
 // LEVENSCHTEIN
 
@@ -573,11 +555,11 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
             d[k] = k;
         
         for( k = 0; k < m; k++)
-            d[ k * n ] = k;
+            d[k * n] = k;
         
         // Step 3 and 4
-        for( i = 1; i < n; i++ ) {
-            for( j = 1; j < m; j++ ) {
+        for(i=1; i < n; i++) {
+            for(j=1; j < m; j++) {
                 
                 // Step 5
                 if([stringA characterAtIndex: i-1] == [stringB characterAtIndex: j-1]) {
@@ -587,12 +569,12 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
                 }
                 
                 // Step 6
-                d[ j * n + i ] = MIN(d [ (j - 1) * n + i ] + 1, MIN(d[ j * n + i - 1 ] +  1, d[ (j - 1) * n + i -1 ] + change));
+                d[j * n + i] = MIN(d[(j - 1)*n + i] + 1, MIN(d[j*n + i - 1] + 1, d[(j - 1)*n + i - 1] + change));
             }
         }
         
         distance = d[ n * m - 1 ];
-        free( d );
+        free(d);
         return distance;
     }
     
@@ -606,17 +588,11 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 - (void)applicationDidFinishLaunching:(id)application {
     %orig;
 
-    // NSLog(@"PB registering for launching mobilesms");
-    
-    [[UIApplication sharedApplication] launchApplicationWithIdentifier:@"com.apple.MobileSMS" suspended:YES];
-    // [[UIApplication sharedApplication] launchApplicationWithIdentifier:@"com.getpebble.pebbletime" suspended:YES];
-
     // register to recieve notifications when messages need to be sent
     CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
     rocketbootstrap_distributedmessagingcenter_apply(c);
     [c runServerOnCurrentThread];
     [c registerForMessageName:openMessagesCommand target:self selector:@selector(messagesMessageNamed:withUserInfo:)];
-    // [c registerForMessageName:openPebbleCommand target:self selector:@selector(pebbleMessageNamed:withUserInfo:)];
 }
  
 %new
@@ -624,15 +600,6 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     // NSLog(@"PB Launching messages!");
     [[%c(UIApplication) sharedApplication] launchApplicationWithIdentifier:@"com.apple.MobileSMS" suspended:YES];
 }
- 
-// %new
-// - (void)pebbleMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo {
-//     // NSLog(@"PB Launching pebble in 10 seconds!");
-//     // send message after 5 seconds
-//     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(OPEN_PEBBLE_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//         [[%c(UIApplication) sharedApplication] launchApplicationWithIdentifier:@"com.getpebble.pebbletime" suspended:YES];
-//     });
-// }
 
 %end
 
@@ -944,12 +911,12 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     }
 
     if ([recent boolValue] && ![reply boolValue]) {
-        NSLog(@"PEBBLESMS: sendMessageToNumber %@", number);
+        NSLog(@"PEBBLESMS: sendMessageToNumber");
         [self sendMessageToNumber:number recordId:recordId withText:message notify:[notify boolValue]];
     // } else if ([newNumber boolValue]) {
     //     [self sendMessageToNewNumber:number withText:message notify:[notify boolValue]];
     } else {
-        NSLog(@"PEBBLESMS: sendMessageTo number %@", number);
+        NSLog(@"PEBBLESMS: sendMessageTo number");
         [self sendMessageTo:recordId number:number withText:message notify:[notify boolValue]];
     }
 }
@@ -1169,7 +1136,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
         }
     }
 
-    return [NSDictionary dictionaryWithObjectsAndKeys:c, @"contact", number, @"number", nil];
+    return [[NSDictionary dictionaryWithObjectsAndKeys:c, @"contact", number, @"number", nil] autorelease];
 }
 
 %end
@@ -1441,30 +1408,13 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     return s;
 }
 
-- (void)applicationWillTerminate:(id)fp8 {
-    // relaunch self
-    %orig;
-
-    // NSLog(@"PB going to terminate, launch myself again pls. ");
-
-    // CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
-    // rocketbootstrap_distributedmessagingcenter_apply(c);
-    // [c sendMessageName:openPebbleCommand userInfo:NULL];
-}
-
 %new
 - (void)sentCallbackWithNotification:(NSNotification *)myNotification {
     // NSLog(@"PB handleSendNotification %@", [[%c(PBPebbleCentral) defaultCentral] class]);
     PBPebbleCentral *central = [%c(PBPebbleCentral) defaultCentral];
     for (int i=0; i<[[central connectedWatches] count]; i++) {
         PBWatch *watch = [[central connectedWatches] objectAtIndex:i];
-        [watch appMessagesPushUpdate:[watch getSentResponse] onSent:^(PBWatch *watch, NSDictionary *update, NSError *error){
-            if (error) {
-                // NSLog(@"Error");
-            } else {
-                // NSLog(@"sent");
-            }
-        } uuid:appUUID launcher:NULL];
+        [watch appMessagesPushUpdate:[watch getSentResponse] onSent:^(PBWatch *watch, NSDictionary *update, NSError *error){} uuid:appUUID launcher:NULL];
     }
 }
 
@@ -1474,13 +1424,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     PBPebbleCentral *central = [%c(PBPebbleCentral) defaultCentral];
     for (int i=0; i<[[central connectedWatches] count]; i++) {
         PBWatch *watch = [[central connectedWatches] objectAtIndex:i];
-        [watch appMessagesPushUpdate:[watch getFailedResponse] onSent:^(PBWatch *watch, NSDictionary *update, NSError *error){
-            if (error) {
-                // NSLog(@"Error");
-            } else {
-                // NSLog(@"sent");
-            }
-        } uuid:appUUID launcher:NULL];
+        [watch appMessagesPushUpdate:[watch getFailedResponse] onSent:^(PBWatch *watch, NSDictionary *update, NSError *error){} uuid:appUUID launcher:NULL];
     }
 }
 
