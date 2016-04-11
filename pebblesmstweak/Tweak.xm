@@ -660,6 +660,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     NSLog(@"PEBBLESMS: sendMessageTo");
     IMPerson *person = [[IMPerson alloc] initWithABRecordID:(ABRecordID)[personId intValue]];
     NSArray *handles = [%c(IMHandle) imHandlesForIMPerson:person];
+    [person release];
     NSLog(@"PEBBLESMS: sendMessageTo %@", [handles class]);
 
     NSString *finalPhone = NULL;
@@ -723,10 +724,12 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     //Make a new composition
     NSAttributedString* t = [[NSAttributedString alloc] initWithString:text];
     CKComposition* composition = [[CKComposition alloc] initWithText:t subject:nil];
+    [t release];
 
     // make message and send
     CKMessage *message = (CKMessage *)[conversation messageWithComposition:composition];
     [conversation sendMessage:message newComposition:YES];
+    [composition release];
 
     // send success
     if (notify) {
@@ -762,10 +765,12 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     //Make a new composition
     NSAttributedString* t = [[NSAttributedString alloc] initWithString:text];
     CKComposition* composition = [[CKComposition alloc] initWithText:t subject:nil];
+    [t release];
 
     // make message and send
     CKMessage *message = (CKMessage *)[conversation messageWithComposition:composition];
     [conversation sendMessage:message newComposition:YES];
+    [composition release];
 
     // send success
     if (notify) {
@@ -783,6 +788,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     NSLog(@"PEBBLESMS: sendNewMessageTo");
     IMPerson *person = [[IMPerson alloc] initWithABRecordID:(ABRecordID)[personId intValue]];
     NSArray *handles = [%c(IMHandle) imHandlesForIMPerson:person];
+    [person release];
     NSLog(@"PEBBLESMS: sendMessageTo %@", [handles class]);
 
     IMHandle *finalHandle = NULL;
@@ -822,10 +828,12 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
     NSAttributedString* t = [[NSAttributedString alloc] initWithString:text];
     CKComposition* composition = [[CKComposition alloc] initWithText:t subject:nil];
+    [t release];
 
     // make message and send
     CKMessage *message = (CKMessage *)[conversation messageWithComposition:composition];
     [conversation sendMessage:message newComposition:YES];
+    [composition release];
 
     // send success
     if (notify) {
@@ -1172,7 +1180,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %new
 - (NSMutableDictionary *)getContactSearchResponse:(NSString *)name tries:(int)tries {
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
     NSMutableDictionary *contact = [[%c(PBAddressBook) addressBook] searchContacts:name tries:tries];
     PBContact *c = [contact objectForKey:@"contact"];
@@ -1195,7 +1203,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %new
 - (NSMutableDictionary *)getFinalRecievedResponse {
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
     [dict setObject:@"Sending..." forKey:RECIEVED_FINAL_MESSAGE_KEY];
     
@@ -1204,7 +1212,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %new
 - (NSMutableDictionary *)getSentResponse {
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
     [dict setObject:@"Sent" forKey:MESSAGE_CONFIRMATION_KEY];
     [dict setObject:[NSNumber numberWithInt:1] forKey:IS_PEBBLE_SMS_KEY];
@@ -1214,7 +1222,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %new
 - (NSMutableDictionary *)getFailedResponse {
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
     [dict setObject:@"Sending failed" forKey:MESSAGE_CONFIRMATION_KEY];
     [dict setObject:[NSNumber numberWithInt:1] forKey:IS_PEBBLE_SMS_KEY];
@@ -1224,7 +1232,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %new
 - (NSMutableDictionary *)getConnectionResponse {
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
     [dict setObject:@"Connected" forKey:CONNECTION_TEST_KEY];
     
@@ -1235,7 +1243,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 - (NSMutableDictionary *)getRecentContactsResponse {
     loadRecentRecipients();
 
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
     [dict setObject:[names componentsJoinedByString:@"\n"] forKey:RECENT_CONTACTS_NAME_KEY];
     [dict setObject:[phones componentsJoinedByString:@"\n"] forKey:RECENT_CONTACTS_NUMBER_KEY];
@@ -1249,7 +1257,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 - (NSMutableDictionary *)getPresets {
     loadPrefs();
 
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
     [dict setObject:[presets componentsJoinedByString:@"\n"] forKey:PRESETS_KEY];
     
@@ -1344,7 +1352,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
         CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSmsCenterName];
         rocketbootstrap_distributedmessagingcenter_apply(c);
 
-        NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+        NSMutableDictionary *dict = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
             t, @"message", 
             n, @"number", 
             [NSNumber numberWithBool:YES], @"notify", 
@@ -1352,7 +1360,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
             rId, @"recordId", 
             r, @"isRecentContact",
             [NSNumber numberWithBool:NO], @"isReply",
-            nil];
+            nil] autorelease];
 
         [c sendMessageName:sendMessageCommand userInfo:dict]; 
     });
@@ -1390,7 +1398,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
         CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSmsCenterName];
         rocketbootstrap_distributedmessagingcenter_apply(c);
 
-        NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
+        NSMutableDictionary *dict = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
             t, @"message", 
             n, @"number", 
             [NSNumber numberWithBool:NO], @"notify", 
@@ -1398,7 +1406,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
             rId, @"recordId", 
             [NSNumber numberWithBool:NO], @"isRecentContact",
             [NSNumber numberWithBool:YES], @"isReply",
-            nil];
+            nil] autorelease];
 
         [c sendMessageName:sendMessageCommand userInfo:dict];
     });
@@ -1415,7 +1423,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     %orig;
 
     if ([%c(PBAddressBookAuthorizationManager) authorizationStatus] == kABAuthorizationStatusNotDetermined) {
-        [%c(PBAddressBookAuthorizationManager) requestAuthorizationWithCompletion:^(){}];
+        [%c(PBAddressBookAuthorizationManager) requestAuthorizationWithCompletion:^(BOOL granted,CFErrorRef error){}];
     }
 }
 
