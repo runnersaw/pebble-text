@@ -365,6 +365,12 @@
 - (id)apiData;
 @end
 
+@interface PBLinkedAccountExtendedCredentials : PBLinkedAccountCredentials
++ (id)encodingBehaviorsByPropertyKey;
++ (id)JSONKeyPathsByPropertyKey;
+- (id)accountData;
+@end
+
 @interface PBLinkedAccountsManager
 +(id) providerToString:(unsigned char)arg1;
 +(unsigned char) stringToProvider:(id)arg;
@@ -1431,74 +1437,14 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %end
 
-// @interface PBSMSApiClient
-// + (id)client;
-// - (id)smsReplyManager;
-// - (id)linkedAccountsManager;
-// - (id)SMSSessionManager;
-// - (id)sendSMSWithRecipients:(id)fp8 text:(id)fp12 transactionID:(id)fp16;
-// - (id)initWithLinkedAccountsManager:(id)fp8 smsReplyManager:(id)fp12;
-// @end
-// @interface PBLinkedAccountsRequest
-// + (id)credentialsJSONTransformer;
-// + (id)JSONKeyPathsByPropertyKey;
-// + (id)requestWithCredentials:(id)fp8;
-// - (id)credentials;
-// @end
-// @interface PBLinkedAccountsSessionManager
-// - (id)revokeLinkedAccount:(id)fp8;
-// - (id)refreshLinkedAccount:(id)fp8;
-// - (id)authorizationURLRequestForProvider:(unsigned char)fp8;
-// - (id)initWithBaseURL:(id)fp8 sessionConfiguration:(id)fp12;
-// @end
-// @interface PBLinkedAccount
-// + (id)credentialsJSONTransformer;
-// + (id)settingsJSONTransformer;
-// + (id)providerJSONTransformer;
-// + (id)uuidJSONTransformer;
-// + (id)encodingBehaviorsByPropertyKey;
-// + (id)JSONKeyPathsByPropertyKey;
-// - (void)setCredentials:(id)fp8;
-// - (id)credentials;
-// - (void)setSettings:(id)fp8;
-// - (id)settings;
-// - (unsigned char)provider;
-// - (id)uuid;
-// - (id)queryParameters:(id)fp8 key:(id)fp12 toResultClass:(Class)fp16;
-// - (BOOL)isAccountExpired;
-// - (id)initWithProvider:(unsigned char)fp8 queryParameters:(id)fp12;
-// @end
-// @interface PBLinkedAccountCredentials
-// + (id)expirationJSONTransformer;
-// + (id)JSONKeyPathsByPropertyKey;
-// - (id)expiration;
-// - (id)apiData;
-// @end
-// @interface PBLinkedAccountsManager
-// + (id) providerToString:(unsigned char)arg;
-// + (unsigned char) stringToProvider:(id)arg;
-// - (BOOL) addLinkedAccount:(id)arg;
-// - (BOOL) hasLinkedAccountForProvider:(unsigned char)arg;
-// - (BOOL) removeLinkedAccountForProvider:(unsigned char)arg;
-// - (id) linkedAccountForProvider:(unsigned char)arg;
-// - (BOOL) isProviderEnabled:(unsigned char)arg;
-// - (id) APIClient;
-// - (id) enabledProviders;
-// - (void) refreshLinkedAccountForProvider:(unsigned char)arg withForceRefresh:(BOOL)arg2 completion:(id)arg3;
-// - (id) linkedAccountsValet;
-// - (id) init;
-// @end
-@interface PBLinkedAccountExtendedCredentials : PBLinkedAccountCredentials
-+ (id)encodingBehaviorsByPropertyKey;
-+ (id)JSONKeyPathsByPropertyKey;
-- (id)accountData;
-@end
+// THIS IS ALL STUFF FOR TEXT REPLIES
+
 %hook PBLinkedAccountExtendedCredentials
-- (id)accountData { 
-    NSLog(@"OVERRIDEN accountData = JWE:TESTEST"); 
+- (id)accountData {
     return @"JWE:TESTEST"; 
 }
 %end
+
 %hook PBSMSReplyManager
 - (void)setHasLinkedSMSAccount:(BOOL)fp8 {
     %orig(YES); 
@@ -1516,6 +1462,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     %orig(YES); 
 }
 %end
+
 %hook PBLinkedAccount
 - (unsigned char)provider {
     return 2; 
@@ -1524,6 +1471,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     return [NSUUID UUID]; 
 }
 %end
+
 %hook PBLinkedAccountCredentials
 - (id)expiration {
     NSTimeInterval t = 36000;
@@ -1534,6 +1482,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     return @"JWE:test"; 
 }
 %end
+
 %hook PBLinkedAccountsManager
 - (BOOL) isProviderEnabled:(unsigned char)arg {
     return YES; 
