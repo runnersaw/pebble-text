@@ -365,12 +365,6 @@
 - (id)apiData;
 @end
 
-@interface PBLinkedAccountExtendedCredentials : PBLinkedAccountCredentials
-+ (id)encodingBehaviorsByPropertyKey;
-+ (id)JSONKeyPathsByPropertyKey;
-- (id)accountData;
-@end
-
 @interface PBLinkedAccountsManager
 +(id) providerToString:(unsigned char)arg1;
 +(unsigned char) stringToProvider:(id)arg;
@@ -1437,54 +1431,152 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %end
 
-// THIS IS ALL STUFF FOR TEXT REPLIES
-
+// @interface PBSMSApiClient
+// + (id)client;
+// - (id)smsReplyManager;
+// - (id)linkedAccountsManager;
+// - (id)SMSSessionManager;
+// - (id)sendSMSWithRecipients:(id)fp8 text:(id)fp12 transactionID:(id)fp16;
+// - (id)initWithLinkedAccountsManager:(id)fp8 smsReplyManager:(id)fp12;
+// @end
+// @interface PBLinkedAccountsRequest
+// + (id)credentialsJSONTransformer;
+// + (id)JSONKeyPathsByPropertyKey;
+// + (id)requestWithCredentials:(id)fp8;
+// - (id)credentials;
+// @end
+// @interface PBLinkedAccountsSessionManager
+// - (id)revokeLinkedAccount:(id)fp8;
+// - (id)refreshLinkedAccount:(id)fp8;
+// - (id)authorizationURLRequestForProvider:(unsigned char)fp8;
+// - (id)initWithBaseURL:(id)fp8 sessionConfiguration:(id)fp12;
+// @end
+// @interface PBLinkedAccount
+// + (id)credentialsJSONTransformer;
+// + (id)settingsJSONTransformer;
+// + (id)providerJSONTransformer;
+// + (id)uuidJSONTransformer;
+// + (id)encodingBehaviorsByPropertyKey;
+// + (id)JSONKeyPathsByPropertyKey;
+// - (void)setCredentials:(id)fp8;
+// - (id)credentials;
+// - (void)setSettings:(id)fp8;
+// - (id)settings;
+// - (unsigned char)provider;
+// - (id)uuid;
+// - (id)queryParameters:(id)fp8 key:(id)fp12 toResultClass:(Class)fp16;
+// - (BOOL)isAccountExpired;
+// - (id)initWithProvider:(unsigned char)fp8 queryParameters:(id)fp12;
+// @end
+// @interface PBLinkedAccountCredentials
+// + (id)expirationJSONTransformer;
+// + (id)JSONKeyPathsByPropertyKey;
+// - (id)expiration;
+// - (id)apiData;
+// @end
+// @interface PBLinkedAccountsManager
+// + (id) providerToString:(unsigned char)arg;
+// + (unsigned char) stringToProvider:(id)arg;
+// - (BOOL) addLinkedAccount:(id)arg;
+// - (BOOL) hasLinkedAccountForProvider:(unsigned char)arg;
+// - (BOOL) removeLinkedAccountForProvider:(unsigned char)arg;
+// - (id) linkedAccountForProvider:(unsigned char)arg;
+// - (BOOL) isProviderEnabled:(unsigned char)arg;
+// - (id) APIClient;
+// - (id) enabledProviders;
+// - (void) refreshLinkedAccountForProvider:(unsigned char)arg withForceRefresh:(BOOL)arg2 completion:(id)arg3;
+// - (id) linkedAccountsValet;
+// - (id) init;
+// @end
+@interface PBLinkedAccountExtendedCredentials : PBLinkedAccountCredentials
++ (id)encodingBehaviorsByPropertyKey;
++ (id)JSONKeyPathsByPropertyKey;
+- (id)accountData;
+@end
 %hook PBLinkedAccountExtendedCredentials
-- (id)accountData {
-    return @"JWE:TESTEST"; 
-}
++ (id)encodingBehaviorsByPropertyKey { %log; id r = %orig; NSLog(@" = %@", r); return r; }
++ (id)JSONKeyPathsByPropertyKey { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)accountData { %log; id r = %orig; NSLog(@" = %@", [r class]); NSLog(@"OVERRIDEN = JWE:TESTEST"); return @"JWE:TESTEST"; }
 %end
-
 %hook PBSMSReplyManager
-- (void)setHasLinkedSMSAccount:(BOOL)fp8 {
-    %orig(YES); 
-}
-- (BOOL)hasLinkedSMSAccount {
-    return YES; 
-}
-- (void)disableSMSActions {
-    [self enableSMSActions]; 
-}
-- (BOOL)isCarrierProviderEnabled {
-    return YES; 
-}
-- (void)setSMSActionsEnabled:(BOOL)fp8 {
-    %orig(YES); 
-}
+- (id)SMSProviders { %log; id r = %orig; NSLog(@" = %@", r); return [NSSet setWithArray:@[[NSNumber numberWithInt:1]]]; }
+- (id)linkedAccountsManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)notificationSourceManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setHasLinkedSMSAccount:(BOOL)fp8 { %log; %orig(YES); }
+- (BOOL)hasLinkedSMSAccount { %log; BOOL r = %orig; NSLog(@" = %d", r); NSLog(@"OVERRIDEN = YES"); return YES; }
+- (void)removeDisabledProvidersIfNecessary { %log; %orig; }
+- (unsigned char)linkedSMSProvider { %log; unsigned char r = %orig; NSLog(@" = %hhu", r); return 1; }
+- (void)handleCarrierOverrideDidChangeNotification:(id)fp8 { %log; %orig; }
+- (void)disableSMSActions { %log; [self enableSMSActions]; }
+- (void)enableSMSActions { %log; %orig; }
+- (BOOL)isCarrierProviderEnabled { %log; BOOL r = %orig; NSLog(@" = %d", r); return YES; }
+- (void)setSMSActionsEnabled:(BOOL)fp8 { %log; %orig(YES); }
+- (unsigned char)providerFromCarrier { %log; unsigned char r = %orig; NSLog(@" = %hhu", r); NSLog(@"OVERRIDEN 1"); return 1; }
+- (id)linkedSMSAccount { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (void)removeSMSAccount { %log; %orig; }
+- (void)setSMSAccount:(id)fp8 { %log; %orig; }
+- (void)dealloc { %log; %orig; }
+- (id)initWithNotificationSourceManager:(id)fp8 linkedAccountsManager:(id)fp12 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
 %end
-
+%hook PBSMSApiClient
++ (id)client { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)smsReplyManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)linkedAccountsManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)SMSSessionManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)sendSMSWithRecipients:(id)fp8 text:(id)fp12 transactionID:(id)fp16 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)initWithLinkedAccountsManager:(id)fp8 smsReplyManager:(id)fp12 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+%end
+%hook PBLinkedAccountsRequest
++ (id)credentialsJSONTransformer { %log; id r = %orig; NSLog(@" = %@", r); return r; }
++ (id)JSONKeyPathsByPropertyKey { %log; id r = %orig; NSLog(@" = %@", r); return r; }
++ (id)requestWithCredentials:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)credentials { %log; id r = %orig; NSLog(@" = %@", [r class]); return r; }
+%end
+%hook PBLinkedAccountsSessionManager
+- (id)revokeLinkedAccount:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)refreshLinkedAccount:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)authorizationURLRequestForProvider:(unsigned char)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)initWithBaseURL:(id)fp8 sessionConfiguration:(id)fp12 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+%end
 %hook PBLinkedAccount
-- (unsigned char)provider {
-    return 2; 
-}
-- (id)uuid {
-    return [NSUUID UUID]; 
-}
++ (id)credentialsJSONTransformer { %log; id r = %orig; NSLog(@" = %@", r); return r; }
++ (id)settingsJSONTransformer { %log; id r = %orig; NSLog(@" = %@", r); return r; }
++ (id)providerJSONTransformer { %log; id r = %orig; NSLog(@" = %@", r); return r; }
++ (id)uuidJSONTransformer { %log; id r = %orig; NSLog(@" = %@", r); return r; }
++ (id)encodingBehaviorsByPropertyKey { %log; id r = %orig; NSLog(@" = %@", r); return r; }
++ (id)JSONKeyPathsByPropertyKey { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (void)setCredentials:(id)fp8 { %log; %orig; }
+- (id)credentials { %log; id r = %orig; NSLog(@" = %@", [r class]); return r; }
+- (void)setSettings:(id)fp8 { %log; %orig; }
+- (id)settings { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (unsigned char)provider { %log; unsigned char r = %orig; NSLog(@" = %hhu", r); NSLog(@"OVERRIDEN = 1");  return 1; }
+- (id)uuid { %log; id r = %orig; NSLog(@" = %@", r); return [NSUUID UUID]; }
+- (id)queryParameters:(id)fp8 key:(id)fp12 toResultClass:(id)fp16 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (BOOL)isAccountExpired { %log; BOOL r = %orig; NSLog(@" = %d", r); return NO; }
+- (id)initWithProvider:(unsigned char)fp8 queryParameters:(id)fp12 { %log; id r = %orig(1, fp12); NSLog(@" = %@", r); NSLog(@" = %@", [fp12 class]); return r; }
 %end
-
 %hook PBLinkedAccountCredentials
-- (id)expiration {
++ (id)expirationJSONTransformer { %log; id r = %orig; NSLog(@" = %@", r); return r; }
++ (id)JSONKeyPathsByPropertyKey { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)expiration { %log; id r = %orig; NSLog(@" = %@", r); 
     NSTimeInterval t = 36000;
     NSDate *d = [NSDate dateWithTimeIntervalSinceNow:t];
+    NSLog(@"OVERRIDEN = %@", [d description]); 
     return d; 
 }
-- (id)apiData {
-    return @"JWE:test"; 
-}
+- (id)apiData { %log; id r = %orig; NSLog(@" = %@", r); NSLog(@"OVERRIDEN = JWE:test"); return @"JWE:test"; }
 %end
-
 %hook PBLinkedAccountsManager
-- (BOOL) isProviderEnabled:(unsigned char)arg {
-    return YES; 
-}
++ (id) providerToString:(unsigned char)arg { %log; id r = %orig; NSLog(@" = %@", r); return @"vzw"; }
++ (unsigned char) stringToProvider:(id)arg { %log; unsigned char r = %orig; NSLog(@" = %hhu", r); return 1; }
+- (BOOL) addLinkedAccount:(id)arg { %log; BOOL r = %orig; NSLog(@" = %d", r); return r; }
+- (BOOL) hasLinkedAccountForProvider:(unsigned char)arg { %log; BOOL r = %orig; NSLog(@" = %d", r); return YES; }
+- (BOOL) removeLinkedAccountForProvider:(unsigned char)arg { %log; BOOL r = %orig; NSLog(@" = %d", r); return r; }
+- (id) linkedAccountForProvider:(unsigned char)arg { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (BOOL) isProviderEnabled:(unsigned char)arg { %log; BOOL r = %orig; NSLog(@" = %d", r); NSLog(@"OVERRIDEN = YES");  return YES; }
+- (id) APIClient { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id) enabledProviders { %log; id r = %orig; NSLog(@" = %@", [[[r allObjects] objectAtIndex:0] class]); return [NSSet setWithArray:@[[NSNumber numberWithInt:1]]]; }
+- (void) refreshLinkedAccountForProvider:(unsigned char)arg withForceRefresh:(BOOL)arg2 completion:(id)arg3 { %log; %orig; }
+- (id) linkedAccountsValet { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id) init { %log; id r = %orig; NSLog(@" = %@", r); return r; }
 %end
