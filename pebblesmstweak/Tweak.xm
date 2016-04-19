@@ -608,7 +608,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 %hook SMSApplication 
 
 - (BOOL)application:(id)arg1 didFinishLaunchingWithOptions:(id)arg2 {
-    NSLog(@"PEBBLESMS: messages launched");
+    // NSLog(@"PEBBLESMS: messages launched");
 
     BOOL s = %orig;
 
@@ -624,11 +624,11 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 %new
 - (void)sendMessageTo:(NSNumber *)personId number:(NSString *)number withText:(NSString *)text notify:(BOOL)notify {
     // NSLog(@"PB sendmessageto personId");
-    NSLog(@"PEBBLESMS: sendMessageTo");
+    // NSLog(@"PEBBLESMS: sendMessageTo");
     IMPerson *person = [[IMPerson alloc] initWithABRecordID:(ABRecordID)[personId intValue]];
     NSArray *handles = [%c(IMHandle) imHandlesForIMPerson:person];
     [person release];
-    NSLog(@"PEBBLESMS: sendMessageTo %@", [handles class]);
+    // NSLog(@"PEBBLESMS: sendMessageTo %@", [handles class]);
 
     NSString *finalPhone = NULL;
     int highestCount = 0;
@@ -659,7 +659,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
             }
         }
     }
-    NSLog(@"PEBBLESMS: finalPhone == NULL %d", (finalPhone == NULL));
+    // NSLog(@"PEBBLESMS: finalPhone == NULL %d", (finalPhone == NULL));
 
     if (finalPhone == NULL) {
         if (notify) {
@@ -674,7 +674,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
     CKConversationList *conversationList = [%c(CKConversationList) sharedConversationList];
     CKConversation *conversation = [conversationList conversationForExistingChatWithGroupID:finalPhone];
-    NSLog(@"PEBBLESMS: conversation %@", [conversation class]);
+    // NSLog(@"PEBBLESMS: conversation %@", [conversation class]);
 
     if (conversation == NULL) {
         [self sendNewMessageTo:personId number:finalPhone withText:text notify:notify];
@@ -701,7 +701,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     // send success
     if (notify) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            NSLog(@"PEBBLESMS: Send success");
+            // NSLog(@"PEBBLESMS: Send success");
             NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
             [center postNotificationName:messageSendNotification object:distributedCenterName userInfo:nil deliverImmediately:YES];
         });
@@ -715,7 +715,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
     CKConversationList *conversationList = [%c(CKConversationList) sharedConversationList];
     CKConversation *conversation = [conversationList conversationForExistingChatWithGroupID:num];
-    NSLog(@"PEBBLESMS: conversation %@", [conversation class]);
+    // NSLog(@"PEBBLESMS: conversation %@", [conversation class]);
 
     if (conversation == NULL) {
         [self sendNewMessageTo:recordId number:number withText:text notify:notify];
@@ -742,7 +742,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     // send success
     if (notify) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            NSLog(@"PEBBLESMS: Send success");
+            // NSLog(@"PEBBLESMS: Send success");
             NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
             [center postNotificationName:messageSendNotification object:distributedCenterName userInfo:nil deliverImmediately:YES];
         });
@@ -752,11 +752,11 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 %new
 - (void)sendNewMessageTo:(NSNumber *)personId number:(NSString *)number withText:(NSString *)text notify:(BOOL)notify {
     // NSLog(@"PB sendmessageto personId");
-    NSLog(@"PEBBLESMS: sendNewMessageTo");
+    // NSLog(@"PEBBLESMS: sendNewMessageTo");
     IMPerson *person = [[IMPerson alloc] initWithABRecordID:(ABRecordID)[personId intValue]];
     NSArray *handles = [%c(IMHandle) imHandlesForIMPerson:person];
     [person release];
-    NSLog(@"PEBBLESMS: sendMessageTo %@", [handles class]);
+    // NSLog(@"PEBBLESMS: sendMessageTo %@", [handles class]);
 
     IMHandle *finalHandle = NULL;
     int highestCount = 0;
@@ -787,11 +787,11 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
             }
         }
     }
-    NSLog(@"PEBBLESMS: finalHandle == NULL %d", (finalHandle == NULL));
+    // NSLog(@"PEBBLESMS: finalHandle == NULL %d", (finalHandle == NULL));
 
     CKConversationList *conversationList = [%c(CKConversationList) sharedConversationList];
     CKConversation *conversation = [conversationList conversationForHandles:@[finalHandle] displayName:[finalHandle nickname] joinedChatsOnly:NO create:YES];
-    NSLog(@"PB new conversation %@", [conversation class]);
+    // NSLog(@"PB new conversation %@", [conversation class]);
 
     NSAttributedString* t = [[NSAttributedString alloc] initWithString:text];
     CKComposition* composition = [[CKComposition alloc] initWithText:t subject:nil];
@@ -814,7 +814,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %new
 - (void)sendMessageToNewNumber:(NSString *)number withText:(NSString *)text notify:(BOOL)notify {
-    NSLog(@"PB sendmessageto newnumber");
+    // NSLog(@"PB sendmessageto newnumber");
     // NSString *num = [@"+" stringByAppendingString:[[number componentsSeparatedByCharactersInSet: [[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""]];
 
     // CKConversationList *conversationList = [%c(CKConversationList) sharedConversationList];
@@ -911,12 +911,12 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     }
 
     if ([recent boolValue] && ![reply boolValue]) {
-        NSLog(@"PEBBLESMS: sendMessageToNumber");
+        // NSLog(@"PEBBLESMS: sendMessageToNumber");
         [self sendMessageToNumber:number recordId:recordId withText:message notify:[notify boolValue]];
     // } else if ([newNumber boolValue]) {
     //     [self sendMessageToNewNumber:number withText:message notify:[notify boolValue]];
     } else {
-        NSLog(@"PEBBLESMS: sendMessageTo number");
+        // NSLog(@"PEBBLESMS: sendMessageTo number");
         [self sendMessageTo:recordId number:number withText:message notify:[notify boolValue]];
     }
 }
@@ -930,26 +930,26 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 - (void)sendMessage:(id)arg1 onService:(id)arg2 newComposition:(BOOL)arg3 {
     %orig;
     
-    NSLog(@"PEBBLESMS: sentMessage");
+    // NSLog(@"PEBBLESMS: sentMessage");
     [self saveRecipient];
-    NSLog(@"PEBBLESMS: savedRecipient");
+    // NSLog(@"PEBBLESMS: savedRecipient");
 }
 
 %new
 - (void)saveRecipient {
 
     NSArray *handles = [self handles];
-    NSLog(@"PEBBLESMS: handles %@", [handles class]);
+    // NSLog(@"PEBBLESMS: handles %@", [handles class]);
     if (handles != NULL) {
         if ([handles count] == 1) {
             IMHandle *handle = (IMHandle *)[handles objectAtIndex:0];
-            NSLog(@"PEBBLESMS: handle == NULL %d", (handle == NULL));
+            // NSLog(@"PEBBLESMS: handle == NULL %d", (handle == NULL));
             id p = [handle phoneNumberRef];
             if (p) {
                 NSString *phone = [NSString stringWithString:(NSString *)[p description]];
                 NSString *name = [NSString stringWithString:(NSString *)[handle fullName]];
 
-                NSLog(@"PEBBLESMS: phone %@", [phone class]);
+                // NSLog(@"PEBBLESMS: phone %@", [phone class]);
                 saveRecentRecipient(name, phone);
             }
         }
@@ -965,12 +965,12 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 - (void)account:(id)arg1 chat:(id)arg2 style:(unsigned char)arg3 chatProperties:(id)arg4 messageReceived:(id)arg5 {
     if ([arg5 isKindOfClass:[IMMessageItem class]]) {
         NSString *sender = [(IMMessageItem *)arg5 sender];
-        NSLog(@"PEBBLESMS: sender %@", [sender class]);
+        // NSLog(@"PEBBLESMS: sender %@", [sender class]);
         if (![arg5 isFromMe]) {
             CKConversationList *conversationList = [%c(CKConversationList) sharedConversationList];
             if (conversationList != NULL) {
                 CKConversation *conversation = [conversationList conversationForExistingChatWithGroupID:sender];
-                NSLog(@"PEBBLESMS: conversation %@", [conversation class]);
+                // NSLog(@"PEBBLESMS: conversation %@", [conversation class]);
                 if (conversation != NULL) {
                     [conversation saveRecipient];
                 }
@@ -1079,7 +1079,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
         }
     }
 
-    NSLog(@"PEBBLESMS: finalContact == NULL %d", (finalContact == NULL));
+    // NSLog(@"PEBBLESMS: finalContact == NULL %d", (finalContact == NULL));
     return finalContact;
 }
 
@@ -1494,91 +1494,33 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 - (id)accountData;
 @end
 %hook PBLinkedAccountExtendedCredentials
-+ (id)encodingBehaviorsByPropertyKey { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-+ (id)JSONKeyPathsByPropertyKey { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)accountData { %log; id r = %orig; NSLog(@" = %@", [r class]); NSLog(@"OVERRIDEN = JWE:TESTEST"); return @"JWE:TESTEST"; }
+- (id)accountData { return @"JWE:TESTEST"; }
 %end
 %hook PBSMSReplyManager
-- (id)SMSProviders { %log; id r = %orig; NSLog(@" = %@", r); return [NSSet setWithArray:@[[NSNumber numberWithInt:1]]]; }
-- (id)linkedAccountsManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)notificationSourceManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (void)setHasLinkedSMSAccount:(BOOL)fp8 { %log; %orig(YES); }
-- (BOOL)hasLinkedSMSAccount { %log; BOOL r = %orig; NSLog(@" = %d", r); NSLog(@"OVERRIDEN = YES"); return YES; }
-- (void)removeDisabledProvidersIfNecessary { %log; %orig; }
-- (unsigned char)linkedSMSProvider { %log; unsigned char r = %orig; NSLog(@" = %hhu", r); return 1; }
-- (void)handleCarrierOverrideDidChangeNotification:(id)fp8 { %log; %orig; }
-- (void)disableSMSActions { %log; [self enableSMSActions]; }
-- (void)enableSMSActions { %log; %orig; }
-- (BOOL)isCarrierProviderEnabled { %log; BOOL r = %orig; NSLog(@" = %d", r); return YES; }
-- (void)setSMSActionsEnabled:(BOOL)fp8 { %log; %orig(YES); }
-- (unsigned char)providerFromCarrier { %log; unsigned char r = %orig; NSLog(@" = %hhu", r); NSLog(@"OVERRIDEN 1"); return 1; }
-- (id)linkedSMSAccount { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (void)removeSMSAccount { %log; %orig; }
-- (void)setSMSAccount:(id)fp8 { %log; %orig; }
-- (void)dealloc { %log; %orig; }
-- (id)initWithNotificationSourceManager:(id)fp8 linkedAccountsManager:(id)fp12 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-%end
-%hook PBSMSApiClient
-+ (id)client { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)smsReplyManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)linkedAccountsManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)SMSSessionManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)sendSMSWithRecipients:(id)fp8 text:(id)fp12 transactionID:(id)fp16 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)initWithLinkedAccountsManager:(id)fp8 smsReplyManager:(id)fp12 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-%end
-%hook PBLinkedAccountsRequest
-+ (id)credentialsJSONTransformer { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-+ (id)JSONKeyPathsByPropertyKey { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-+ (id)requestWithCredentials:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)credentials { %log; id r = %orig; NSLog(@" = %@", [r class]); return r; }
-%end
-%hook PBLinkedAccountsSessionManager
-- (id)revokeLinkedAccount:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)refreshLinkedAccount:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)authorizationURLRequestForProvider:(unsigned char)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)initWithBaseURL:(id)fp8 sessionConfiguration:(id)fp12 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)SMSProviders { return [NSSet setWithArray:@[[NSNumber numberWithInt:1]]]; }
+- (void)setHasLinkedSMSAccount:(BOOL)fp8 { %orig(YES); }
+- (BOOL)hasLinkedSMSAccount { return YES; }
+- (unsigned char)linkedSMSProvider { return 1; }
+- (void)disableSMSActions { [self enableSMSActions]; }
+- (BOOL)isCarrierProviderEnabled { return YES; }
+- (void)setSMSActionsEnabled:(BOOL)fp8 { %orig(YES); }
+- (unsigned char)providerFromCarrier { return 1; }
 %end
 %hook PBLinkedAccount
-+ (id)credentialsJSONTransformer { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-+ (id)settingsJSONTransformer { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-+ (id)providerJSONTransformer { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-+ (id)uuidJSONTransformer { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-+ (id)encodingBehaviorsByPropertyKey { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-+ (id)JSONKeyPathsByPropertyKey { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (void)setCredentials:(id)fp8 { %log; %orig; }
-- (id)credentials { %log; id r = %orig; NSLog(@" = %@", [r class]); return r; }
-- (void)setSettings:(id)fp8 { %log; %orig; }
-- (id)settings { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (unsigned char)provider { %log; unsigned char r = %orig; NSLog(@" = %hhu", r); NSLog(@"OVERRIDEN = 1");  return 1; }
-- (id)uuid { %log; id r = %orig; NSLog(@" = %@", r); return [NSUUID UUID]; }
-- (id)queryParameters:(id)fp8 key:(id)fp12 toResultClass:(id)fp16 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (BOOL)isAccountExpired { %log; BOOL r = %orig; NSLog(@" = %d", r); return NO; }
-- (id)initWithProvider:(unsigned char)fp8 queryParameters:(id)fp12 { %log; id r = %orig(1, fp12); NSLog(@" = %@", r); NSLog(@" = %@", [fp12 class]); return r; }
+- (unsigned char)provider { return 1; }
+- (id)uuid { return [NSUUID UUID]; }
+- (BOOL)isAccountExpired { return NO; }
 %end
 %hook PBLinkedAccountCredentials
-+ (id)expirationJSONTransformer { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-+ (id)JSONKeyPathsByPropertyKey { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)expiration { %log; id r = %orig; NSLog(@" = %@", r); 
-    NSTimeInterval t = 36000;
-    NSDate *d = [NSDate dateWithTimeIntervalSinceNow:t];
-    NSLog(@"OVERRIDEN = %@", [d description]); 
-    return d; 
-}
-- (id)apiData { %log; id r = %orig; NSLog(@" = %@", r); NSLog(@"OVERRIDEN = JWE:test"); return @"JWE:test"; }
+- (id)expiration { NSTimeInterval t = 36000; NSDate *d = [NSDate dateWithTimeIntervalSinceNow:t]; return d; }
+- (id)apiData { return @"JWE:test"; }
 %end
 %hook PBLinkedAccountsManager
-+ (id) providerToString:(unsigned char)arg { %log; id r = %orig; NSLog(@" = %@", r); return @"vzw"; }
-+ (unsigned char) stringToProvider:(id)arg { %log; unsigned char r = %orig; NSLog(@" = %hhu", r); return 1; }
-- (BOOL) addLinkedAccount:(id)arg { %log; BOOL r = %orig; NSLog(@" = %d", r); return r; }
-- (BOOL) hasLinkedAccountForProvider:(unsigned char)arg { %log; BOOL r = %orig; NSLog(@" = %d", r); return YES; }
-- (BOOL) removeLinkedAccountForProvider:(unsigned char)arg { %log; BOOL r = %orig; NSLog(@" = %d", r); return r; }
-- (id) linkedAccountForProvider:(unsigned char)arg { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (BOOL) isProviderEnabled:(unsigned char)arg { %log; BOOL r = %orig; NSLog(@" = %d", r); NSLog(@"OVERRIDEN = YES");  return YES; }
-- (id) APIClient { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id) enabledProviders { %log; id r = %orig; NSLog(@" = %@", [[[r allObjects] objectAtIndex:0] class]); return [NSSet setWithArray:@[[NSNumber numberWithInt:1]]]; }
-- (void) refreshLinkedAccountForProvider:(unsigned char)arg withForceRefresh:(BOOL)arg2 completion:(id)arg3 { %log; %orig; }
-- (id) linkedAccountsValet { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id) init { %log; id r = %orig; NSLog(@" = %@", r); return r; }
++ (id) providerToString:(unsigned char)arg { return @"vzw"; }
++ (unsigned char) stringToProvider:(id)arg { return 1; }
+- (BOOL) hasLinkedAccountForProvider:(unsigned char)arg { return YES; }
+- (BOOL) isProviderEnabled:(unsigned char)arg { return YES; }
+- (id) enabledProviders { return [NSSet setWithArray:@[[NSNumber numberWithInt:1]]]; }
 %end
 
 @interface PBNotificationSourceManager
@@ -1687,29 +1629,29 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 @end
 
-void DumpObjcMethods(Class clz) {
+// void DumpObjcMethods(Class clz) {
 
-    unsigned int methodCount = 0;
-    Method *methods = class_copyMethodList(clz, &methodCount);
+//     unsigned int methodCount = 0;
+//     Method *methods = class_copyMethodList(clz, &methodCount);
 
-    printf("Found %d methods on '%s'\n", methodCount, class_getName(clz));
+//     printf("Found %d methods on '%s'\n", methodCount, class_getName(clz));
 
-    for (unsigned int i = 0; i < methodCount; i++) {
-        Method method = methods[i];
+//     for (unsigned int i = 0; i < methodCount; i++) {
+//         Method method = methods[i];
 
-        NSString *string1 = [[NSString alloc] initWithUTF8String:class_getName(clz)];
-        NSString *string2 = [[NSString alloc] initWithUTF8String:sel_getName(method_getName(method))];
-        NSString *string3 = [[NSString alloc] initWithUTF8String:method_getTypeEncoding(method)];
+//         NSString *string1 = [[NSString alloc] initWithUTF8String:class_getName(clz)];
+//         NSString *string2 = [[NSString alloc] initWithUTF8String:sel_getName(method_getName(method))];
+//         NSString *string3 = [[NSString alloc] initWithUTF8String:method_getTypeEncoding(method)];
 
-        NSLog(@"'%@' has method named '%@' of encoding '%@'", string1, string2, string3);
+//         NSLog(@"'%@' has method named '%@' of encoding '%@'", string1, string2, string3);
 
-        [string1 release];
-        [string2 release];
-        [string3 release];
-    }
+//         [string1 release];
+//         [string2 release];
+//         [string3 release];
+//     }
 
-    free(methods);
-}
+//     free(methods);
+// }
 
 // %hook PBSMSSendRequest
 
@@ -1721,20 +1663,20 @@ void DumpObjcMethods(Class clz) {
 
 %hook PBANCSActionHandler
 
-+ (id)actionHandlerWithDelegate:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (void)setCurrentActionHandler:(id)fp8 { %log; %orig; }
-- (id)currentActionHandler { %log; id r = %orig; NSLog(@" = %@", r); NSLog(@" = %@", [r class]); return r; }
-- (void)setHandlingIdentifier:(id)fp8 { %log; %orig; }
-- (id)handlingIdentifier { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)timelineWatchService { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)actionHandlersByAppIdentifier { %log; id r = %orig; NSLog(@" = %@", r); NSLog(@" = %@", [[r objectForKey:@"com.apple.MobileSMS"] class]); return r; }
-- (id)delegate { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (void)notificationHandler:(id)fp8 didSendError:(id)fp12 withTitle:(id)fp16 icon:(id)fp20 { %log; %orig; }
-- (void)notificationHandler:(id)fp8 didSendResponse:(unsigned char)fp12 withAttributes:(id)fp16 actions:(id)fp20 { %log; %orig; }
-- (void)handleActionWithActionIdentifier:(unsigned char)fp8 attributes:(id)fp12 { %log; %orig; }
-- (void)handleInvokeANCSActionMessage:(id)fp8 { %log; %orig; }
-- (BOOL)isHandlingNotificationWithIdentifier:(id)fp8 { %log; BOOL r = %orig; NSLog(@" = %d", r); return r; }
-- (id)initWithDelegate:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// + (id)actionHandlerWithDelegate:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (void)setCurrentActionHandler:(id)fp8 { %log; %orig; }
+// - (id)currentActionHandler { %log; id r = %orig; NSLog(@" = %@", r); NSLog(@" = %@", [r class]); return r; }
+// - (void)setHandlingIdentifier:(id)fp8 { %log; %orig; }
+// - (id)handlingIdentifier { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)timelineWatchService { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)actionHandlersByAppIdentifier { %log; id r = %orig; NSLog(@" = %@", r); NSLog(@" = %@", [r objectForKey:@"com.apple.MobileSMS"]); return r; }
+// - (id)delegate { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (void)notificationHandler:(id)fp8 didSendError:(id)fp12 withTitle:(id)fp16 icon:(id)fp20 { %log; %orig; }
+// - (void)notificationHandler:(id)fp8 didSendResponse:(unsigned char)fp12 withAttributes:(id)fp16 actions:(id)fp20 { %log; %orig; }
+// - (void)handleActionWithActionIdentifier:(unsigned char)fp8 attributes:(id)fp12 { %log; %orig; }
+// - (void)handleInvokeANCSActionMessage:(id)fp8 { %log; %orig; }
+// - (BOOL)isHandlingNotificationWithIdentifier:(id)fp8 { %log; BOOL r = %orig; NSLog(@" = %d", r); return r; }
+// - (id)initWithDelegate:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
 
 %end
 
@@ -1988,12 +1930,12 @@ void DumpObjcMethods(Class clz) {
 // - (void)addressBookQuerySession:(id)fp8 finishedWithContact:(id)fp12 labeledValue:(id)fp16 { %log; %orig; }
 - (void)handleActionWithActionIdentifier:(unsigned char)fp8 attributes:(id)fp12 { %log; 
     if (fp8 == 2) {
-        NSLog(@"HANDLING");
+        // NSLog(@"HANDLING");
         NSData *d = [(PBTimelineItemAttributeBlob *)[(NSArray *)fp12 objectAtIndex:0] content];
         NSString *reply = [[NSString alloc] initWithData:d encoding:NSUTF8StringEncoding];
         PBContact *contact = [[self addressBookQuerySession] selectedContact];
         NSString *phone = [(PBPhoneNumber *)[(PBLabeledValue *)[[self addressBookQuerySession] selectedLabeledValue] value] stringValue];
-        NSLog(@"Wants to send reply with content '%@' to '%@' at number '%@'", reply, contact, phone);
+        // NSLog(@"Wants to send reply with content '%@' to '%@' at number '%@'", reply, contact, phone);
         PBTimelineAttribute *attr = [%c(PBTimelineAttribute) attributeWithType:@"subtitle" content:@"Sending..."];
         [(PBANCSActionHandler *)[self delegate] notificationHandler:self didSendResponse:15 withAttributes:@[attr] actions:NULL];
         [%c(PBSMSSessionManager) sendSMS:[contact recordId] number:phone withText:reply];
