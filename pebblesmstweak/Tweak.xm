@@ -1669,7 +1669,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 // - (void)setHandlingIdentifier:(id)fp8 { %log; %orig; }
 // - (id)handlingIdentifier { %log; id r = %orig; NSLog(@" = %@", r); return r; }
 // - (id)timelineWatchService { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)actionHandlersByAppIdentifier { %log; id r = %orig; NSLog(@" = %@", r); NSLog(@" = %@", [r objectForKey:@"com.apple.MobileSMS"]); return r; }
+// - (id)actionHandlersByAppIdentifier { %log; id r = %orig; NSLog(@" = %@", r); NSLog(@" = %@", [r objectForKey:@"com.apple.MobileSMS"]); return r; }
 // - (id)delegate { %log; id r = %orig; NSLog(@" = %@", r); return r; }
 // - (void)notificationHandler:(id)fp8 didSendError:(id)fp12 withTitle:(id)fp16 icon:(id)fp20 { %log; %orig; }
 // - (void)notificationHandler:(id)fp8 didSendResponse:(unsigned char)fp12 withAttributes:(id)fp16 actions:(id)fp20 { %log; %orig; }
@@ -1928,7 +1928,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 // - (void)addressBookQuerySessionFailedToFindContactMatch:(id)fp8 { %log; %orig; }
 // - (void)addressBookQuerySession:(id)fp8 foundMultipleAddresses:(id)fp12 { %log; %orig; }
 // - (void)addressBookQuerySession:(id)fp8 finishedWithContact:(id)fp12 labeledValue:(id)fp16 { %log; %orig; }
-- (void)handleActionWithActionIdentifier:(unsigned char)fp8 attributes:(id)fp12 { %log; 
+- (void)handleActionWithActionIdentifier:(unsigned char)fp8 attributes:(id)fp12 {
     if (fp8 == 2) {
         // NSLog(@"HANDLING");
         NSData *d = [(PBTimelineItemAttributeBlob *)[(NSArray *)fp12 objectAtIndex:0] content];
