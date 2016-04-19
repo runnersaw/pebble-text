@@ -424,29 +424,23 @@ static NSNumber *currentContactId = NULL;
 static BOOL isRecentContact = NO;
 
 static int maxContacts = 10;
-static int maxPresets = 10;
 
 static NSMutableArray *presets = [NSMutableArray array];
 static NSMutableArray *names = [NSMutableArray array];
 static NSMutableArray *phones = [NSMutableArray array];
 
 static void loadPrefs() {
-    [presets removeAllObjects];
-    NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:@"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesmstweak.plist"];
-
-    for (int i=0; i<maxPresets; i++) {
-        NSString *p = (NSString *)[dict objectForKey:[NSString stringWithFormat:@"preset%d", i]];
-
-        if (p && ![p isEqualToString:@""]) {
-            [presets addObject:p];
-        }
-    }
-
     if ([presets count] == 0) {
+        [presets addObject:@"OK"];
         [presets addObject:@"Yes"];
         [presets addObject:@"No"];
-        [presets addObject:@"OK"];
-        [presets addObject:@"What's up?"];
+        [presets addObject:@"Call me"];
+        [presets addObject:@"Call you later"];
+        [presets addObject:@"Thank you"];
+        [presets addObject:@"See you soon"];
+        [presets addObject:@"Running late"];
+        [presets addObject:@"On my way"];
+        [presets addObject:@"Busy right now - give me a second?"];
     }
 }
 
@@ -1224,10 +1218,13 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 - (NSMutableDictionary *)getPresets {
     loadPrefs();
 
+    NSLog(@"PEBBLESMS: loadPrefs4 %@", presets);
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
+    NSLog(@"PEBBLESMS: loadPrefs5");
     [dict setObject:[presets componentsJoinedByString:@"\n"] forKey:PRESETS_KEY];
     
+    NSLog(@"PEBBLESMS: loadPrefs6");
     return dict;
 }
 
@@ -1737,17 +1734,21 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 // %end
 
-// %hook PBCannedResponseManager
+%hook PBCannedResponseManager
 
-// + (id)userDefaults { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)cannedResponseDefaults { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)defaultResponses { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)cannedResponsesForAppIdentifier:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (void)setCannedResponses:(id)fp8 forAppIdentifier:(id)fp12 { %log; %orig; }
-// - (id)initWithUserDefaults:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)init { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+- (id)cannedResponsesForAppIdentifier:(id)fp8 { 
+    id r = %orig;
+    [presets removeAllObjects];
+    [presets addObjectsFromArray:(NSArray *)r];
+    return r; 
+}
+- (void)setCannedResponses:(id)fp8 forAppIdentifier:(id)fp12 {
+    [presets removeAllObjects];
+    [presets addObjectsFromArray:(NSArray *)fp8];
+    %orig; 
+}
 
-// %end
+%end
 
 // %hook PBNotificationSource
 
