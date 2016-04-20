@@ -1,0 +1,264 @@
+Apr 19 11:02:27 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:27 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:27 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:28 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:31 svaughans-iPhone MobileSMS[2852] <Warning>: PEBBLESMS: sendMessageToNumber
+Apr 19 11:02:31 svaughans-iPhone MobileSMS[2852] <Warning>: PEBBLESMS: conversation CKConversation
+Apr 19 11:02:31 svaughans-iPhone MobileSMS[2852] <Warning>: PEBBLESMS: sentMessage
+Apr 19 11:02:31 svaughans-iPhone MobileSMS[2852] <Warning>: PEBBLESMS: handles __NSArrayM
+Apr 19 11:02:31 svaughans-iPhone MobileSMS[2852] <Warning>: PEBBLESMS: handle == NULL 0
+Apr 19 11:02:31 svaughans-iPhone MobileSMS[2852] <Warning>: PEBBLESMS: phone __NSCFString
+Apr 19 11:02:31 svaughans-iPhone identityservicesd[77] <Warning>: [Warning] sqlite3 error in _Bool CSDBRecordStoreSaveWithPreAndPostCallbacksAndTransactionType(CSDBRecordStoreRef, CSDBRecordStoreSaveCallback, CSDBRecordStoreSaveCallback, CSDBRecordConflictPolicy, CSDBSqliteTransactionType, CFErrorRef *): disk I/O error
+Apr 19 11:02:31 svaughans-iPhone identityservicesd[77] <Warning>: [Warning] sqlite3 error in _Bool CSDBRecordStoreSaveWithPreAndPostCallbacksAndTransactionType(CSDBRecordStoreRef, CSDBRecordStoreSaveCallback, CSDBRecordStoreSaveCallback, CSDBRecordConflictPolicy, CSDBSqliteTransactionType, CFErrorRef *): disk I/O error
+Apr 19 11:02:31 svaughans-iPhone identityservicesd[77] <Error>: Error saving record store: CSDBRecordSQLite/10
+Apr 19 11:02:32 svaughans-iPhone SpringBoard[2825] <Notice>: (Error) NPSLogging: <NPSDomainAccessor.m +[NPSDomainAccessor resolveActivePairedDevicePairingID:pairingDataStore:]:40> Failed to resolve pairing ID ((null)) or data store ((null)) for active device
+Apr 19 11:02:32 svaughans-iPhone MobileSMS[2852] <Warning>: PEBBLESMS: savedRecipient
+Apr 19 11:02:32 svaughans-iPhone MobileSMS[2852] <Warning>: PEBBLESMS: sender (null)
+Apr 19 11:02:32 svaughans-iPhone MobileSMS[2852] <Warning>: PEBBLESMS: Send success
+Apr 19 11:02:32 svaughans-iPhone iap2d[1009] <Warning>: renewing process assertion - /BuildRoot/Library/Caches/com.apple.xbs/Sources/iapd/iapd-1746.1.3/iap2d/iAP2EAClient.m:__37-[iAP2EAClient takeProcessAssertion:]_block_invoke - 194 clientID=9 pid=2841
+Apr 19 11:02:33 svaughans-iPhone IMDMessageServicesAgent[2854] <Notice>: MS:Notice: Injecting: com.apple.imdmessageservices.IMDMessageServicesAgent [IMDMessageServicesAgent] (1240.10)
+Apr 19 11:02:33 svaughans-iPhone wifid[61] <Error>: WiFi:[482770953.316240]: Disable WoW requested by "IMDMessageServic"
+Apr 19 11:02:33 svaughans-iPhone IMDMessageServicesAgent[2854] <Warning>: WiFi is associated YES
+Apr 19 11:02:33 svaughans-iPhone IMDMessageServicesAgent[2854] <Warning>: WiFi is associated YES
+Apr 19 11:02:34 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:34 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:34 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:34 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:34 svaughans-iPhone MobileSMS[2852] <Warning>: PEBBLESMS: sender __NSCFString
+Apr 19 11:02:34 svaughans-iPhone MobileSMS[2852] <Warning>: PEBBLESMS: conversation CKConversation
+Apr 19 11:02:34 svaughans-iPhone MobileSMS[2852] <Warning>: PEBBLESMS: handles __NSArrayM
+Apr 19 11:02:34 svaughans-iPhone MobileSMS[2852] <Warning>: PEBBLESMS: handle == NULL 0
+Apr 19 11:02:34 svaughans-iPhone MobileSMS[2852] <Warning>: PEBBLESMS: phone __NSCFString
+Apr 19 11:02:34 svaughans-iPhone BTLEServer[1005] <Notice>: (Note ) Added "Social" notification #29 (✗) from com.apple.MobileSMS
+Apr 19 11:02:34 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:34 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:34 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:35 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:35 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:35 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:35 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:35 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:35 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:35 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:35 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:35 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:35 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:35 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:35 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:35 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:35 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:35 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:35 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:35 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:35 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:35 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:35 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:35 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:35 svaughans-iPhone MessagesNotificationViewService[2857] <Notice>: MS:Notice: Injecting: com.apple.mobilesms.notification [MessagesNotificationViewService] (1240.10)
+Apr 19 11:02:35 svaughans-iPhone MessagesNotificationViewService[2857] <Notice>: MS:Notice: Loading: /Library/MobileSubstrate/DynamicLibraries/0Emoji9PS.dylib
+Apr 19 11:02:35 svaughans-iPhone MessagesNotificationViewService[2857] <Notice>: MS:Notice: Loading: /Library/MobileSubstrate/DynamicLibraries/Activator.dylib
+Apr 19 11:02:35 svaughans-iPhone MessagesNotificationViewService[2857] <Notice>: MS:Notice: Loading: /Library/MobileSubstrate/DynamicLibraries/Assistant+.dylib
+Apr 19 11:02:35 svaughans-iPhone MessagesNotificationViewService[2857] <Warning>: MS:Warning: nil class argument for selector transcriptItemForObject:
+Apr 19 11:02:35 svaughans-iPhone MessagesNotificationViewService[2857] <Warning>: MS:Warning: message not found [APPluginSnippetViewController desiredHeight]
+Apr 19 11:02:35 svaughans-iPhone MessagesNotificationViewService[2857] <Warning>: MS:Warning: message not found [APPluginSnippetViewController navigationTitle]
+Apr 19 11:02:35 svaughans-iPhone MessagesNotificationViewService[2857] <Notice>: MS:Notice: Loading: /Library/MobileSubstrate/DynamicLibraries/BioProtectPhotosProtection.dylib
+Apr 19 11:02:35 svaughans-iPhone MessagesNotificationViewService[2857] <Notice>: MS:Notice: Loading: /Library/MobileSubstrate/DynamicLibraries/BreadCrumbArrow.dylib
+Apr 19 11:02:35 svaughans-iPhone MessagesNotificationViewService[2857] <Notice>: MS:Notice: Loading: /Library/MobileSubstrate/DynamicLibraries/Fascy.dylib
+Apr 19 11:02:35 svaughans-iPhone MessagesNotificationViewService[2857] <Notice>: MS:Notice: Loading: /Library/MobileSubstrate/DynamicLibraries/Flex.dylib
+Apr 19 11:02:35 svaughans-iPhone SpringBoard[2825] <Warning>: processing error queue with 1 errors
+Apr 19 11:02:35 svaughans-iPhone SpringBoard[2825] <Warning>: Error - level severe: internal msg: "couldn't erase extract command file /var/mobile/Documents/Flex/com.apple.mobilesms.notification.dump, error code: -1"
+Apr 19 11:02:35 svaughans-iPhone MessagesNotificationViewService[2857] <Notice>: MS:Notice: Loading: /Library/MobileSubstrate/DynamicLibraries/JODebox.dylib
+Apr 19 11:02:35 svaughans-iPhone MessagesNotificationViewService[2857] <Warning>: MS:Warning: nil class argument for selector applicationDidFinishLaunching:
+Apr 19 11:02:35 svaughans-iPhone MessagesNotificationViewService[2857] <Warning>: MS:Warning: nil class argument for selector addLibraryItems:error:
+Apr 19 11:02:35 svaughans-iPhone MessagesNotificationViewService[2857] <Notice>: MS:Notice: Loading: /Library/MobileSubstrate/DynamicLibraries/PeekaBoo.dylib
+Apr 19 11:02:35 svaughans-iPhone MessagesNotificationViewService[2857] <Error>: [PeekaBoo: Tweak.xm:284] ERROR: logos: message not found [UIPreviewInteractionController startInteractivePreviewAtLocation:inView:]
+Apr 19 11:02:35 svaughans-iPhone MessagesNotificationViewService[2857] <Error>: [PeekaBoo: Tweak.xm:284] ERROR: logos: nil class IGMainFeedViewController
+Apr 19 11:02:35 svaughans-iPhone MessagesNotificationViewService[2857] <Notice>: MS:Notice: Loading: /Library/MobileSubstrate/DynamicLibraries/Pegasus.dylib
+Apr 19 11:02:35 svaughans-iPhone MessagesNotificationViewService[2857] <Notice>: MS:Notice: Loading: /Library/MobileSubstrate/DynamicLibraries/exKeyboard.dylib
+Apr 19 11:02:35 svaughans-iPhone BTLEServer[1005] <Notice>: (Note ) Received "Get Notification Attributes" command for notification #29
+Apr 19 11:02:35 svaughans-iPhone MessagesNotificationViewService[2857] <Notice>: MS:Notice: Loading: /Library/MobileSubstrate/DynamicLibraries/libstatusbar.dylib
+Apr 19 11:02:35 svaughans-iPhone MessagesNotificationViewService[2857] <Notice>: CoreFoundation = 1240.100000
+Apr 19 11:02:35 svaughans-iPhone MessagesNotificationViewService[2857] <Notice>: MS:Notice: Loading: /Library/MobileSubstrate/DynamicLibraries/no_percent_sign.dylib
+Apr 19 11:02:35 svaughans-iPhone MessagesNotificationViewService[2857] <Notice>: MS:Notice: Loading: /Library/MobileSubstrate/DynamicLibraries/pebblestatus.dylib
+Apr 19 11:02:35 svaughans-iPhone MessagesNotificationViewService[2857] <Error>: assertion failed: 13A452: libxpc.dylib + 74628 [48F7905B-E51C-321A-8F8B-E69B42CC8172]: 0x7d
+Apr 19 11:02:35 svaughans-iPhone Unknown[2857] <Error>:
+Apr 19 11:02:35 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:35 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:35 svaughans-iPhone iap2d[1009] <Warning>: process com.apple.mobilesms.notification is now running in the background
+Apr 19 11:02:35 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:35 svaughans-iPhone BTLEServer[1005] <Notice>: (Note ) Received "Get App Attributes" command for identifier com.apple.MobileSMS
+Apr 19 11:02:36 svaughans-iPhone SpringBoard[2825] <Warning>: Unable to simultaneously satisfy constraints.
+                Probably at least one of the constraints in the following list is one you don't want. Try this: (1) look at each constraint and try to figure out which you don't expect; (2) find the code that added the unwanted constraint or constraints and fix it. (Note: If you're seeing NSAutoresizingMaskLayoutConstraints that you don't understand, refer to the documentation for the UIView property translatesAutoresizingMaskIntoConstraints)
+        (
+            "<NSLayoutConstraint:0x141f5b490 V:|-(4)-[UIInputSetContainerView:0x141b626a0]   (Names: '|':UIRemoteKeyboardWindow:0x141f63160 )>",
+            "<NSLayoutConstraint:0x141f1fb60 'UIInputWindowController-top' V:|-(0)-[UIInputSetContainerView:0x141b626a0]   (Names: '|':UIRemoteKeyboardWindow:0x141f63160 )>"
+        )
+
+        Will attempt to recover by breaking constraint
+        <NSLayoutConstraint:0x141f5b490 V:|-(4)-[UIInputSetContainerView:0x141b626a0]   (Names: '|':UIRemoteKeyboardWindow:0x141f63160 )>
+
+        Make a symbolic breakpoint at UIViewAlertForUnsatisfiableConstraints to catch this in the debugger.
+        The methods in the UIConstraintBasedLayoutDebugging category on UIView listed in <UIKit/UIView.h> may also be helpful.
+Apr 19 11:02:36 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:36 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:36 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:36 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:36 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:36 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:36 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:36 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:36 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:36 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:36 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:36 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:36 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:36 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:36 svaughans-iPhone MessagesNotificationViewService[2857] <Warning>: Unable to simultaneously satisfy constraints.
+                Probably at least one of the constraints in the following list is one you don't want. Try this: (1) look at each constraint and try to figure out which you don't expect; (2) find the code that added the unwanted constraint or constraints and fix it. (Note: If you're seeing NSAutoresizingMaskLayoutConstraints that you don't understand, refer to the documentation for the UIView property translatesAutoresizingMaskIntoConstraints)
+        (
+            "<NSLayoutConstraint:0x14d7beea0 V:|-(4)-[UIInputSetContainerView:0x14d78e030]   (Names: '|':UITextEffectsWindowHosted:0x14d6ec700 )>",
+            "<NSLayoutConstraint:0x14d7bef40 UIInputSetContainerView:0x14d78e030.bottom == UITextEffectsWindowHosted:0x14d6ec700.bottom>",
+            "<NSLayoutConstraint:0x14d7a6c70 'UIInputWindowController-height' UIInputSetContainerView:0x14d78e030.height == UITextEffectsWindowHosted:0x14d6ec700.height>"
+        )
+
+        Will attempt to recover by breaking constraint
+        <NSLayoutConstraint:0x14d7bef40 UIInputSetContainerView:0x14d78e030.bottom == UITextEffectsWindowHosted:0x14d6ec700.bottom>
+
+        Make a symbolic breakpoint at UIViewAlertForUnsatisfiableConstraints to catch this in the debugger.
+        The methods in the UIConstraintBasedLayoutDebugging category on UIView listed in <UIKit/UIView.h> may also be helpful.
+Apr 19 11:02:36 svaughans-iPhone MessagesNotificationViewService[2857] <Warning>: Unable to simultaneously satisfy constraints.
+                Probably at least one of the constraints in the following list is one you don't want. Try this: (1) look at each constraint and try to figure out which you don't expect; (2) find the code that added the unwanted constraint or constraints and fix it. (Note: If you're seeing NSAutoresizingMaskLayoutConstraints that you don't understand, refer to the documentation for the UIView property translatesAutoresizingMaskIntoConstraints)
+        (
+            "<NSLayoutConstraint:0x14d7beea0 V:|-(4)-[UIInputSetContainerView:0x14d78e030]   (Names: '|':UITextEffectsWindowHosted:0x14d6ec700 )>",
+            "<NSLayoutConstraint:0x14d7c0380 'UIInputWindowController-top' V:|-(0)-[UIInputSetContainerView:0x14d78e030]   (Names: '|':UITextEffectsWindowHosted:0x14d6ec700 )>"
+        )
+
+        Will attempt to recover by breaking constraint
+        <NSLayoutConstraint:0x14d7beea0 V:|-(4)-[UIInputSetContainerView:0x14d78e030]   (Names: '|':UITextEffectsWindowHosted:0x14d6ec700 )>
+
+        Make a symbolic breakpoint at UIViewAlertForUnsatisfiableConstraints to catch this in the debugger.
+        The methods in the UIConstraintBasedLayoutDebugging category on UIView listed in <UIKit/UIView.h> may also be helpful.
+Apr 19 11:02:36 svaughans-iPhone MessagesNotificationViewService[2857] <Warning>: Unable to simultaneously satisfy constraints.
+                Probably at least one of the constraints in the following list is one you don't want. Try this: (1) look at each constraint and try to figure out which you don't expect; (2) find the code that added the unwanted constraint or constraints and fix it. (Note: If you're seeing NSAutoresizingMaskLayoutConstraints that you don't understand, refer to the documentation for the UIView property translatesAutoresizingMaskIntoConstraints)
+        (
+            "<NSLayoutConstraint:0x14d7c4380 V:|-(4)-[UIInputSetContainerView:0x14d7c3390]   (Names: '|':UIRemoteKeyboardWindowHosted:0x14d7c1e90 )>",
+            "<NSLayoutConstraint:0x14d7c6420 'UIInputWindowController-top' V:|-(0)-[UIInputSetContainerView:0x14d7c3390]   (Names: '|':UIRemoteKeyboardWindowHosted:0x14d7c1e90 )>"
+        )
+
+        Will attempt to recover by breaking constraint
+        <NSLayoutConstraint:0x14d7c4380 V:|-(4)-[UIInputSetContainerView:0x14d7c3390]   (Names: '|':UIRemoteKeyboardWindowHosted:0x14d7c1e90 )>
+
+        Make a symbolic breakpoint at UIViewAlertForUnsatisfiableConstraints to catch this in the debugger.
+        The methods in the UIConstraintBasedLayoutDebugging category on UIView listed in <UIKit/UIView.h> may also be helpful.
+Apr 19 11:02:36 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:36 svaughans-iPhone SpringBoard[2825] <Notice>: CoreLocation: CMPocketStateManager 6780.584863: query started with timeout 0.300000
+Apr 19 11:02:36 svaughans-iPhone backboardd[95] <Notice>: [HID] [MT] MTSimpleHIDManager::setPropertyInternal detection mode: 255->6 (deferring until bootloaded)
+Apr 19 11:02:36 svaughans-iPhone SpringBoard[2825] <Notice>: CoreLocation: CLPocketStateService 6780.635472: monitorTime,10.000000,bksMonitorTime,12.000000,bksDelay,0.050348,proxStatus,0
+Apr 19 11:02:36 svaughans-iPhone backboardd[95] <Notice>: [HID] [MT] MTSimpleHIDManager::deviceDidBootload device bootloaded
+Apr 19 11:02:36 svaughans-iPhone backboardd[95] <Notice>: [HID] [MT] MTSimpleHIDManager::setPropertyInternal detection mode: 6->6
+Apr 19 11:02:36 svaughans-iPhone SpringBoard[2825] <Notice>: CoreLocation: CMPocketStateManager: QueryTimerFire,6780.886287
+Apr 19 11:02:36 svaughans-iPhone SpringBoard[2825] <Notice>: CoreLocation: CMPocketStateManager 6780.886643: query response external=0 (OutOfPocket), internal=0, cbcount=1
+Apr 19 11:02:36 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:36 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:36 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:36 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:36 svaughans-iPhone SpringBoard[2825] <Notice>: (Error) NPSLogging: <NPSDomainAccessor.m +[NPSDomainAccessor resolveActivePairedDevicePairingID:pairingDataStore:]:40> Failed to resolve pairing ID ((null)) or data store ((null)) for active device
+Apr 19 11:02:36 svaughans-iPhone SpringBoard[2825] <Warning>: [MPUSystemMediaControls] Enabling lock screen media controls updates for screen turning on.
+Apr 19 11:02:36 svaughans-iPhone SpringBoard[2825] <Warning>: [MPUSystemMediaControls] Updating supported commands for now playing application.
+Apr 19 11:02:40 svaughans-iPhone iap2d[1009] <Warning>: renewing process assertion - /BuildRoot/Library/Caches/com.apple.xbs/Sources/iapd/iapd-1746.1.3/iap2d/iAP2EAClient.m:__37-[iAP2EAClient takeProcessAssertion:]_block_invoke - 194 clientID=9 pid=2841
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBTimelineInvokeANCSActionMessage: 0x138bbc5d0> initWithData:<005c2cb0 03a7844a 1c47364a b3b67d21 ce9e4226 2402070c 06004d61 73746572 0106004d 61737465 72030c00 486f7720 61726520 796f753f 20130063 6f6d2e61 70706c65 2e4d6f62 696c6553 4d530404 002d0000 801c0100 c8250400 87481657>]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBANCSActionHandler: 0x138d6ef00> handleInvokeANCSActionMessage:PBTimelineInvokeANCSActionMessage endpoint=0x2cb0 (11440) commandID=0x3 (3) payload=91 bytes]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBTimelineInvokeANCSActionMessage: 0x138bbc5d0> ANCSIdentifier]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBANCSActionHandler: 0x138d6ef00> setHandlingIdentifier:<__NSConcreteUUID 0x138c54c20> A7844A1C-4736-4AB3-B67D-21CE9E422624]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBANCSActionHandler: 0x138d6ef00> handlingIdentifier]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>:  = <__NSConcreteUUID 0x138c54c20> A7844A1C-4736-4AB3-B67D-21CE9E422624
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBANCSActionHandler: 0x138d6ef00> actionHandlersByAppIdentifier]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>:  = {
+            "com.apple.MobileSMS" = PBSendSMSActionHandler;
+        }
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>:  = __NSDictionaryI
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBTimelineInvokeANCSActionMessage: 0x138bbc5d0> appIdentifier]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBTimelineInvokeANCSActionMessage: 0x138bbc5d0> appIdentifier]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBANCSActionHandler: 0x138d6ef00> setCurrentActionHandler:<PBSendSMSActionHandler: 0x138d2ab80>]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBANCSActionHandler: 0x138d6ef00> currentActionHandler]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>:  = <PBSendSMSActionHandler: 0x138d2ab80>
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>:  = PBSendSMSActionHandler
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBSendSMSActionHandler: 0x138d2ab80> startHandlingInvokeActionMessage:PBTimelineInvokeANCSActionMessage endpoint=0x2cb0 (11440) commandID=0x3 (3) payload=91 bytes]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBSendSMSActionHandler: 0x138d2ab80> SMSReplyManager]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>:  = <PBSMSReplyManager: 0x138c3fa00>
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBSMSReplyManager: 0x138c3fa00> hasLinkedSMSAccount]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>:  = 1
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: OVERRIDEN = YES
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBTimelineInvokeANCSActionMessage: 0x138bbc5d0> notificationSender]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBTimelineInvokeANCSActionMessage: 0x138bbc5d0> ANCSIdentifier]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBTimelineInvokeANCSActionMessage: 0x138bbc5d0> notificationSender]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBAddressBookQuerySession: 0x138ad2f70> initWithIdentifier:<__NSConcreteUUID 0x138c54c20> A7844A1C-4736-4AB3-B67D-21CE9E422624 query:Master delegate:<PBSendSMSActionHandler: 0x138d2ab80> addressBookManager:<PBAddressBookAuthorizationManager: 0x138f971c0> contactPreferredPhoneManager:<PBContactPreferredPhoneManager: 0x1375aeac0>]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBAddressBookQuerySession: 0x138ad2f70> cleanSearchQuery:Master]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBSendSMSActionHandler: 0x138d2ab80> setAddressBookQuerySession:<PBAddressBookQuerySession: 0x138ad2f70>]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBSendSMSActionHandler: 0x138d2ab80> addressBookQuerySession]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>:  = <PBAddressBookQuerySession: 0x138ad2f70>
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBAddressBookQuerySession: 0x138ad2f70> runInitialQuery]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBAddressBookQuerySession: 0x138ad2f70> query]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBAddressBookQuerySession: 0x138ad2f70> isQueryValidPhoneNumber:Master]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBAddressBookQuerySession: 0x138ad2f70> addressBook]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBAddressBookQuerySession: 0x138ad2f70> query]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBAddressBookQuerySession: 0x138ad2f70> query]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBAddressBookQuerySession: 0x138ad2f70> query]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBAddressBookQuerySession: 0x138ad2f70> handleSingleContact:<PBContact: 0x138de3750>]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBAddressBookQuerySession: 0x138ad2f70> setSelectedContact:<PBContact: 0x138de3750>]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBAddressBookQuerySession: 0x138ad2f70> preferredPhoneForContact:<PBContact: 0x138de3750>]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBAddressBookQuerySession: 0x138ad2f70> contactPreferredPhoneManager]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBAddressBookQuerySession: 0x138ad2f70> selectAddressLabeledValue:(mobile, (720) 879-1626)]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBAddressBookQuerySession: 0x138ad2f70> setHasResolvedAmbiguity:1]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBAddressBookQuerySession: 0x138ad2f70> setSelectedLabeledValue:(mobile, (720) 879-1626)]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBAddressBookQuerySession: 0x138ad2f70> delegate]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBAddressBookQuerySession: 0x138ad2f70> selectedContact]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBSendSMSActionHandler: 0x138d2ab80> addressBookQuerySession:<PBAddressBookQuerySession: 0x138ad2f70> finishedWithContact:<PBContact: 0x138de3750> labeledValue:(mobile, (720) 879-1626)]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBSendSMSActionHandler: 0x138d2ab80> preferredPhoneManager]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>:  = <PBContactPreferredPhoneManager: 0x1375aeac0>
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBSendSMSActionHandler: 0x138d2ab80> delegate]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>:  = <PBANCSActionHandler: 0x138d6ef00>
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBANCSActionHandler: 0x138d6ef00> notificationHandler:<PBSendSMSActionHandler: 0x138d2ab80> didSendResponse:21 withAttributes:(null) actions:(null)]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBANCSActionHandler: 0x138d6ef00> handlingIdentifier]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>:  = <__NSConcreteUUID 0x138c54c20> A7844A1C-4736-4AB3-B67D-21CE9E422624
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBANCSActionHandler: 0x138d6ef00> delegate]
+Apr 19 11:02:40 svaughans-iPhone PebbleTime[2841] <Warning>:  = <PBTimelineActionsWatchService: 0x138a306d0>
+Apr 19 11:02:40 svaughans-iPhone com.apple.xpc.launchd[1] (com.openssh.sshd.46FC9126-F28B-406C-BF21-EA77E68325DE[2486]) <Warning>: Service exited with abnormal code: 1
+Apr 19 11:02:45 svaughans-iPhone iap2d[1009] <Warning>: renewing process assertion - /BuildRoot/Library/Caches/com.apple.xbs/Sources/iapd/iapd-1746.1.3/iap2d/iAP2EAClient.m:__37-[iAP2EAClient takeProcessAssertion:]_block_invoke - 194 clientID=9 pid=2841
+Apr 19 11:02:45 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBANCSActionHandler: 0x138d6ef00> isHandlingNotificationWithIdentifier:<__NSConcreteUUID 0x139100f40> A7844A1C-4736-4AB3-B67D-21CE9E422624]
+Apr 19 11:02:45 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBANCSActionHandler: 0x138d6ef00> handlingIdentifier]
+Apr 19 11:02:45 svaughans-iPhone PebbleTime[2841] <Warning>:  = <__NSConcreteUUID 0x138c54c20> A7844A1C-4736-4AB3-B67D-21CE9E422624
+Apr 19 11:02:45 svaughans-iPhone PebbleTime[2841] <Warning>:  = 1
+Apr 19 11:02:45 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBANCSActionHandler: 0x138d6ef00> handleActionWithActionIdentifier:2 attributes:(
+            "<PBTimelineItemAttributeBlob: 0x139116060> Type: 1, Content: <43616c6c 206d65>",
+            "<PBTimelineItemAttributeBlob: 0x138d83290> Type: 12, Content: <4d617374 6572>"
+        )]
+Apr 19 11:02:45 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBANCSActionHandler: 0x138d6ef00> currentActionHandler]
+Apr 19 11:02:45 svaughans-iPhone PebbleTime[2841] <Warning>:  = <PBSendSMSActionHandler: 0x138d2ab80>
+Apr 19 11:02:45 svaughans-iPhone PebbleTime[2841] <Warning>:  = PBSendSMSActionHandler
+Apr 19 11:02:45 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBSendSMSActionHandler: 0x138d2ab80> handleActionWithActionIdentifier:2 attributes:(
+            "<PBTimelineItemAttributeBlob: 0x139116060> Type: 1, Content: <43616c6c 206d65>",
+            "<PBTimelineItemAttributeBlob: 0x138d83290> Type: 12, Content: <4d617374 6572>"
+        )]
+Apr 19 11:02:45 svaughans-iPhone PebbleTime[2841] <Warning>:  = NSConcreteData
+Apr 19 11:02:45 svaughans-iPhone PebbleTime[2841] <Warning>: HANDLING
+Apr 19 11:02:45 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBSendSMSActionHandler: 0x138d2ab80> delegate]
+Apr 19 11:02:45 svaughans-iPhone PebbleTime[2841] <Warning>:  = <PBANCSActionHandler: 0x138d6ef00>
+Apr 19 11:02:45 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBANCSActionHandler: 0x138d6ef00> notificationHandler:<PBSendSMSActionHandler: 0x138d2ab80> didSendResponse:15 withAttributes:(
+            "<PBTimelineAttribute: 0x13755cbf0> { type = subtitle, content = Sending.. }"
+        ) actions:(null)]
+Apr 19 11:02:45 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBANCSActionHandler: 0x138d6ef00> handlingIdentifier]
+Apr 19 11:02:45 svaughans-iPhone PebbleTime[2841] <Warning>:  = <__NSConcreteUUID 0x138c54c20> A7844A1C-4736-4AB3-B67D-21CE9E422624
+Apr 19 11:02:45 svaughans-iPhone PebbleTime[2841] <Warning>: -[<PBANCSActionHandler: 0x138d6ef00> delegate]
+Apr 19 11:02:45 svaughans-iPhone PebbleTime[2841] <Warning>:  = <PBTimelineActionsWatchService: 0x138a306d0>
+Apr 19 11:02:45 svaughans-iPhone BTLEServer[1005] <Notice>: (Note ) Received "Perform Notification Action" command for notification #29
+Apr 19 11:02:45 svaughans-iPhone BTLEServer[1005] <Notice>: (Note ) Removed "Social" notification #29 (✗) from com.apple.MobileSMS
+Apr 19 11:02:45 svaughans-iPhone iap2d[1009] <Warning>: process com.apple.mobilesms.notification is now suspending
+Apr 19 11:02:51 svaughans-iPhone SpringBoard[2825] <Warning>: [MPUSystemMediaControls] Disabling lock screen media controls updates for screen turning off.
+Apr 19 11:02:51 svaughans-iPhone backboardd[95] <Notice>: [HID] [MT] MTSimpleHIDManager::setPropertyInternal detection mode: 6->255
+Apr 19 11:02:51 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:51 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:51 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:51 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:51 svaughans-iPhone SpringBoard[2825] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:02:55 svaughans-iPhone iap2d[1009] <Warning>: releasing process assert

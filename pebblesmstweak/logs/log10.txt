@@ -1,0 +1,398 @@
+catch this in the debugger.
+        The methods in the UIConstraintBasedLayoutDebugging category on UIView listed in <UIKit/UIView.h> may also be helpful.
+Apr 19 11:18:06 svaughans-iPhone SpringBoard[3626] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:18:06 svaughans-iPhone SpringBoard[3626] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:18:06 svaughans-iPhone MessagesNotificationViewService[3655] <Warning>: Unable to simultaneously satisfy constraints.
+                Probably at least one of the constraints in the following list is one you don't want. Try this: (1) look at each constraint and try to figure out which you don't expect; (2) find the code that added the unwanted constraint or constraints and fix it. (Note: If you're seeing NSAutoresizingMaskLayoutConstraints that you don't understand, refer to the documentation for the UIView property translatesAutoresizingMaskIntoConstraints)
+        (
+            "<NSLayoutConstraint:0x1265f70e0 V:|-(4)-[UIInputSetContainerView:0x1265f6070]   (Names: '|':UIRemoteKeyboardWindowHosted:0x1267d55e0 )>",
+            "<NSLayoutConstraint:0x1265f9180 'UIInputWindowController-top' V:|-(0)-[UIInputSetContainerView:0x1265f6070]   (Names: '|':UIRemoteKeyboardWindowHosted:0x1267d55e0 )>"
+        )
+
+        Will attempt to recover by breaking constraint
+        <NSLayoutConstraint:0x1265f70e0 V:|-(4)-[UIInputSetContainerView:0x1265f6070]   (Names: '|':UIRemoteKeyboardWindowHosted:0x1267d55e0 )>
+
+        Make a symbolic breakpoint at UIViewAlertForUnsatisfiableConstraints to catch this in the debugger.
+        The methods in the UIConstraintBasedLayoutDebugging category on UIView listed in <UIKit/UIView.h> may also be helpful.
+Apr 19 11:18:06 svaughans-iPhone SpringBoard[3626] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:18:06 svaughans-iPhone SpringBoard[3626] <Notice>: CoreLocation: CMPocketStateManager 7710.705999: query started with timeout 0.300000
+Apr 19 11:18:06 svaughans-iPhone backboardd[95] <Notice>: [HID] [MT] MTSimpleHIDManager::setPropertyInternal detection mode: 255->6 (deferring until bootloaded)
+Apr 19 11:18:06 svaughans-iPhone SpringBoard[3626] <Notice>: CoreLocation: CLPocketStateService 7710.755888: monitorTime,10.000000,bksMonitorTime,12.000000,bksDelay,0.049647,proxStatus,0
+Apr 19 11:18:06 svaughans-iPhone backboardd[95] <Notice>: [HID] [MT] MTSimpleHIDManager::deviceDidBootload device bootloaded
+Apr 19 11:18:06 svaughans-iPhone backboardd[95] <Notice>: [HID] [MT] MTSimpleHIDManager::setPropertyInternal detection mode: 6->6
+Apr 19 11:18:06 svaughans-iPhone SpringBoard[3626] <Notice>: CoreLocation: CMPocketStateManager: QueryTimerFire,7711.007696
+Apr 19 11:18:06 svaughans-iPhone SpringBoard[3626] <Notice>: CoreLocation: CMPocketStateManager 7711.008054: query response external=0 (OutOfPocket), internal=0, cbcount=1
+Apr 19 11:18:06 svaughans-iPhone SpringBoard[3626] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:18:06 svaughans-iPhone SpringBoard[3626] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:18:06 svaughans-iPhone SpringBoard[3626] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:18:06 svaughans-iPhone SpringBoard[3626] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:18:06 svaughans-iPhone SpringBoard[3626] <Notice>: (Error) NPSLogging: <NPSDomainAccessor.m +[NPSDomainAccessor resolveActivePairedDevicePairingID:pairingDataStore:]:40> Failed to resolve pairing ID ((null)) or data store ((null)) for active device
+Apr 19 11:18:06 svaughans-iPhone SpringBoard[3626] <Warning>: [MPUSystemMediaControls] Enabling lock screen media controls updates for screen turning on.
+Apr 19 11:18:06 svaughans-iPhone SpringBoard[3626] <Warning>: [MPUSystemMediaControls] Updating supported commands for now playing application.
+Apr 19 11:18:06 svaughans-iPhone SpringBoard[3626] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:18:11 svaughans-iPhone iap2d[1009] <Warning>: renewing process assertion - /BuildRoot/Library/Caches/com.apple.xbs/Sources/iapd/iapd-1746.1.3/iap2d/iAP2EAClient.m:__37-[iAP2EAClient takeProcessAssertion:]_block_invoke - 194 clientID=10 pid=3639
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBTimelineInvokeANCSActionMessage: 0x1468d55e0> initWithData:<00592cb0 03645b6b 96eff34c 57baa14a 6d584883 e402070c 06004d61 73746572 0106004d 61737465 72030900 48692074 68657265 20201300 636f6d2e 6170706c 652e4d6f 62696c65 534d5304 04002d00 00801c01 00c82504 002a4c16 57>]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> initWithEndianness:1 data:<645b6b96 eff34c57 baa14a6d 584883e4 02070c06 004d6173 74657201 06004d61 73746572 03090048 69207468 65726520 20130063 6f6d2e61 70706c65 2e4d6f62 696c6553 4d530404 002d0000 801c0100 c8250400 2a4c1657>]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <PBSequentialDataReader: 0x1463aa6f0>
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNextUUIDWithSuccess:‡UçF]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNext:16 bytes:0x16e5026d8]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> moreDataAvailableAfterCurrentPosition]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> data]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <645b6b96 eff34c57 baa14a6d 584883e4 02070c06 004d6173 74657201 06004d61 73746572 03090048 69207468 65726520 20130063 6f6d2e61 70706c65 2e4d6f62 696c6553 4d530404 002d0000 801c0100 c8250400 2a4c1657>
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> advanceBy:16]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <__NSConcreteUUID 0x1467f3fb0> 645B6B96-EFF3-4C57-BAA1-4A6D584883E4
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNextUInt8WithSuccess:‡UçF]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNext:1 bytes:0x16e50272f]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> moreDataAvailableAfterCurrentPosition]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> data]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <645b6b96 eff34c57 baa14a6d 584883e4 02070c06 004d6173 74657201 06004d61 73746572 03090048 69207468 65726520 20130063 6f6d2e61 70706c65 2e4d6f62 696c6553 4d530404 002d0000 801c0100 c8250400 2a4c1657>
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> advanceBy:1]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNextUInt8WithSuccess:‡UçF]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNext:1 bytes:0x16e50272f]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> moreDataAvailableAfterCurrentPosition]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> data]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <645b6b96 eff34c57 baa14a6d 584883e4 02070c06 004d6173 74657201 06004d61 73746572 03090048 69207468 65726520 20130063 6f6d2e61 70706c65 2e4d6f62 696c6553 4d530404 002d0000 801c0100 c8250400 2a4c1657>
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> advanceBy:1]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNextUInt8WithSuccess:‡UçF]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNext:1 bytes:0x16e50272f]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> moreDataAvailableAfterCurrentPosition]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> data]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <645b6b96 eff34c57 baa14a6d 584883e4 02070c06 004d6173 74657201 06004d61 73746572 03090048 69207468 65726520 20130063 6f6d2e61 70706c65 2e4d6f62 696c6553 4d530404 002d0000 801c0100 c8250400 2a4c1657>
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> advanceBy:1]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNextUInt16WithSuccess:‡UçF]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNext:2 bytes:0x16e50272e]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> moreDataAvailableAfterCurrentPosition]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> data]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <645b6b96 eff34c57 baa14a6d 584883e4 02070c06 004d6173 74657201 06004d61 73746572 03090048 69207468 65726520 20130063 6f6d2e61 70706c65 2e4d6f62 696c6553 4d530404 002d0000 801c0100 c8250400 2a4c1657>
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> advanceBy:2]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNextCharactersIntoNSStringWithLength:6 encoding:4 success:‡UçF]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNext:6 bytes:0x1462d3670]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> moreDataAvailableAfterCurrentPosition]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> data]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <645b6b96 eff34c57 baa14a6d 584883e4 02070c06 004d6173 74657201 06004d61 73746572 03090048 69207468 65726520 20130063 6f6d2e61 70706c65 2e4d6f62 696c6553 4d530404 002d0000 801c0100 c8250400 2a4c1657>
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> advanceBy:6]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = Master
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNextUInt8WithSuccess:‡UçF]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNext:1 bytes:0x16e50272f]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> moreDataAvailableAfterCurrentPosition]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> data]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <645b6b96 eff34c57 baa14a6d 584883e4 02070c06 004d6173 74657201 06004d61 73746572 03090048 69207468 65726520 20130063 6f6d2e61 70706c65 2e4d6f62 696c6553 4d530404 002d0000 801c0100 c8250400 2a4c1657>
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> advanceBy:1]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNextUInt16WithSuccess:‡UçF]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNext:2 bytes:0x16e50272e]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> moreDataAvailableAfterCurrentPosition]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> data]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <645b6b96 eff34c57 baa14a6d 584883e4 02070c06 004d6173 74657201 06004d61 73746572 03090048 69207468 65726520 20130063 6f6d2e61 70706c65 2e4d6f62 696c6553 4d530404 002d0000 801c0100 c8250400 2a4c1657>
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> advanceBy:2]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNextCharactersIntoNSStringWithLength:6 encoding:4 success:‡UçF]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNext:6 bytes:0x146790110]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> moreDataAvailableAfterCurrentPosition]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> data]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <645b6b96 eff34c57 baa14a6d 584883e4 02070c06 004d6173 74657201 06004d61 73746572 03090048 69207468 65726520 20130063 6f6d2e61 70706c65 2e4d6f62 696c6553 4d530404 002d0000 801c0100 c8250400 2a4c1657>
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> advanceBy:6]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = Master
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNextUInt8WithSuccess:‡UçF]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNext:1 bytes:0x16e50272f]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> moreDataAvailableAfterCurrentPosition]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> data]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <645b6b96 eff34c57 baa14a6d 584883e4 02070c06 004d6173 74657201 06004d61 73746572 03090048 69207468 65726520 20130063 6f6d2e61 70706c65 2e4d6f62 696c6553 4d530404 002d0000 801c0100 c8250400 2a4c1657>
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> advanceBy:1]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNextUInt16WithSuccess:‡UçF]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNext:2 bytes:0x16e50272e]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> moreDataAvailableAfterCurrentPosition]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> data]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <645b6b96 eff34c57 baa14a6d 584883e4 02070c06 004d6173 74657201 06004d61 73746572 03090048 69207468 65726520 20130063 6f6d2e61 70706c65 2e4d6f62 696c6553 4d530404 002d0000 801c0100 c8250400 2a4c1657>
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> advanceBy:2]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNextCharactersIntoNSStringWithLength:9 encoding:4 success:‡UçF]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNext:9 bytes:0x1467f3ff0]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> moreDataAvailableAfterCurrentPosition]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> data]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <645b6b96 eff34c57 baa14a6d 584883e4 02070c06 004d6173 74657201 06004d61 73746572 03090048 69207468 65726520 20130063 6f6d2e61 70706c65 2e4d6f62 696c6553 4d530404 002d0000 801c0100 c8250400 2a4c1657>
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> advanceBy:9]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = Hi there
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNextUInt8WithSuccess:‡UçF]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNext:1 bytes:0x16e50272f]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> moreDataAvailableAfterCurrentPosition]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> data]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <645b6b96 eff34c57 baa14a6d 584883e4 02070c06 004d6173 74657201 06004d61 73746572 03090048 69207468 65726520 20130063 6f6d2e61 70706c65 2e4d6f62 696c6553 4d530404 002d0000 801c0100 c8250400 2a4c1657>
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> advanceBy:1]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNextUInt16WithSuccess:‡UçF]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNext:2 bytes:0x16e50272e]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> moreDataAvailableAfterCurrentPosition]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> data]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <645b6b96 eff34c57 baa14a6d 584883e4 02070c06 004d6173 74657201 06004d61 73746572 03090048 69207468 65726520 20130063 6f6d2e61 70706c65 2e4d6f62 696c6553 4d530404 002d0000 801c0100 c8250400 2a4c1657>
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> advanceBy:2]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNextCharactersIntoNSStringWithLength:19 encoding:4 success:‡UçF]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNext:19 bytes:0x146792cf0]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> moreDataAvailableAfterCurrentPosition]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> data]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <645b6b96 eff34c57 baa14a6d 584883e4 02070c06 004d6173 74657201 06004d61 73746572 03090048 69207468 65726520 20130063 6f6d2e61 70706c65 2e4d6f62 696c6553 4d530404 002d0000 801c0100 c8250400 2a4c1657>
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> advanceBy:19]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = com.apple.MobileSMS
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNextUInt8WithSuccess:‡UçF]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNext:1 bytes:0x16e50272f]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> moreDataAvailableAfterCurrentPosition]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> data]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <645b6b96 eff34c57 baa14a6d 584883e4 02070c06 004d6173 74657201 06004d61 73746572 03090048 69207468 65726520 20130063 6f6d2e61 70706c65 2e4d6f62 696c6553 4d530404 002d0000 801c0100 c8250400 2a4c1657>
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> advanceBy:1]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNextUInt16WithSuccess:‡UçF]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNext:2 bytes:0x16e50272e]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> moreDataAvailableAfterCurrentPosition]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> data]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <645b6b96 eff34c57 baa14a6d 584883e4 02070c06 004d6173 74657201 06004d61 73746572 03090048 69207468 65726520 20130063 6f6d2e61 70706c65 2e4d6f62 696c6553 4d530404 002d0000 801c0100 c8250400 2a4c1657>
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> advanceBy:2]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> advanceBy:4]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNextUInt8WithSuccess:‡UçF]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNext:1 bytes:0x16e50272f]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> moreDataAvailableAfterCurrentPosition]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> data]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <645b6b96 eff34c57 baa14a6d 584883e4 02070c06 004d6173 74657201 06004d61 73746572 03090048 69207468 65726520 20130063 6f6d2e61 70706c65 2e4d6f62 696c6553 4d530404 002d0000 801c0100 c8250400 2a4c1657>
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> advanceBy:1]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNextUInt16WithSuccess:‡UçF]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNext:2 bytes:0x16e50272e]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> moreDataAvailableAfterCurrentPosition]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> data]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <645b6b96 eff34c57 baa14a6d 584883e4 02070c06 004d6173 74657201 06004d61 73746572 03090048 69207468 65726520 20130063 6f6d2e61 70706c65 2e4d6f62 696c6553 4d530404 002d0000 801c0100 c8250400 2a4c1657>
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> advanceBy:2]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> advanceBy:1]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNextUInt8WithSuccess:‡UçF]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNext:1 bytes:0x16e50272f]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> moreDataAvailableAfterCurrentPosition]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> data]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <645b6b96 eff34c57 baa14a6d 584883e4 02070c06 004d6173 74657201 06004d61 73746572 03090048 69207468 65726520 20130063 6f6d2e61 70706c65 2e4d6f62 696c6553 4d530404 002d0000 801c0100 c8250400 2a4c1657>
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> advanceBy:1]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNextUInt16WithSuccess:‡UçF]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNext:2 bytes:0x16e50272e]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> moreDataAvailableAfterCurrentPosition]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> data]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <645b6b96 eff34c57 baa14a6d 584883e4 02070c06 004d6173 74657201 06004d61 73746572 03090048 69207468 65726520 20130063 6f6d2e61 70706c65 2e4d6f62 696c6553 4d530404 002d0000 801c0100 c8250400 2a4c1657>
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> advanceBy:2]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNextUInt32WithSuccess:‡UçF]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> readNext:4 bytes:0x16e50272c]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> moreDataAvailableAfterCurrentPosition]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> data]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <645b6b96 eff34c57 baa14a6d 584883e4 02070c06 004d6173 74657201 06004d61 73746572 03090048 69207468 65726520 20130063 6f6d2e61 70706c65 2e4d6f62 696c6553 4d530404 002d0000 801c0100 c8250400 2a4c1657>
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1463aa6f0> advanceBy:4]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = PBTimelineInvokeANCSActionMessage endpoint=0x2cb0 (11440) commandID=0x3 (3) payload=88 bytes
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBANCSActionHandler: 0x14671e770> handleInvokeANCSActionMessage:PBTimelineInvokeANCSActionMessage endpoint=0x2cb0 (11440) commandID=0x3 (3) payload=88 bytes]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBTimelineInvokeANCSActionMessage: 0x1468d55e0> ANCSIdentifier]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <__NSConcreteUUID 0x1467f3fb0> 645B6B96-EFF3-4C57-BAA1-4A6D584883E4
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBANCSActionHandler: 0x14671e770> setHandlingIdentifier:<__NSConcreteUUID 0x1467f3fb0> 645B6B96-EFF3-4C57-BAA1-4A6D584883E4]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBANCSActionHandler: 0x14671e770> handlingIdentifier]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <__NSConcreteUUID 0x1467f3fb0> 645B6B96-EFF3-4C57-BAA1-4A6D584883E4
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBANCSActionHandler: 0x14671e770> actionHandlersByAppIdentifier]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = {
+            "com.apple.MobileSMS" = PBSendSMSActionHandler;
+        }
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = __NSDictionaryI
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBTimelineInvokeANCSActionMessage: 0x1468d55e0> appIdentifier]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = com.apple.MobileSMS
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBTimelineInvokeANCSActionMessage: 0x1468d55e0> appIdentifier]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = com.apple.MobileSMS
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBANCSActionHandler: 0x14671e770> setCurrentActionHandler:<PBSendSMSActionHandler: 0x146294270>]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBANCSActionHandler: 0x14671e770> currentActionHandler]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <PBSendSMSActionHandler: 0x146294270>
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = PBSendSMSActionHandler
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSendSMSActionHandler: 0x146294270> startHandlingInvokeActionMessage:PBTimelineInvokeANCSActionMessage endpoint=0x2cb0 (11440) commandID=0x3 (3) payload=88 bytes]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSendSMSActionHandler: 0x146294270> SMSReplyManager]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <PBSMSReplyManager: 0x146363d90>
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSMSReplyManager: 0x146363d90> hasLinkedSMSAccount]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: OVERRIDEN = YES
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBTimelineInvokeANCSActionMessage: 0x1468d55e0> notificationSender]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = Master
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBTimelineInvokeANCSActionMessage: 0x1468d55e0> ANCSIdentifier]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <__NSConcreteUUID 0x1467f3fb0> 645B6B96-EFF3-4C57-BAA1-4A6D584883E4
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBTimelineInvokeANCSActionMessage: 0x1468d55e0> notificationSender]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = Master
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBAddressBookQuerySession: 0x1467aee80> initWithIdentifier:<__NSConcreteUUID 0x1467f3fb0> 645B6B96-EFF3-4C57-BAA1-4A6D584883E4 query:Master delegate:<PBSendSMSActionHandler: 0x146294270> addressBookManager:<PBAddressBookAuthorizationManager: 0x1467a7100> contactPreferredPhoneManager:<PBContactPreferredPhoneManager: 0x1467e3e30>]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBAddressBookQuerySession: 0x1467aee80> cleanSearchQuery:Master]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSendSMSActionHandler: 0x146294270> setAddressBookQuerySession:<PBAddressBookQuerySession: 0x1467aee80>]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSendSMSActionHandler: 0x146294270> addressBookQuerySession]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <PBAddressBookQuerySession: 0x1467aee80>
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBAddressBookQuerySession: 0x1467aee80> runInitialQuery]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBAddressBookQuerySession: 0x1467aee80> query]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBAddressBookQuerySession: 0x1467aee80> isQueryValidPhoneNumber:Master]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBAddressBookQuerySession: 0x1467aee80> addressBook]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBAddressBookQuerySession: 0x1467aee80> query]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBAddressBookQuerySession: 0x1467aee80> query]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBAddressBookQuerySession: 0x1467aee80> query]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBAddressBookQuerySession: 0x1467aee80> handleSingleContact:<PBContact: 0x1468f5a60>]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBAddressBookQuerySession: 0x1467aee80> setSelectedContact:<PBContact: 0x1468f5a60>]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBAddressBookQuerySession: 0x1467aee80> preferredPhoneForContact:<PBContact: 0x1468f5a60>]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBAddressBookQuerySession: 0x1467aee80> contactPreferredPhoneManager]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBAddressBookQuerySession: 0x1467aee80> selectAddressLabeledValue:(mobile, (720) 879-1626)]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBAddressBookQuerySession: 0x1467aee80> setHasResolvedAmbiguity:1]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBAddressBookQuerySession: 0x1467aee80> setSelectedLabeledValue:(mobile, (720) 879-1626)]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBAddressBookQuerySession: 0x1467aee80> delegate]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBAddressBookQuerySession: 0x1467aee80> selectedContact]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSendSMSActionHandler: 0x146294270> addressBookQuerySession:<PBAddressBookQuerySession: 0x1467aee80> finishedWithContact:<PBContact: 0x1468f5a60> labeledValue:(mobile, (720) 879-1626)]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSendSMSActionHandler: 0x146294270> preferredPhoneManager]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <PBContactPreferredPhoneManager: 0x1467e3e30>
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSendSMSActionHandler: 0x146294270> delegate]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <PBANCSActionHandler: 0x14671e770>
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBANCSActionHandler: 0x14671e770> notificationHandler:<PBSendSMSActionHandler: 0x146294270> didSendResponse:21 withAttributes:(null) actions:(null)]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBANCSActionHandler: 0x14671e770> handlingIdentifier]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <__NSConcreteUUID 0x1467f3fb0> 645B6B96-EFF3-4C57-BAA1-4A6D584883E4
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBANCSActionHandler: 0x14671e770> delegate]
+Apr 19 11:18:11 svaughans-iPhone PebbleTime[3639] <Warning>:  = <PBTimelineActionsWatchService: 0x14671e2d0>
+Apr 19 11:18:17 svaughans-iPhone SpringBoard[3626] <Warning>: [MPUSystemMediaControls] Disabling lock screen media controls updates for screen turning off.
+Apr 19 11:18:17 svaughans-iPhone backboardd[95] <Notice>: [HID] [MT] MTSimpleHIDManager::setPropertyInternal detection mode: 6->255
+Apr 19 11:18:17 svaughans-iPhone SpringBoard[3626] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:18:17 svaughans-iPhone SpringBoard[3626] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:18:17 svaughans-iPhone SpringBoard[3626] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:18:17 svaughans-iPhone SpringBoard[3626] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 19 11:18:20 svaughans-iPhone iap2d[1009] <Warning>: renewing process assertion - /BuildRoot/Library/Caches/com.apple.xbs/Sources/iapd/iapd-1746.1.3/iap2d/iAP2EAClient.m:__37-[iAP2EAClient takeProcessAssertion:]_block_invoke - 194 clientID=10 pid=3639
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> initWithEndianness:1 data:<645b6b96 eff34c57 baa14a6d 584883e4 0202010e 0043616c 6c20796f 75206c61 7465720c 06004d61 73746572>]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = <PBSequentialDataReader: 0x1464b7fd0>
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> readNextUUIDWithSuccess:±÷D]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> readNext:16 bytes:0x16e35e778]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> moreDataAvailableAfterCurrentPosition]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> data]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = <645b6b96 eff34c57 baa14a6d 584883e4 0202010e 0043616c 6c20796f 75206c61 7465720c 06004d61 73746572>
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> advanceBy:16]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = <__NSConcreteUUID 0x1463d8140> 645B6B96-EFF3-4C57-BAA1-4A6D584883E4
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> readNextUInt8WithSuccess:±÷D]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> readNext:1 bytes:0x16e35e7cf]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> moreDataAvailableAfterCurrentPosition]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> data]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = <645b6b96 eff34c57 baa14a6d 584883e4 0202010e 0043616c 6c20796f 75206c61 7465720c 06004d61 73746572>
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> advanceBy:1]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> readNextUInt8WithSuccess:±÷D]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> readNext:1 bytes:0x16e35e7cf]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> moreDataAvailableAfterCurrentPosition]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> data]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = <645b6b96 eff34c57 baa14a6d 584883e4 0202010e 0043616c 6c20796f 75206c61 7465720c 06004d61 73746572>
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> advanceBy:1]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> readNextUInt8WithSuccess:ƒ/p]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> readNext:1 bytes:0x16e35e75f]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> moreDataAvailableAfterCurrentPosition]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> data]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = <645b6b96 eff34c57 baa14a6d 584883e4 0202010e 0043616c 6c20796f 75206c61 7465720c 06004d61 73746572>
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> advanceBy:1]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> readNextUInt16WithSuccess:ƒ/p]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> readNext:2 bytes:0x16e35e75e]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> moreDataAvailableAfterCurrentPosition]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> data]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = <645b6b96 eff34c57 baa14a6d 584883e4 0202010e 0043616c 6c20796f 75206c61 7465720c 06004d61 73746572>
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> advanceBy:2]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> readNextBytesIntoNSDataWithLength:14 success:ƒ/p]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> readNext:14 bytes:0x1468da1c0]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> moreDataAvailableAfterCurrentPosition]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> data]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = <645b6b96 eff34c57 baa14a6d 584883e4 0202010e 0043616c 6c20796f 75206c61 7465720c 06004d61 73746572>
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> advanceBy:14]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = <43616c6c 20796f75 206c6174 6572>
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> readNextUInt8WithSuccess:ƒ/p]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> readNext:1 bytes:0x16e35e75f]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> moreDataAvailableAfterCurrentPosition]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> data]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = <645b6b96 eff34c57 baa14a6d 584883e4 0202010e 0043616c 6c20796f 75206c61 7465720c 06004d61 73746572>
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> advanceBy:1]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> readNextUInt16WithSuccess:ƒ/p]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> readNext:2 bytes:0x16e35e75e]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> moreDataAvailableAfterCurrentPosition]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> data]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = <645b6b96 eff34c57 baa14a6d 584883e4 0202010e 0043616c 6c20796f 75206c61 7465720c 06004d61 73746572>
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> advanceBy:2]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> readNextBytesIntoNSDataWithLength:6 success:ƒ/p]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> readNext:6 bytes:0x1464d7fb0]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> moreDataAvailableAfterCurrentPosition]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> data]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = <645b6b96 eff34c57 baa14a6d 584883e4 0202010e 0043616c 6c20796f 75206c61 7465720c 06004d61 73746572>
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSequentialDataReader: 0x1464b7fd0> advanceBy:6]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = <4d617374 6572>
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBANCSActionHandler: 0x14671e770> isHandlingNotificationWithIdentifier:<__NSConcreteUUID 0x1463d8140> 645B6B96-EFF3-4C57-BAA1-4A6D584883E4]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBANCSActionHandler: 0x14671e770> handlingIdentifier]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = <__NSConcreteUUID 0x1467f3fb0> 645B6B96-EFF3-4C57-BAA1-4A6D584883E4
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = 1
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBANCSActionHandler: 0x14671e770> handleActionWithActionIdentifier:2 attributes:(
+            "<PBTimelineItemAttributeBlob: 0x14647f5f0> Type: 1, Content: <43616c6c 20796f75 206c6174 6572>",
+            "<PBTimelineItemAttributeBlob: 0x146793500> Type: 12, Content: <4d617374 6572>"
+        )]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBANCSActionHandler: 0x14671e770> currentActionHandler]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = <PBSendSMSActionHandler: 0x146294270>
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = PBSendSMSActionHandler
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSendSMSActionHandler: 0x146294270> handleActionWithActionIdentifier:2 attributes:(
+            "<PBTimelineItemAttributeBlob: 0x14647f5f0> Type: 1, Content: <43616c6c 20796f75 206c6174 6572>",
+            "<PBTimelineItemAttributeBlob: 0x146793500> Type: 12, Content: <4d617374 6572>"
+        )]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: HANDLING
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: Call you later
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBSendSMSActionHandler: 0x146294270> delegate]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = <PBANCSActionHandler: 0x14671e770>
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBANCSActionHandler: 0x14671e770> notificationHandler:<PBSendSMSActionHandler: 0x146294270> didSendResponse:15 withAttributes:(
+            "<PBTimelineAttribute: 0x146747e30> { type = subtitle, content = Sending.. }"
+        ) actions:(null)]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBANCSActionHandler: 0x14671e770> handlingIdentifier]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = <__NSConcreteUUID 0x1467f3fb0> 645B6B96-EFF3-4C57-BAA1-4A6D584883E4
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>: -[<PBANCSActionHandler: 0x14671e770> delegate]
+Apr 19 11:18:20 svaughans-iPhone PebbleTime[3639] <Warning>:  = <PBTimelineActionsWatchService: 0x14671e2d0>
+Apr 19 11:18:21 svaughans-iPhone BTLEServer[1005] <Notice>: (Note ) Received "Perform Notification Action" command for notification #29
+Apr 19 11:18:21 svaughans-iPhone BTLEServer[1005] <Notice>: (Note ) Removed "Social" notification #29 (✗) from com.apple.MobileSMS
+Apr 19 11:18:21 svaughans-iPhone iap2d[1009] <Warning>: process com.apple.mobilesms.notification is now suspending
+Apr 19 11:18:30 svaughans-iPhone iap2d[1009] <Warning>: releasing process assertion - /BuildRoot/Library/Caches/com.apple.xbs/Sources/iapd/iapd-1746.1.3/iap2d/iAP2EAClient.m:__74-[iAP2EAClient initWithCapabilities:auditToken:xpcConnection:andBundleId:]_block_invoke - 106 clientID=10 pid=3639
+Apr 19 11:18:30 svaughans-iPhone iap2d[1009] <Warning>: process com.getpebble.pebbletime is now suspending
+

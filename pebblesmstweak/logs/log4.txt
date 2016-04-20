@@ -1,0 +1,305 @@
+
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBANCSActionHandler: 0x15676cd50> handleInvokeANCSActionMessage:PBTimelineInvokeANCSActionMessage endpoint=0x2cb0 (11440) commandID=0x3 (3) payload=82 bytes]
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBANCSActionHandler: 0x15676cd50> setHandlingIdentifier:<__NSConcreteUUID 0x1563f9c50> EFB3EDDF-EE38-45DB-AE88-A8548CD2DF20]
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBANCSActionHandler: 0x15676cd50> handlingIdentifier]
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>:  = <__NSConcreteUUID 0x1563f9c50> EFB3EDDF-EE38-45DB-AE88-A8548CD2DF20
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBANCSActionHandler: 0x15676cd50> actionHandlersByAppIdentifier]
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>:  = {
+            "com.apple.MobileSMS" = PBSendSMSActionHandler;
+        }
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>:  = __NSDictionaryI
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBANCSActionHandler: 0x15676cd50> setCurrentActionHandler:<PBSendSMSActionHandler: 0x15678a4c0>]
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBANCSActionHandler: 0x15676cd50> currentActionHandler]
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>:  = <PBSendSMSActionHandler: 0x15678a4c0>
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>:  = PBSendSMSActionHandler
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: 'PBSendSMSActionHandler' has method named 'addressBookQuerySessionFailedWithNoContactAccess:' of encoding 'v24@0:8@16'
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: 'PBSendSMSActionHandler' has method named 'addressBookQuerySession:finishedWithContact:labeledValue:' of encoding 'v40@0:8@16@24@32'
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: 'PBSendSMSActionHandler' has method named 'addressBookQuerySession:foundMultipleContactMatches:' of encoding 'v32@0:8@16@24'
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: 'PBSendSMSActionHandler' has method named 'addressBookQuerySession:foundMultipleAddresses:' of encoding 'v32@0:8@16@24'
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: 'PBSendSMSActionHandler' has method named 'addressBookQuerySessionFailedToFindContactMatch:' of encoding 'v24@0:8@16'
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: 'PBSendSMSActionHandler' has method named 'startHandlingInvokeActionMessage:' of encoding 'v24@0:8@16'
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: 'PBSendSMSActionHandler' has method named 'handleActionWithActionIdentifier:attributes:' of encoding 'v28@0:8C16@20'
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: 'PBSendSMSActionHandler' has method named 'notificationSourceIdentifier' of encoding '@16@0:8'
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: 'PBSendSMSActionHandler' has method named 'initWithNotificationSourceIdentifier:delegate:SMSReplyManager:contactPreferredPhoneManager:' of encoding '@48@0:8@16@24@32@40'
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: 'PBSendSMSActionHandler' has method named 'SMSReplyManager' of encoding '@16@0:8'
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: 'PBSendSMSActionHandler' has method named 'addressBookQuerySession' of encoding '@16@0:8'
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: 'PBSendSMSActionHandler' has method named 'setAddressBookQuerySession:' of encoding 'v24@0:8@16'
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: 'PBSendSMSActionHandler' has method named 'preferredPhoneManager' of encoding '@16@0:8'
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: 'PBSendSMSActionHandler' has method named '.cxx_destruct' of encoding 'v16@0:8'
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: 'PBSendSMSActionHandler' has method named 'delegate' of encoding '@16@0:8'
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: PBTEST = NSObject
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBSendSMSActionHandler: 0x15678a4c0> startHandlingInvokeActionMessage:PBTimelineInvokeANCSActionMessage endpoint=0x2cb0 (11440) commandID=0x3 (3) payload=82 bytes]
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBSendSMSActionHandler: 0x15678a4c0> SMSReplyManager]
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>:  = <PBSMSReplyManager: 0x15645aea0>
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBSMSReplyManager: 0x15645aea0> hasLinkedSMSAccount]
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>:  = 1
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: OVERRIDEN = YES
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBSendSMSActionHandler: 0x15678a4c0> setAddressBookQuerySession:<PBAddressBookQuerySession: 0x1568d4ae0>]
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBSendSMSActionHandler: 0x15678a4c0> addressBookQuerySession]
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>:  = <PBAddressBookQuerySession: 0x1568d4ae0>
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBSendSMSActionHandler: 0x15678a4c0> addressBookQuerySession:<PBAddressBookQuerySession: 0x1568d4ae0> finishedWithContact:<PBContact: 0x156963c70> labeledValue:(mobile, (720) 879-1626)]
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBSendSMSActionHandler: 0x15678a4c0> preferredPhoneManager]
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>:  = <PBContactPreferredPhoneManager: 0x156919ae0>
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBSendSMSActionHandler: 0x15678a4c0> delegate]
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>:  = <PBANCSActionHandler: 0x15676cd50>
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBANCSActionHandler: 0x15676cd50> notificationHandler:<PBSendSMSActionHandler: 0x15678a4c0> didSendResponse:21 withAttributes:(null) actions:(null)]
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBANCSActionHandler: 0x15676cd50> handlingIdentifier]
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>:  = <__NSConcreteUUID 0x1563f9c50> EFB3EDDF-EE38-45DB-AE88-A8548CD2DF20
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBANCSActionHandler: 0x15676cd50> delegate]
+Apr 13 21:20:07 svaughans-iPhone PebbleTime[8087] <Warning>:  = <PBTimelineActionsWatchService: 0x15670c5c0>
+Apr 13 21:20:07 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:09 svaughans-iPhone Reddit[8082] <Warning>: CoreAnimation: warning, deleted thread with uncommitted CATransaction; set CA_DEBUG_TRANSACTIONS=1 in environment to log backtraces.
+Apr 13 21:20:10 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:10 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:10 svaughans-iPhone iap2d[446] <Warning>: process com.apple.mobilesms.notification is now suspending
+Apr 13 21:20:12 svaughans-iPhone syncdefaultsd[8096] <Notice>: MS:Notice: Injecting: com.apple.syncdefaultsd [syncdefaultsd] (1240.10)
+Apr 13 21:20:12 svaughans-iPhone syncdefaultsd[8096] <Notice>: (Note ) marked "com.me.keyvalueservice" topic as "opportunistic" on <APSConnection: 0x13d61de40>
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBANCSActionHandler: 0x15676cd50> isHandlingNotificationWithIdentifier:<__NSConcreteUUID 0x156a1b590> EFB3EDDF-EE38-45DB-AE88-A8548CD2DF20]
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBANCSActionHandler: 0x15676cd50> handlingIdentifier]
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>:  = <__NSConcreteUUID 0x1563f9c50> EFB3EDDF-EE38-45DB-AE88-A8548CD2DF20
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>:  = 1
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBANCSActionHandler: 0x15676cd50> handleActionWithActionIdentifier:2 attributes:(
+            "<PBTimelineItemAttributeBlob: 0x156a320d0> Type: 1, Content: <f09f918d>",
+            "<PBTimelineItemAttributeBlob: 0x156a25fa0> Type: 12, Content: <4d617374 6572>"
+        )]
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBANCSActionHandler: 0x15676cd50> currentActionHandler]
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>:  = <PBSendSMSActionHandler: 0x15678a4c0>
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>:  = PBSendSMSActionHandler
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: 'PBSendSMSActionHandler' has method named 'addressBookQuerySessionFailedWithNoContactAccess:' of encoding 'v24@0:8@16'
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: 'PBSendSMSActionHandler' has method named 'addressBookQuerySession:finishedWithContact:labeledValue:' of encoding 'v40@0:8@16@24@32'
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: 'PBSendSMSActionHandler' has method named 'addressBookQuerySession:foundMultipleContactMatches:' of encoding 'v32@0:8@16@24'
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: 'PBSendSMSActionHandler' has method named 'addressBookQuerySession:foundMultipleAddresses:' of encoding 'v32@0:8@16@24'
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: 'PBSendSMSActionHandler' has method named 'addressBookQuerySessionFailedToFindContactMatch:' of encoding 'v24@0:8@16'
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: 'PBSendSMSActionHandler' has method named 'startHandlingInvokeActionMessage:' of encoding 'v24@0:8@16'
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: 'PBSendSMSActionHandler' has method named 'handleActionWithActionIdentifier:attributes:' of encoding 'v28@0:8C16@20'
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: 'PBSendSMSActionHandler' has method named 'notificationSourceIdentifier' of encoding '@16@0:8'
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: 'PBSendSMSActionHandler' has method named 'initWithNotificationSourceIdentifier:delegate:SMSReplyManager:contactPreferredPhoneManager:' of encoding '@48@0:8@16@24@32@40'
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: 'PBSendSMSActionHandler' has method named 'SMSReplyManager' of encoding '@16@0:8'
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: 'PBSendSMSActionHandler' has method named 'addressBookQuerySession' of encoding '@16@0:8'
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: 'PBSendSMSActionHandler' has method named 'setAddressBookQuerySession:' of encoding 'v24@0:8@16'
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: 'PBSendSMSActionHandler' has method named 'preferredPhoneManager' of encoding '@16@0:8'
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: 'PBSendSMSActionHandler' has method named '.cxx_destruct' of encoding 'v16@0:8'
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: 'PBSendSMSActionHandler' has method named 'delegate' of encoding '@16@0:8'
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: PBTEST = NSObject
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBSendSMSActionHandler: 0x15678a4c0> handleActionWithActionIdentifier:2 attributes:(
+            "<PBTimelineItemAttributeBlob: 0x156a320d0> Type: 1, Content: <f09f918d>",
+            "<PBTimelineItemAttributeBlob: 0x156a25fa0> Type: 12, Content: <4d617374 6572>"
+        )]
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBSendSMSActionHandler: 0x15678a4c0> addressBookQuerySession]
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>:  = <PBAddressBookQuerySession: 0x1568d4ae0>
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBSendSMSActionHandler: 0x15678a4c0> SMSReplyManager]
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>:  = <PBSMSReplyManager: 0x15645aea0>
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBSMSReplyManager: 0x15645aea0> hasLinkedSMSAccount]
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>:  = 1
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: OVERRIDEN = YES
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBSendSMSActionHandler: 0x15678a4c0> addressBookQuerySession]
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>:  = <PBAddressBookQuerySession: 0x1568d4ae0>
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBSendSMSActionHandler: 0x15678a4c0> delegate]
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>:  = <PBANCSActionHandler: 0x15676cd50>
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBANCSActionHandler: 0x15676cd50> notificationHandler:<PBSendSMSActionHandler: 0x15678a4c0> didSendResponse:15 withAttributes:(
+            "<PBTimelineAttribute: 0x156a195a0> { type = subtitle, content = Sending... }"
+        ) actions:(null)]
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBANCSActionHandler: 0x15676cd50> handlingIdentifier]
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>:  = <__NSConcreteUUID 0x1563f9c50> EFB3EDDF-EE38-45DB-AE88-A8548CD2DF20
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBANCSActionHandler: 0x15676cd50> delegate]
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>:  = <PBTimelineActionsWatchService: 0x15670c5c0>
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBSMSApiClient: 0x15691a390> linkedAccountsManager]
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>:  = <PBLinkedAccountsManager: 0x1561173c0>
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBLinkedAccountsManager: 0x1561173c0> linkedAccountsValet]
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>:  = <VALValet: 0x156137260>: PBLinkedAccoutnsValetIdentifier AccessibleAlways
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBLinkedAccountCredentials: 0x156919bc0> apiData]
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>:  = JWE:test
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: OVERRIDEN = JWE:test
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBLinkedAccountExtendedCredentials: 0x156919bc0> accountData]
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>:  = __NSCFString
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: OVERRIDEN = JWE:TESTEST
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBLinkedAccountCredentials: 0x156919bc0> expiration]
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>:  = 2016-04-14 02:12:32 +0000
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: OVERRIDEN = 2016-04-14 11:20:12 +0000
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBLinkedAccount: 0x156923200> setCredentials:<PBLinkedAccountExtendedCredentials: 0x156919bc0> {
+            accountData = "JWE:TESTEST";
+            apiData = "JWE:test";
+            expiration = "2016-04-14 11:20:12 +0000";
+        }]
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBLinkedAccount: 0x156923200> setSettings:<PBLinkedAccountSettings: 0x1567f5ad0> {
+            domain = "<null>";
+            email = "<null>";
+            fullName = "<null>";
+        }]
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBLinkedAccount: 0x156923200> credentials]
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>:  = PBLinkedAccountExtendedCredentials
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBLinkedAccountCredentials: 0x156919bc0> expiration]
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>:  = 2016-04-14 02:12:32 +0000
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: OVERRIDEN = 2016-04-14 11:20:12 +0000
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBLinkedAccount: 0x156923200> provider]
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>:  = 2
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: OVERRIDEN = 1
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: +[<PBLinkedAccountsManager: 0x100899660> providerToString:1]
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>:  = att
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBLinkedAccount: 0x156923200> credentials]
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>:  = PBLinkedAccountExtendedCredentials
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBLinkedAccountCredentials: 0x156919bc0> expiration]
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>:  = 2016-04-14 02:12:32 +0000
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: OVERRIDEN = 2016-04-14 11:20:12 +0000
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBLinkedAccount: 0x156923200> credentials]
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>:  = PBLinkedAccountExtendedCredentials
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBLinkedAccountCredentials: 0x156919bc0> expiration]
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>:  = 2016-04-14 02:12:32 +0000
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: OVERRIDEN = 2016-04-14 11:20:12 +0000
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBSMSApiClient: 0x15691a390> SMSSessionManager]
+Apr 13 21:20:12 svaughans-iPhone PebbleTime[8087] <Warning>:  = <PBSMSSessionManager: 0x1567700f0, baseURL: (null), session: <__NSURLSessionLocal: 0x15695dc20>, operationQueue: <NSOperationQueue: 0x156923510>{name = 'NSOperationQueue 0x156923510'}>
+Apr 13 21:20:12 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:12 svaughans-iPhone syncdefaultsd[8096] <Notice>: (Note ) marked "com.me.keyvalueservice" topic as "enabled" on <APSConnection: 0x13d61de40>
+Apr 13 21:20:13 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:13 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:13 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:13 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:13 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:13 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:13 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:13 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:13 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:13 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:13 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:13 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:13 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:13 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:13 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:14 svaughans-iPhone BTLEServer[369] <Notice>: (Note ) Received "Perform Notification Action" command for notification #12
+Apr 13 21:20:14 svaughans-iPhone BTLEServer[369] <Notice>: (Note ) Removed "Social" notification #12 (✗) from com.apple.MobileSMS
+Apr 13 21:20:14 svaughans-iPhone SpringBoard[8056] <Warning>: SBLockScreenNotificationListController: Attempting to remove a bulletin I don't have
+Apr 13 21:20:17 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:17 svaughans-iPhone MobileSMS[8089] <Warning>: PEBBLESMS: sendMessageTo number
+Apr 13 21:20:17 svaughans-iPhone MobileSMS[8089] <Warning>: PEBBLESMS: sendMessageTo
+Apr 13 21:20:17 svaughans-iPhone MobileSMS[8089] <Warning>: PEBBLESMS: sendMessageTo __NSArrayM
+Apr 13 21:20:17 svaughans-iPhone MobileSMS[8089] <Warning>: PEBBLESMS: finalPhone == NULL 0
+Apr 13 21:20:17 svaughans-iPhone MobileSMS[8089] <Warning>: PEBBLESMS: conversation CKConversation
+Apr 13 21:20:17 svaughans-iPhone MobileSMS[8089] <Warning>: PEBBLESMS: sentMessage
+Apr 13 21:20:17 svaughans-iPhone MobileSMS[8089] <Warning>: PEBBLESMS: handles __NSArrayM
+Apr 13 21:20:17 svaughans-iPhone MobileSMS[8089] <Warning>: PEBBLESMS: handle == NULL 0
+Apr 13 21:20:17 svaughans-iPhone MobileSMS[8089] <Warning>: PEBBLESMS: phone __NSCFString
+Apr 13 21:20:17 svaughans-iPhone MobileSMS[8089] <Warning>: PEBBLESMS: savedRecipient
+Apr 13 21:20:17 svaughans-iPhone MobileSMS[8089] <Warning>: PEBBLESMS: sender (null)
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBSMSReplyManager: 0x15645aea0> removeDisabledProvidersIfNecessary]
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBSMSReplyManager: 0x15645aea0> linkedSMSProvider]
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBSMSReplyManager: 0x15645aea0> linkedSMSAccount]
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBSMSReplyManager: 0x15645aea0> linkedAccountsManager]
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>:  = <PBLinkedAccountsManager: 0x1561173c0>
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBLinkedAccountsManager: 0x1561173c0> linkedAccountsValet]
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>:  = <VALValet: 0x156137260>: PBLinkedAccoutnsValetIdentifier AccessibleAlways
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBLinkedAccountCredentials: 0x154ff7da0> apiData]
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>:  = JWE:test
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>: OVERRIDEN = JWE:test
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBLinkedAccountExtendedCredentials: 0x154ff7da0> accountData]
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>:  = __NSCFString
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>: OVERRIDEN = JWE:TESTEST
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBLinkedAccountCredentials: 0x154ff7da0> expiration]
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>:  = 2016-04-14 02:12:32 +0000
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>: OVERRIDEN = 2016-04-14 11:20:18 +0000
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBLinkedAccount: 0x15691d680> setCredentials:<PBLinkedAccountExtendedCredentials: 0x154ff7da0> {
+            accountData = "JWE:TESTEST";
+            apiData = "JWE:test";
+            expiration = "2016-04-14 11:20:18 +0000";
+        }]
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBLinkedAccount: 0x15691d680> setSettings:<PBLinkedAccountSettings: 0x154ff6020> {
+            domain = "<null>";
+            email = "<null>";
+            fullName = "<null>";
+        }]
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBLinkedAccount: 0x15691d680> uuid]
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>:  = <__NSConcreteUUID 0x154ff7a10> 1A4F9FDF-5C4F-41EC-BCF2-764DAAF98FAE
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBLinkedAccount: 0x15691d680> provider]
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>:  = 2
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>: OVERRIDEN = 1
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBLinkedAccount: 0x15691d680> settings]
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>:  = <PBLinkedAccountSettings: 0x154ff6020> {
+            domain = "<null>";
+            email = "<null>";
+            fullName = "<null>";
+        }
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBLinkedAccount: 0x15691d680> credentials]
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>:  = PBLinkedAccountExtendedCredentials
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBLinkedAccountCredentials: 0x154ff7da0> apiData]
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>:  = JWE:test
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>: OVERRIDEN = JWE:test
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBLinkedAccountExtendedCredentials: 0x154ff7da0> accountData]
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>:  = __NSCFString
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>: OVERRIDEN = JWE:TESTEST
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBLinkedAccountCredentials: 0x154ff7da0> expiration]
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>:  = 2016-04-14 02:12:32 +0000
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>: OVERRIDEN = 2016-04-14 11:20:18 +0000
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>:  = <PBLinkedAccount: 0x15691d680> {
+            credentials = "<PBLinkedAccountExtendedCredentials: 0x154ff7da0> {\n    accountData = \"JWE:TESTEST\";\n    apiData = \"JWE:test\";\n    expiration = \"2016-04-14 11:20:18 +0000\";\n}";
+            provider = 1;
+            settings = "<PBLinkedAccountSettings: 0x154ff6020> {\n    domain = \"<null>\";\n    email = \"<null>\";\n    fullName = \"<null>\";\n}";
+            uuid = "<__NSConcreteUUID 0x154ff8df0> 63169C3B-C8D9-453B-8547-4BE54FE84C02";
+        }
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBLinkedAccount: 0x15691d680> provider]
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>:  = 2
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>: OVERRIDEN = 1
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>:  = 1
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBSMSReplyManager: 0x15645aea0> linkedAccountsManager]
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>:  = <PBLinkedAccountsManager: 0x1561173c0>
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBLinkedAccountsManager: 0x1561173c0> isProviderEnabled:1]
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>: -[<PBLinkedAccountsManager: 0x1561173c0> enabledProviders]
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>:  = __NSCFNumber
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>:  = 1
+Apr 13 21:20:18 svaughans-iPhone PebbleTime[8087] <Warning>: OVERRIDEN = YES
+Apr 13 21:20:20 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:20 svaughans-iPhone MobileSMS[8089] <Warning>: PEBBLESMS: sender __NSCFString
+Apr 13 21:20:20 svaughans-iPhone MobileSMS[8089] <Warning>: PEBBLESMS: conversation CKConversation
+Apr 13 21:20:20 svaughans-iPhone MobileSMS[8089] <Warning>: PEBBLESMS: handles __NSArrayM
+Apr 13 21:20:20 svaughans-iPhone MobileSMS[8089] <Warning>: PEBBLESMS: handle == NULL 0
+Apr 13 21:20:20 svaughans-iPhone MobileSMS[8089] <Warning>: PEBBLESMS: phone __NSCFString
+Apr 13 21:20:20 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:20 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:20 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:20 svaughans-iPhone BTLEServer[369] <Notice>: (Note ) Added "Social" notification #13 (✗) from com.apple.MobileSMS
+Apr 13 21:20:20 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:20 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:20 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:20 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:20 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:20 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:20 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:20 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:20 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:20 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:20 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:20 svaughans-iPhone SpringBoard[8056] <Warning>: SBLockScreenNotificationListController: Attempting to remove a bulletin I don't have
+Apr 13 21:20:20 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:20 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:20 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:20 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:20 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:20 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:20 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:20 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:20 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:20 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:20 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:20 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:20 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:20 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:20 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:20 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:20 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:20 svaughans-iPhone iap2d[446] <Warning>: process com.apple.mobilesms.notification is now running in the background
+Apr 13 21:20:21 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:21 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:21 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:21 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:21 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:21 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:21 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:21 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:21 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:21 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:21 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:21 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:21 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:21 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:21 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+Apr 13 21:20:21 svaughans-iPhone BTLEServer[369] <Notice>: (Note ) Received "Get Notification Attributes" command for notification #13
+Apr 13 21:20:22 svaughans-iPhone SpringBoard[8056] <Warning>: Redid Settings, Current User Defaults Include: (null)
+

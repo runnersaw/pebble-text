@@ -1,0 +1,4 @@
+make middle button a back button after dictating contact
+make presets settings
+think about what happens if authorization for contacts not given (i.e. don't lookup allContacts)
+implement ability to dictate number
