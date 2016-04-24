@@ -382,6 +382,7 @@
 
 #define SEND_DELAY 4.0
 #define NOTIFICATION_DELAY 0.2
+#define OPEN_PEBBLE_DELAY 5.0
 
 #define DICTATED_NAME_KEY [NSNumber numberWithInt:0]
 #define IS_CONTACT_CORRECT_KEY [NSNumber numberWithInt:1]
@@ -412,6 +413,7 @@
 static NSString *bundleId = @"com.sawyervaughan.pebblesms";
 static NSString *sendMessageCommand = @"messageNeedsSending";
 static NSString *openMessagesCommand = @"messagesNeedsOpening";
+static NSString *openPebbleCommand = @"pebbleNeedsOpening";
 static NSString *messageSendNotification = @"pebbleMessageSend";
 static NSString *messageFailedNotification = @"pebbleMessageFailed";
 static NSString *rocketbootstrapSmsCenterName = @"com.sawyervaughan.pebblesms.sms";
@@ -587,12 +589,22 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     rocketbootstrap_distributedmessagingcenter_apply(c);
     [c runServerOnCurrentThread];
     [c registerForMessageName:openMessagesCommand target:self selector:@selector(messagesMessageNamed:withUserInfo:)];
+    [c registerForMessageName:openPebbleCommand target:self selector:@selector(pebbleMessageNamed:withUserInfo:)];
 }
  
 %new
 - (void)messagesMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo {
     // NSLog(@"PB Launching messages!");
     [[%c(UIApplication) sharedApplication] launchApplicationWithIdentifier:@"com.apple.MobileSMS" suspended:YES];
+}
+
+%new
+- (void)pebbleMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo {
+    // NSLog(@"PB Launching pebble in 10 seconds!");
+    // send message after 5 seconds
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(OPEN_PEBBLE_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [[%c(UIApplication) sharedApplication] launchApplicationWithIdentifier:@"com.getpebble.pebbletime" suspended:YES];
+    });
 }
 
 %end
@@ -1403,6 +1415,17 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     [center addObserver:self selector:@selector(failedCallbackWithNotification:) name:messageFailedNotification object:distributedCenterName];
 
     return s;
+}
+
+- (void)applicationWillTerminate:(id)fp8 {
+    // relaunch self
+    %orig;
+
+    // NSLog(@"PB going to terminate, launch myself again pls. ");
+
+    CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
+    rocketbootstrap_distributedmessagingcenter_apply(c);
+    [c sendMessageName:openPebbleCommand userInfo:NULL];
 }
 
 %new
