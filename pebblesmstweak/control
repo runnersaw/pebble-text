@@ -1,5 +1,5 @@
 Package: com.sawyervaughan.pebblesmstweak
-Name: TextSender for Pebble
+Name: TextSender for Pebble (Beta)
 Depends: mobilesubstrate, com.rpetrich.rocketbootstrap (>= 1.0.2), firmware (>= 8.0)
 Version: 1.0.0
 Architecture: iphoneos-arm
