@@ -1,0 +1,9 @@
+This tweak allows Pebble users to send texts directly from their watches. Users will need to install the watchapp 'TextSender for Pebble' in the Pebble app store in order to send texts from the watch. 
+
+If you're on a Time-series watch, this tweak will enable native text replies on the watch for all users. Unlike Pebble native text replies, the reply will show up in your Messages application. 
+
+This tweak requires the new Pebble iPhone app (not the one marked 'Pebble OLD VERSION' on the App Store) and Pebble watches on the new 3.X firmware. 
+
+This was tested on an iPhone 5s running iOS 9.0.2 with a Pebble Time on firmware version 3.11.1 and Pebble app version 3.11. 
+
+This tweak does not work for sending a text to multiple contacts. 
