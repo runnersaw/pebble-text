@@ -636,7 +636,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 %new
 - (void)sendMessageTo:(NSNumber *)personId number:(NSString *)number withText:(NSString *)text notify:(BOOL)notify {
     // NSLog(@"PB sendmessageto personId");
-    NSLog(@"PEBBLESMS: sendMessageTo %@", personId);
+    // NSLog(@"PEBBLESMS: sendMessageTo %@", personId);
     IMPerson *person = [[IMPerson alloc] initWithABRecordID:(ABRecordID)[personId intValue]];
     NSArray *handles = [%c(IMHandle) imHandlesForIMPerson:person];
     [person release];
@@ -1147,12 +1147,12 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     NSMutableArray *contacts = [NSMutableArray array];
     NSMutableArray *numbers = [NSMutableArray array];
     for (int k = i; i < k+maxContactsToSend;) {
-        NSLog(@"i %d", i);
+        // NSLog(@"i %d", i);
         c = [[res objectAtIndex:contactIndex] objectForKey:@"item"];
         contactIndex++;
         for (int j=0;j<[[c phoneNumbers] count];j++) {
             number = [(PBPhoneNumber *)[(PBLabeledValue *)[[c phoneNumbers] objectAtIndex:j] value] stringValue];
-            NSLog(@"i %d %@ %@", i, [c fullName], number);
+            // NSLog(@"i %d %@ %@", i, [c fullName], number);
             [contacts addObject:c];
             [numbers addObject:number];
             i++;
@@ -1268,7 +1268,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
     isRecentContact = NO;
     // NSLog(@"PB isRecentContact NO");
-    NSLog(@"PB Response %@", dict);
+    // NSLog(@"PB Response %@", dict);
 
     return dict;
 }
@@ -1329,13 +1329,13 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 - (NSMutableDictionary *)getPresets {
     loadPrefs();
 
-    NSLog(@"PEBBLESMS: loadPrefs4 %@", presets);
+    // NSLog(@"PEBBLESMS: loadPrefs4 %@", presets);
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
-    NSLog(@"PEBBLESMS: loadPrefs5");
+    // NSLog(@"PEBBLESMS: loadPrefs5");
     [dict setObject:[presets componentsJoinedByString:@"\n"] forKey:PRESETS_KEY];
     
-    NSLog(@"PEBBLESMS: loadPrefs6");
+    // NSLog(@"PEBBLESMS: loadPrefs6");
     return dict;
 }
 
@@ -1394,7 +1394,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
                         [f release];
                     }
 
-                    NSLog(@"finalContactId %@", finalContactId);
+                    // NSLog(@"finalContactId %@", finalContactId);
 
                     if (finalContactId != NULL) {
                         [%c(PBWatch) sendSMS:finalContactId number:[%c(PBContact) phoneWithPrefix:number] withText:m];
@@ -1903,158 +1903,158 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 @end
 
-%hook PBTimelineActionsWatchService
+// %hook PBTimelineActionsWatchService
 
-+ (id)watchServiceForWatch:(id)fp8 watchServicesSet:(id)fp12 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)notificationHandler { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)accountUserID { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)ANCSActionHandler { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)invokeActionHandler { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (void)setAddressBookQuerySession:(id)fp8 { %log; return %orig; }
-- (id)addressBookQuerySession { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)contactPreferredPhoneManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)addressBookManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)keyedTokenGenerator { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)httpActionSessionManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)lockerAppManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)timelineWatchService { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)timelineManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)watch { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (void)ANCSActionHandler:(id)fp8 didSendResponse:(unsigned char)fp12 withAttributes:(id)fp16 actions:(id)fp20 forItemIdentifier:(id)fp24 { %log; return %orig; }
-- (void)sendResponseForItemIdentifier:(id)fp8 response:(unsigned char)fp12 { %log; return %orig; }
-- (void)sendResponseForItemIdentifier:(id)fp8 response:(unsigned char)fp12 attributes:(id)fp16 { %log; return %orig; }
-- (void)sendANCSResponseForItemIdentifier:(id)fp8 response:(unsigned char)fp12 attributes:(id)fp16 actions:(id)fp20 { %log; return %orig; }
-- (void)sendResponseForItemIdentifier:(id)fp8 response:(unsigned char)fp12 attributes:(id)fp16 actions:(id)fp20 { %log; return %orig; }
-- (void)sendResponseForItemIdentifier:(id)fp8 response:(unsigned char)fp12 subtitle:(id)fp16 icon:(id)fp20 specificType:(int)fp24 { %log; return %orig; }
-- (void)sendResponseForItemIdentifier:(id)fp8 response:(unsigned char)fp12 subtitle:(id)fp16 icon:(id)fp20 { %log; return %orig; }
-- (id)subtitleWithMuted:(BOOL)fp8 forDataSourceUUID:(id)fp12 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (void)processHttpActionWithAttributes:(id)fp8 timelineIdentifier:(id)fp12 dataSourceUUID:(id)fp16 { %log; return %orig; }
-- (void)processAction:(id)fp8 forItem:(id)fp12 attributes:(id)fp16 { %log; return %orig; }
-- (void)handleActionForItem:(id)fp8 actionIdentifier:(unsigned char)fp12 attributes:(id)fp16 { %log; return %orig; }
-- (void)handleActionForItemIdentifier:(id)fp8 actionIdentifier:(unsigned char)fp12 attributes:(id)fp16 { %log; return %orig; }
-- (void)handleANCSActionForInvokeActionMessage:(id)fp8 { %log; return %orig; }
-- (void)registerInvokeActionHandler { %log; return %orig; }
-- (void)registerInvokeANCSActionHandler { %log; return %orig; }
-- (id)initWithWatch:(id)fp8 watchServicesSet:(id)fp12 timelineManager:(id)fp16 currentUserLockerAppManager:(id)fp20 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)init { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// + (id)watchServiceForWatch:(id)fp8 watchServicesSet:(id)fp12 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)notificationHandler { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)accountUserID { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)ANCSActionHandler { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)invokeActionHandler { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (void)setAddressBookQuerySession:(id)fp8 { %log; return %orig; }
+// - (id)addressBookQuerySession { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)contactPreferredPhoneManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)addressBookManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)keyedTokenGenerator { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)httpActionSessionManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)lockerAppManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)timelineWatchService { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)timelineManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)watch { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (void)ANCSActionHandler:(id)fp8 didSendResponse:(unsigned char)fp12 withAttributes:(id)fp16 actions:(id)fp20 forItemIdentifier:(id)fp24 { %log; return %orig; }
+// - (void)sendResponseForItemIdentifier:(id)fp8 response:(unsigned char)fp12 { %log; return %orig; }
+// - (void)sendResponseForItemIdentifier:(id)fp8 response:(unsigned char)fp12 attributes:(id)fp16 { %log; return %orig; }
+// - (void)sendANCSResponseForItemIdentifier:(id)fp8 response:(unsigned char)fp12 attributes:(id)fp16 actions:(id)fp20 { %log; return %orig; }
+// - (void)sendResponseForItemIdentifier:(id)fp8 response:(unsigned char)fp12 attributes:(id)fp16 actions:(id)fp20 { %log; return %orig; }
+// - (void)sendResponseForItemIdentifier:(id)fp8 response:(unsigned char)fp12 subtitle:(id)fp16 icon:(id)fp20 specificType:(int)fp24 { %log; return %orig; }
+// - (void)sendResponseForItemIdentifier:(id)fp8 response:(unsigned char)fp12 subtitle:(id)fp16 icon:(id)fp20 { %log; return %orig; }
+// - (id)subtitleWithMuted:(BOOL)fp8 forDataSourceUUID:(id)fp12 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (void)processHttpActionWithAttributes:(id)fp8 timelineIdentifier:(id)fp12 dataSourceUUID:(id)fp16 { %log; return %orig; }
+// - (void)processAction:(id)fp8 forItem:(id)fp12 attributes:(id)fp16 { %log; return %orig; }
+// - (void)handleActionForItem:(id)fp8 actionIdentifier:(unsigned char)fp12 attributes:(id)fp16 { %log; return %orig; }
+// - (void)handleActionForItemIdentifier:(id)fp8 actionIdentifier:(unsigned char)fp12 attributes:(id)fp16 { %log; return %orig; }
+// - (void)handleANCSActionForInvokeActionMessage:(id)fp8 { %log; return %orig; }
+// - (void)registerInvokeActionHandler { %log; return %orig; }
+// - (void)registerInvokeANCSActionHandler { %log; return %orig; }
+// - (id)initWithWatch:(id)fp8 watchServicesSet:(id)fp12 timelineManager:(id)fp16 currentUserLockerAppManager:(id)fp20 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)init { %log; id r = %orig; NSLog(@" = %@", r); return r; }
 
-%end
+// %end
 
-%hook PBTimelineActionsInvokeActionMessage
+// %hook PBTimelineActionsInvokeActionMessage
 
-+ (void)load { %log; return %orig; }
-- (id)attributes { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (unsigned char)actionIdentifier { %log; unsigned char r = %orig; NSLog(@" = %hhu", r); return r; }
-- (id)itemIdentifier { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)initWithData:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// + (void)load { %log; return %orig; }
+// - (id)attributes { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (unsigned char)actionIdentifier { %log; unsigned char r = %orig; NSLog(@" = %hhu", r); return r; }
+// - (id)itemIdentifier { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)initWithData:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
 
-%end
+// %end
 
-%hook PBTimelineActionsActionResponseMessage
+// %hook PBTimelineActionsActionResponseMessage
 
-- (id)initWithItemIdentifier:(id)fp8 response:(unsigned char)fp12 attributes:(id)fp16 actions:(id)fp20 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)initWithItemIdentifier:(id)fp8 response:(unsigned char)fp12 attributes:(id)fp16 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)initWithItemIdentifier:(id)fp8 response:(unsigned char)fp12 attributes:(id)fp16 actions:(id)fp20 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)initWithItemIdentifier:(id)fp8 response:(unsigned char)fp12 attributes:(id)fp16 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
 
-%end
+// %end
 
-%hook PBTimelineAction
+// %hook PBTimelineAction
 
-+ (id)systemActionWithIdentifier:(unsigned char)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-+ (BOOL)isSystemIdentifier:(unsigned char)fp8 { %log; BOOL r = %orig; NSLog(@" = %d", r); return r; }
-+ (id)timelineActionFromManagedTimelineItemAction:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)attributes { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)type { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)identifier { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)initWithIdentifier:(id)fp8 type:(id)fp12 attributes:(id)fp16 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)init { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)blobRepresentationWithMapper:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// + (id)systemActionWithIdentifier:(unsigned char)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// + (BOOL)isSystemIdentifier:(unsigned char)fp8 { %log; BOOL r = %orig; NSLog(@" = %d", r); return r; }
+// + (id)timelineActionFromManagedTimelineItemAction:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)attributes { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)type { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)identifier { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)initWithIdentifier:(id)fp8 type:(id)fp12 attributes:(id)fp16 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)init { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)blobRepresentationWithMapper:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
 
-%end
+// %end
 
-%hook PBANCSActionHandler
+// %hook PBANCSActionHandler
 
-+ (id)actionHandlerWithDelegate:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (void)setCurrentActionHandler:(id)fp8 { %log; %orig; }
-- (id)currentActionHandler { %log; id r = %orig; NSLog(@" = %@", r); NSLog(@" = %@", [r class]); return r; }
-- (void)setHandlingIdentifier:(id)fp8 { %log; %orig; }
-- (id)handlingIdentifier { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)timelineWatchService { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)actionHandlersByAppIdentifier { 
-    %log; 
-    NSDictionary *r = %orig; 
-    NSLog(@" = %@", r); 
-    NSLog(@" = %@", [r objectForKey:@"com.apple.MobileSMS"]); 
-    NSMutableDictionary *res = [NSMutableDictionary dictionaryWithDictionary:r]; 
-    [res setObject:%c(PBSendSMSActionHandler) forKey:@"com.facebook.Messenger"]; 
-    NSLog(@" = %@", res); 
-    return res; 
-}
-- (id)delegate { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (void)notificationHandler:(id)fp8 didSendError:(id)fp12 withTitle:(id)fp16 icon:(id)fp20 { %log; %orig; }
-- (void)notificationHandler:(id)fp8 didSendResponse:(unsigned char)fp12 withAttributes:(id)fp16 actions:(id)fp20 { %log; %orig; }
-- (void)handleActionWithActionIdentifier:(unsigned char)fp8 attributes:(id)fp12 { %log; %orig; }
-- (void)handleInvokeANCSActionMessage:(id)fp8 { %log; %orig; }
-- (BOOL)isHandlingNotificationWithIdentifier:(id)fp8 { %log; BOOL r = %orig; NSLog(@" = %d", r); return r; }
-- (id)initWithDelegate:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// + (id)actionHandlerWithDelegate:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (void)setCurrentActionHandler:(id)fp8 { %log; %orig; }
+// - (id)currentActionHandler { %log; id r = %orig; NSLog(@" = %@", r); NSLog(@" = %@", [r class]); return r; }
+// - (void)setHandlingIdentifier:(id)fp8 { %log; %orig; }
+// - (id)handlingIdentifier { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)timelineWatchService { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)actionHandlersByAppIdentifier { 
+//     %log; 
+//     NSDictionary *r = %orig; 
+//     NSLog(@" = %@", r); 
+//     NSLog(@" = %@", [r objectForKey:@"com.apple.MobileSMS"]); 
+//     NSMutableDictionary *res = [NSMutableDictionary dictionaryWithDictionary:r]; 
+//     [res setObject:%c(PBSendSMSActionHandler) forKey:@"com.facebook.Messenger"]; 
+//     NSLog(@" = %@", res); 
+//     return res; 
+// }
+// - (id)delegate { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (void)notificationHandler:(id)fp8 didSendError:(id)fp12 withTitle:(id)fp16 icon:(id)fp20 { %log; %orig; }
+// - (void)notificationHandler:(id)fp8 didSendResponse:(unsigned char)fp12 withAttributes:(id)fp16 actions:(id)fp20 { %log; %orig; }
+// - (void)handleActionWithActionIdentifier:(unsigned char)fp8 attributes:(id)fp12 { %log; %orig; }
+// - (void)handleInvokeANCSActionMessage:(id)fp8 { %log; %orig; }
+// - (BOOL)isHandlingNotificationWithIdentifier:(id)fp8 { %log; BOOL r = %orig; NSLog(@" = %d", r); return r; }
+// - (id)initWithDelegate:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
 
-%end
+// %end
 
-@protocol PBNotificationActionHandler <NSObject>
-+ (id)handlerWithDelegate:(id)fp8;
-- (id)delegate;
-- (void)handleActionWithActionIdentifier:(unsigned char)fp8 attributes:(id)fp12;
-- (void)startHandlingInvokeActionMessage:(id)fp8;
-@end
+// @protocol PBNotificationActionHandler <NSObject>
+// + (id)handlerWithDelegate:(id)fp8;
+// - (id)delegate;
+// - (void)handleActionWithActionIdentifier:(unsigned char)fp8 attributes:(id)fp12;
+// - (void)startHandlingInvokeActionMessage:(id)fp8;
+// @end
 
-%hook PBSMSNotificationActionHandler
+// %hook PBSMSNotificationActionHandler
 
-+ (id)handlerWithDelegate:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (void)setAddressBookQuerySession:(id)fp8 { %log; %orig; }
-- (id)addressBookQuerySession { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)SMSAPIClient { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)SMSReplyManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)preferredPhoneManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)delegate { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (void)addressBookQuerySession:(id)fp8 foundMultipleContactMatches:(id)fp12 { %log; %orig; }
-- (void)addressBookQuerySessionFailedWithNoContactAccess:(id)fp8 { %log; %orig; }
-- (void)addressBookQuerySessionFailedToFindContactMatch:(id)fp8 { %log; %orig; }
-- (void)addressBookQuerySession:(id)fp8 foundMultipleAddresses:(id)fp12 { %log; %orig; }
-- (void)addressBookQuerySession:(id)fp8 finishedWithContact:(id)fp12 labeledValue:(id)fp16 { %log; %orig; }
-- (void)handleActionWithActionIdentifier:(unsigned char)fp8 attributes:(id)fp12 { %log; %orig; }
-- (void)startHandlingInvokeActionMessage:(id)fp8 { %log; %orig; }
-- (id)initWithDelegate:(id)fp8 SMSReplyManager:(id)fp12 contactPreferredPhoneManager:(id)fp16 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// + (id)handlerWithDelegate:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (void)setAddressBookQuerySession:(id)fp8 { %log; %orig; }
+// - (id)addressBookQuerySession { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)SMSAPIClient { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)SMSReplyManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)preferredPhoneManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)delegate { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (void)addressBookQuerySession:(id)fp8 foundMultipleContactMatches:(id)fp12 { %log; %orig; }
+// - (void)addressBookQuerySessionFailedWithNoContactAccess:(id)fp8 { %log; %orig; }
+// - (void)addressBookQuerySessionFailedToFindContactMatch:(id)fp8 { %log; %orig; }
+// - (void)addressBookQuerySession:(id)fp8 foundMultipleAddresses:(id)fp12 { %log; %orig; }
+// - (void)addressBookQuerySession:(id)fp8 finishedWithContact:(id)fp12 labeledValue:(id)fp16 { %log; %orig; }
+// - (void)handleActionWithActionIdentifier:(unsigned char)fp8 attributes:(id)fp12 { %log; %orig; }
+// - (void)startHandlingInvokeActionMessage:(id)fp8 { %log; %orig; }
+// - (id)initWithDelegate:(id)fp8 SMSReplyManager:(id)fp12 contactPreferredPhoneManager:(id)fp16 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
 
-%end
+// %end
 
-%hook PBNotificationSourceManager
+// %hook PBNotificationSourceManager
 
-- (id)cannedResponseManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)notificationSourceDataStore { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)servicesQueue { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)watchServices { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (void)setNotificationSourceDatabaseAvailable:(unsigned int)fp8 { %log; %orig; }
-- (unsigned int)notificationSourceDatabaseAvailable { %log; unsigned int r = %orig; NSLog(@" = %u", r); return r; }
-- (void)updateCannedResponsesForAppIdentifier:(id)fp8 { %log; %orig; }
-- (void)setActions:(id)fp8 forAppIdentifier:(id)fp12 { %log; %orig; }
-- (id)actionByReplacingAction:(id)fp8 withCannedResponses:(id)fp12 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (void)notificationSourceDatabaseIsAvailable:(BOOL)fp8 { %log; %orig; }
-- (void)synchronizeAllWatchServices { %log; %orig; }
-- (void)rejectNotificationSourceChange:(id)fp8 forWatch:(id)fp12 retryLater:(BOOL)fp16 { %log; %orig; }
-- (void)acknowledgeNotificationSourceChange:(id)fp8 forWatch:(id)fp12 { %log; %orig; }
-- (void)synchronizationFinishedForWatch:(id)fp8 { %log; %orig; }
-- (void)removeNotificationSourceStatusesForWatch:(id)fp8 { %log; %orig; }
-- (id)notificationSourceChangesForWatch:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (void)removeNotificationSourceWatchService:(id)fp8 { %log; %orig; }
-- (void)addNotificationSourceWatchService:(id)fp8 { %log; %orig; }
-- (id)allNotificationSources { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)findNotificationSourceForAppIdentifier:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (void)removeNotificationSourceWithAppIdentifier:(id)fp8 { %log; %orig; }
-- (void)addNotificationSource:(id)fp8 { %log; %orig; }
-- (void)handleCannedResponseDidChangeNotification:(id)fp8 { %log; %orig; }
-- (void)dealloc { %log; %orig; }
-- (id)initWithCannedResponseManager:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)cannedResponseManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)notificationSourceDataStore { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)servicesQueue { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)watchServices { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (void)setNotificationSourceDatabaseAvailable:(unsigned int)fp8 { %log; %orig; }
+// - (unsigned int)notificationSourceDatabaseAvailable { %log; unsigned int r = %orig; NSLog(@" = %u", r); return r; }
+// - (void)updateCannedResponsesForAppIdentifier:(id)fp8 { %log; %orig; }
+// - (void)setActions:(id)fp8 forAppIdentifier:(id)fp12 { %log; %orig; }
+// - (id)actionByReplacingAction:(id)fp8 withCannedResponses:(id)fp12 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (void)notificationSourceDatabaseIsAvailable:(BOOL)fp8 { %log; %orig; }
+// - (void)synchronizeAllWatchServices { %log; %orig; }
+// - (void)rejectNotificationSourceChange:(id)fp8 forWatch:(id)fp12 retryLater:(BOOL)fp16 { %log; %orig; }
+// - (void)acknowledgeNotificationSourceChange:(id)fp8 forWatch:(id)fp12 { %log; %orig; }
+// - (void)synchronizationFinishedForWatch:(id)fp8 { %log; %orig; }
+// - (void)removeNotificationSourceStatusesForWatch:(id)fp8 { %log; %orig; }
+// - (id)notificationSourceChangesForWatch:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (void)removeNotificationSourceWatchService:(id)fp8 { %log; %orig; }
+// - (void)addNotificationSourceWatchService:(id)fp8 { %log; %orig; }
+// - (id)allNotificationSources { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)findNotificationSourceForAppIdentifier:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (void)removeNotificationSourceWithAppIdentifier:(id)fp8 { %log; %orig; }
+// - (void)addNotificationSource:(id)fp8 { %log; %orig; }
+// - (void)handleCannedResponseDidChangeNotification:(id)fp8 { %log; %orig; }
+// - (void)dealloc { %log; %orig; }
+// - (id)initWithCannedResponseManager:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
 
-%end
+// %end
 
 %hook PBCannedResponseManager
 
@@ -2072,22 +2072,22 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %end
 
-%hook PBNotificationSource
+// %hook PBNotificationSource
 
-+ (id)notificationSourceWithAppIdentifier:(id)fp8 flags:(unsigned int)fp12 version:(unsigned short)fp16 attributes:(id)fp20 actions:(id)fp24 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-+ (id)blobEntryModelFromBlobEntry:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-+ (id)notificationSourceFromManagedEntry:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)actions { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)attributes { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (unsigned short)version { %log; unsigned short r = %orig; NSLog(@" = %hu", r); return r; }
-- (unsigned int)flags { %log; unsigned int r = %orig; NSLog(@" = %u", r); return r; }
-- (id)appIdentifier { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)initWithAppIdentifier:(id)fp8 flags:(unsigned int)fp12 version:(unsigned short)fp16 attributes:(id)fp20 actions:(id)fp24 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)blobRepresentationWithMapper:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)modelIdentifier { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)initWithManagedNotificationSource:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// + (id)notificationSourceWithAppIdentifier:(id)fp8 flags:(unsigned int)fp12 version:(unsigned short)fp16 attributes:(id)fp20 actions:(id)fp24 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// + (id)blobEntryModelFromBlobEntry:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// + (id)notificationSourceFromManagedEntry:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)actions { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// // - (id)attributes { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (unsigned short)version { %log; unsigned short r = %orig; NSLog(@" = %hu", r); return r; }
+// - (unsigned int)flags { %log; unsigned int r = %orig; NSLog(@" = %u", r); return r; }
+// - (id)appIdentifier { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)initWithAppIdentifier:(id)fp8 flags:(unsigned int)fp12 version:(unsigned short)fp16 attributes:(id)fp20 actions:(id)fp24 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)blobRepresentationWithMapper:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)modelIdentifier { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)initWithManagedNotificationSource:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
 
-%end
+// %end
 
 @interface PBTimelineItemAttributeBlob
 
@@ -2099,7 +2099,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 @end
 
-%hook PBTimelineItemAttributeBlob
+// %hook PBTimelineItemAttributeBlob
 
 // - (id)content { %log; id r = %orig; NSLog(@" = %@", r); NSLog(@" = %@", [r class]); return r; }
 // - (unsigned char)type { %log; return %orig; }
@@ -2107,7 +2107,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 // - (void)encodeToDataWriter:(id)fp8 { %log; %orig; }
 // - (id)initWithType:(unsigned char)fp8 content:(id)fp12 { %log; id r = %orig; NSLog(@" = %@", r); NSLog(@" = %@", [r class]); return r; }
 
-%end
+// %end
 
 @interface PBAddressBookQuerySession
 
@@ -2201,18 +2201,18 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %hook PBSendSMSActionHandler
 
-+ (id)handlerWithDelegate:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (void)setAddressBookQuerySession:(id)fp8 { %log; %orig; }
-- (id)addressBookQuerySession { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)SMSAPIClient { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)SMSReplyManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)preferredPhoneManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)delegate { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (void)addressBookQuerySession:(id)fp8 foundMultipleContactMatches:(id)fp12 { %log; %orig; }
-- (void)addressBookQuerySessionFailedWithNoContactAccess:(id)fp8 { %log; %orig; }
-- (void)addressBookQuerySessionFailedToFindContactMatch:(id)fp8 { %log; %orig; }
-- (void)addressBookQuerySession:(id)fp8 foundMultipleAddresses:(id)fp12 { %log; %orig; }
-- (void)addressBookQuerySession:(id)fp8 finishedWithContact:(id)fp12 labeledValue:(id)fp16 { %log; %orig; }
+// + (id)handlerWithDelegate:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (void)setAddressBookQuerySession:(id)fp8 { %log; %orig; }
+// - (id)addressBookQuerySession { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)SMSAPIClient { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)SMSReplyManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)preferredPhoneManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)delegate { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (void)addressBookQuerySession:(id)fp8 foundMultipleContactMatches:(id)fp12 { %log; %orig; }
+// - (void)addressBookQuerySessionFailedWithNoContactAccess:(id)fp8 { %log; %orig; }
+// - (void)addressBookQuerySessionFailedToFindContactMatch:(id)fp8 { %log; %orig; }
+// - (void)addressBookQuerySession:(id)fp8 foundMultipleAddresses:(id)fp12 { %log; %orig; }
+// - (void)addressBookQuerySession:(id)fp8 finishedWithContact:(id)fp12 labeledValue:(id)fp16 { %log; %orig; }
 - (void)handleActionWithActionIdentifier:(unsigned char)fp8 attributes:(id)fp12 {
     if (fp8 == 2) {
         // NSLog(@"HANDLING");
@@ -2228,8 +2228,8 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
         %orig; 
     }
 }
-- (void)startHandlingInvokeActionMessage:(id)fp8 { %log; %orig; }
-- (id)initWithDelegate:(id)fp8 SMSReplyManager:(id)fp12 contactPreferredPhoneManager:(id)fp16 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (void)startHandlingInvokeActionMessage:(id)fp8 { %log; %orig; }
+// - (id)initWithDelegate:(id)fp8 SMSReplyManager:(id)fp12 contactPreferredPhoneManager:(id)fp16 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
 
 %end
 
@@ -2248,13 +2248,13 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %hook PBTimelineInvokeANCSActionMessage
 
-+ (void)load { %log; %orig; }
-- (id)appIdentifier { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)notificationSubtitle { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)notificationSender { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)actionTitle { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (unsigned char)actionType { %log; unsigned char r = %orig; NSLog(@" = %hhu", r); return r; }
-- (id)ANCSIdentifier { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (id)initWithData:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// + (void)load { %log; %orig; }
+// - (id)appIdentifier { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)notificationSubtitle { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)notificationSender { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)actionTitle { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (unsigned char)actionType { %log; unsigned char r = %orig; NSLog(@" = %hhu", r); return r; }
+// - (id)ANCSIdentifier { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+// - (id)initWithData:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
 
 %end
