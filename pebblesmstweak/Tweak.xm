@@ -1237,7 +1237,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     if (c != NULL && contactsInfo != NULL) {
         // to maintain compatibility with old watchapp versions (<=v1.1)
         [dict setObject:[c fullName] forKey:CONTACT_NAME_KEY];
-        NSString *num = [%c(PBContact) phoneWithPrefix:[contactInfo objectForKey:@"number"]];
+        NSString *num = [contactInfo objectForKey:@"number"];
         [dict setObject:num forKey:CONTACT_NUMBER_KEY];
         currentContactId = [c recordId];
 
@@ -1255,7 +1255,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
             [ids addObject:[NSNumber numberWithInt:[[[contacts objectAtIndex:i] recordId] intValue]]];
         }
         for (int i=0; i<[numbers count]; i++) {
-            [phones addObject:[%c(PBContact) phoneWithPrefix:[numbers objectAtIndex:i]]];
+            [phones addObject:[numbers objectAtIndex:i]];
         }
 
         [dict setObject:[names componentsJoinedByString:@"\n"] forKey:CONTACT_NAMES_KEY];
