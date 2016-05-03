@@ -35,9 +35,11 @@ static GBitmap *recent_icon;
 static GBitmap *microphone_icon;
 #endif
 static GBitmap *abc_icon;
+static GBitmap *send_icon;
 
 void change_state(int state);
 void contact_chosen_from_recent(char *name, char *number);
 void tertiary_text_chosen(char *text);
 void preset_chosen(char *text);
 void search_chosen(char *name, char *number, char *id);
+void search_not_chosen();

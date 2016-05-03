@@ -20,6 +20,11 @@
         "type": "bitmap"
       },
       {
+        "file": "images/send.png",
+        "name": "SEND_ICON",
+        "type": "bitmap"
+      },
+      {
         "file": "images/x.png",
         "name": "X_ICON",
         "type": "bitmap"
