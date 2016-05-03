@@ -12,6 +12,10 @@
 #define RECENT_CONTACTS_NUMBER_KEY 11
 #define PRESETS_KEY 12
 #define RECIEVED_FINAL_MESSAGE_KEY 13
+#define CONTACT_NAMES_KEY 14
+#define CONTACT_NUMBERS_KEY 15
+#define CONTACT_IDS_KEY 16
+#define CONTACT_ID_KEY 17
 
 // define states
 #define BEGINNING_STATE 0
@@ -36,3 +40,4 @@ void change_state(int state);
 void contact_chosen_from_recent(char *name, char *number);
 void tertiary_text_chosen(char *text);
 void preset_chosen(char *text);
+void search_chosen(char *name, char *number, char *id);
