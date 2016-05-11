@@ -62,3 +62,7 @@ fastlane/report.xml
 fastlane/screenshots
 
 .DS_Store
+
+beta-testers.csv
+pebblesmstweak/logs/
+pebblesmstweak/pebble312headers/PebbleTime
