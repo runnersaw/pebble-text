@@ -6368,7 +6368,6 @@ typedef union {
 + (id)userDefaults;
 - (id)cannedResponseDefaults;
 - (id)defaultResponses;
-- (void).cxx_destruct;
 - (id)cannedResponsesForAppIdentifier:(id)fp8;
 - (void)setCannedResponses:(id)fp8 forAppIdentifier:(id)fp12;
 - (id)initWithUserDefaults:(id)fp8;

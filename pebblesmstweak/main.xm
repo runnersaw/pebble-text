@@ -106,6 +106,12 @@
 - (void)performActionOnAddressBookQuerySession:(id)fp8;
 + (NSString *)phoneWithPrefix:(NSString *)number;
 - (NSNumber *)recordId;
+
+// 3.12
++(id)fallbackName;
+-(id)computeOrderableName;
+-(id)orderableName;
+
 @end
 
 @interface PBLabeledValue
@@ -293,6 +299,15 @@
 + (int)authorizationStatus;
 @end
 
+@interface PBPhoneApp : NSObject
+
++(id)appWithSystemPhoneApp:(unsigned long long)arg1 ;
++(unsigned long long)systemPhoneAppFromBundleIdentifier:(id)arg1 ;
+-(BOOL)isInstalled;
+-(NSString *)localizedName;
+-(NSString *)appBundleIdentifier;
+@end
+
 @interface PBSMSReplyManager
 - (id)SMSProviders;
 - (id)linkedAccountsManager;
@@ -312,6 +327,22 @@
 - (void)setSMSAccount:(id)fp8;
 - (void)dealloc;
 - (id)initWithNotificationSourceManager:(id)fp8 linkedAccountsManager:(id)fp12;
+
+// 3.12
+-(id)linkedServicesSessionManager;
+-(id)initWithNotificationSourceManager:(id)arg1 linkedAccountsManager:(id)arg2 modalCoordinator:(id)arg3 userDefaults:(id)arg4 linkedServicesSessionManager:(id)arg5;
+-(id)smsApp;//PBPhoneApp
+-(void)prepareSMSSetup;
+-(id)currentCarrier;
+-(void)setLastKnownCarrier:(id)arg1 ;
+-(NSUserDefaults *)smsUserDefaults;
+-(BOOL)checkIfProviderIsSupported:(unsigned char)arg1 forCarrier:(id)arg2 linkedAccount:(id)arg3;
+-(BOOL)needToShowSMSSetup;
+-(id)lastKnownCarrier;
+-(NSSet *)smsApps;
+-(NSSet *)ancsReplyEnabledApps;
+-(id)networkInfo;
+
 @end
 
 @interface PBSMSSessionManager
@@ -328,6 +359,21 @@
 + (void)sendSMS:(NSNumber *)recordId number:(NSString *)number withText:(NSString *)text;
 - (id)sendSMSWithRecipients:(id)fp8 text:(id)fp12 transactionID:(id)fp16;
 - (id)initWithLinkedAccountsManager:(id)fp8 smsReplyManager:(id)fp12;
+
+// 3.12
++(id)clientWithMessage:(id)arg1 transactionID:(id)arg2;
+-(id)initWithLinkedAccountsManager:(id)arg1 smsReplyManager:(id)arg2 message:(id)arg3 transactionID:(id)arg4;
+-(id)smsApp;
+-(id)phoneApp;
+-(void)revokeAccounts:(id)arg1;
+-(id)sendRequestWithRefreshedLinkedAccounts:(id)arg1;
+-(void)revokeAccountsFromError:(id)arg1;
+-(BOOL)needToRefreshLinkedAccountsForError:(id)arg1;
+-(id)SMSSessionManager;
+-(id)message;
+-(id)transactionID;
+-(id)sendRequest;
+
 @end
 
 @interface PBSMSMessage
@@ -368,6 +414,9 @@
 - (id)queryParameters:(id)fp8 key:(id)fp12 toResultClass:(id)fp16;
 - (BOOL)isAccountExpired;
 - (id)initWithProvider:(unsigned char)fp8 queryParameters:(id)fp12;
+
+// 3.12
+-(BOOL)isExpired;
 @end
 
 @interface PBLinkedAccountCredentials
@@ -378,6 +427,7 @@
 @end
 
 @interface PBLinkedAccountsManager
+// 3.6
 +(id) providerToString:(unsigned char)arg1;
 +(unsigned char) stringToProvider:(id)arg;
 -(BOOL) addLinkedAccount:(id)arg;
@@ -386,10 +436,233 @@
 -(id) linkedAccountForProvider:(unsigned char)arg;
 -(BOOL) isProviderEnabled:(unsigned char)arg;
 -(id) APIClient;
--(id) enabledProviders;
+-(NSSet *)enabledProviders;
 -(void) refreshLinkedAccountForProvider:(unsigned char)arg1 withForceRefresh:(BOOL)arg2 completion:(id)arg3;
 -(id) linkedAccountsValet;
 -(id) init;
+
+// 3.12
+-(id)refreshLinkedAccountsAssociatedWithApp:(id)arg1 withForceRefresh:(BOOL)arg2;
+-(id)linkedAccountsForApp:(id)arg1;
+-(id)linkedAccountRefreshSignal:(id)arg1 forApp:(id)arg2;
+-(BOOL)hasLinkedAccountForApp:(id)arg1;
+-(BOOL)addLinkedAccount:(id)arg1 toApp:(id)arg2;
+-(BOOL)removeLinkedAccount:(id)arg1 forApp:(id)arg2;
+-(id)linkedAccountsSessionManager;
+-(void)migrateLinkedAccountsFrom3Dot6To3Dot7;
+-(void)migrateSMSAccountFrom3Dot6To3Dot7ForProvider:(unsigned char)arg1;
+@end
+
+@interface PBSendSMSActionHandler : NSObject
++ (id)handlerWithDelegate:(id)fp8;
+- (void)setAddressBookQuerySession:(id)fp8;
+- (id)addressBookQuerySession;
+- (id)SMSAPIClient;
+- (id)SMSReplyManager;
+- (id)preferredPhoneManager;
+- (id)delegate;
+- (void)addressBookQuerySession:(id)fp8 foundMultipleContactMatches:(id)fp12;
+- (void)addressBookQuerySessionFailedWithNoContactAccess:(id)fp8;
+- (void)addressBookQuerySessionFailedToFindContactMatch:(id)fp8;
+- (void)addressBookQuerySession:(id)fp8 foundMultipleAddresses:(id)fp12;
+- (void)addressBookQuerySession:(id)fp8 finishedWithContact:(id)fp12 labeledValue:(id)fp16;
+- (void)handleActionWithActionIdentifier:(unsigned char)fp8 attributes:(id)fp12;
+- (void)startHandlingInvokeActionMessage:(id)fp8;
+- (id)initWithDelegate:(id)fp8 SMSReplyManager:(id)fp12 contactPreferredPhoneManager:(id)fp16;
+
+// 3.12
++(id)handlerWithNotificationSourceIdentifier:(id)arg1 delegate:(id)arg2;
+-(NSString *)notificationSourceIdentifier;
+-(id)initWithNotificationSourceIdentifier:(id)arg1 delegate:(id)arg2 SMSReplyManager:(id)arg3 contactPreferredPhoneManager:(id)arg4 sendSMSService:(id)arg5;
+-(id)sendSMSService;
+@end
+
+@interface PBTimelineAttribute
+
++ (id)attributeWithType:(id)fp8 content:(id)fp12 specificType:(int)fp16;
++ (id)attributeWithType:(id)fp8 content:(id)fp12;
++ (id)timelineAttributesFromWebTimelineAttributable:(id)fp8;
++ (id)timelineAttributeFromManagedTimelineItemAttribute:(id)fp8;
++ (id)attributesForCalendarEvent:(id)fp8 withOptions:(unsigned int)fp12;
+- (int)specificType;
+- (id)content;
+- (id)type;
+- (id)description;
+- (unsigned int)hash;
+- (BOOL)isEqual:(id)fp8;
+- (id)initWithType:(id)fp8 content:(id)fp12 specificType:(int)fp16;
+- (id)init;
+- (id)blobRepresentationWithMapper:(id)fp8;
+
+@end
+
+@interface PBCannedResponseManager
++ (id)userDefaults;
+- (id)cannedResponseDefaults;
+- (id)defaultResponses;
+- (id)cannedResponsesForAppIdentifier:(id)fp8;
+- (void)setCannedResponses:(id)fp8 forAppIdentifier:(id)fp12;
+- (id)initWithUserDefaults:(id)fp8;
+- (id)init;
+@end
+
+@interface PBTimelineItemAttributeBlob
+-(void)encodeToDataWriter:(id)arg1 ;
+-(id)initWithSequentialDataReader:(id)arg1 ;
+-(NSString *)description;
+-(unsigned char)type;
+-(NSData *)content;
+-(id)initWithType:(unsigned char)arg1 content:(id)arg2 ;
+@end
+
+@interface PBAddressBookQuerySession
+
++ (id)addressBookQuerySessionWithIdentifier:(id)fp8 query:(id)fp12 delegate:(id)fp16;
+- (id)actions;
+- (void)setNextActionId:(unsigned char)fp8;
+- (unsigned char)nextActionId;
+- (id)contactPreferredPhoneManager;
+- (id)addressBook;
+- (id)addressBookManager;
+- (id)delegate;
+- (id)query;
+- (void)setHasResolvedAmbiguity:(BOOL)fp8;
+- (BOOL)hasResolvedAmbiguity;
+- (void)setSelectedLabeledValue:(id)fp8;
+- (id)selectedLabeledValue;
+- (void)setSelectedContact:(id)fp8;
+- (id)selectedContact;
+- (id)sessionIdentifier;
+- (id)cleanSearchQuery:(id)fp8;
+- (BOOL)isQueryValidPhoneNumber:(id)fp8;
+- (void)handleSingleContact:(id)fp8;
+- (void)handleNoMatches;
+- (void)handleMultipleAddresses:(id)fp8;
+- (void)handleMultipleContacts:(id)fp8;
+- (id)preferredPhoneForContact:(id)fp8;
+- (void)handleActionWithIdentifier:(unsigned char)fp8;
+- (id)newActionWithType:(id)fp8 attributes:(id)fp12 content:(id)fp16;
+- (void)selectAddressLabeledValue:(id)fp8;
+- (void)selectContact:(id)fp8;
+- (void)runInitialQuery;
+- (id)initWithIdentifier:(id)fp8 query:(id)fp12 delegate:(id)fp16 addressBookManager:(id)fp20 contactPreferredPhoneManager:(id)fp24;
+- (id)init;
+
+@end
+
+@interface PBANCSActionHandler
++(id)actionHandlerWithDelegate:(id)arg1 ;
+-(void)dealloc;
+-(NSUUID *)handlingIdentifier;
+-(void)setHandlingIdentifier:(NSUUID *)arg1 ;
+-(void)sendResponse:(unsigned char)arg1 withAttributes:(id)arg2 actions:(id)arg3 forItemIdentifier:(id)arg4 ;
+-(NSDictionary *)actionHandlersByAppIdentifier;
+-(void)setCurrentActionHandler:(id)arg1 ;
+-(id)currentActionHandler;
+-(void)handleActionWithActionIdentifier:(unsigned char)arg1 attributes:(id)arg2 ;
+-(id)backgroundColorForNotificationHandler:(id)arg1 ;
+-(id)timelineWatchService;
+-(void)notificationHandler:(id)arg1 didSendResponse:(unsigned char)arg2 withAttributes:(id)arg3 actions:(id)arg4 ;
+-(void)notificationHandler:(id)arg1 didSendError:(id)arg2 withTitle:(id)arg3 icon:(id)arg4 ;
+-(BOOL)isHandlingNotificationWithIdentifier:(id)arg1 ;
+-(void)handleInvokeANCSActionMessage:(id)arg1 ;
+-(id)delegate;
+-(id)initWithDelegate:(id)arg1 ;
+@end
+
+@interface PBSMSNotificationActionHandler
+
++ (id)handlerWithDelegate:(id)fp8;
+- (void)setAddressBookQuerySession:(id)fp8;
+- (id)addressBookQuerySession;
+- (id)SMSAPIClient;
+- (id)SMSReplyManager;
+- (id)preferredPhoneManager;
+- (id)delegate;
+- (void)addressBookQuerySession:(id)fp8 foundMultipleContactMatches:(id)fp12;
+- (void)addressBookQuerySessionFailedWithNoContactAccess:(id)fp8;
+- (void)addressBookQuerySessionFailedToFindContactMatch:(id)fp8;
+- (void)addressBookQuerySession:(id)fp8 foundMultipleAddresses:(id)fp12;
+- (void)addressBookQuerySession:(id)fp8 finishedWithContact:(id)fp12 labeledValue:(id)fp16;
+- (void)handleActionWithActionIdentifier:(unsigned char)fp8 attributes:(id)fp12;
+- (void)startHandlingInvokeActionMessage:(id)fp8;
+- (id)initWithDelegate:(id)fp8 SMSReplyManager:(id)fp12 contactPreferredPhoneManager:(id)fp16;
+
+@end
+
+@interface PBSendTextAppActionHandler : NSObject
++(id)handlerWithDelegate:(id)arg1;
++(void)load;
+-(void)dealloc;
+-(id)timelineWatchService;
+-(id)initWithSMSReplyManager:(id)arg1 delegate:(id)arg2 sendSMSService:(id)arg3;
+-(id)SMSReplyManager;
+-(id)sendSMSService;
+-(id)phoneNumberFromAttributes:(id)arg1;
+-(id)responseFromAttributes:(id)arg1;
+-(void)notifyUserWithError:(id)arg1;
+-(BOOL)handlesAction:(unsigned char)arg1 forItem:(id)arg2;
+-(void)handleAction:(unsigned char)arg1 forItemIdentifier:(id)arg2 attributes:(id)arg3;
+-(id)currentTimelineItem;
+-(void)setCurrentTimelineItem:(id)arg1;
+-(id)init;
+-(id)delegate;
+-(NSIndexSet *)actions;
+@end
+@interface PBTimelineActionsWatchService : NSObject
+
++(id)watchServiceForWatch:(id)arg1 watchServicesSet:(id)arg2 ;
+-(void)dealloc;
+-(id)lockerAppManager;
+-(id)keyedTokenGenerator;
+-(id)contactPreferredPhoneManager;
+-(id)addressBookManager;
+-(id)timelineWatchService;
+-(void)ANCSActionHandler:(id)arg1 didSendResponse:(unsigned char)arg2 withAttributes:(id)arg3 actions:(id)arg4 forItemIdentifier:(id)arg5 ;
+-(id)timelineManager;
+-(id)initWithWatch:(id)arg1 watchServicesSet:(id)arg2 timelineManager:(id)arg3 currentUserLockerAppManager:(id)arg4 ;
+-(id)addressBookQuerySession;
+-(void)setAddressBookQuerySession:(id)arg1 ;
+-(void)sendTextAppActionHandler:(id)arg1 didSendResponse:(unsigned char)arg2 withAttributes:(id)arg3 forItemIdentifier:(id)arg4 ;
+-(void)registerInvokeActionHandler;
+-(void)registerInvokeANCSActionHandler;
+-(id)invokeActionHandler;
+-(id)ANCSActionHandler;
+-(void)handleANCSActionForInvokeActionMessage:(id)arg1 ;
+-(void)handleActionForItemIdentifier:(id)arg1 actionIdentifier:(unsigned char)arg2 attributes:(id)arg3 ;
+-(id)notificationHandler;
+-(id)sendTextAppActionHandler;
+-(void)handleActionForItem:(id)arg1 actionIdentifier:(unsigned char)arg2 attributes:(id)arg3 ;
+-(void)sendResponseForItemIdentifier:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4 ;
+-(void)processAction:(id)arg1 forItem:(id)arg2 attributes:(id)arg3 ;
+-(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 ;
+-(id)subtitleAttributeForLocalizedString:(id)arg1 ;
+-(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 subtitle:(id)arg3 icon:(id)arg4 ;
+-(id)subtitleWithMuted:(BOOL)arg1 forDataSourceUUID:(id)arg2 ;
+-(void)processHTTPActionForItem:(id)arg1 actionAttributes:(id)arg2 ;
+-(NSString *)accountUserID;
+-(id)httpActionSessionManager;
+-(id)subtitleAttributeForString:(id)arg1 ;
+-(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 subtitle:(id)arg3 icon:(id)arg4 specificType:(long long)arg5 ;
+-(void)sendResponseForItemIdentifier:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4 mapperSignal:(id)arg5 ;
+-(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4 ;
+-(void)sendANCSResponseForItemIdentifier:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4 ;
+-(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 ;
+-(id)init;
+-(void)deactivate;
+-(id)watch;
+@end
+
+@interface PBTimelineAttributeContentLocalizedString : NSObject
++(BOOL)supportsSecureCoding;
+-(id)initWithLocalizationKey:(id)arg1;
+-(id)initWithLocalizationKey:(id)arg1 placeholderKeyPaths:(id)arg2;
+-(NSArray *)placeholderKeyPaths;
+-(id)localizedStringWithLocalizedBundle:(id)arg1 binding:(id)arg2;
+-(id)initWithCoder:(id)arg1;
+-(void)encodeWithCoder:(id)arg1;
+-(id)init;
+-(NSString *)localizationKey;
 @end
 
 #define SEND_DELAY 4.0
@@ -703,13 +976,6 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
     if (conversation == NULL) {
         [self sendNewMessageTo:personId number:finalPhone withText:text notify:notify];
-        // if (notify) {
-        //     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        //         // NSLog(@"PB Send not success");
-        //         NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
-        //         [center postNotificationName:messageFailedNotification object:distributedCenterName userInfo:nil deliverImmediately:YES];
-        //     });
-        // }
         return;
     }
 
@@ -745,13 +1011,6 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
     if (conversation == NULL) {
         [self sendNewMessageTo:recordId number:number withText:text notify:notify];
-        // if (notify) {
-        //     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        //         // NSLog(@"PB Send not success");
-        //         NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
-        //         [center postNotificationName:messageFailedNotification object:distributedCenterName userInfo:nil deliverImmediately:YES];
-        //     });
-        // }
         return;
     }
 
@@ -841,83 +1100,6 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %new
 - (void)sendMessageToNewNumber:(NSString *)number withText:(NSString *)text notify:(BOOL)notify {
-    // NSLog(@"PB sendmessageto newnumber");
-    // NSString *num = [@"+" stringByAppendingString:[[number componentsSeparatedByCharactersInSet: [[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""]];
-
-    // CKConversationList *conversationList = [%c(CKConversationList) sharedConversationList];
-    // id l = [%c(CKConversationList) sharedConversationList];
-    // NSLog(@"PB conversationList %@", [l class]);
-    // CKConversation *conversation = [conversationList conversationForExistingChatWithGroupID:num];
-
-    // if (YES) {//conversation == NULL) {
-    //     // conversation = [conversationList conversationForHandles:@[h] displayName:[person nickname] joinedChatsOnly:NO create:YES];
-    //     // NSLog(@"PB conversationList %@", [conversation class]);
-    //     // if (newNumber) { do this }
-    //     // NSLog(@"PB new contact ? %d", (conversation == NULL));
-    //     conversation = [[CKConversation alloc] init];
-    //     CKConversation *c = [%c(CKConversation) newPendingConversation];
-    //     NSLog(@"PB new conversation %@", [c class]);
-    //     IMPerson *p = [[IMPerson alloc] init];
-    //     NSLog(@"PB new conversation %@", [p class]);
-    //     id h = [[IMHandle alloc] init]; //[%c(IMHandle) imHandlesForIMPerson:p];
-    //     Ivar ivar = class_getInstanceVariable([h class], "_phoneNumberRef");
-    //     object_setIvar(h, ivar, num);
-    //     // CFPhoneNumberRef phoneRef = CFPhoneNumberCreate
-    //     NSLog(@"PB new conversation %@", [h class]);
-    //     NSLog(@"PB new conversation %@", [[h phoneNumberRef] description]);
-    //     CKEntity *e = [[CKEntity alloc] initWithIMHandle:h];
-    //     NSLog(@"PB new conversation %@", [e class]);
-    //     [c setPendingComposeRecipients:@[e]];
-    //     NSLog(@"PB new conversation %@", [c class]);
-    //     [c setRecipients:@[e]];
-    //     NSLog(@"PB new conversation %@", [c class]);
-    //     NSLog(@"PB new conversation %@", [[[conversation recipient] defaultIMHandle] description]);
-    //     conversation = [conversationList conversationForHandles:@[h] displayName:num joinedChatsOnly:NO create:YES];
-    //     NSLog(@"PB new conversation %@", [conversation class]);
-    //     NSLog(@"PB new conversation %@", [[[conversation recipient] defaultIMHandle] description]);
-
-    //     NSAttributedString* t = [[NSAttributedString alloc] initWithString:text];
-    //     CKComposition* composition = [[CKComposition alloc] initWithText:t subject:nil];
-
-    //     // make message and send
-    //     CKMessage *message = (CKMessage *)[conversation messageWithComposition:composition];
-    //     [conversation sendMessage:message newComposition:YES];
-
-    //     // send success
-    //     if (notify) {
-    //         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-    //             // NSLog(@"PB Send success");
-    //             NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
-    //             [center postNotificationName:messageSendNotification object:distributedCenterName userInfo:nil deliverImmediately:YES];
-    //         });
-    //     }
-    //     // [conversation addRecipientHandles]
-    //     // if (notify) {
-    //     //     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-    //     //         // NSLog(@"PB Send not success");
-    //     //         NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
-    //     //         [center postNotificationName:messageFailedNotification object:distributedCenterName userInfo:nil deliverImmediately:YES];
-    //     //     });
-    //     // }
-    //     // return;
-    // }
-
-    // //Make a new composition
-    // NSAttributedString* t = [[NSAttributedString alloc] initWithString:text];
-    // CKComposition* composition = [[CKComposition alloc] initWithText:t subject:nil];
-
-    // // make message and send
-    // CKMessage *message = (CKMessage *)[conversation messageWithComposition:composition];
-    // [conversation sendMessage:message newComposition:YES];
-
-    // // send success
-    // if (notify) {
-    //     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-    //         // NSLog(@"PB Send success");
-    //         NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
-    //         [center postNotificationName:messageSendNotification object:distributedCenterName userInfo:nil deliverImmediately:YES];
-    //     });
-    // }
 }
  
 %new
@@ -1620,496 +1802,6 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %end
 
-@interface PBTimelineAttribute
-
-+ (id)attributeWithType:(id)fp8 content:(id)fp12 specificType:(int)fp16;
-+ (id)attributeWithType:(id)fp8 content:(id)fp12;
-+ (id)timelineAttributesFromWebTimelineAttributable:(id)fp8;
-+ (id)timelineAttributeFromManagedTimelineItemAttribute:(id)fp8;
-+ (id)attributesForCalendarEvent:(id)fp8 withOptions:(unsigned int)fp12;
-- (int)specificType;
-- (id)content;
-- (id)type;
-- (id)description;
-- (unsigned int)hash;
-- (BOOL)isEqual:(id)fp8;
-- (id)initWithType:(id)fp8 content:(id)fp12 specificType:(int)fp16;
-- (id)init;
-- (id)blobRepresentationWithMapper:(id)fp8;
-
-@end
-
-%hook PBTimelineAttribute
-
-// + (id)attributeWithType:(id)fp8 content:(id)fp12 specificType:(int)fp16;
-// + (id)attributeWithType:(id)fp8 content:(id)fp12;
-// + (id)timelineAttributesFromWebTimelineAttributable:(id)fp8;
-// + (id)timelineAttributeFromManagedTimelineItemAttribute:(id)fp8;
-// + (id)attributesForCalendarEvent:(id)fp8 withOptions:(unsigned int)fp12;
-// - (int)specificType;
-- (id)content { if ([[self type] isEqual:@"emojiSupported"]) {return [NSNumber numberWithBool:YES];} else {return %orig;}}
-// - (id)type;
-// - (void).cxx_destruct;
-// - (id)description;
-// - (unsigned int)hash;
-// - (BOOL)isEqual:(id)fp8;
-// - (id)initWithType:(id)fp8 content:(id)fp12 specificType:(int)fp16;
-// - (id)init;
-// - (id)blobRepresentationWithMapper:(id)fp8;
-
-%end
-
-// @interface PBSMSApiClient
-// + (id)client;
-// - (id)smsReplyManager;
-// - (id)linkedAccountsManager;
-// - (id)SMSSessionManager;
-// - (id)sendSMSWithRecipients:(id)fp8 text:(id)fp12 transactionID:(id)fp16;
-// - (id)initWithLinkedAccountsManager:(id)fp8 smsReplyManager:(id)fp12;
-// @end
-// @interface PBLinkedAccountsRequest
-// + (id)credentialsJSONTransformer;
-// + (id)JSONKeyPathsByPropertyKey;
-// + (id)requestWithCredentials:(id)fp8;
-// - (id)credentials;
-// @end
-// @interface PBLinkedAccountsSessionManager
-// - (id)revokeLinkedAccount:(id)fp8;
-// - (id)refreshLinkedAccount:(id)fp8;
-// - (id)authorizationURLRequestForProvider:(unsigned char)fp8;
-// - (id)initWithBaseURL:(id)fp8 sessionConfiguration:(id)fp12;
-// @end
-// @interface PBLinkedAccount
-// + (id)credentialsJSONTransformer;
-// + (id)settingsJSONTransformer;
-// + (id)providerJSONTransformer;
-// + (id)uuidJSONTransformer;
-// + (id)encodingBehaviorsByPropertyKey;
-// + (id)JSONKeyPathsByPropertyKey;
-// - (void)setCredentials:(id)fp8;
-// - (id)credentials;
-// - (void)setSettings:(id)fp8;
-// - (id)settings;
-// - (unsigned char)provider;
-// - (id)uuid;
-// - (id)queryParameters:(id)fp8 key:(id)fp12 toResultClass:(Class)fp16;
-// - (BOOL)isAccountExpired;
-// - (id)initWithProvider:(unsigned char)fp8 queryParameters:(id)fp12;
-// @end
-// @interface PBLinkedAccountCredentials
-// + (id)expirationJSONTransformer;
-// + (id)JSONKeyPathsByPropertyKey;
-// - (id)expiration;
-// - (id)apiData;
-// @end
-// @interface PBLinkedAccountsManager
-// + (id) providerToString:(unsigned char)arg;
-// + (unsigned char) stringToProvider:(id)arg;
-// - (BOOL) addLinkedAccount:(id)arg;
-// - (BOOL) hasLinkedAccountForProvider:(unsigned char)arg;
-// - (BOOL) removeLinkedAccountForProvider:(unsigned char)arg;
-// - (id) linkedAccountForProvider:(unsigned char)arg;
-// - (BOOL) isProviderEnabled:(unsigned char)arg;
-// - (id) APIClient;
-// - (id) enabledProviders;
-// - (void) refreshLinkedAccountForProvider:(unsigned char)arg withForceRefresh:(BOOL)arg2 completion:(id)arg3;
-// - (id) linkedAccountsValet;
-// - (id) init;
-// @end
-@interface PBLinkedAccountExtendedCredentials : PBLinkedAccountCredentials
-+ (id)encodingBehaviorsByPropertyKey;
-+ (id)JSONKeyPathsByPropertyKey;
-- (id)accountData;
-@end
-%hook PBLinkedAccountExtendedCredentials
-- (id)accountData { %log; return @"JWE:TESTEST"; }
-%end
-%hook PBSMSReplyManager
-- (id)SMSProviders { %log; return [NSSet setWithArray:@[[NSNumber numberWithInt:1]]]; }
-- (void)setHasLinkedSMSAccount:(BOOL)fp8 { %log; %orig(YES); }
-- (BOOL)hasLinkedSMSAccount { %log; return YES; }
-- (unsigned char)linkedSMSProvider { %log; return 1; }
-- (void)disableSMSActions { %log; [self enableSMSActions]; }
-- (BOOL)isCarrierProviderEnabled { %log; return YES; }
-- (void)setSMSActionsEnabled:(BOOL)fp8 { %log; %orig(YES); }
-- (unsigned char)providerFromCarrier { %log; return 1; }
-%end
-%hook PBLinkedAccount
-- (unsigned char)provider { %log; return 1; }
-- (id)uuid { %log; return [NSUUID UUID]; }
-- (BOOL)isAccountExpired { %log; return NO; }
-%end
-%hook PBLinkedAccountCredentials
-- (id)expiration { %log; NSTimeInterval t = 36000; NSDate *d = [NSDate dateWithTimeIntervalSinceNow:t]; return d; }
-- (id)apiData { %log; return @"JWE:test"; }
-%end
-%hook PBLinkedAccountsManager
-+ (id) providerToString:(unsigned char)arg { %log; return @"vzw"; }
-+ (unsigned char) stringToProvider:(id)arg { %log; return 1; }
-- (BOOL) hasLinkedAccountForProvider:(unsigned char)arg { %log; return YES; }
-- (BOOL) isProviderEnabled:(unsigned char)arg { %log; return YES; }
-- (id) enabledProviders { %log; return [NSSet setWithArray:@[[NSNumber numberWithInt:1]]]; }
-%end
-
-@interface PBNotificationSourceManager
-
-- (id)cannedResponseManager;
-- (id)notificationSourceDataStore;
-- (id)servicesQueue;
-- (id)watchServices;
-- (void)setNotificationSourceDatabaseAvailable:(unsigned int)fp8;
-- (unsigned int)notificationSourceDatabaseAvailable;
-- (void)updateCannedResponsesForAppIdentifier:(id)fp8;
-- (void)setActions:(id)fp8 forAppIdentifier:(id)fp12;
-- (id)actionByReplacingAction:(id)fp8 withCannedResponses:(id)fp12;
-- (void)notificationSourceDatabaseIsAvailable:(BOOL)fp8;
-- (void)synchronizeAllWatchServices;
-- (void)rejectNotificationSourceChange:(id)fp8 forWatch:(id)fp12 retryLater:(BOOL)fp16;
-- (void)acknowledgeNotificationSourceChange:(id)fp8 forWatch:(id)fp12;
-- (void)synchronizationFinishedForWatch:(id)fp8;
-- (void)removeNotificationSourceStatusesForWatch:(id)fp8;
-- (id)notificationSourceChangesForWatch:(id)fp8;
-- (void)removeNotificationSourceWatchService:(id)fp8;
-- (void)addNotificationSourceWatchService:(id)fp8;
-- (id)allNotificationSources;
-- (id)findNotificationSourceForAppIdentifier:(id)fp8;
-- (void)removeNotificationSourceWithAppIdentifier:(id)fp8;
-- (void)addNotificationSource:(id)fp8;
-- (void)handleCannedResponseDidChangeNotification:(id)fp8;
-- (void)dealloc;
-- (id)initWithCannedResponseManager:(id)fp8;
-
-@end
-
-@interface PBCannedResponseManager
-
-+ (id)userDefaults;
-- (id)cannedResponseDefaults;
-- (id)defaultResponses;
-- (id)cannedResponsesForAppIdentifier:(id)fp8;
-- (void)setCannedResponses:(id)fp8 forAppIdentifier:(id)fp12;
-- (id)initWithUserDefaults:(id)fp8;
-- (id)init;
-
-@end
-
-@interface PBNotificationSource
-
-+ (id)notificationSourceWithAppIdentifier:(id)fp8 flags:(unsigned int)fp12 version:(unsigned short)fp16 attributes:(id)fp20 actions:(id)fp24;
-+ (id)blobEntryModelFromBlobEntry:(id)fp8;
-+ (id)notificationSourceFromManagedEntry:(id)fp8;
-- (id)actions;
-- (id)attributes;
-- (unsigned short)version;
-- (unsigned int)flags;
-- (id)appIdentifier;
-- (id)initWithAppIdentifier:(id)fp8 flags:(unsigned int)fp12 version:(unsigned short)fp16 attributes:(id)fp20 actions:(id)fp24;
-- (id)blobRepresentationWithMapper:(id)fp8;
-- (id)modelIdentifier;
-- (id)initWithManagedNotificationSource:(id)fp8;
-
-@end
-
-@interface PBSMSSendRequest
-
-+ (id)requestWithMessage:(id)arg1 account:(id)arg2;
-- (id)message;
-- (id)account;
-
-@end
-
-@interface PBANCSActionHandler
-
-+ (id)actionHandlerWithDelegate:(id)fp8;
-- (void)setCurrentActionHandler:(id)fp8;
-- (id)currentActionHandler;
-- (void)setHandlingIdentifier:(id)fp8;
-- (id)handlingIdentifier;
-- (id)timelineWatchService;
-- (id)actionHandlersByAppIdentifier;
-- (id)delegate;
-- (void)notificationHandler:(id)fp8 didSendError:(id)fp12 withTitle:(id)fp16 icon:(id)fp20;
-- (void)notificationHandler:(id)fp8 didSendResponse:(unsigned char)fp12 withAttributes:(id)fp16 actions:(id)fp20;
-- (void)handleActionWithActionIdentifier:(unsigned char)fp8 attributes:(id)fp12;
-- (void)handleInvokeANCSActionMessage:(id)fp8;
-- (BOOL)isHandlingNotificationWithIdentifier:(id)fp8;
-- (id)initWithDelegate:(id)fp8;
-
-@end
-
-@interface PBSMSNotificationActionHandler
-
-+ (id)handlerWithDelegate:(id)fp8;
-- (void)setAddressBookQuerySession:(id)fp8;
-- (id)addressBookQuerySession;
-- (id)SMSAPIClient;
-- (id)SMSReplyManager;
-- (id)preferredPhoneManager;
-- (id)delegate;
-- (void)addressBookQuerySession:(id)fp8 foundMultipleContactMatches:(id)fp12;
-- (void)addressBookQuerySessionFailedWithNoContactAccess:(id)fp8;
-- (void)addressBookQuerySessionFailedToFindContactMatch:(id)fp8;
-- (void)addressBookQuerySession:(id)fp8 foundMultipleAddresses:(id)fp12;
-- (void)addressBookQuerySession:(id)fp8 finishedWithContact:(id)fp12 labeledValue:(id)fp16;
-- (void)handleActionWithActionIdentifier:(unsigned char)fp8 attributes:(id)fp12;
-- (void)startHandlingInvokeActionMessage:(id)fp8;
-- (id)initWithDelegate:(id)fp8 SMSReplyManager:(id)fp12 contactPreferredPhoneManager:(id)fp16;
-
-@end
-
-// void DumpObjcMethods(Class clz) {
-
-//     unsigned int methodCount = 0;
-//     Method *methods = class_copyMethodList(clz, &methodCount);
-
-//     printf("Found %d methods on '%s'\n", methodCount, class_getName(clz));
-
-//     for (unsigned int i = 0; i < methodCount; i++) {
-//         Method method = methods[i];
-
-//         NSString *string1 = [[NSString alloc] initWithUTF8String:class_getName(clz)];
-//         NSString *string2 = [[NSString alloc] initWithUTF8String:sel_getName(method_getName(method))];
-//         NSString *string3 = [[NSString alloc] initWithUTF8String:method_getTypeEncoding(method)];
-
-//         NSLog(@"'%@' has method named '%@' of encoding '%@'", string1, string2, string3);
-
-//         [string1 release];
-//         [string2 release];
-//         [string3 release];
-//     }
-
-//     free(methods);
-// }
-
-// %hook PBSMSSendRequest
-
-// + (id)requestWithMessage:(id)arg1 account:(id)arg2 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)message { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)account { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-
-// %end
-
-@interface PBTimelineActionsWatchService
-
-+ (id)watchServiceForWatch:(id)fp8 watchServicesSet:(id)fp12;
-- (id)notificationHandler;
-- (id)accountUserID;
-- (id)ANCSActionHandler;
-- (id)invokeActionHandler;
-- (void)setAddressBookQuerySession:(id)fp8;
-- (id)addressBookQuerySession;
-- (id)contactPreferredPhoneManager;
-- (id)addressBookManager;
-- (id)keyedTokenGenerator;
-- (id)httpActionSessionManager;
-- (id)lockerAppManager;
-- (id)timelineWatchService;
-- (id)timelineManager;
-- (id)watch;
-- (void)ANCSActionHandler:(id)fp8 didSendResponse:(unsigned char)fp12 withAttributes:(id)fp16 actions:(id)fp20 forItemIdentifier:(id)fp24;
-- (void)sendResponseForItemIdentifier:(id)fp8 response:(unsigned char)fp12;
-- (void)sendResponseForItemIdentifier:(id)fp8 response:(unsigned char)fp12 attributes:(id)fp16;
-- (void)sendANCSResponseForItemIdentifier:(id)fp8 response:(unsigned char)fp12 attributes:(id)fp16 actions:(id)fp20;
-- (void)sendResponseForItemIdentifier:(id)fp8 response:(unsigned char)fp12 attributes:(id)fp16 actions:(id)fp20;
-- (void)sendResponseForItemIdentifier:(id)fp8 response:(unsigned char)fp12 subtitle:(id)fp16 icon:(id)fp20 specificType:(int)fp24;
-- (void)sendResponseForItemIdentifier:(id)fp8 response:(unsigned char)fp12 subtitle:(id)fp16 icon:(id)fp20;
-- (id)subtitleWithMuted:(BOOL)fp8 forDataSourceUUID:(id)fp12;
-- (void)processHttpActionWithAttributes:(id)fp8 timelineIdentifier:(id)fp12 dataSourceUUID:(id)fp16;
-- (void)processAction:(id)fp8 forItem:(id)fp12 attributes:(id)fp16;
-- (void)handleActionForItem:(id)fp8 actionIdentifier:(unsigned char)fp12 attributes:(id)fp16;
-- (void)handleActionForItemIdentifier:(id)fp8 actionIdentifier:(unsigned char)fp12 attributes:(id)fp16;
-- (void)handleANCSActionForInvokeActionMessage:(id)fp8;
-- (void)registerInvokeActionHandler;
-- (void)registerInvokeANCSActionHandler;
-- (id)initWithWatch:(id)fp8 watchServicesSet:(id)fp12 timelineManager:(id)fp16 currentUserLockerAppManager:(id)fp20;
-- (id)init;
-
-@end
-
-@interface PBTimelineActionsInvokeActionMessage
-
-+ (void)load;
-- (id)attributes;
-- (unsigned char)actionIdentifier;
-- (id)itemIdentifier;
-- (id)initWithData:(id)fp8;
-
-@end
-
-@interface PBTimelineActionsActionResponseMessage
-
-- (id)initWithItemIdentifier:(id)fp8 response:(unsigned char)fp12 attributes:(id)fp16 actions:(id)fp20;
-- (id)initWithItemIdentifier:(id)fp8 response:(unsigned char)fp12 attributes:(id)fp16;
-
-@end
-
-@interface PBTimelineAction
-
-+ (id)systemActionWithIdentifier:(unsigned char)fp8;
-+ (BOOL)isSystemIdentifier:(unsigned char)fp8;
-+ (id)timelineActionFromManagedTimelineItemAction:(id)fp8;
-- (id)attributes;
-- (id)type;
-- (id)identifier;
-- (id)initWithIdentifier:(id)fp8 type:(id)fp12 attributes:(id)fp16;
-- (id)init;
-- (id)blobRepresentationWithMapper:(id)fp8;
-
-@end
-
-%hook PBTimelineActionsWatchService
-
-// + (id)watchServiceForWatch:(id)fp8 watchServicesSet:(id)fp12 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)notificationHandler { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)accountUserID { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)ANCSActionHandler { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)invokeActionHandler { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (void)setAddressBookQuerySession:(id)fp8 { %log; return %orig; }
-// - (id)addressBookQuerySession { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)contactPreferredPhoneManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)addressBookManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)keyedTokenGenerator { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)httpActionSessionManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)lockerAppManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)timelineWatchService { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)timelineManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)watch { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-- (void)ANCSActionHandler:(id)fp8 didSendResponse:(unsigned char)fp12 withAttributes:(id)fp16 actions:(id)fp20 forItemIdentifier:(id)fp24 { %log; return %orig; }
-// - (void)sendResponseForItemIdentifier:(id)fp8 response:(unsigned char)fp12 { %log; return %orig; }
-// - (void)sendResponseForItemIdentifier:(id)fp8 response:(unsigned char)fp12 attributes:(id)fp16 { %log; return %orig; }
-// - (void)sendANCSResponseForItemIdentifier:(id)fp8 response:(unsigned char)fp12 attributes:(id)fp16 actions:(id)fp20 { %log; return %orig; }
-// - (void)sendResponseForItemIdentifier:(id)fp8 response:(unsigned char)fp12 attributes:(id)fp16 actions:(id)fp20 { %log; return %orig; }
-// - (void)sendResponseForItemIdentifier:(id)fp8 response:(unsigned char)fp12 subtitle:(id)fp16 icon:(id)fp20 specificType:(int)fp24 { %log; return %orig; }
-// - (void)sendResponseForItemIdentifier:(id)fp8 response:(unsigned char)fp12 subtitle:(id)fp16 icon:(id)fp20 { %log; return %orig; }
-// - (id)subtitleWithMuted:(BOOL)fp8 forDataSourceUUID:(id)fp12 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (void)processHttpActionWithAttributes:(id)fp8 timelineIdentifier:(id)fp12 dataSourceUUID:(id)fp16 { %log; return %orig; }
-// - (void)processAction:(id)fp8 forItem:(id)fp12 attributes:(id)fp16 { %log; return %orig; }
-// - (void)handleActionForItem:(id)fp8 actionIdentifier:(unsigned char)fp12 attributes:(id)fp16 { %log; return %orig; }
-// - (void)handleActionForItemIdentifier:(id)fp8 actionIdentifier:(unsigned char)fp12 attributes:(id)fp16 { %log; return %orig; }
-// - (void)handleANCSActionForInvokeActionMessage:(id)fp8 { %log; return %orig; }
-// - (void)registerInvokeActionHandler { %log; return %orig; }
-// - (void)registerInvokeANCSActionHandler { %log; return %orig; }
-// - (id)initWithWatch:(id)fp8 watchServicesSet:(id)fp12 timelineManager:(id)fp16 currentUserLockerAppManager:(id)fp20 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)init { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-
-%end
-
-// %hook PBTimelineActionsInvokeActionMessage
-
-// + (void)load { %log; return %orig; }
-// - (id)attributes { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (unsigned char)actionIdentifier { %log; unsigned char r = %orig; NSLog(@" = %hhu", r); return r; }
-// - (id)itemIdentifier { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)initWithData:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-
-// %end
-
-// %hook PBTimelineActionsActionResponseMessage
-
-// - (id)initWithItemIdentifier:(id)fp8 response:(unsigned char)fp12 attributes:(id)fp16 actions:(id)fp20 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)initWithItemIdentifier:(id)fp8 response:(unsigned char)fp12 attributes:(id)fp16 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-
-// %end
-
-// %hook PBTimelineAction
-
-// + (id)systemActionWithIdentifier:(unsigned char)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// + (BOOL)isSystemIdentifier:(unsigned char)fp8 { %log; BOOL r = %orig; NSLog(@" = %d", r); return r; }
-// + (id)timelineActionFromManagedTimelineItemAction:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)attributes { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)type { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)identifier { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)initWithIdentifier:(id)fp8 type:(id)fp12 attributes:(id)fp16 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)init { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)blobRepresentationWithMapper:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-
-// %end
-
-%hook PBANCSActionHandler
-
-// + (id)actionHandlerWithDelegate:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (void)setCurrentActionHandler:(id)fp8 { %log; %orig; }
-// - (id)currentActionHandler { %log; id r = %orig; NSLog(@" = %@", r); NSLog(@" = %@", [r class]); return r; }
-// - (void)setHandlingIdentifier:(id)fp8 { %log; %orig; }
-// - (id)handlingIdentifier { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)timelineWatchService { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)actionHandlersByAppIdentifier { 
-//     %log; 
-//     NSDictionary *r = %orig; 
-//     NSLog(@" = %@", r); 
-//     NSLog(@" = %@", [r objectForKey:@"com.apple.MobileSMS"]); 
-//     NSMutableDictionary *res = [NSMutableDictionary dictionaryWithDictionary:r]; 
-//     [res setObject:%c(PBSendSMSActionHandler) forKey:@"com.facebook.Messenger"]; 
-//     NSLog(@" = %@", res); 
-//     return res; 
-// }
-// - (id)delegate { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (void)notificationHandler:(id)fp8 didSendError:(id)fp12 withTitle:(id)fp16 icon:(id)fp20 { %log; %orig; }
-- (void)notificationHandler:(id)fp8 didSendResponse:(unsigned char)fp12 withAttributes:(id)fp16 actions:(id)fp20 { %log; %orig; }
-// - (void)handleActionWithActionIdentifier:(unsigned char)fp8 attributes:(id)fp12 { %log; %orig; }
-// - (void)handleInvokeANCSActionMessage:(id)fp8 { %log; %orig; }
-// - (BOOL)isHandlingNotificationWithIdentifier:(id)fp8 { %log; BOOL r = %orig; NSLog(@" = %d", r); return r; }
-// - (id)initWithDelegate:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-
-%end
-
-// @protocol PBNotificationActionHandler <NSObject>
-// + (id)handlerWithDelegate:(id)fp8;
-// - (id)delegate;
-// - (void)handleActionWithActionIdentifier:(unsigned char)fp8 attributes:(id)fp12;
-// - (void)startHandlingInvokeActionMessage:(id)fp8;
-// @end
-
-// %hook PBSMSNotificationActionHandler
-
-// + (id)handlerWithDelegate:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (void)setAddressBookQuerySession:(id)fp8 { %log; %orig; }
-// - (id)addressBookQuerySession { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)SMSAPIClient { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)SMSReplyManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)preferredPhoneManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)delegate { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (void)addressBookQuerySession:(id)fp8 foundMultipleContactMatches:(id)fp12 { %log; %orig; }
-// - (void)addressBookQuerySessionFailedWithNoContactAccess:(id)fp8 { %log; %orig; }
-// - (void)addressBookQuerySessionFailedToFindContactMatch:(id)fp8 { %log; %orig; }
-// - (void)addressBookQuerySession:(id)fp8 foundMultipleAddresses:(id)fp12 { %log; %orig; }
-// - (void)addressBookQuerySession:(id)fp8 finishedWithContact:(id)fp12 labeledValue:(id)fp16 { %log; %orig; }
-// - (void)handleActionWithActionIdentifier:(unsigned char)fp8 attributes:(id)fp12 { %log; %orig; }
-// - (void)startHandlingInvokeActionMessage:(id)fp8 { %log; %orig; }
-// - (id)initWithDelegate:(id)fp8 SMSReplyManager:(id)fp12 contactPreferredPhoneManager:(id)fp16 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-
-// %end
-
-// %hook PBNotificationSourceManager
-
-// - (id)cannedResponseManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)notificationSourceDataStore { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)servicesQueue { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)watchServices { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (void)setNotificationSourceDatabaseAvailable:(unsigned int)fp8 { %log; %orig; }
-// - (unsigned int)notificationSourceDatabaseAvailable { %log; unsigned int r = %orig; NSLog(@" = %u", r); return r; }
-// - (void)updateCannedResponsesForAppIdentifier:(id)fp8 { %log; %orig; }
-// - (void)setActions:(id)fp8 forAppIdentifier:(id)fp12 { %log; %orig; }
-// - (id)actionByReplacingAction:(id)fp8 withCannedResponses:(id)fp12 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (void)notificationSourceDatabaseIsAvailable:(BOOL)fp8 { %log; %orig; }
-// - (void)synchronizeAllWatchServices { %log; %orig; }
-// - (void)rejectNotificationSourceChange:(id)fp8 forWatch:(id)fp12 retryLater:(BOOL)fp16 { %log; %orig; }
-// - (void)acknowledgeNotificationSourceChange:(id)fp8 forWatch:(id)fp12 { %log; %orig; }
-// - (void)synchronizationFinishedForWatch:(id)fp8 { %log; %orig; }
-// - (void)removeNotificationSourceStatusesForWatch:(id)fp8 { %log; %orig; }
-// - (id)notificationSourceChangesForWatch:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (void)removeNotificationSourceWatchService:(id)fp8 { %log; %orig; }
-// - (void)addNotificationSourceWatchService:(id)fp8 { %log; %orig; }
-// - (id)allNotificationSources { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)findNotificationSourceForAppIdentifier:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (void)removeNotificationSourceWithAppIdentifier:(id)fp8 { %log; %orig; }
-// - (void)addNotificationSource:(id)fp8 { %log; %orig; }
-// - (void)handleCannedResponseDidChangeNotification:(id)fp8 { %log; %orig; }
-// - (void)dealloc { %log; %orig; }
-// - (id)initWithCannedResponseManager:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-
-// %end
-
 %hook PBCannedResponseManager
 
 - (id)cannedResponsesForAppIdentifier:(id)fp8 { 
@@ -2132,147 +1824,8 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %end
 
-// %hook PBNotificationSource
-
-// + (id)notificationSourceWithAppIdentifier:(id)fp8 flags:(unsigned int)fp12 version:(unsigned short)fp16 attributes:(id)fp20 actions:(id)fp24 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// + (id)blobEntryModelFromBlobEntry:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// + (id)notificationSourceFromManagedEntry:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)actions { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// // - (id)attributes { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (unsigned short)version { %log; unsigned short r = %orig; NSLog(@" = %hu", r); return r; }
-// - (unsigned int)flags { %log; unsigned int r = %orig; NSLog(@" = %u", r); return r; }
-// - (id)appIdentifier { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)initWithAppIdentifier:(id)fp8 flags:(unsigned int)fp12 version:(unsigned short)fp16 attributes:(id)fp20 actions:(id)fp24 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)blobRepresentationWithMapper:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)modelIdentifier { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)initWithManagedNotificationSource:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-
-// %end
-
-@interface PBTimelineItemAttributeBlob
-
-- (id)content;
-- (unsigned char)type;
-- (id)initWithSequentialDataReader:(id)fp8;
-- (void)encodeToDataWriter:(id)fp8;
-- (id)initWithType:(unsigned char)fp8 content:(id)fp12;
-
-@end
-
-// %hook PBTimelineItemAttributeBlob
-
-// - (id)content { %log; id r = %orig; NSLog(@" = %@", r); NSLog(@" = %@", [r class]); return r; }
-// - (unsigned char)type { %log; return %orig; }
-// - (id)initWithSequentialDataReader:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); NSLog(@" = %@", [r class]); return r; }
-// - (void)encodeToDataWriter:(id)fp8 { %log; %orig; }
-// - (id)initWithType:(unsigned char)fp8 content:(id)fp12 { %log; id r = %orig; NSLog(@" = %@", r); NSLog(@" = %@", [r class]); return r; }
-
-// %end
-
-@interface PBAddressBookQuerySession
-
-+ (id)addressBookQuerySessionWithIdentifier:(id)fp8 query:(id)fp12 delegate:(id)fp16;
-- (id)actions;
-- (void)setNextActionId:(unsigned char)fp8;
-- (unsigned char)nextActionId;
-- (id)contactPreferredPhoneManager;
-- (id)addressBook;
-- (id)addressBookManager;
-- (id)delegate;
-- (id)query;
-- (void)setHasResolvedAmbiguity:(BOOL)fp8;
-- (BOOL)hasResolvedAmbiguity;
-- (void)setSelectedLabeledValue:(id)fp8;
-- (id)selectedLabeledValue;
-- (void)setSelectedContact:(id)fp8;
-- (id)selectedContact;
-- (id)sessionIdentifier;
-- (id)cleanSearchQuery:(id)fp8;
-- (BOOL)isQueryValidPhoneNumber:(id)fp8;
-- (void)handleSingleContact:(id)fp8;
-- (void)handleNoMatches;
-- (void)handleMultipleAddresses:(id)fp8;
-- (void)handleMultipleContacts:(id)fp8;
-- (id)preferredPhoneForContact:(id)fp8;
-- (void)handleActionWithIdentifier:(unsigned char)fp8;
-- (id)newActionWithType:(id)fp8 attributes:(id)fp12 content:(id)fp16;
-- (void)selectAddressLabeledValue:(id)fp8;
-- (void)selectContact:(id)fp8;
-- (void)runInitialQuery;
-- (id)initWithIdentifier:(id)fp8 query:(id)fp12 delegate:(id)fp16 addressBookManager:(id)fp20 contactPreferredPhoneManager:(id)fp24;
-- (id)init;
-
-@end
-
-// %hook PBAddressBookQuerySession
-
-// + (id)addressBookQuerySessionWithIdentifier:(id)fp8 query:(id)fp12 delegate:(id)fp16 { %log; return %orig; }
-// - (id)actions { %log; return %orig; }
-// - (void)setNextActionId:(unsigned char)fp8 { %log; %orig; }
-// - (unsigned char)nextActionId { %log; return %orig; }
-// - (id)contactPreferredPhoneManager { %log; return %orig; }
-// - (id)addressBook { %log; return %orig; }
-// - (id)addressBookManager { %log; return %orig; }
-// - (id)delegate { %log; return %orig; }
-// - (id)query { %log; return %orig; }
-// - (void)setHasResolvedAmbiguity:(BOOL)fp8 { %log; %orig; }
-// - (BOOL)hasResolvedAmbiguity { %log; return %orig; }
-// - (void)setSelectedLabeledValue:(id)fp8 { %log; %orig; }
-// - (id)selectedLabeledValue { %log; return %orig; }
-// - (void)setSelectedContact:(id)fp8 { %log; %orig; }
-// - (id)selectedContact { %log; return %orig; }
-// - (id)sessionIdentifier { %log; return %orig; }
-// - (id)cleanSearchQuery:(id)fp8 { %log; return %orig; }
-// - (BOOL)isQueryValidPhoneNumber:(id)fp8 { %log; return %orig; }
-// - (void)handleSingleContact:(id)fp8 { %log; %orig; }
-// - (void)handleNoMatches { %log; %orig; }
-// - (void)handleMultipleAddresses:(id)fp8 { %log; %orig; }
-// - (void)handleMultipleContacts:(id)fp8 { %log; %orig; }
-// - (id)preferredPhoneForContact:(id)fp8 { %log; return %orig; }
-// - (void)handleActionWithIdentifier:(unsigned char)fp8 { %log; %orig; }
-// - (id)newActionWithType:(id)fp8 attributes:(id)fp12 content:(id)fp16 { %log; return %orig; }
-// - (void)selectAddressLabeledValue:(id)fp8 { %log; %orig; }
-// - (void)selectContact:(id)fp8 { %log; %orig; }
-// - (void)runInitialQuery { %log; %orig; }
-// - (id)initWithIdentifier:(id)fp8 query:(id)fp12 delegate:(id)fp16 addressBookManager:(id)fp20 contactPreferredPhoneManager:(id)fp24 { %log; return %orig; }
-// - (id)init { %log; return %orig; }
-
-// %end
-
-@interface PBSendSMSActionHandler : NSObject
-
-+ (id)handlerWithDelegate:(id)fp8;
-- (void)setAddressBookQuerySession:(id)fp8;
-- (id)addressBookQuerySession;
-- (id)SMSAPIClient;
-- (id)SMSReplyManager;
-- (id)preferredPhoneManager;
-- (id)delegate;
-- (void)addressBookQuerySession:(id)fp8 foundMultipleContactMatches:(id)fp12;
-- (void)addressBookQuerySessionFailedWithNoContactAccess:(id)fp8;
-- (void)addressBookQuerySessionFailedToFindContactMatch:(id)fp8;
-- (void)addressBookQuerySession:(id)fp8 foundMultipleAddresses:(id)fp12;
-- (void)addressBookQuerySession:(id)fp8 finishedWithContact:(id)fp12 labeledValue:(id)fp16;
-- (void)handleActionWithActionIdentifier:(unsigned char)fp8 attributes:(id)fp12;
-- (void)startHandlingInvokeActionMessage:(id)fp8;
-- (id)initWithDelegate:(id)fp8 SMSReplyManager:(id)fp12 contactPreferredPhoneManager:(id)fp16;
-
-@end
-
 %hook PBSendSMSActionHandler
 
-// + (id)handlerWithDelegate:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (void)setAddressBookQuerySession:(id)fp8 { %log; %orig; }
-// - (id)addressBookQuerySession { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)SMSAPIClient { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)SMSReplyManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)preferredPhoneManager { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)delegate { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (void)addressBookQuerySession:(id)fp8 foundMultipleContactMatches:(id)fp12 { %log; %orig; }
-// - (void)addressBookQuerySessionFailedWithNoContactAccess:(id)fp8 { %log; %orig; }
-// - (void)addressBookQuerySessionFailedToFindContactMatch:(id)fp8 { %log; %orig; }
-// - (void)addressBookQuerySession:(id)fp8 foundMultipleAddresses:(id)fp12 { %log; %orig; }
-// - (void)addressBookQuerySession:(id)fp8 finishedWithContact:(id)fp12 labeledValue:(id)fp16 { %log; %orig; }
 - (void)handleActionWithActionIdentifier:(unsigned char)fp8 attributes:(id)fp12 {
     NSLog(@"PEBBLESMS: handleActionWithActionIdentifier");
     %log;
@@ -2287,37 +1840,41 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
         PBTimelineAttribute *attr = [%c(PBTimelineAttribute) attributeWithType:@"subtitle" content:@"Sending..."];
         [(PBANCSActionHandler *)[self delegate] notificationHandler:self didSendResponse:15 withAttributes:@[attr] actions:NULL];
         [%c(PBSMSSessionManager) sendSMS:[contact recordId] number:phone withText:reply];
+        [reply release];
     } else {
         %orig; 
     }
 }
-// - (void)startHandlingInvokeActionMessage:(id)fp8 { %log; %orig; }
-// - (id)initWithDelegate:(id)fp8 SMSReplyManager:(id)fp12 contactPreferredPhoneManager:(id)fp16 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
 
 %end
 
-@interface PBTimelineInvokeANCSActionMessage
+%hook PBSendTextAppActionHandler
 
-+ (void)load;
-- (id)appIdentifier;
-- (id)notificationSubtitle;
-- (id)notificationSender;
-- (id)actionTitle;
-- (unsigned char)actionType;
-- (id)ANCSIdentifier;
-- (id)initWithData:(id)fp8;
+-(void)handleAction:(unsigned char)arg1 forItemIdentifier:(id)arg2 attributes:(id)arg3 {
+    %log;
+    if (arg1 == 2) {
+        NSData *responseData = [(PBTimelineItemAttributeBlob *)[self responseFromAttributes:arg3] content];
+        NSData *phoneData = [(PBTimelineItemAttributeBlob *)[self phoneNumberFromAttributes:arg3] content];
 
-@end
+        NSString *response = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+        NSString *phone = [[NSString alloc] initWithData:phoneData encoding:NSUTF8StringEncoding];
 
-%hook PBTimelineInvokeANCSActionMessage
+        PBPhoneNumber *pbPhone = [[%c(PBPhoneNumber) alloc] initWithStringValue:phone];
+        PBContact *contact = [[%c(PBAddressBook) addressBook] contactWithPhoneNumber:pbPhone];
+        NSLog(@"HANDLING %@ %@ %@", response, phone, contact);
 
-// + (void)load { %log; %orig; }
-// - (id)appIdentifier { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)notificationSubtitle { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)notificationSender { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)actionTitle { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (unsigned char)actionType { %log; unsigned char r = %orig; NSLog(@" = %hhu", r); return r; }
-// - (id)ANCSIdentifier { %log; id r = %orig; NSLog(@" = %@", r); return r; }
-// - (id)initWithData:(id)fp8 { %log; id r = %orig; NSLog(@" = %@", r); return r; }
+        PBTimelineAttributeContentLocalizedString *localString = [[%c(PBTimelineAttributeContentLocalizedString) alloc] initWithLocalizationKey:@"Sending..."];
+        PBTimelineAttribute *attr = [%c(PBTimelineAttribute) attributeWithType:@"subtitle" content:localString];
+        [(PBTimelineActionsWatchService *)[self delegate] sendTextAppActionHandler:self didSendResponse:0 withAttributes:@[attr] forItemIdentifier:arg2];
+        [%c(PBSMSSessionManager) sendSMS:[contact recordId] number:phone withText:response];
+
+        [response release];
+        [phone release];
+        [pbPhone release];
+        [localString release];
+    } else {
+        %orig; 
+    }
+}
 
 %end

@@ -23012,7 +23012,7 @@
 @property (copy,readonly) NSString * debugDescription; 
 @property (nonatomic,__weak,readonly) id<PBNotificationActionHandlerDelegate> delegate;                //@synthesize delegate=_delegate - In the implementation block
 @property (nonatomic,copy,readonly) NSString * notificationSourceIdentifier;                           //@synthesize notificationSourceIdentifier=_notificationSourceIdentifier - In the implementation block
-+(id)handlerWithNotificationSourceIdentifier:(id)arg1 delegate:(id)arg2 ;
++(id)handlerWithNotificationSourceIdentifier:(id)arg1 delegate:(id)arg2;
 -(void)addressBookQuerySessionFailedWithNoContactAccess:(id)arg1 ;
 -(void)addressBookQuerySession:(id)arg1 finishedWithContact:(id)arg2 labeledValue:(id)arg3 ;
 -(void)addressBookQuerySession:(id)arg1 foundMultipleContactMatches:(id)arg2 ;
@@ -23790,7 +23790,7 @@
 -(id)initWithLinkedAccountsManager:(id)arg1 smsReplyManager:(id)arg2 message:(id)arg3 transactionID:(id)arg4 ;
 -(PBPhoneApp *)smsApp;
 -(id)phoneApp;
--(void)revokeAccounts:(id)arg1 ;
+-(void)revokeAccounts:(id)arg1;
 -(id)sendRequestWithRefreshedLinkedAccounts:(id)arg1 ;
 -(void)revokeAccountsFromError:(id)arg1 ;
 -(BOOL)needToRefreshLinkedAccountsForError:(id)arg1 ;
