@@ -34,6 +34,7 @@ static void create_bitmaps() {
   x_icon = gbitmap_create_with_resource(RESOURCE_ID_X_ICON);
   recent_icon = gbitmap_create_with_resource(RESOURCE_ID_RECENT_ICON);
   abc_icon = gbitmap_create_with_resource(RESOURCE_ID_ABC_ICON);
+  send_icon = gbitmap_create_with_resource(RESOURCE_ID_SEND_ICON);
   #if defined(PBL_MICROPHONE)
   microphone_icon = gbitmap_create_with_resource(RESOURCE_ID_MICROPHONE_ICON);
   #endif
@@ -43,10 +44,11 @@ static void destroy_bitmaps() {
   gbitmap_destroy(check_icon);
   gbitmap_destroy(x_icon);
   gbitmap_destroy(recent_icon);
+  gbitmap_destroy(abc_icon);
+  gbitmap_destroy(send_icon);
   #if defined(PBL_MICROPHONE)
   gbitmap_destroy(microphone_icon);
   #endif
-  gbitmap_destroy(abc_icon);
 }
 
 void change_state(int state) {
@@ -58,10 +60,10 @@ void change_state(int state) {
     action_bar_layer_set_icon(s_actionbar, BUTTON_ID_SELECT, microphone_icon);
     #endif
     action_bar_layer_set_icon(s_actionbar, BUTTON_ID_DOWN, recent_icon);
-  } else {
-    action_bar_layer_set_icon(s_actionbar, BUTTON_ID_UP, check_icon);
-    action_bar_layer_set_icon(s_actionbar, BUTTON_ID_SELECT, NULL);
-    action_bar_layer_set_icon(s_actionbar, BUTTON_ID_DOWN, x_icon);
+  } else if (s_state == CONFIRMING_FINAL_MESSAGE_STATE) {
+    action_bar_layer_set_icon(s_actionbar, BUTTON_ID_UP, NULL);
+    action_bar_layer_set_icon(s_actionbar, BUTTON_ID_SELECT, send_icon);
+    action_bar_layer_set_icon(s_actionbar, BUTTON_ID_DOWN, NULL);
   }
 }
 
@@ -132,8 +134,8 @@ void contact_chosen_from_recent(char *name, char *number) {
   snprintf(contact_number, sizeof(contact_number), "%s", number);
 
   change_state(CREATING_FINAL_MESSAGE_STATE);
-  snprintf(instruction_text, sizeof(instruction_text), "%s", contact_name);
-  snprintf(primary_text, sizeof(primary_text), "%s", contact_number);
+  snprintf(instruction_text, sizeof(instruction_text), "%s", "Create message");
+  snprintf(primary_text, sizeof(primary_text), "%s", contact_name);
   text_layer_set_text(s_instruction_layer, instruction_text);
   text_layer_set_text(s_primary_layer, primary_text);
 }
@@ -152,6 +154,16 @@ void search_chosen(char *name, char *number, char *id) {
   text_layer_set_text(s_primary_layer, primary_text);
 }
 
+void search_not_chosen() {
+  reset_all();
+
+  snprintf(instruction_text, sizeof(instruction_text), "%s", "Choose recipient");
+  text_layer_set_text(s_instruction_layer, instruction_text);
+
+  primary_text[0] = '\0';
+  text_layer_set_text(s_primary_layer, primary_text);
+}
+
 void tertiary_text_chosen(char *text) {
   if (s_state == BEGINNING_STATE) {
     snprintf(dictated_name, sizeof(dictated_name), "%s", text);
@@ -161,10 +173,12 @@ void tertiary_text_chosen(char *text) {
     text_layer_set_text(s_instruction_layer, instruction_text);
     text_layer_set_text(s_primary_layer, primary_text);
 
+    change_state(CHECKING_CONTACT_STATE);
+
     action_bar_layer_set_icon(s_actionbar, BUTTON_ID_UP, NULL);
+    action_bar_layer_set_icon(s_actionbar, BUTTON_ID_SELECT, NULL);
     action_bar_layer_set_icon(s_actionbar, BUTTON_ID_DOWN, NULL);
 
-    change_state(CHECKING_CONTACT_STATE);
     get_contact();
   }
 
@@ -210,6 +224,7 @@ static void dictation_session_callback(DictationSession *session, DictationSessi
       change_state(CHECKING_CONTACT_STATE);
 
       action_bar_layer_set_icon(s_actionbar, BUTTON_ID_UP, NULL);
+      action_bar_layer_set_icon(s_actionbar, BUTTON_ID_SELECT, NULL);
       action_bar_layer_set_icon(s_actionbar, BUTTON_ID_DOWN, NULL);
 
       get_contact();
@@ -249,25 +264,22 @@ static void select_click_handler(ClickRecognizerRef recognizer, void *context) {
     dictation_session_start(s_dictation_session);
   }
   #endif
+  if (s_state == CONFIRMING_FINAL_MESSAGE_STATE) {
+    change_state(SENDING_FINAL_MESSAGE_STATE);
+    send_final_message();
+
+    action_bar_layer_set_icon(s_actionbar, BUTTON_ID_UP, NULL);
+    action_bar_layer_set_icon(s_actionbar, BUTTON_ID_SELECT, NULL);
+    action_bar_layer_set_icon(s_actionbar, BUTTON_ID_DOWN, NULL);
+  }
 }
 
 static void up_click_handler(ClickRecognizerRef recognizer, void *context) {
   if (!is_connected) {
     return;
   }
-  if (s_state == BEGINNING_STATE) {
+  if (s_state == BEGINNING_STATE || s_state == CREATING_FINAL_MESSAGE_STATE) {
     tertiary_init();
-  } else if (s_state == CHECKING_CONTACT_STATE && has_contact) {
-    change_state(CREATING_FINAL_MESSAGE_STATE);
-    snprintf(instruction_text, sizeof(instruction_text), "%s", "Create message");
-    text_layer_set_text(s_instruction_layer, instruction_text);
-    snprintf(primary_text, sizeof(primary_text), "%s", contact_name);
-    text_layer_set_text(s_primary_layer, primary_text);
-  } else if (s_state == CREATING_FINAL_MESSAGE_STATE) {
-    tertiary_init();
-  } else if (s_state == CONFIRMING_FINAL_MESSAGE_STATE) {
-    change_state(SENDING_FINAL_MESSAGE_STATE);
-    send_final_message();
   }
 }
 
@@ -279,19 +291,41 @@ static void down_click_handler(ClickRecognizerRef recognizer, void *context) {
     recent_contact_chooser_init();
     change_state(GETTING_RECENT_CONTACTS_STATE);
     get_recent_contacts();
-  } else if (s_state == CHECKING_CONTACT_STATE && has_contact) {
-    contact_try++;
-    get_contact();
-    has_contact = false;
   } else if (s_state == CREATING_FINAL_MESSAGE_STATE) {
     preset_init();
     change_state(GETTING_PRESETS_STATE);
     get_presets();
-  } else if (s_state == CONFIRMING_FINAL_MESSAGE_STATE) {
-    dictated_message[0] = '\0';
-    snprintf(primary_text, sizeof(primary_text), "%s", dictated_message);
+  }
+}
+
+static void back_click_handler(ClickRecognizerRef recognizer, void *context) {
+  if (s_state == BEGINNING_STATE) {
+    window_stack_pop(true);
+  } else if (s_state == CHECKING_CONTACT_STATE && has_contact) {
+    // contact_try++;
+    // get_contact();
+    // has_contact = false;
+  } else if (s_state == CREATING_FINAL_MESSAGE_STATE) {
+    reset_all();
+
+    snprintf(instruction_text, sizeof(instruction_text), "%s", "Choose recipient");
+    text_layer_set_text(s_instruction_layer, instruction_text);
+
+    primary_text[0] = '\0';
     text_layer_set_text(s_primary_layer, primary_text);
+  } else if (s_state == CONFIRMING_FINAL_MESSAGE_STATE) {
     change_state(CREATING_FINAL_MESSAGE_STATE);
+
+    dictated_message[0] = '\0';
+
+    snprintf(instruction_text, sizeof(instruction_text), "%s", "Create message");
+    snprintf(primary_text, sizeof(primary_text), "%s", contact_name);
+    text_layer_set_text(s_instruction_layer, instruction_text);
+    text_layer_set_text(s_primary_layer, primary_text);
+    // dictated_message[0] = '\0';
+    // snprintf(primary_text, sizeof(primary_text), "%s", dictated_message);
+    // text_layer_set_text(s_primary_layer, primary_text);
+    // change_state(CREATING_FINAL_MESSAGE_STATE);
   }
 }
 
@@ -299,6 +333,7 @@ static void click_config_provider(void *context) {
   window_single_click_subscribe(BUTTON_ID_SELECT, select_click_handler);
   window_single_click_subscribe(BUTTON_ID_UP, up_click_handler);
   window_single_click_subscribe(BUTTON_ID_DOWN, down_click_handler);
+  window_single_click_subscribe(BUTTON_ID_BACK, back_click_handler);
 }
 
 static int are_strings_equal(char *str1, char *str2) {

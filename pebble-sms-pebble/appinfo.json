@@ -3,7 +3,7 @@
   "shortName": "TextSender",
   "longName": "TextSender for Pebble",
   "companyName": "Sawyer Vaughan",
-  "versionLabel": "1.3",
+  "versionLabel": "1.4",
   "sdkVersion": "3",
   "enableMultiJS": true, 
   "projectType": "native",
@@ -17,6 +17,11 @@
       {
         "file": "images/abc.png",
         "name": "ABC_ICON",
+        "type": "bitmap"
+      },
+      {
+        "file": "images/send.png",
+        "name": "SEND_ICON",
         "type": "bitmap"
       },
       {

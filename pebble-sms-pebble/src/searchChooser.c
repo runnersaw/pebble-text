@@ -182,7 +182,8 @@ static void menu_select_callback(MenuLayer *menu_layer, MenuIndex *cell_index, v
 
 static void back_button_handler(ClickRecognizerRef recognizer, void *context) {
   window_stack_pop(true);
-  change_state(BEGINNING_STATE);
+  
+  search_not_chosen();
 }
 
 static void new_click_config_provider(void *context) {
