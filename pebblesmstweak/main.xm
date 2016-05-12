@@ -884,7 +884,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
  
 %new
 - (void)messagesMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo {
-    NSLog(@"PEBBLESMS: messagesMessageNamed");
+    // NSLog(@"PEBBLESMS: messagesMessageNamed");
     // NSLog(@"PB Launching messages!");
     [[%c(UIApplication) sharedApplication] launchApplicationWithIdentifier:@"com.apple.MobileSMS" suspended:YES];
 }
@@ -920,7 +920,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %new
 - (void)sendMessageTo:(NSNumber *)personId number:(NSString *)number withText:(NSString *)text notify:(BOOL)notify {
-    NSLog(@"PEBBLESMS: sendMessageTo number withText notify");
+    // NSLog(@"PEBBLESMS: sendMessageTo number withText notify");
     // NSLog(@"PB sendmessageto personId");
     // NSLog(@"PEBBLESMS: sendMessageTo %@", personId);
     IMPerson *person = [[IMPerson alloc] initWithABRecordID:(ABRecordID)[personId intValue]];
@@ -1001,7 +1001,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %new
 - (void)sendMessageToNumber:(NSString *)number recordId:(NSNumber *)recordId withText:(NSString *)text notify:(BOOL)notify {
-    NSLog(@"PEBBLESMS: sendMessageToNumber withText notify");
+    // NSLog(@"PEBBLESMS: sendMessageToNumber withText notify");
     // NSLog(@"PB sendmessageto number");
     NSString *num = [@"+" stringByAppendingString:[[number componentsSeparatedByCharactersInSet: [[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""]];
 
@@ -1036,7 +1036,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %new
 - (void)sendNewMessageTo:(NSNumber *)personId number:(NSString *)number withText:(NSString *)text notify:(BOOL)notify {
-    NSLog(@"PEBBLESMS: sendNewMessageTo number withText notify");
+    // NSLog(@"PEBBLESMS: sendNewMessageTo number withText notify");
     // NSLog(@"PB sendmessageto personId");
     // NSLog(@"PEBBLESMS: sendNewMessageTo");
     IMPerson *person = [[IMPerson alloc] initWithABRecordID:(ABRecordID)[personId intValue]];
@@ -1104,7 +1104,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
  
 %new
 - (void)handleMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo {
-    NSLog(@"PEBBLESMS: handleMessageNamed in MobileSMS");
+    // NSLog(@"PEBBLESMS: handleMessageNamed in MobileSMS");
     // NSLog(@"PB sendmessageto %@", [userinfo description]);
     // Process userinfo (simple dictionary) and send message
     NSString *number = [userinfo objectForKey:@"number"];
@@ -1138,7 +1138,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 %hook CKConversation
 
 - (void)sendMessage:(id)arg1 onService:(id)arg2 newComposition:(BOOL)arg3 {
-    NSLog(@"PEBBLESMS: sendMessage");
+    // NSLog(@"PEBBLESMS: sendMessage");
     %orig;
     
     // NSLog(@"PEBBLESMS: sentMessage");
@@ -1148,7 +1148,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %new
 - (void)saveRecipient {
-    NSLog(@"PEBBLESMS: saveRecipient");
+    // NSLog(@"PEBBLESMS: saveRecipient");
 
     NSArray *handles = [self handles];
     // NSLog(@"PEBBLESMS: handles %@", [handles class]);
@@ -1175,7 +1175,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 %hook IMDaemonListener
 
 - (void)account:(id)arg1 chat:(id)arg2 style:(unsigned char)arg3 chatProperties:(id)arg4 messageReceived:(id)arg5 {
-    NSLog(@"PEBBLESMS: account chat style chatProperties messageReceived");
+    // NSLog(@"PEBBLESMS: account chat style chatProperties messageReceived");
     if ([arg5 isKindOfClass:[IMMessageItem class]]) {
         NSString *sender = [(IMMessageItem *)arg5 sender];
         // NSLog(@"PEBBLESMS: sender %@", [sender class]);
@@ -1201,11 +1201,11 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %new
 -(NSString *)getStringRepresentationForTextSender {
-    NSLog(@"PEBBLESMS: getStringRepresentationForTextSender");
+    // NSLog(@"PEBBLESMS: getStringRepresentationForTextSender");
     if ([self respondsToSelector:@selector(stringValue)]) {
         return [NSString stringWithString:[self stringValue]];
     } else {
-        NSLog(@"PEBBLESMS: %@ %@ %@ %@", [self rawStringValue], [self countryCallingCode], [self stringRepresentationForWatch], [self stringRepresentationForWeb]);
+        // NSLog(@"PEBBLESMS: %@ %@ %@ %@", [self rawStringValue], [self countryCallingCode], [self stringRepresentationForWatch], [self stringRepresentationForWeb]);
         return [NSString stringWithString:[self rawStringValue]];
     }
 }
@@ -1216,7 +1216,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %new
 + (NSString *)phoneWithPrefix:(NSString *)number {
-    NSLog(@"PEBBLESMS: phoneWithPrefix");
+    // NSLog(@"PEBBLESMS: phoneWithPrefix");
     NSDictionary *dictCodes = [NSDictionary dictionaryWithObjectsAndKeys:
         @"93",@"AF",@"355",@"AL",@"213",@"DZ",@"1",@"AS", @"376",@"AD",@"244",@"AO",@"1",@"AI",@"1",@"AG",@"54",@"AR",@"374",@"AM",@"297",@"AW",@"61",@"AU",@"43",@"AT",@"994",@"AZ",@"1",@"BS",@"973",@"BH",
         @"880",@"BD",@"1",@"BB",@"375",@"BY",@"32",@"BE",@"501",@"BZ",@"229",@"BJ",@"1",@"BM",@"975",@"BT",@"387",@"BA",@"267",@"BW",@"55",@"BR",@"246",@"IO",@"359",@"BG",@"226",@"BF",@"257",@"BI",@"855",@"KH",
@@ -1253,7 +1253,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %new
 - (NSNumber *)recordId {
-    NSLog(@"PEBBLESMS: recordId");
+    // NSLog(@"PEBBLESMS: recordId");
     return [NSNumber numberWithInt:(int)ABRecordGetRecordID([self recordRef])];
 }
 
@@ -1263,7 +1263,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %new
 - (id)contactWithPhoneNumber:(PBPhoneNumber *)phoneNumber {
-    NSLog(@"PEBBLESMS: contactWithPhoneNumber");
+    // NSLog(@"PEBBLESMS: contactWithPhoneNumber");
     for (PBContact *contact in (NSArray *)[self allContacts]) {
         for (PBLabeledValue *label in (NSArray *)[contact phoneNumbers]) {
             NSString *contactPhone = [(PBPhoneNumber *)[label value] getStringRepresentationForTextSender];
@@ -1277,7 +1277,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %new
 - (id)contactWithPrefixedPhoneNumber:(NSString *)phoneNumber {
-    NSLog(@"PEBBLESMS: contactWithPrefixedPhoneNumber");
+    // NSLog(@"PEBBLESMS: contactWithPrefixedPhoneNumber");
     PBContact *finalContact = NULL;
     int highestCount = 0;
 
@@ -1313,7 +1313,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %new
 - (id)searchContactsList:(NSString *)search tries:(int)tries {
-    NSLog(@"PEBBLESMS: searchContactsList");
+    // NSLog(@"PEBBLESMS: searchContactsList");
     NSMutableArray *results = [NSMutableArray array];
 
     for (id item in (NSArray *)[self allContacts]) {
@@ -1388,7 +1388,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %new
 - (id)searchContacts:(NSString *)search tries:(int)tries {
-    NSLog(@"PEBBLESMS: searchContacts tries");
+    // NSLog(@"PEBBLESMS: searchContacts tries");
     NSMutableArray *results = [NSMutableArray array];
 
     for (id item in (NSArray *)[self allContacts]) {
@@ -1451,7 +1451,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %new
 - (NSMutableDictionary *)getContactSearchResponse:(NSString *)name tries:(int)tries {
-    NSLog(@"PEBBLESMS: getContactSearchResponse");
+    // NSLog(@"PEBBLESMS: getContactSearchResponse");
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
     NSMutableDictionary *contactInfo = [[%c(PBAddressBook) addressBook] searchContacts:name tries:tries];
@@ -1498,7 +1498,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %new
 - (NSMutableDictionary *)getFinalRecievedResponse {
-    NSLog(@"PEBBLESMS: getFinalRecievedResponse");
+    // NSLog(@"PEBBLESMS: getFinalRecievedResponse");
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
     [dict setObject:@"Sending..." forKey:RECIEVED_FINAL_MESSAGE_KEY];
@@ -1508,7 +1508,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %new
 - (NSMutableDictionary *)getSentResponse {
-    NSLog(@"PEBBLESMS: getSentResponse");
+    // NSLog(@"PEBBLESMS: getSentResponse");
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
     [dict setObject:@"Sent" forKey:MESSAGE_CONFIRMATION_KEY];
@@ -1519,7 +1519,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %new
 - (NSMutableDictionary *)getFailedResponse {
-    NSLog(@"PEBBLESMS: getFailedResponse");
+    // NSLog(@"PEBBLESMS: getFailedResponse");
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
     [dict setObject:@"Sending failed" forKey:MESSAGE_CONFIRMATION_KEY];
@@ -1530,7 +1530,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %new
 - (NSMutableDictionary *)getConnectionResponse {
-    NSLog(@"PEBBLESMS: getConnectionResponse");
+    // NSLog(@"PEBBLESMS: getConnectionResponse");
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
     [dict setObject:@"Connected" forKey:CONNECTION_TEST_KEY];
@@ -1540,7 +1540,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %new
 - (NSMutableDictionary *)getRecentContactsResponse {
-    NSLog(@"PEBBLESMS: getRecentContactsResponse");
+    // NSLog(@"PEBBLESMS: getRecentContactsResponse");
     loadRecentRecipients();
 
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
@@ -1555,7 +1555,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %new
 - (NSMutableDictionary *)getPresets {
-    NSLog(@"PEBBLESMS: getPresets");
+    // NSLog(@"PEBBLESMS: getPresets");
     loadPrefs();
 
     // NSLog(@"PEBBLESMS: loadPrefs4 %@", presets);
@@ -1569,7 +1569,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 }
 
 - (void)appMessagesPushUpdate:(id)fp8 onSent:(id)fp1001 uuid:(id)fp12 launcher:(id)fp16 {
-    NSLog(@"PEBBLESMS: appMessagesPushUpdate");
+    // NSLog(@"PEBBLESMS: appMessagesPushUpdate");
     NSMutableDictionary *message = (NSMutableDictionary *)fp8;
     id isSMS = [message objectForKey:IS_PEBBLE_SMS_KEY];
     if (isSMS != NULL && [isSMS intValue] == [[NSNumber numberWithInt:1] intValue]) {
@@ -1638,7 +1638,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
         }
 
         if (initialized) {
-            NSLog(@"PEBBLESMS: %@", response);
+            // NSLog(@"PEBBLESMS: %@", response);
             %orig(response, fp1001, fp12, fp16); 
         } else {
             %orig;
@@ -1650,7 +1650,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %new
 + (void)sendSMS:(NSNumber *)recordId number:(NSString *)number withText:(NSString *)text {
-    NSLog(@"PEBBLESMS: sendSMS PBWatch");
+    // NSLog(@"PEBBLESMS: sendSMS PBWatch");
     // launch messages
     // CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), (CFStringRef)messageNotificationString, nil, nil, YES);
 
@@ -1696,7 +1696,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 %hook PBSMSSessionManager
 
 - (id)sendSMSSendRequestWithMessage:(id)fp8 account:(id)fp12 transactionID:(id)fp16 {
-    NSLog(@"PEBBLESMS: sendSMSSendRequestWithMessage");
+    // NSLog(@"PEBBLESMS: sendSMSSendRequestWithMessage");
     PBSMSMessage *message = (PBSMSMessage *)fp8;
     NSString *text = [message text];
     PBPhoneNumber *number = [[message recipients] objectAtIndex:0];
@@ -1707,7 +1707,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %new
 + (void)sendSMS:(NSNumber *)recordId number:(NSString *)number withText:(NSString *)text {
-    NSLog(@"PEBBLESMS: sendSMS PBSMSSessionManager");
+    // NSLog(@"PEBBLESMS: sendSMS PBSMSSessionManager");
     // launch messages
     // CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), (CFStringRef)messageNotificationString, nil, nil, YES);
 
@@ -1780,7 +1780,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 %new
 - (void)sentCallbackWithNotification:(NSNotification *)myNotification {
     // NSLog(@"PB handleSendNotification %@", [[%c(PBPebbleCentral) defaultCentral] class]);
-    NSLog(@"PEBBLESMS: sentCallbackWithNotification");
+    // NSLog(@"PEBBLESMS: sentCallbackWithNotification");
     PBPebbleCentral *central = [%c(PBPebbleCentral) defaultCentral];
     for (int i=0; i<[[central connectedWatches] count]; i++) {
         PBWatch *watch = [[central connectedWatches] objectAtIndex:i];
@@ -1790,7 +1790,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %new
 - (void)failedCallbackWithNotification:(NSNotification *)myNotification {
-    NSLog(@"PEBBLESMS: failedCallbackWithNotification");
+    // NSLog(@"PEBBLESMS: failedCallbackWithNotification");
     // NSLog(@"PB handleFailedNotification %@", [[%c(PBPebbleCentral) defaultCentral] class]);
     PBPebbleCentral *central = [%c(PBPebbleCentral) defaultCentral];
     for (int i=0; i<[[central connectedWatches] count]; i++) {
@@ -1805,7 +1805,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 %hook PBCannedResponseManager
 
 - (id)cannedResponsesForAppIdentifier:(id)fp8 { 
-    NSLog(@"PEBBLESMS: cannedResponsesForAppIdentifier %@", fp8);
+    // NSLog(@"PEBBLESMS: cannedResponsesForAppIdentifier %@", fp8);
     id r = %orig;
     if ([(NSString *)fp8 isEqualToString:@"com.apple.MobileSMS"]) {
         [presets removeAllObjects];
@@ -1814,7 +1814,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     return r; 
 }
 - (void)setCannedResponses:(id)fp8 forAppIdentifier:(id)fp12 {
-    NSLog(@"PEBBLESMS: setCannedResponses %@", fp12);
+    // NSLog(@"PEBBLESMS: setCannedResponses %@", fp12);
     if ([(NSString *)fp12 isEqualToString:@"com.apple.MobileSMS"]) {
         [presets removeAllObjects];
         [presets addObjectsFromArray:(NSArray *)fp8];
@@ -1827,8 +1827,8 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 %hook PBSendSMSActionHandler
 
 - (void)handleActionWithActionIdentifier:(unsigned char)fp8 attributes:(id)fp12 {
-    NSLog(@"PEBBLESMS: handleActionWithActionIdentifier");
-    %log;
+    // NSLog(@"PEBBLESMS: handleActionWithActionIdentifier");
+    // %log;
     if (fp8 == 2) {
         // NSLog(@"HANDLING");
         NSData *d = [(PBTimelineItemAttributeBlob *)[(NSArray *)fp12 objectAtIndex:0] content];
@@ -1851,7 +1851,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 %hook PBSendTextAppActionHandler
 
 -(void)handleAction:(unsigned char)arg1 forItemIdentifier:(id)arg2 attributes:(id)arg3 {
-    %log;
+    // %log;
     if (arg1 == 2) {
         NSData *responseData = [(PBTimelineItemAttributeBlob *)[self responseFromAttributes:arg3] content];
         NSData *phoneData = [(PBTimelineItemAttributeBlob *)[self phoneNumberFromAttributes:arg3] content];
@@ -1861,7 +1861,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
         PBPhoneNumber *pbPhone = [[%c(PBPhoneNumber) alloc] initWithStringValue:phone];
         PBContact *contact = [[%c(PBAddressBook) addressBook] contactWithPhoneNumber:pbPhone];
-        NSLog(@"HANDLING %@ %@ %@", response, phone, contact);
+        // NSLog(@"HANDLING %@ %@ %@", response, phone, contact);
 
         PBTimelineAttributeContentLocalizedString *localString = [[%c(PBTimelineAttributeContentLocalizedString) alloc] initWithLocalizationKey:@"Sending..."];
         PBTimelineAttribute *attr = [%c(PBTimelineAttribute) attributeWithType:@"subtitle" content:localString];
