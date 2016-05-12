@@ -6,12 +6,12 @@ if [ -z "$1" ]
     exit
 fi
 
-scp -P 2222 main.xm "root@$1:/var/mobile/Documents/pebble-text/pebblesmstweak/"
-scp -P 2222 enableTextReply.xm "root@$1:/var/mobile/Documents/pebble-text/pebblesmstweak/"
-scp -P 2222 log.xm "root@$1:/var/mobile/Documents/pebble-text/pebblesmstweak/"
-scp -P 2222 Makefile "root@$1:/var/mobile/Documents/pebble-text/pebblesmstweak/"
-scp -P 2222 control "root@$1:/var/mobile/Documents/pebble-text/pebblesmstweak/"
-scp -P 2222 pebblesmstweak.plist "root@$1:/var/mobile/Documents/pebble-text/pebblesmstweak/"
+scp main.xm "root@$1:/var/mobile/Documents/pebble-text/pebblesmstweak/"
+scp enableTextReply.xm "root@$1:/var/mobile/Documents/pebble-text/pebblesmstweak/"
+scp log.xm "root@$1:/var/mobile/Documents/pebble-text/pebblesmstweak/"
+scp Makefile "root@$1:/var/mobile/Documents/pebble-text/pebblesmstweak/"
+scp control "root@$1:/var/mobile/Documents/pebble-text/pebblesmstweak/"
+scp pebblesmstweak.plist "root@$1:/var/mobile/Documents/pebble-text/pebblesmstweak/"
 # scp pebblesmstweak/Makefile "root@$1:/var/mobile/Documents/pebble-text/pebblesmstweak/pebblesmstweak"
 # scp pebblesmstweak/entry.plist "root@$1:/var/mobile/Documents/pebble-text/pebblesmstweak/pebblesmstweak"
 # scp pebblesmstweak/pebblesmstweak.mm "root@$1:/var/mobile/Documents/pebble-text/pebblesmstweak/pebblesmstweak"

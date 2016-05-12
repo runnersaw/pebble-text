@@ -1383,7 +1383,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
         }
     }
 
-    return [[NSDictionary dictionaryWithObjectsAndKeys:contacts, @"contacts", numbers, @"numbers", nil] autorelease];
+    return [NSDictionary dictionaryWithObjectsAndKeys:contacts, @"contacts", numbers, @"numbers", nil];
 }
 
 %new
@@ -1440,7 +1440,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
         }
     }
 
-    return [[NSDictionary dictionaryWithObjectsAndKeys:c, @"contact", number, @"number", nil] autorelease];
+    return [NSDictionary dictionaryWithObjectsAndKeys:c, @"contact", number, @"number", nil];
 }
 
 %end
@@ -1457,16 +1457,17 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     NSMutableDictionary *contactInfo = [[%c(PBAddressBook) addressBook] searchContacts:name tries:tries];
     NSMutableDictionary *contactsInfo = [[%c(PBAddressBook) addressBook] searchContactsList:name tries:tries];
     PBContact *c = [contactInfo objectForKey:@"contact"];
-    if (c != NULL && contactsInfo != NULL) {
+    NSString *num = [contactInfo objectForKey:@"number"];
+    if (c != NULL && num != NULL && contactsInfo != NULL) {
         // to maintain compatibility with old watchapp versions (<=v1.1)
         [dict setObject:[c fullName] forKey:CONTACT_NAME_KEY];
-        NSString *num = [contactInfo objectForKey:@"number"];
         [dict setObject:num forKey:CONTACT_NUMBER_KEY];
         currentContactId = [c recordId];
 
         // for newer watchapp models (>v1.1)
         NSMutableArray *contacts = [contactsInfo objectForKey:@"contacts"];
         NSMutableArray *numbers = [contactsInfo objectForKey:@"numbers"];
+
         NSMutableArray *names = [NSMutableArray array];
         NSMutableArray *phones = [NSMutableArray array];
         NSMutableArray *ids = [NSMutableArray array];
