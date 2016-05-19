@@ -869,6 +869,8 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 @end
 
+%group SpringboardHooks
+
 %hook SpringBoard
 
 - (void)applicationDidFinishLaunching:(id)application {
@@ -900,7 +902,11 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %end
 
+%end
+
 // MOBILESMS TWEAKING
+
+%group MobileSMSHooks
 
 %hook SMSApplication 
 
@@ -1195,7 +1201,11 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %end
 
+%end
+
 // CONTACT HANDLING
+
+%group PebbleMain
 
 %hook PBPhoneNumber
 
@@ -1879,3 +1889,15 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 }
 
 %end
+
+%end
+
+%ctor {
+    if ([%c(PBAppDelegate) class]) {
+        %init(PebbleMain);
+    } else if ([%c(SpringBoard) class]) {
+        %init(SpringboardHooks);
+    } else if ([%c(SMSApplication) class]) {
+        %init(MobileSMSHooks);
+    }
+}
