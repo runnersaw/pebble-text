@@ -1216,7 +1216,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
         return [NSString stringWithString:[self stringValue]];
     } else {
         // NSLog(@"PEBBLESMS: %@ %@ %@ %@", [self rawStringValue], [self countryCallingCode], [self stringRepresentationForWatch], [self stringRepresentationForWeb]);
-        return [NSString stringWithString:[self rawStringValue]];
+        return [NSString stringWithString:[self stringRepresentationForWeb]];
     }
 }
 
