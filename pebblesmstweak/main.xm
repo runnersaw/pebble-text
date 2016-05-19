@@ -1216,7 +1216,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
         return [NSString stringWithString:[self stringValue]];
     } else {
         // NSLog(@"PEBBLESMS: %@ %@ %@ %@", [self rawStringValue], [self countryCallingCode], [self stringRepresentationForWatch], [self stringRepresentationForWeb]);
-        return [NSString stringWithString:[self rawStringValue]];
+        return [NSString stringWithString:[self stringRepresentationForWeb]];
     }
 }
 
@@ -1872,17 +1872,23 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
         PBPhoneNumber *pbPhone = [[%c(PBPhoneNumber) alloc] initWithStringValue:phone];
         PBContact *contact = [[%c(PBAddressBook) addressBook] contactWithPhoneNumber:pbPhone];
-        // NSLog(@"HANDLING %@ %@ %@", response, phone, contact);
 
-        PBTimelineAttributeContentLocalizedString *localString = [[%c(PBTimelineAttributeContentLocalizedString) alloc] initWithLocalizationKey:@"Sending..."];
-        PBTimelineAttribute *attr = [%c(PBTimelineAttribute) attributeWithType:@"subtitle" content:localString];
-        [(PBTimelineActionsWatchService *)[self delegate] sendTextAppActionHandler:self didSendResponse:0 withAttributes:@[attr] forItemIdentifier:arg2];
-        [%c(PBSMSSessionManager) sendSMS:[contact recordId] number:phone withText:response];
+        if (contact != NULL) {
+            PBTimelineAttributeContentLocalizedString *localString = [[%c(PBTimelineAttributeContentLocalizedString) alloc] initWithLocalizationKey:@"Sending..."];
+            PBTimelineAttribute *attr = [%c(PBTimelineAttribute) attributeWithType:@"subtitle" content:localString];
+            [(PBTimelineActionsWatchService *)[self delegate] sendTextAppActionHandler:self didSendResponse:0 withAttributes:@[attr] forItemIdentifier:arg2];
+            [%c(PBSMSSessionManager) sendSMS:[contact recordId] number:phone withText:response];
+            [localString release];
+        } else {
+            NSString *message = [NSString stringWithFormat:@"Sending failed to %@", phone];
+            PBTimelineAttribute *attr = [%c(PBTimelineAttribute) attributeWithType:@"subtitle" content:message];
+            [(PBTimelineActionsWatchService *)[self delegate] sendTextAppActionHandler:self didSendResponse:0 withAttributes:@[attr] forItemIdentifier:arg2];
+        }
+
 
         [response release];
         [phone release];
         [pbPhone release];
-        [localString release];
     } else {
         %orig; 
     }
