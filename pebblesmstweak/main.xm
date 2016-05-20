@@ -1318,7 +1318,11 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     }
 
     // NSLog(@"PEBBLESMS: finalContact == NULL %d", (finalContact == NULL));
-    return finalContact;
+    if (highestCount >= 6) { // just double check that there was actually a find
+        return finalContact;
+    }
+
+    return NULL;
 }
 
 %new
@@ -1873,7 +1877,15 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
         PBPhoneNumber *pbPhone = [[%c(PBPhoneNumber) alloc] initWithStringValue:phone];
         PBContact *contact = [[%c(PBAddressBook) addressBook] contactWithPhoneNumber:pbPhone];
 
-        if (contact != NULL) {
+        PBContact *finalContact;
+        if (contact == NULL) {
+            NSString *prefixedPhone = [%c(PBContact) phoneWithPrefix:phone];
+            finalContact = [[%c(PBAddressBook) addressBook] contactWithPrefixedPhoneNumber:prefixedPhone];
+        } else {
+            finalContact = contact;
+        }
+
+        if (finalContact != NULL) {
             PBTimelineAttributeContentLocalizedString *localString = [[%c(PBTimelineAttributeContentLocalizedString) alloc] initWithLocalizationKey:@"Sending..."];
             PBTimelineAttribute *attr = [%c(PBTimelineAttribute) attributeWithType:@"subtitle" content:localString];
             [(PBTimelineActionsWatchService *)[self delegate] sendTextAppActionHandler:self didSendResponse:0 withAttributes:@[attr] forItemIdentifier:arg2];
