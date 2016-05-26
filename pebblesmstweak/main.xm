@@ -667,8 +667,9 @@
 @end
 
 #define SEND_DELAY 4.0
-#define SECOND_SEND_DELAY 8.0
+#define SECOND_SEND_DELAY 10.0
 #define NOTIFICATION_DELAY 0.2
+#define MESSAGE_SEND_TIMEOUT 20.0
 // #define OPEN_PEBBLE_DELAY 5.0
 
 #define DICTATED_NAME_KEY [NSNumber numberWithInt:0]
@@ -721,8 +722,6 @@ static BOOL isRecentContact = NO;
 static int maxContacts = 10;
 static int maxContactsToSend = 10;
 
-// static NSTimeInterval maxDelayForSendingInSeconds = 30; // has only 30 seconds to send
-
 static NSMutableArray *presets = [NSMutableArray array];
 static NSMutableArray *names = [NSMutableArray array];
 static NSMutableArray *phones = [NSMutableArray array];
@@ -744,21 +743,6 @@ static void loadPrefs() {
 }
 
 // RECENT MESSAGES
-
-
-/* 
-FORMAT OF MESSAGE
-NSMutableDictionary *dict = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
-            t, @"message", 
-            n, @"number", 
-            [NSNumber numberWithBool:YES], @"notify", 
-            [NSNumber numberWithBool:NO], @"newNumber", 
-            rId, @"recordId", 
-            r, @"isRecentContact",
-            [NSNumber numberWithBool:NO], @"isReply",
-            [NSUUID UUID], @"uuid",
-            nil] autorelease];
-*/
 
 static void loadMessagesToSend() {
     NSArray *arr = [NSArray arrayWithContentsOfFile:messagesFileLocation];
@@ -1001,6 +985,13 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
         NSNumber *recent = [message objectForKey:@"isRecentContact"];
         NSNumber *reply = [message objectForKey:@"isReply"];
         NSString *uuid = [message objectForKey:@"uuid"];
+        NSDate *expirationDate = [message objectForKey:@"expirationDate"];
+
+        // timeout so message doesn't get sent super late
+        if ([expirationDate compare:[NSDate date]] == NSOrderedAscending) {
+            removeMessageAfterSending(uuid);
+            return;
+        }
 
         // TODO: find proper conditions
         if (number == NULL || messageText == NULL || notify == NULL || newNumber == NULL || recordId == NULL) {
@@ -1786,6 +1777,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
         r, @"isRecentContact",
         [NSNumber numberWithBool:NO], @"isReply",
         [[NSUUID UUID] UUIDString], @"uuid",
+        [NSDate dateWithTimeIntervalSinceNow:MESSAGE_SEND_TIMEOUT], @"expirationDate",
         nil] autorelease];
 
     saveMessageForSending(dict);
@@ -1845,6 +1837,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
         [NSNumber numberWithBool:NO], @"isRecentContact",
         [NSNumber numberWithBool:YES], @"isReply",
         [[NSUUID UUID] UUIDString], @"uuid",
+        [NSDate dateWithTimeIntervalSinceNow:MESSAGE_SEND_TIMEOUT], @"expirationDate",
         nil] autorelease];
 
     saveMessageForSending(dict);
