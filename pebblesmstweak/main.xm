@@ -1655,7 +1655,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
-    if ([names count] == 0 || [phones count] == 0) {
+    if ([names count] != 0 && [phones count] != 0) {
         [dict setObject:[names componentsJoinedByString:@"\n"] forKey:RECENT_CONTACTS_NAME_KEY];
         [dict setObject:[phones componentsJoinedByString:@"\n"] forKey:RECENT_CONTACTS_NUMBER_KEY];
         isRecentContact = YES;
