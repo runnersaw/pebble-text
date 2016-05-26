@@ -1961,7 +1961,9 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
         PBPhoneNumber *pbPhoneNumber = (PBPhoneNumber *)[(PBLabeledValue *)[[self addressBookQuerySession] selectedLabeledValue] value];
         NSString *phone = [pbPhoneNumber getStringRepresentationForTextSender];
         // NSLog(@"Wants to send reply with content '%@' to '%@' at number '%@'", reply, contact, phone);
-        PBTimelineAttribute *attr = [%c(PBTimelineAttribute) attributeWithType:@"subtitle" content:@"Sending..."];
+        PBTimelineAttributeContentLocalizedString *localString = [[%c(PBTimelineAttributeContentLocalizedString) alloc] initWithLocalizationKey:@"Sending..."];
+        PBTimelineAttribute *attr = [%c(PBTimelineAttribute) attributeWithType:@"subtitle" content:localString];
+        [localString release];
         [(PBANCSActionHandler *)[self delegate] notificationHandler:self didSendResponse:15 withAttributes:@[attr] actions:NULL];
         [%c(PBSMSSessionManager) sendSMS:[contact recordId] number:phone withText:reply];
         [reply release];
