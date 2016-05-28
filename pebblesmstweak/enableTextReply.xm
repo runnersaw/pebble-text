@@ -119,6 +119,8 @@
 -(void)migrateSMSAccountFrom3Dot6To3Dot7ForProvider:(unsigned char)arg1;
 @end
 
+%group PebbleTextReply
+
 %hook PBLinkedAccountExtendedCredentials
 
 - (id)accountData {
@@ -251,3 +253,11 @@
 }
 
 %end
+
+%end
+
+%ctor {
+    if ([%c(PBAppDelegate) class]) {
+        %init(PebbleTextReply);
+    }
+}
