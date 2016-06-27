@@ -8,6 +8,8 @@ fi
 
 scp main.xm "root@$1:/var/mobile/Documents/pebble-text/pebblesmstweak/"
 scp enableTextReply.xm "root@$1:/var/mobile/Documents/pebble-text/pebblesmstweak/"
+scp notificationActions.xm "root@$1:/var/mobile/Documents/pebble-text/pebblesmstweak/"
+scp notificationHooks.xm "root@$1:/var/mobile/Documents/pebble-text/pebblesmstweak/"
 scp log.xm "root@$1:/var/mobile/Documents/pebble-text/pebblesmstweak/"
 scp Makefile "root@$1:/var/mobile/Documents/pebble-text/pebblesmstweak/"
 scp control "root@$1:/var/mobile/Documents/pebble-text/pebblesmstweak/"
