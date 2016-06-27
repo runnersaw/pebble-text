@@ -1033,15 +1033,7 @@
 -(NSString *)appIdentifier;
 @end
 
-@interface SBBulletinBannerController : NSObject <BBObserverDelegate, SBUIBannerSource, SBUIBannerTargetManagerObserver, SBVolumePressBandit>
-{
-    NSMutableArray *_bulletinQueue;
-    BBObserver *_observer;
-    NSMutableSet *_sectionIDsToPend;
-    _Bool _quietModeEnabled;
-    id <SBUIBannerTarget> _bannerTarget;
-    NSMutableDictionary *_bulletinIdentifierToBannerContextCache;
-}
+@interface SBBulletinBannerController : NSObject
 
 + (id)sharedInstanceIfExists;
 + (id)sharedInstance;
