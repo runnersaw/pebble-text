@@ -1546,6 +1546,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 								{
 									[observer sendResponse:response];
 									NSLog(@"SENT RESPONSE");
+									removeActionToPerform(actionID, bulletinID);
 								}
 							}
 						}
