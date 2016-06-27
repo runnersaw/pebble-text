@@ -1033,6 +1033,16 @@
 -(NSString *)appIdentifier;
 @end
 
+@interface BBObserver : NSObject
+- (void)noteServerReceivedResponseForBulletin:(id)arg1;
+- (void)sendResponse:(id)arg1;
+- (id)init;
+- (id)initWithQueue:(id)arg1;
+- (id)initWithQueue:(id)arg1 asGateway:(id)arg2 priority:(unsigned int)arg3;
+- (id)initWithQueue:(id)arg1 forGateway:(id)arg2;
+- (void)updateBulletin:(id)arg1 forFeeds:(unsigned int)arg2 withReply:(id /* block */)arg3;
+@end
+
 @interface SBBulletinBannerController : NSObject
 
 + (id)sharedInstanceIfExists;
@@ -1048,7 +1058,7 @@
 - (void)observer:(id)arg1 updateSectionInfo:(id)arg2;
 - (void)observer:(id)arg1 removeBulletin:(id)arg2;
 - (void)observer:(id)arg1 modifyBulletin:(id)arg2;
-- (void)observer:(id)arg1 addBulletin:(id)arg2 forFeed:(unsigned long long)arg3 playLightsAndSirens:(_Bool)arg4 withReply:(CDUnknownBlockType)arg5;
+- (void)observer:(id)arg1 addBulletin:(id)arg2 forFeed:(unsigned long long)arg3 playLightsAndSirens:(_Bool)arg4 withReply:(id /*block*/)arg5;
 - (void)observer:(id)arg1 addBulletin:(id)arg2 forFeed:(unsigned long long)arg3;
 - (void)bannerTargetManager:(id)arg1 didRemoveTarget:(id)arg2;
 - (void)bannerTargetManager:(id)arg1 didAddTarget:(id)arg2;
@@ -1069,7 +1079,7 @@
 - (id)_bannerContextForBulletin:(id)arg1;
 - (void)removeAllCachedBanners;
 - (void)removeCachedBannerForBulletinID:(id)arg1;
-- (void)cacheBannerForBulletin:(id)arg1 completion:(CDUnknownBlockType)arg2;
+- (void)cacheBannerForBulletin:(id)arg1 completion:(id /*block*/)arg2;
 - (void)modallyPresentBannerForBulletin:(id)arg1 action:(id)arg2;
 - (void)dealloc;
 - (id)init;
@@ -2877,16 +2887,6 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 // - (void)send;
 // - (id /* block */)sendBlock;
 // @end
-
-@interface BBObserver : NSObject
-- (void)noteServerReceivedResponseForBulletin:(id)arg1;
-- (void)sendResponse:(id)arg1;
-- (id)init;
-- (id)initWithQueue:(id)arg1;
-- (id)initWithQueue:(id)arg1 asGateway:(id)arg2 priority:(unsigned int)arg3;
-- (id)initWithQueue:(id)arg1 forGateway:(id)arg2;
-- (void)updateBulletin:(id)arg1 forFeeds:(unsigned int)arg2 withReply:(id /* block */)arg3;
-@end
 
 // %hook BBServer
 // - (void)deliverResponse:(id)arg1 { %log; return %orig; }
