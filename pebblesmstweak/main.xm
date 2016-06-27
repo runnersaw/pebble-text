@@ -85,6 +85,349 @@
 -(BOOL)isFromMe;
 @end
 
+// BULLETIN BOARD
+
+@interface BBBulletin : NSObject
+
++ (id)addBulletinToCache:(id)arg1;
++ (id)bulletinReferenceDateFromDate:(id)arg1;
++ (id)bulletinWithBulletin:(id)arg1;
++ (id)copyCachedBulletinWithBulletinID:(id)arg1;
++ (void)removeBulletinFromCache:(id)arg1;
++ (BOOL)supportsSecureCoding;
++ (id)validSortDescriptorsFromSortDescriptors:(id)arg1;
++ (void)vetSortDescriptor:(id)arg1;
+
+- (id)_actionKeyForType:(int)arg1;
+- (id)_actionWithID:(id)arg1 fromActions:(id)arg2;
+- (id)_allActions;
+- (id)_allSupplementaryActions;
+// - (void)_fillOutCopy:(id)arg1 withZone:(struct _NSZone { }*)arg2;
+- (id)_responseForAction:(id)arg1;
+- (id)_safeDescription:(BOOL)arg1;
+- (id)_sectionParameters;
+- (id)_sectionSubtypeParameters;
+- (id)accessoryIconMask;
+- (id)acknowledgeAction;
+- (id)actionForResponse:(id)arg1;
+- (id)actionWithIdentifier:(id)arg1;
+- (id)actions;
+- (void)addLifeAssertion:(id)arg1;
+- (void)addObserver:(id)arg1;
+- (int)addressBookRecordID;
+- (id)alertSuppressionAppIDs;
+- (id)alertSuppressionAppIDs_deprecated;
+- (id)alertSuppressionContexts;
+- (BOOL)allowsAddingToLockScreenWhenUnlocked;
+- (BOOL)allowsAutomaticRemovalFromLockScreen;
+- (id)alternateAction;
+- (id)alternateActionLabel;
+- (id)attachments;
+- (id)attachmentsCreatingIfNecessary:(BOOL)arg1;
+- (id)bannerAccessoryRemoteServiceBundleIdentifier;
+- (id)bannerAccessoryRemoteViewControllerClassName;
+- (id)bulletinID;
+- (id)bulletinVersionID;
+- (id)buttons;
+- (BOOL)canBeSilencedByMenuButtonPress;
+- (BOOL)clearable;
+- (BOOL)coalescesWhenLocked;
+- (id)composedAttachmentImage;
+- (id)composedAttachmentImageForKey:(id)arg1;
+- (id)composedAttachmentImageForKey:(id)arg1 withObserver:(id)arg2;
+// - (struct CGSize { float x1; float x2; })composedAttachmentImageSize;
+// - (struct CGSize { float x1; float x2; })composedAttachmentImageSizeForKey:(id)arg1;
+// - (struct CGSize { float x1; float x2; })composedAttachmentImageSizeForKey:(id)arg1 withObserver:(id)arg2;
+// - (struct CGSize { float x1; float x2; })composedAttachmentImageSizeWithObserver:(id)arg1;
+- (id)composedAttachmentImageWithObserver:(id)arg1;
+- (id)content;
+- (id)context;
+// - (id)copyWithZone:(struct _NSZone { }*)arg1;
+- (unsigned int)counter;
+- (id)date;
+- (int)dateFormatStyle;
+- (BOOL)dateIsAllDay;
+- (void)dealloc;
+- (id)defaultAction;
+- (id)description;
+- (id)dismissAction;
+- (id)dismissalID;
+- (void)encodeWithCoder:(id)arg1;
+- (id)endDate;
+- (id)expirationDate;
+- (unsigned int)expirationEvents;
+- (id)expireAction;
+- (BOOL)expiresOnPublisherDeath;
+- (id)firstValidObserver;
+- (id)fullAlternateActionLabel;
+- (id)fullUnlockActionLabel;
+- (BOOL)hasEventDate;
+- (int)iPodOutAlertType;
+- (BOOL)ignoresQuietMode;
+- (BOOL)inertWhenLocked;
+- (id)init;
+- (id)initWithCoder:(id)arg1;
+- (BOOL)isLoading;
+- (id)lastInterruptDate;
+- (id)lifeAssertions;
+- (id)message;
+- (unsigned int)messageNumberOfLines;
+- (id)missedBannerDescriptionFormat;
+- (id)modalAlertContent;
+- (unsigned int)numberOfAdditionalAttachments;
+- (unsigned int)numberOfAdditionalAttachmentsOfType:(int)arg1;
+- (id)observers;
+- (BOOL)orderSectionUsingRecencyDate;
+- (id)parentSectionID;
+- (BOOL)playsSoundForModify;
+- (BOOL)preservesUnlockActionCase;
+- (BOOL)preventLock;
+- (int)primaryAttachmentType;
+- (id)publicationDate;
+- (id)publisherBulletinID;
+- (id)publisherMatchID;
+- (id)raiseAction;
+- (unsigned int)realertCount;
+- (unsigned int)realertCount_deprecated;
+- (id)recencyDate;
+- (id)recordID;
+- (id)responseForAcknowledgeAction;
+- (id)responseForAction:(id)arg1;
+- (id)responseForButtonActionAtIndex:(unsigned int)arg1;
+- (id)responseForDefaultAction;
+- (id)responseForExpireAction;
+- (id)responseForRaiseAction;
+- (id)responseForSnoozeAction;
+- (id)responseSendBlock;
+- (id)safeDescription;
+- (id)secondaryContentRemoteServiceBundleIdentifier;
+- (id)secondaryContentRemoteViewControllerClassName;
+- (id)section;
+- (id)sectionDisplayName;
+- (BOOL)sectionDisplaysCriticalBulletins;
+- (id)sectionID;
+- (id)sectionIcon;
+- (int)sectionSubtype;
+- (void)setAccessoryIconMask:(id)arg1;
+- (void)setAcknowledgeAction:(id)arg1;
+- (void)setActions:(id)arg1;
+- (void)setAddressBookRecordID:(int)arg1;
+- (void)setAlertSuppressionAppIDs_deprecated:(id)arg1;
+- (void)setAlertSuppressionContexts:(id)arg1;
+- (void)setAlternateAction:(id)arg1;
+- (void)setAttachments:(id)arg1;
+- (void)setBulletinID:(id)arg1;
+- (void)setBulletinVersionID:(id)arg1;
+- (void)setButtons:(id)arg1;
+- (void)setClearable:(BOOL)arg1;
+- (void)setContent:(id)arg1;
+- (void)setContext:(id)arg1;
+- (void)setCounter:(unsigned int)arg1;
+- (void)setDate:(id)arg1;
+- (void)setDateFormatStyle:(int)arg1;
+- (void)setDateIsAllDay:(BOOL)arg1;
+- (void)setDefaultAction:(id)arg1;
+- (void)setDismissAction:(id)arg1;
+- (void)setDismissalID:(id)arg1;
+- (void)setEndDate:(id)arg1;
+- (void)setExpirationDate:(id)arg1;
+- (void)setExpirationEvents:(unsigned int)arg1;
+- (void)setExpireAction:(id)arg1;
+- (void)setExpiresOnPublisherDeath:(BOOL)arg1;
+- (void)setHasEventDate:(BOOL)arg1;
+- (void)setLastInterruptDate:(id)arg1;
+- (void)setLifeAssertions:(id)arg1;
+- (void)setLoading:(BOOL)arg1;
+- (void)setMessage:(id)arg1;
+- (void)setModalAlertContent:(id)arg1;
+- (void)setObservers:(id)arg1;
+- (void)setParentSectionID:(id)arg1;
+- (void)setPublicationDate:(id)arg1;
+- (void)setPublisherBulletinID:(id)arg1;
+- (void)setRaiseAction:(id)arg1;
+- (void)setRealertCount_deprecated:(unsigned int)arg1;
+- (void)setRecencyDate:(id)arg1;
+- (void)setRecordID:(id)arg1;
+- (void)setSection:(id)arg1;
+- (void)setSectionID:(id)arg1;
+- (void)setSectionSubtype:(int)arg1;
+- (void)setShowsMessagePreview:(BOOL)arg1;
+- (void)setSnoozeAction:(id)arg1;
+- (void)setSound:(id)arg1;
+- (void)setStarkBannerContent:(id)arg1;
+- (void)setSubsectionIDs:(id)arg1;
+- (void)setSubtitle:(id)arg1;
+- (void)setSupplementaryActionsByLayout:(id)arg1;
+- (void)setTimeZone:(id)arg1;
+- (void)setTitle:(id)arg1;
+- (void)setUniversalSectionID:(id)arg1;
+- (void)setUnlockActionLabelOverride:(id)arg1;
+- (void)setUsesExternalSync:(BOOL)arg1;
+- (void)setWantsFullscreenPresentation:(BOOL)arg1;
+- (id)shortDescription;
+- (BOOL)showsContactPhoto;
+- (BOOL)showsDateInFloatingLockScreenAlert;
+- (BOOL)showsMessagePreview;
+- (BOOL)showsSubtitle;
+- (BOOL)showsUnreadIndicatorForNoticesFeed;
+- (id)snoozeAction;
+- (id)sound;
+- (id)starkBannerContent;
+- (id)subsectionIDs;
+- (id)subtitle;
+- (unsigned int)subtypePriority;
+- (id)supplementaryActions;
+- (id)supplementaryActionsByLayout;
+- (id)supplementaryActionsForLayout:(int)arg1;
+- (BOOL)suppressesAlertsWhenAppIsActive;
+- (BOOL)suppressesMessageForPrivacy;
+- (BOOL)suppressesTitle;
+- (id)syncHash;
+- (id)timeZone;
+- (id)tintColor;
+- (id)title;
+- (id)topic;
+- (id)uniqueIdentifier;
+- (id)universalSectionID;
+- (id)unlockActionLabel;
+- (id)unlockActionLabelOverride;
+- (BOOL)usesExternalSync;
+- (BOOL)usesVariableLayout;
+- (BOOL)visuallyIndicatesWhenDateIsInFuture;
+- (BOOL)wantsFullscreenPresentation;
+
+// Image: /System/Library/PrivateFrameworks/BulletinDistributorCompanion.framework/BulletinDistributorCompanion
+
+- (id)dateOrRecencyDate;
+- (BOOL)matchesPublisherBulletinID:(id)arg1 andRecordID:(id)arg2;
+- (id)publishDate;
+- (id)sectionMatchID;
+
+// Image: /System/Library/PrivateFrameworks/SpringBoardUI.framework/SpringBoardUI
+
++ (void)killSounds;
+
+- (id)_defaultActionWithFilter:(id)arg1;
+- (BOOL)_isPushOrLocalNotification;
+- (id)_launchURLForAction:(id)arg1 context:(id)arg2;
+- (id)_responseForAction:(id)arg1 withOrigin:(int)arg2 context:(id)arg3;
+- (id)actionBlockForAction:(id)arg1;
+- (id)actionBlockForAction:(id)arg1 withOrigin:(int)arg2;
+- (id)actionBlockForAction:(id)arg1 withOrigin:(int)arg2 context:(id)arg3;
+- (id)actionBlockForButton:(id)arg1;
+- (BOOL)bulletinAlertShouldOverridePocketMode;
+- (BOOL)bulletinAlertShouldOverrideQuietMode;
+- (BOOL)isPlayingSound;
+- (void)killSound;
+- (BOOL)playSound;
+- (id)sb_minimalSupplementaryActions;
+- (id)sb_nonPluginDefaultAction;
+- (BOOL)sb_shouldSuppressMessageForPrivacy;
+- (BOOL)sb_supportsRaiseAction;
+
+@end
+
+@interface BBContent : NSObject
+
++ (id)contentWithTitle:(id)arg1 subtitle:(id)arg2 message:(id)arg3;
++ (BOOL)supportsSecureCoding;
+
+// - (id)copyWithZone:(struct _NSZone { }*)arg1;
+- (void)dealloc;
+- (id)description;
+- (void)encodeWithCoder:(id)arg1;
+- (id)initWithCoder:(id)arg1;
+- (BOOL)isEqualToContent:(id)arg1;
+- (id)message;
+- (void)setMessage:(id)arg1;
+- (void)setSubtitle:(id)arg1;
+- (void)setTitle:(id)arg1;
+- (id)subtitle;
+- (id)title;
+
+@end
+
+@interface BBResponse : NSObject
+- (id)actionID;
+- (id)replyText;
+- (void)send;
+- (id /* block */)sendBlock;
+@end
+
+@interface BBAppearance : NSObject
+- (id)title;
+@end
+
+@interface BBAction : NSObject
+
++ (id)action;
++ (id)actionWithActivatePluginName:(id)arg1 activationContext:(id)arg2;
++ (id)actionWithAppearance:(id)arg1;
++ (id)actionWithCallblock:(id)arg1;
++ (id)actionWithIdentifier:(id)arg1;
++ (id)actionWithIdentifier:(id)arg1 title:(id)arg2;
++ (id)actionWithLaunchBundleID:(id)arg1;
++ (id)actionWithLaunchBundleID:(id)arg1 callblock:(id)arg2;
++ (id)actionWithLaunchURL:(id)arg1;
++ (id)actionWithLaunchURL:(id)arg1 callblock:(id)arg2;
++ (BOOL)supportsSecureCoding;
+
+- (id)_nameForActionType:(int)arg1;
+- (int)actionType;
+- (id)activatePluginContext;
+- (id)activatePluginName;
+- (unsigned int)activationMode;
+- (id)appearance;
+- (int)behavior;
+- (id)behaviorParameters;
+- (id)bundleID;
+- (BOOL)canBypassPinLock;
+// - (id)copyWithZone:(struct _NSZone { }*)arg1;
+- (void)dealloc;
+- (BOOL)deliverResponse:(id)arg1;
+- (id)description;
+- (void)encodeWithCoder:(id)arg1;
+- (BOOL)hasInteractiveAction;
+- (BOOL)hasLaunchAction;
+- (BOOL)hasPluginAction;
+- (BOOL)hasRemoteViewAction;
+- (unsigned int)hash;
+- (id)identifier;
+- (id)init;
+- (id)initWithCoder:(id)arg1;
+- (id)initWithIdentifier:(id)arg1;
+- (id)internalBlock;
+- (BOOL)isAuthenticationRequired;
+- (BOOL)isEqual:(id)arg1;
+- (id)launchBundleID;
+- (BOOL)launchCanBypassPinLock;
+- (id)launchURL;
+- (id)partialDescription;
+- (id)remoteServiceBundleIdentifier;
+- (id)remoteViewControllerClassName;
+- (void)setActionType:(int)arg1;
+- (void)setActivatePluginContext:(id)arg1;
+- (void)setActivatePluginName:(id)arg1;
+- (void)setActivationMode:(unsigned int)arg1;
+- (void)setAppearance:(id)arg1;
+- (void)setAuthenticationRequired:(BOOL)arg1;
+- (void)setBehavior:(int)arg1;
+- (void)setBehaviorParameters:(id)arg1;
+- (void)setCallblock:(id)arg1;
+- (void)setCanBypassPinLock:(BOOL)arg1;
+- (void)setIdentifier:(id)arg1;
+- (void)setInternalBlock:(id)arg1;
+- (void)setLaunchBundleID:(id)arg1;
+- (void)setLaunchCanBypassPinLock:(BOOL)arg1;
+- (void)setLaunchURL:(id)arg1;
+- (void)setRemoteServiceBundleIdentifier:(id)arg1;
+- (void)setRemoteViewControllerClassName:(id)arg1;
+- (void)setShouldDismissBulletin:(BOOL)arg1;
+- (BOOL)shouldDismissBulletin;
+- (id)url;
+
+@end
+
 // PEBBLE HEADERS
 
 @interface PBContact
@@ -472,6 +815,7 @@
 - (id)initWithDelegate:(id)fp8 SMSReplyManager:(id)fp12 contactPreferredPhoneManager:(id)fp16;
 
 // 3.12
++(id)actionHandlerWithDelegate:(id)arg1 ;
 +(id)handlerWithNotificationSourceIdentifier:(id)arg1 delegate:(id)arg2;
 -(NSString *)notificationSourceIdentifier;
 -(id)initWithNotificationSourceIdentifier:(id)arg1 delegate:(id)arg2 SMSReplyManager:(id)arg3 contactPreferredPhoneManager:(id)arg4 sendSMSService:(id)arg5;
@@ -568,7 +912,10 @@
 -(BOOL)isHandlingNotificationWithIdentifier:(id)arg1 ;
 -(void)handleInvokeANCSActionMessage:(id)arg1 ;
 -(id)delegate;
--(id)initWithDelegate:(id)arg1 ;
+-(id)initWithDelegate:(id)arg1;
+
+// new
++ (void)performAction:(NSString *)actionID forBulletinID:(NSString *)bulletinID;
 @end
 
 @interface PBSMSNotificationActionHandler
@@ -666,11 +1013,32 @@
 -(NSString *)localizationKey;
 @end
 
+@interface PBTimelineAction : NSObject
++(id)timelineActionFromManagedTimelineItemAction:(id)arg1;
++(BOOL)isSystemIdentifier:(unsigned char)arg1;
++(id)systemActionWithIdentifier:(unsigned char)arg1;
+-(id)initWithIdentifier:(id)arg1 type:(id)arg2 attributes:(id)arg3;
+-(NSNumber *)identifier;
+-(NSString *)type;
+-(NSArray *)attributes;
+@end
+
+@interface PBTimelineInvokeANCSActionMessage : NSObject
+-(NSUUID *)ANCSIdentifier;
+-(NSString *)notificationSender;
+-(NSString *)notificationSubtitle;
+-(NSString *)notificationBody;
+-(unsigned char)actionID;
+-(NSString *)actionTitle;
+-(NSString *)appIdentifier;
+@end
+
 #define SEND_DELAY 4.0
 #define SECOND_SEND_DELAY 10.0
 #define NOTIFICATION_DELAY 0.2
 #define MESSAGE_SEND_TIMEOUT 20.0
-// #define OPEN_PEBBLE_DELAY 5.0
+#define HAS_ACTIONS_IDENTIFIER 10
+#define DISMISS_IDENTIFIER 11
 
 #define DICTATED_NAME_KEY [NSNumber numberWithInt:0]
 #define IS_CONTACT_CORRECT_KEY [NSNumber numberWithInt:1]
@@ -704,13 +1072,16 @@
 
 static NSString *sendMessageCommand = @"messageNeedsSending";
 static NSString *openMessagesCommand = @"messagesNeedsOpening";
-// static NSString *openPebbleCommand = @"pebbleNeedsOpening";
+static NSString *performNotificationActionCommand = @"performNotificationAction";
 static NSString *messageSendNotification = @"pebbleMessageSend";
 static NSString *messageFailedNotification = @"pebbleMessageFailed";
+
 static NSString *rocketbootstrapSmsCenterName = @"com.sawyervaughan.pebblesms.sms";
 static NSString *rocketbootstrapSpringboardCenterName = @"com.sawyervaughan.pebblesms.springboard";
 static NSString *distributedCenterName = @"com.sawyervaughan.pebblesms.pebble";
 
+static NSString *notificationsFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.notifications.plist";
+static NSString *actionsToPerformFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.perform-action.plist";
 static NSString *messagesFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.messages.plist";
 static NSString *recentFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.recent.plist";
 
@@ -722,10 +1093,18 @@ static BOOL isRecentContact = NO;
 static int maxContacts = 10;
 static int maxContactsToSend = 10;
 
+static long long currentNumber = 12;
+
 static NSMutableArray *presets = [NSMutableArray array];
 static NSMutableArray *names = [NSMutableArray array];
 static NSMutableArray *phones = [NSMutableArray array];
 static NSMutableArray *messages = [NSMutableArray array];
+static NSMutableArray *actionsToPerform = [NSMutableArray array];
+static NSMutableArray *appsArray = [NSMutableArray array];
+
+static NSMutableDictionary *notificationActionsDictionary = [NSMutableDictionary dictionary];
+static NSMutableDictionary *actionsToPerformDictionary = [NSMutableDictionary dictionary];
+static NSMutableDictionary *bulletinsDict = [NSMutableDictionary dictionary];
 
 static void loadPrefs() {
     if ([presets count] == 0) {
@@ -777,7 +1156,7 @@ static void removeMessageAfterSending(NSString *message) {
         }
     }
 
-    [messages writeToFile:messagesFileLocation atomically:NO];
+    [messages writeToFile:messagesFileLocation atomically:YES];
 }
 
 // RECENT CONTACTS
@@ -829,9 +1208,135 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
         [dict setObject:phone forKey:[NSString stringWithFormat:@"phone%d", i]];
     }
 
-    [dict writeToFile:recentFileLocation atomically:NO];
+    [dict writeToFile:recentFileLocation atomically:YES];
 
     [dict release];
+}
+
+// FOR ACTIONABLE NOTIFICATIONS
+
+static void loadNotificationActions() {
+	NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:notificationsFileLocation];
+
+	if (dict) {
+		[notificationActionsDictionary setDictionary:dict];
+		// NSLog(@"loadNotificationActions %@", notificationActionsDictionary);
+	}
+}
+
+static void saveNotificationAction(BBBulletin *bulletin) {
+    NSString *bulletinID = [bulletin bulletinID];
+    if ([bulletinsDict objectForKey:bulletinID]) {
+    	return;
+    }
+
+    NSString *appIdentifier = [bulletin sectionID];
+
+    [bulletinsDict setObject:bulletin forKey:bulletinID];
+    // NSLog(@"Saved, %@", bulletinsDict);
+
+    if (appIdentifier == NULL) {
+        return;
+    }
+
+    NSMutableDictionary *appDict = [notificationActionsDictionary objectForKey:appIdentifier];
+    if (!appDict) {
+        appDict = [NSMutableDictionary dictionary];
+    }
+
+    if ([appDict objectForKey:bulletinID] != NULL) {
+        return;
+    }
+
+    BBContent *content = [bulletin content];
+    NSString *title = [content title];
+    NSString *subtitle = [content subtitle];
+    NSString *message = [content message];
+    NSDate *timestamp = [NSDate date];
+    NSLog(@"SAVEDHERE %@ %@ %@", [bulletin title], bulletinID, message);
+
+    if (bulletinID == NULL) {
+        return;
+    }
+
+    BOOL hasActions = NO;
+    NSMutableDictionary *actionsDict = [NSMutableDictionary dictionary];
+    for (BBAction *action in [bulletin supplementaryActionsForLayout:1]) {
+        NSString *actionIdentifier = [action identifier];
+        NSString *actionTitle = [(BBAppearance *)[action appearance] title];
+        if (![action isAuthenticationRequired] && actionIdentifier && actionTitle) {
+            [actionsDict setObject:actionIdentifier forKey:actionTitle];
+            hasActions = YES;
+        }
+    }
+
+    if (!hasActions) {
+        return;
+    }
+
+    // subtitle needs to go last in case it's null
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:timestamp, @"timestamp", actionsDict, @"actions", message, @"message", NULL];
+    if (title != NULL) {
+        [dict setObject:title forKey:@"title"];
+    }
+    if (subtitle != NULL) {
+        [dict setObject:subtitle forKey:@"subtitle"];
+    }
+    // NSMutableDictionary *finalDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:dict, bulletinID, NULL];
+
+    [appDict setObject:dict forKey:bulletinID];
+    [notificationActionsDictionary setObject:appDict forKey:appIdentifier];
+    // NSLog(@"Saved bulletin %@", notificationActionsDictionary);
+
+    [notificationActionsDictionary writeToFile:notificationsFileLocation atomically:YES];
+}
+
+static void removeActionsNotInBulletinsDict() {
+	[notificationActionsDictionary setDictionary:[NSDictionary dictionary]];
+	NSArray *arr = [bulletinsDict allKeys];
+	for (NSString *key in arr) {
+		BBBulletin *bulletin = [bulletinsDict objectForKey:key];
+
+		saveNotificationAction(bulletin);
+	}
+}
+
+static void loadActionsToPerform() {
+	NSArray *arr = [NSArray arrayWithContentsOfFile:actionsToPerformFileLocation];
+
+	if (arr) {
+		[actionsToPerform setArray:arr];
+	}
+}
+
+static void saveActionToPerform(NSString *actionID, NSString *bulletinID) {
+	loadActionsToPerform();
+
+	NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:actionID, @"actionID", bulletinID, @"bulletinID", NULL];
+	[actionsToPerform addObject:dict];
+
+	[actionsToPerform writeToFile:actionsToPerformFileLocation atomically:NO];
+}
+
+static void removeActionsToPerform() {
+	[actionsToPerform setArray:[NSArray array]];
+}
+
+static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
+	loadActionsToPerform();
+
+	for (int i=[actionsToPerform count]-1;i>=0;i--) {
+		NSDictionary *dict = [actionsToPerform objectAtIndex:i];
+		if ([(NSString *)[dict objectForKey:@"actionID"] isEqualToString:actionID]) {
+			if ([(NSString *)[dict objectForKey:@"bulletinID"] isEqualToString:bulletinID]) {
+				[actionsToPerform removeObjectAtIndex:i];
+			}
+		}
+	}
+	[bulletinsDict removeObjectForKey:bulletinID];
+    // NSLog(@"REmoved, %@", bulletinsDict);
+
+	[actionsToPerform writeToFile:actionsToPerformFileLocation atomically:YES];
 }
 
 // LEVENSCHTEIN
@@ -927,6 +1432,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     rocketbootstrap_distributedmessagingcenter_apply(c);
     [c runServerOnCurrentThread];
     [c registerForMessageName:openMessagesCommand target:self selector:@selector(messagesMessageNamed:withUserInfo:)];
+    [c registerForMessageName:performNotificationActionCommand target:self selector:@selector(notificationsMessageNamed:withUserInfo:)];
     // [c registerForMessageName:openPebbleCommand target:self selector:@selector(pebbleMessageNamed:withUserInfo:)];
 }
  
@@ -945,6 +1451,60 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     //     [[%c(UIApplication) sharedApplication] launchApplicationWithIdentifier:@"com.getpebble.pebbletime" suspended:YES];
     // });
 }
+
+%new
+- (void)notificationsMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo {
+	// NSLog(@"notificationsMessageNamed");
+	loadActionsToPerform();
+	// NSLog(@"%@", actionsToPerform);
+	// NSLog(@"%@", bulletinsDict);
+    NSLog(@"Saved, %@", bulletinsDict);
+
+	for (NSDictionary *dict in actionsToPerform) {
+		NSString *bulletinID = [dict objectForKey:@"bulletinID"];
+		NSString *actionID = [dict objectForKey:@"actionID"];
+
+		if (bulletinID && actionID) {
+			BBBulletin *bulletin = [bulletinsDict objectForKey:bulletinID];
+			NSLog(@"OHYESHERE %@", bulletin);
+			if (bulletin) {
+				for (BBAction *action in [bulletin supplementaryActionsForLayout:1]) {
+					if ([[action identifier] isEqualToString:actionID]) {
+						NSLog(@"BBAction %@", action);
+						BBResponse *response = [bulletin responseForAction:action];
+						if (response) {
+							NSLog(@"%@", response);
+							[response send];
+							removeActionToPerform(actionID, bulletinID);
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+%end
+
+%hook BBBulletin
+
++ (id)addBulletinToCache:(id)arg1 { 
+    // %log; 
+    id r = %orig; 
+    if (![r isMemberOfClass:%c(BBBulletinRequest)]) {
+    	removeActionsNotInBulletinsDict();
+        saveNotificationAction([%c(BBBulletin) bulletinWithBulletin:(BBBulletin *)r]);
+    }
+    return r; 
+}
+
++ (id)bulletinReferenceDateFromDate:(id)arg1 { %log; return %orig; }
++ (id)bulletinWithBulletin:(id)arg1 { %log; return %orig; }
++ (id)copyCachedBulletinWithBulletinID:(id)arg1 { %log; return %orig; }
++ (void)removeBulletinFromCache:(id)arg1 { %log; %orig; }
++ (BOOL)supportsSecureCoding { %log; return %orig; }
++ (id)validSortDescriptorsFromSortDescriptors:(id)arg1 { %log; return %orig; }
++ (void)vetSortDescriptor:(id)arg1 { %log; %orig; }
 
 %end
 
@@ -1952,7 +2512,8 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 - (void)handleActionWithActionIdentifier:(unsigned char)fp8 attributes:(id)fp12 {
     // NSLog(@"PEBBLESMS: handleActionWithActionIdentifier");
-    // %log;
+    %log;
+
     if (fp8 == 2) {
         // NSLog(@"HANDLING");
         NSData *d = [(PBTimelineItemAttributeBlob *)[(NSArray *)fp12 objectAtIndex:0] content];
@@ -2019,7 +2580,273 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %end
 
+// THIS PART IS FOR ACTIONABLE NOTIFICATIONS
+
+%hook PBSMSReplyManager
+-(NSSet *)smsApps {
+	// %log;
+	NSSet *r = %orig;
+	NSMutableSet *set = [NSMutableSet setWithCapacity:3];
+	[set setSet:r];
+	[set addObjectsFromArray:appsArray];
+	// NSLog(@"set %@", set);
+	return set;
+}
+-(NSSet *)ancsReplyEnabledApps {
+	// %log;
+	NSSet *r = %orig;
+	NSMutableSet *set = [NSMutableSet setWithCapacity:3];
+	[set setSet:r];
+	[set addObjectsFromArray:appsArray];
+	// NSLog(@"set %@", set);
+	return set;
+}
 %end
+
+%hook PBCannedResponseManager
+-(id)defaultResponsesForAppIdentifier:(id)arg1 {
+	// %log;
+
+	NSArray *enabledApps = [NSArray arrayWithObjects:@"com.apple.MobileSMS", @"com.apple.mobilephone", @"com.pebble.sendText", nil];
+	if ([enabledApps containsObject:(NSString *)arg1]) {
+		return %orig;
+	} else {
+		return [NSMutableArray array];
+	}
+}
+%end
+
+%hook PBANCSActionHandler
+
+-(NSDictionary *)actionHandlersByAppIdentifier {
+	// %log;
+	NSDictionary * r = %orig;
+	NSLog(@" = %@", r); 
+	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:r];
+	NSLog(@" = %@", dict); 
+
+	for (NSString *app in appsArray) {
+		[dict setObject:[%c(PBANCSActionHandler) actionHandlerWithDelegate:self] forKey:app];
+	}
+	NSLog(@" = %@", dict); 
+	// NSLog(@" = %@", dict); 
+	return dict; 
+}
+
+-(void)handleInvokeANCSActionMessage:(id)arg1 {
+	// %log;
+	// NSLog(@"%@ %@", arg1, [arg1 class]);
+
+	PBTimelineInvokeANCSActionMessage *m = (PBTimelineInvokeANCSActionMessage *)arg1;
+	// NSLog(@"%@", [m notificationSender]);
+	// NSLog(@"%@", [m notificationSubtitle]);
+	// NSLog(@"%@", [m notificationBody]);
+	// NSLog(@"%hhu", [m actionID]);
+	// NSLog(@"%@", [m actionTitle]);
+	// NSLog(@"%@", [m appIdentifier]);
+	// May 29 18:11:08 svaughans-iPhone PebbleTime[6448] <Warning>: (null)
+	// May 29 18:11:08 svaughans-iPhone PebbleTime[6448] <Warning>: (null)
+	// May 29 18:11:08 svaughans-iPhone PebbleTime[6448] <Warning>: John Vaughan: test
+	// May 29 18:11:08 svaughans-iPhone PebbleTime[6448] <Warning>: 4
+	// May 29 18:11:08 svaughans-iPhone PebbleTime[6448] <Warning>: (null)
+	// May 29 18:11:08 svaughans-iPhone PebbleTime[6448] <Warning>: com.facebook.Messenger
+	// May 29 18:11:08 svaughans-iPhone PebbleTime[6448] <Warning>: Facebook MESSENGER!
+	// [m ANCSIdentifier] 89DBCEFE-8697-4CB7-AA43-5C15185F294C
+	if ([m actionID] == HAS_ACTIONS_IDENTIFIER) {
+		// NSLog(@"Custom app!");
+		loadNotificationActions();
+
+	    // NSLog(@"Notification actions dictionary %@", notificationActionsDictionary);
+
+	    NSMutableDictionary *dict = [notificationActionsDictionary objectForKey:[m appIdentifier]];
+	    // NSLog(@"%@", dict);
+
+	    NSMutableArray *actions = [NSMutableArray array];
+		
+		PBTimelineAttribute *a1 = [[[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:@"Dismiss" specificType:0] autorelease];
+		PBTimelineAttribute *a2 = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"" specificType:0] autorelease];
+
+		[actions addObject:[[[%c(PBTimelineAction) alloc] initWithIdentifier:@(DISMISS_IDENTIFIER) type:@"ANCSResponse" attributes:@[ a1, a2 ]] autorelease]];
+
+	    if (dict) {
+		   	NSArray *arr = [dict allKeys];
+		   	if ([arr count] > 0) {
+		   		// NSLog(@"Has arr %@", arr);
+
+		   		NSString *bulletinID = [arr objectAtIndex:0];
+		   		NSDictionary *bulletinDict = [dict objectForKey:bulletinID];
+
+		   		if (bulletinDict) {
+		   			// NSLog(@"Has bulletinDict %@", bulletinDict);
+		   			NSDictionary *actionsDict = [bulletinDict objectForKey:@"actions"];
+
+		   			if (actionsDict) {
+		   				// NSLog(@"Has actionsDict %@", actionsDict);
+		   				NSArray *actionsArr = [actionsDict allKeys];
+			   			if (actionsArr) {
+			   				// NSLog(@"Has actionsArr %@", actionsArr);
+			   				for (NSString *actionName in actionsArr) {
+			   					// NSLog(@"Has final action %@", actionName);
+
+								PBTimelineAttribute *attr1 = [[[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:actionName specificType:0] autorelease];
+								PBTimelineAttribute *attr2 = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"" specificType:0] autorelease];
+
+								[actions addObject:[[[%c(PBTimelineAction) alloc] initWithIdentifier:@(currentNumber) type:@"ANCSResponse" attributes:@[ attr1, attr2 ]] autorelease]];
+
+								NSString *actionIdentifier = [actionsDict objectForKey:actionName];
+								NSDictionary *actionToPerform = [NSDictionary dictionaryWithObjectsAndKeys:actionIdentifier, @"actionIdentifier", bulletinID, @"bulletinIdentifier", NULL];
+								[actionsToPerformDictionary setObject:actionToPerform forKey:@(currentNumber)];
+
+								currentNumber = currentNumber + 1;
+								// NSLog(@"At currentNumber %@", @(currentNumber));
+			   				}
+						}
+					}
+		   		}
+		   	}
+		}
+
+	   	// TODO send response 21 for quick reply
+
+		PBTimelineAttribute *attr1 = [[[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:@"Action" specificType:0] autorelease];
+		PBTimelineAttribute *attr2 = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action" specificType:0] autorelease];
+		[self sendResponse:16 withAttributes:@[ attr1, attr2 ] actions:actions forItemIdentifier:[m ANCSIdentifier]];
+		return;
+	} else if ([m actionID] == DISMISS_IDENTIFIER) {
+		NSLog(@"DISMISSED 2");
+		PBTimelineAttribute *attr = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Dismissed" specificType:0] autorelease];
+		[self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
+		return;
+	} else if ([m actionID] > DISMISS_IDENTIFIER) {
+		NSLog(@"Custom action");
+		NSDictionary *actionToPerformDict = [actionsToPerformDictionary objectForKey:@([m actionID])];
+		// NSLog(@"actionToPerform %@", actionToPerformDict);
+
+		NSString *actionID = [actionToPerformDict objectForKey:@"actionIdentifier"];
+		NSString *bulletinID = [actionToPerformDict objectForKey:@"bulletinIdentifier"];
+
+		if (actionID && bulletinID) {
+			NSLog(@"PERFORM COMMAND %@ %@", actionID, bulletinID);
+			[%c(PBANCSActionHandler) performAction:actionID forBulletinID:bulletinID];
+		}
+
+		// NSLog(@"MESSENGER 2");
+		PBTimelineAttribute *attr = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action done" specificType:0] autorelease];
+		[self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
+		return;
+	}
+
+	NSLog(@"Original action");
+	%orig; 
+}
+
+%new
++ (void)performAction:(NSString *)actionID forBulletinID:(NSString *)bulletinID {
+	saveActionToPerform(actionID, bulletinID);
+
+    CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
+    rocketbootstrap_distributedmessagingcenter_apply(c);
+    [c sendMessageName:performNotificationActionCommand userInfo:NULL];
+
+    // send message after 5 seconds
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SEND_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
+        rocketbootstrap_distributedmessagingcenter_apply(c);
+        [c sendMessageName:performNotificationActionCommand userInfo:NULL];
+    });
+
+    // send message after 10 seconds
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SECOND_SEND_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
+        rocketbootstrap_distributedmessagingcenter_apply(c);
+        [c sendMessageName:performNotificationActionCommand userInfo:NULL];
+    });
+
+    // send message after 12 seconds
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)((SECOND_SEND_DELAY+2.) * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    	removeActionsToPerform();
+    });
+}
+
+
+%end
+
+%hook PBNotificationSource
+
++(id)notificationSourceWithAppIdentifier:(id)arg1 flags:(unsigned)arg2 version:(unsigned short)arg3 attributes:(id)arg4 actions:(id)arg5 {
+	// %log;
+	// NSMutableArray *actions = [NSMutableArray array];
+	// NSLog(@"App identifier %@", arg1);
+	// NSLog(@"Has custom actions");
+	NSArray *enabledApps = [NSArray arrayWithObjects:@"com.apple.MobileSMS", @"com.apple.mobilephone", @"com.pebble.sendText", nil];
+	if ([enabledApps containsObject:(NSString *)arg1]) {
+		return %orig;
+	}
+
+	NSString *appID = (NSString *)arg1;
+	if (![appsArray containsObject:appID]) {
+		[appsArray addObject:appID];
+		// NSLog(@"Added app %@", appID);
+	}
+
+	PBTimelineAttribute *attr1 = [[[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:@"Action" specificType:0] autorelease];
+	// PBTimelineAttribute *attr2 = [[[%c(PBTimelineAttribute) alloc] initWithType:@"emojiSupported" content:@(YES) specificType:[attr specificType]] autorelease];
+	// // PBTimelineAttribute *attr3 = [[[%c(PBTimelineAttribute) alloc] initWithType:[attr type] content:@"Reply2" specificType:[attr specificType]] autorelease];
+	PBTimelineAction *b = [[[%c(PBTimelineAction) alloc] initWithIdentifier:@(HAS_ACTIONS_IDENTIFIER) type:@"ANCSResponse" attributes:@[ attr1 ]] autorelease];
+	id r = %orig(arg1, arg2, arg3, arg4, @[ b ]);
+	// NSLog(@"PBSMSOVERRIDEN");
+	// NSLog(@"%@", b); 
+	// NSLog(@" = %@", r);
+	return r;
+}
+
+%end
+
+%end
+
+@interface BBServer : NSObject
+- (void)deliverResponse:(id)arg1;
+- (void)observer:(id)arg1 handleResponse:(id)arg2;
+@end
+
+// @interface BBResponse : NSObject
+// - (id)actionID;
+// - (id)replyText;
+// - (void)send;
+// - (id /* block */)sendBlock;
+// @end
+
+@interface BBObserver : NSObject
+- (void)noteServerReceivedResponseForBulletin:(id)arg1;
+- (void)sendResponse:(id)arg1;
+- (id)init;
+- (id)initWithQueue:(id)arg1;
+- (id)initWithQueue:(id)arg1 asGateway:(id)arg2 priority:(unsigned int)arg3;
+- (id)initWithQueue:(id)arg1 forGateway:(id)arg2;
+- (void)updateBulletin:(id)arg1 forFeeds:(unsigned int)arg2 withReply:(id /* block */)arg3;
+@end
+
+// %hook BBServer
+// - (void)deliverResponse:(id)arg1 { %log; return %orig; }
+// - (void)observer:(id)arg1 handleResponse:(id)arg2 { %log; return %orig; }
+// %end
+
+// %hook BBResponse
+// // - (id)actionID { %log; id r = %orig; NSLog(@"= %@", r); return r; }
+// // - (id)replyText { %log; id r = %orig; NSLog(@"= %@", r); NSLog(@"OVERRIDEN HELLO"); return @"HELLO"; }
+// - (void)send { %log; %orig; }
+// // - (id /* block */)sendBlock { %log; id r = %orig; NSLog(@"= %@", r); return r; }
+// %end
+
+// %hook BBObserver
+// - (void)noteServerReceivedResponseForBulletin:(id)arg1 { %log; return %orig; }
+// - (void)sendResponse:(id)arg1 { %log; return %orig; }
+// - (id)init { %log; id r = %orig; NSLog(@"= %@", r); return r; }
+// - (id)initWithQueue:(id)arg1 { %log; id r = %orig; NSLog(@"= %@", r); return r; }
+// - (id)initWithQueue:(id)arg1 asGateway:(id)arg2 priority:(unsigned int)arg3 { %log; id r = %orig; NSLog(@"= %@", r); return r; }
+// - (id)initWithQueue:(id)arg1 forGateway:(id)arg2 { %log; id r = %orig; NSLog(@"= %@", r); return r; }
+// - (void)updateBulletin:(id)arg1 forFeeds:(unsigned int)arg2 withReply:(id /* block */)arg3 { %log; %orig; }
+// %end
 
 %ctor {
     if ([%c(PBAppDelegate) class]) {
@@ -2029,4 +2856,5 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     } else if ([%c(SMSApplication) class]) {
         %init(MobileSMSHooks);
     }
+    %init;
 }

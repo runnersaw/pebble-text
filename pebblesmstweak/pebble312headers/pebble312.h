@@ -4848,7 +4848,7 @@
 @property (readonly) Class superclass; 
 @property (copy,readonly) NSString * description; 
 @property (copy,readonly) NSString * debugDescription; 
-+(id)actionHandlerWithDelegate:(id)arg1 ;
++(id)actionHandlerWithDelegate:(id)arg1;
 -(void)dealloc;
 -(NSUUID *)handlingIdentifier;
 -(void)setHandlingIdentifier:(NSUUID *)arg1 ;
@@ -24842,7 +24842,7 @@
 +(BOOL)isSystemIdentifier:(unsigned char)arg1 ;
 +(id)systemActionWithIdentifier:(unsigned char)arg1 ;
 -(id)blobRepresentationWithMapper:(id)arg1 ;
--(id)initWithIdentifier:(id)arg1 type:(id)arg2 attributes:(id)arg3 ;
+-(id)initWithIdentifier:(id)arg1 type:(id)arg2 attributes:(id)arg3;
 -(BOOL)hasAttributeOfType:(id)arg1 ;
 -(id)init;
 -(NSNumber *)identifier;
