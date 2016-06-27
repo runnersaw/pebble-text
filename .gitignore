@@ -66,3 +66,5 @@ fastlane/screenshots
 beta-testers.csv
 pebblesmstweak/logs/
 pebblesmstweak/pebble312headers/PebbleTime
+
+pebble-text-demo*
