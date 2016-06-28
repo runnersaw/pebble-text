@@ -3130,8 +3130,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 %new
 + (NSString *)bulletinIdentifierForInvokeANCSMessage:(PBTimelineInvokeANCSActionMessage *)message
 {
-	NSLog(@"%@ %@ %@", m, @( [m actionID] ), [m appIdentifier]);
-	NSLog(@"%@ %@ %@ %@", [m notificationSender], [m notificationSubtitle], [m notificationBody], [m actionTitle]);
+	NSLog(@"%@ %@ %@", message, @( [message actionID] ), [message appIdentifier]);
+	NSLog(@"%@ %@ %@ %@", [message notificationSender], [message notificationSubtitle], [message notificationBody], [message actionTitle]);
 	return nil;
 }
 
