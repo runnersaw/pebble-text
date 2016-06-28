@@ -2949,7 +2949,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 								NSDictionary *actionToPerform = @{ @"actionIdentifier" : actionIdentifier, 
 																   @"bulletinIdentifier" : bulletinID, 
 																   @"isComposeAction" : @( isQuickReply ),
-																   @"isReplyAction" : NO, 
+																   @"isReplyAction" : @( NO ), 
 																   @"replyText" : @"" };
 								[actionsToPerformDictionary setObject:actionToPerform forKey:@(currentNumber)];
 
