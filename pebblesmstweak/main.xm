@@ -11,7 +11,8 @@
 #import <AppSupport/CPDistributedMessagingCenter.h>
 #import <UIKit/UIApplication.h>
 #import "rocketbootstrap.h"
-// #import <objc/runtime.h>
+#import <substrate.h>
+//#import <objc/runtime.h>
 
 // NS EXTENSIONS
 
