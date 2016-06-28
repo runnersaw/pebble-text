@@ -1675,7 +1675,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     loadMessagesToSend();
 
     for (NSDictionary *message in messages)
-{
+	{
         NSString *number = [message objectForKey:@"number"];
         NSString *messageText = [message objectForKey:@"message"];
         NSNumber *notify = [message objectForKey:@"notify"];
@@ -1688,26 +1688,28 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
         // timeout so message doesn't get sent super late
         if ([expirationDate compare:[NSDate date]] == NSOrderedAscending)
-{
+		{
             removeMessageAfterSending(uuid);
             return;
         }
 
         // TODO: find proper conditions
         if (number == NULL || messageText == NULL || notify == NULL || newNumber == NULL || recordId == NULL)
-{
+		{
             return;
         }
 
         if ([recent boolValue] && ![reply boolValue])
-{
+		{
             // NSLog(@"PEBBLESMS: sendMessageToNumber");
             [self sendMessageToNumber:number recordId:recordId withText:messageText notify:[notify boolValue]];
-        // } else if ([newNumber boolValue])
-{
+        //}
+        //else if ([newNumber boolValue])
+		//{
         //     [self sendMessageToNewNumber:number withText:message notify:[notify boolValue]];
-        } else
-{
+        }
+        else
+		{
             // NSLog(@"PEBBLESMS: sendMessageTo number");
             [self sendMessageTo:recordId number:number withText:messageText notify:[notify boolValue]];
         }
@@ -1730,16 +1732,16 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     NSString *finalPhone = NULL;
     int highestCount = 0;
     for (int i=0;i<[handles count];i++)
-{
+	{
         IMHandle *h = [handles objectAtIndex:i];
 
         if ([h phoneNumberRef] != NULL)
-{
+		{
             NSString *p = [NSMutableString stringWithString:[[h phoneNumberRef] description]];
             NSString *phone = [@"+" stringByAppendingString:[[p componentsSeparatedByCharactersInSet: [[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""]];
 
             if ([phone isEqualToString:number])
-{
+			{
                 finalPhone = [NSMutableString stringWithString:phone];
                 break;
             }
@@ -1747,16 +1749,16 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
             int iterate = MIN([phone length], [number length]);
             int i;
             for (i=0;i<iterate; i++)
-{
+	{
                 int phoneIndex = [phone length] - i - 1;
                 int numberIndex = [number length] - i - 1;
                 if ([phone characterAtIndex:phoneIndex] != [number characterAtIndex:numberIndex])
-{
+				{
                     break;
                 }
             }
             if (i>highestCount)
-{
+			{
                 highestCount = i;
                 finalPhone = [NSMutableString stringWithString:phone];
             }
@@ -1765,9 +1767,9 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     // NSLog(@"PEBBLESMS: finalPhone == NULL %d", (finalPhone == NULL));
 
     if (finalPhone == NULL)
-{
+	{
         if (notify)
-{
+		{
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 // NSLog(@"PB Send not success");
                 NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
@@ -1782,7 +1784,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     // NSLog(@"PEBBLESMS: conversation %@", [conversation class]);
 
     if (conversation == NULL)
-{
+	{
         [self sendNewMessageTo:personId number:finalPhone withText:text notify:notify];
         return;
     }
@@ -1799,7 +1801,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
     // send success
     if (notify)
-{
+	{
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             // NSLog(@"PEBBLESMS: Send success");
             NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
@@ -1820,7 +1822,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     // NSLog(@"PEBBLESMS: conversation %@", [conversation class]);
 
     if (conversation == NULL)
-{
+	{
         [self sendNewMessageTo:recordId number:number withText:text notify:notify];
         return;
     }
@@ -1837,7 +1839,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
     // send success
     if (notify)
-{
+	{
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             // NSLog(@"PEBBLESMS: Send success");
             NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
@@ -1860,16 +1862,16 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     IMHandle *finalHandle = NULL;
     int highestCount = 0;
     for (int i=0;i<[handles count];i++)
-{
+	{
         IMHandle *h = [handles objectAtIndex:i];
 
         if ([h phoneNumberRef] != NULL)
-{
+		{
             NSString *p = [NSMutableString stringWithString:[[h phoneNumberRef] description]];
             NSString *phone = [@"+" stringByAppendingString:[[p componentsSeparatedByCharactersInSet: [[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""]];
 
             if ([phone isEqualToString:number])
-{
+			{
                 finalHandle = h;
                 break;
             }
@@ -1877,16 +1879,16 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
             int iterate = MIN([phone length], [number length]);
             int i;
             for (i=0;i<iterate; i++)
-{
+			{
                 int phoneIndex = [phone length] - i - 1;
                 int numberIndex = [number length] - i - 1;
                 if ([phone characterAtIndex:phoneIndex] != [number characterAtIndex:numberIndex])
-{
+				{
                     break;
                 }
             }
             if (i>highestCount)
-{
+			{
                 highestCount = i;
                 finalHandle = h;
             }
@@ -1895,9 +1897,9 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     // NSLog(@"PEBBLESMS: finalHandle == NULL %d", (finalHandle == NULL));
 
     if (finalHandle == NULL)
-{
+	{
         if (notify)
-{
+		{
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 // NSLog(@"PB Send not success");
                 NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
@@ -1922,18 +1924,13 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
     // send success
     if (notify)
-{
+	{
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             // NSLog(@"PB Send success");
             NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
             [center postNotificationName:messageSendNotification object:distributedCenterName userInfo:nil deliverImmediately:YES];
         });
     }
-}
-
-%new
-- (void)sendMessageToNewNumber:(NSString *)number withText:(NSString *)text notify:(BOOL)notify
-{
 }
  
 %new
@@ -1943,7 +1940,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     // NSLog(@"PB sendmessageto %@", [userinfo description]);
     // Process userinfo (simple dictionary) and send message
     if ([name isEqualToString:sendMessageCommand])
-{
+	{
         [self sendMessagesForTextSender];
     }
 }
