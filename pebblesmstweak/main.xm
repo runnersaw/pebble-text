@@ -2772,6 +2772,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 - (void)handleActionWithActionIdentifier:(unsigned char)fp8 attributes:(id)fp12
 {
+	NSLog(@"handleActionWithActionIdentifier %@ %@", @( fp8 ), fp12);
     if (fp8 == 2)
 	{
         // NSLog(@"HANDLING");
@@ -2800,6 +2801,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 -(void)handleAction:(unsigned char)arg1 forItemIdentifier:(id)arg2 attributes:(id)arg3
 {
+	NSLog(@"handleAction %@ %@ %@", @( arg1 ), arg2, arg3);
     if (arg1 == 2)
 	{
         NSData *responseData = [(PBTimelineItemAttributeBlob *)[self responseFromAttributes:arg3] content];
