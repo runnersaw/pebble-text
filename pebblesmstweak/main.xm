@@ -2908,7 +2908,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     if (arg1 == 10)
 	{
         // NSLog(@"HANDLING");
-        NSData *responseData = [(PBTimelineItemAttributeBlob *)[self responseFromAttributes:arg2] content];
+        NSData *d = [(PBTimelineItemAttributeBlob *)[(NSArray *)arg2 objectAtIndex:0] content];
         NSString *reply = [[NSString alloc] initWithData:d encoding:NSUTF8StringEncoding];
         NSLog(@"reply %@", reply);
 
