@@ -928,7 +928,7 @@
 
 // new
 + (void)performAction:(NSString *)actionID forBulletinID:(NSString *)bulletinID;
-+ (void)performReply:(NSString *)reply forAction:(NSString *)actionID andBulletinID:(NSString *)bulletinID
++ (void)performReply:(NSString *)reply forAction:(NSString *)actionID andBulletinID:(NSString *)bulletinID;
 @end
 
 @interface PBSMSNotificationActionHandler
