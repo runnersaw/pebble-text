@@ -3130,9 +3130,40 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 %new
 + (NSString *)bulletinIdentifierForInvokeANCSMessage:(PBTimelineInvokeANCSActionMessage *)message
 {
-	NSLog(@"%@ %@ %@", message, @( [message actionID] ), [message appIdentifier]);
-	NSLog(@"%@ %@ %@ %@", [message notificationSender], [message notificationSubtitle], [message notificationBody], [message actionTitle]);
-	return nil;
+	NSMutableArray *matchingNotifications = [NSMutableArray array];
+	NSDictionary *notificationDict = [notificationActionsDictionary objectForKey:[message appIdentifier]];
+	for (NSString *bulletinID in [notificationDict allKeys])
+	{
+		notificationInfo = notificationDict[bulletinID];
+		NSString *notificationText = notificationInfo[@"message"];
+		NSDate *timestamp = notificationInfo[@"timestamp"];
+		if ([notificationText isEqualToString:[message notificationBody]])
+		{
+			[matchingNotifications addObject:@{ @"bulletinID" : bulletinID, @"timestamp" : timestamp }];
+		}
+	}
+	NSLog(@"matchingNotifications %@", matchingNotifications);
+
+	NSString *finalBulletinID = nil;
+	NSDate *earliestTimestamp = nil;
+	for (NSDictionary *dict in matchingNotifications)
+	{
+		NSString *bulletinID = dict[@"bulletinID"];
+		NSDate *timestamp = dict[@"timestamp"];
+		NSLog(@"%@ %@ %@ %@", finalBulletinID, earliestTimestamp, bulletinID, timestamp);
+		if (earliestTimestamp == nil)
+		{
+			finalBulletinID = bulletinID;
+			continue;
+		}
+		if ([timestamp compare:earliestTimestamp] == NSOrderedDescending)
+		{
+			earliestTimestamp = timestamp;
+			finalBulletinID = bulletinID;
+		}
+	}
+
+	return finalBulletinID;
 }
 
 %end
