@@ -3134,7 +3134,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 	NSDictionary *notificationDict = [notificationActionsDictionary objectForKey:[message appIdentifier]];
 	for (NSString *bulletinID in [notificationDict allKeys])
 	{
-		notificationInfo = notificationDict[bulletinID];
+		NSDictionary *notificationInfo = notificationDict[bulletinID];
 		NSString *notificationText = notificationInfo[@"message"];
 		NSDate *timestamp = notificationInfo[@"timestamp"];
 		if ([notificationText isEqualToString:[message notificationBody]])
