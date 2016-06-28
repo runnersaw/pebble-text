@@ -343,6 +343,8 @@
 @interface BBResponse : NSObject
 - (id)actionID;
 - (id)replyText;
+- (int)actionType;
+- (NSDictionary *)context;
 - (void)send;
 - (id /* block */)sendBlock;
 @end
@@ -1627,6 +1629,16 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 {
 	%log;
 	NSLog(@"sendResponse %@", arg1);
+// 	@interface BBResponse : NSObject
+// - (id)actionID;
+// - (id)replyText;
+// - (int)actionType;
+// - (NSDictionary *)context;
+// - (void)send;
+// - (id /* block */)sendBlock;
+// @end
+	BBResponse *response = (BBResponse *)arg1;
+	NSLog(@"%@ %@ %@ %d", actionID, replyText, context, actionType);
 	%orig;
 }
 
@@ -2698,26 +2710,12 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     return s;
 }
 
-- (void)applicationWillTerminate:(id)fp8
-{
-    // relaunch self
-    %orig;
-
-    // NSLog(@"PB going to terminate, launch myself again pls. ");
-
-    // CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
-    // rocketbootstrap_distributedmessagingcenter_apply(c);
-    // [c sendMessageName:openPebbleCommand userInfo:NULL];
-}
-
 %new
 - (void)sentCallbackWithNotification:(NSNotification *)myNotification
 {
-    // NSLog(@"PB handleSendNotification %@", [[%c(PBPebbleCentral) defaultCentral] class]);
-    // NSLog(@"PEBBLESMS: sentCallbackWithNotification");
     PBPebbleCentral *central = [%c(PBPebbleCentral) defaultCentral];
     for (int i=0; i<[[central connectedWatches] count]; i++)
-{
+	{
         PBWatch *watch = [[central connectedWatches] objectAtIndex:i];
         [watch appMessagesPushUpdate:[watch getSentResponse] onSent:^(PBWatch *watch, NSDictionary *update, NSError *error){} uuid:appUUID launcher:NULL];
     }
@@ -2726,11 +2724,9 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 %new
 - (void)failedCallbackWithNotification:(NSNotification *)myNotification
 {
-    // NSLog(@"PEBBLESMS: failedCallbackWithNotification");
-    // NSLog(@"PB handleFailedNotification %@", [[%c(PBPebbleCentral) defaultCentral] class]);
     PBPebbleCentral *central = [%c(PBPebbleCentral) defaultCentral];
     for (int i=0; i<[[central connectedWatches] count]; i++)
-{
+	{
         PBWatch *watch = [[central connectedWatches] objectAtIndex:i];
         [watch appMessagesPushUpdate:[watch getFailedResponse] onSent:^(PBWatch *watch, NSDictionary *update, NSError *error){} uuid:appUUID launcher:NULL];
     }
@@ -2742,11 +2738,10 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 %hook PBCannedResponseManager
 
 - (id)cannedResponsesForAppIdentifier:(id)fp8
-{ 
-    // NSLog(@"PEBBLESMS: cannedResponsesForAppIdentifier %@", fp8);
+{
     id r = %orig;
     if ([(NSString *)fp8 isEqualToString:@"com.apple.MobileSMS"])
-{
+	{
         [presets removeAllObjects];
         [presets addObjectsFromArray:(NSArray *)r];
     }
@@ -2754,9 +2749,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 }
 - (void)setCannedResponses:(id)fp8 forAppIdentifier:(id)fp12
 {
-    // NSLog(@"PEBBLESMS: setCannedResponses %@", fp12);
     if ([(NSString *)fp12 isEqualToString:@"com.apple.MobileSMS"])
-{
+	{
         [presets removeAllObjects];
         [presets addObjectsFromArray:(NSArray *)fp8];
     }
@@ -2769,11 +2763,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 - (void)handleActionWithActionIdentifier:(unsigned char)fp8 attributes:(id)fp12
 {
-    // NSLog(@"PEBBLESMS: handleActionWithActionIdentifier");
-    %log;
-
     if (fp8 == 2)
-{
+	{
         // NSLog(@"HANDLING");
         NSData *d = [(PBTimelineItemAttributeBlob *)[(NSArray *)fp12 objectAtIndex:0] content];
         NSString *reply = [[NSString alloc] initWithData:d encoding:NSUTF8StringEncoding];
@@ -2787,8 +2778,9 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
         [(PBANCSActionHandler *)[self delegate] notificationHandler:self didSendResponse:15 withAttributes:@[attr] actions:NULL];
         [%c(PBSMSSessionManager) sendSMS:[contact recordId] number:phone withText:reply];
         [reply release];
-    } else
-{
+    }
+    else
+	{
         %orig; 
     }
 }
@@ -2799,9 +2791,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 -(void)handleAction:(unsigned char)arg1 forItemIdentifier:(id)arg2 attributes:(id)arg3
 {
-    // %log;
     if (arg1 == 2)
-{
+	{
         NSData *responseData = [(PBTimelineItemAttributeBlob *)[self responseFromAttributes:arg3] content];
         NSData *phoneData = [(PBTimelineItemAttributeBlob *)[self phoneNumberFromAttributes:arg3] content];
 
@@ -2813,23 +2804,25 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
         PBContact *finalContact;
         if (contact == NULL)
-{
+		{
             NSString *prefixedPhone = [%c(PBContact) phoneWithPrefix:phone];
             finalContact = [[%c(PBAddressBook) addressBook] contactWithPrefixedPhoneNumber:prefixedPhone];
-        } else
-{
+        }
+        else
+		{
             finalContact = contact;
         }
 
         if (finalContact != NULL)
-{
+		{
             PBTimelineAttributeContentLocalizedString *localString = [[%c(PBTimelineAttributeContentLocalizedString) alloc] initWithLocalizationKey:@"Sending..."];
             PBTimelineAttribute *attr = [%c(PBTimelineAttribute) attributeWithType:@"subtitle" content:localString];
             [(PBTimelineActionsWatchService *)[self delegate] sendTextAppActionHandler:self didSendResponse:0 withAttributes:@[attr] forItemIdentifier:arg2];
             [%c(PBSMSSessionManager) sendSMS:[finalContact recordId] number:phone withText:response];
             [localString release];
-        } else
-{
+        }
+        else
+		{
             NSString *message = [NSString stringWithFormat:@"Sending failed to %@", phone];
             PBTimelineAttribute *attr = [%c(PBTimelineAttribute) attributeWithType:@"subtitle" content:message];
             [(PBTimelineActionsWatchService *)[self delegate] sendTextAppActionHandler:self didSendResponse:0 withAttributes:@[attr] forItemIdentifier:arg2];
