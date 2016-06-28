@@ -103,8 +103,6 @@
 - (id)_actionWithID:(id)arg1 fromActions:(id)arg2;
 - (id)_allActions;
 - (id)_allSupplementaryActions;
-// - (void)_fillOutCopy:(id)arg1 withZone:(struct _NSZone
-{ }*)arg2;
 - (id)_responseForAction:(id)arg1;
 - (id)_safeDescription:(BOOL)arg1;
 - (id)_sectionParameters;
@@ -2841,8 +2839,9 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
         [response release];
         [phone release];
         [pbPhone release];
-    } else
-{
+    }
+    else
+	{
         %orig; 
     }
 }
@@ -2854,17 +2853,14 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 %hook PBSMSReplyManager
 -(NSSet *)smsApps
 {
-	// %log;
 	NSSet *r = %orig;
 	NSMutableSet *set = [NSMutableSet setWithCapacity:3];
 	[set setSet:r];
 	[set addObjectsFromArray:appsArray];
-	// NSLog(@"set %@", set);
 	return set;
 }
 -(NSSet *)ancsReplyEnabledApps
 {
-	// %log;
 	NSSet *r = %orig;
 	NSMutableSet *set = [NSMutableSet setWithCapacity:3];
 	[set setSet:r];
@@ -2907,7 +2903,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 {
 	PBTimelineInvokeANCSActionMessage *m = (PBTimelineInvokeANCSActionMessage *)arg1;
 	if ([m actionID] == HAS_ACTIONS_IDENTIFIER)
-{
+	{
 		loadNotificationActions();
 
 	    NSMutableDictionary *dict = [notificationActionsDictionary objectForKey:[m appIdentifier]];
@@ -2920,8 +2916,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 		[actions addObject:[[[%c(PBTimelineAction) alloc] initWithIdentifier:@(DISMISS_IDENTIFIER) type:@"ANCSResponse" attributes:@[ a1, a2 ]] autorelease]];
 
 	    if (dict)
-	   
-{
+	   	{
 		   	NSArray *arr = [dict allKeys];
 		   	if ([arr count] > 0)
 		   	{
@@ -3027,13 +3022,13 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 {
 	NSArray *enabledApps = [NSArray arrayWithObjects:@"com.apple.MobileSMS", @"com.apple.mobilephone", @"com.pebble.sendText", nil];
 	if ([enabledApps containsObject:(NSString *)arg1])
-{
+	{
 		return %orig;
 	}
 
 	NSString *appID = (NSString *)arg1;
 	if (![appsArray containsObject:appID])
-{
+	{
 		[appsArray addObject:appID];
 	}
 
@@ -3051,13 +3046,15 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 %ctor
 {
     if ([%c(PBAppDelegate) class])
-{
+	{
         %init(PebbleMain);
-    } else if ([%c(SpringBoard) class])
-{
+    }
+    else if ([%c(SpringBoard) class])
+	{
         %init(SpringboardHooks);
-    } else if ([%c(SMSApplication) class])
-{
+    }
+    else if ([%c(SMSApplication) class])
+	{
         %init(MobileSMSHooks);
     }
     %init;
