@@ -2902,12 +2902,13 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 	return dict; 
 }
--(void)handleActionWithActionIdentifier:(unsigned char)arg1 attributes:(id)arg2{
+-(void)handleActionWithActionIdentifier:(unsigned char)arg1 attributes:(id)arg2
+{
 	NSLog(@"PBANCSActionHandler");
     if (arg1 == 10)
 	{
         // NSLog(@"HANDLING");
-        NSData *d = [(PBTimelineItemAttributeBlob *)arg2 content];
+        NSData *responseData = [(PBTimelineItemAttributeBlob *)[self responseFromAttributes:arg2] content];
         NSString *reply = [[NSString alloc] initWithData:d encoding:NSUTF8StringEncoding];
         NSLog(@"reply %@", reply);
 
