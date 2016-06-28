@@ -1,0 +1,64 @@
+notificationActionsDictionary
+{
+	"com.facebook.Messenger" : {
+		"C09343" : 
+		{
+			"message" : "HI",
+			"timestamp" : 12/1/1/4242/4
+			"actions" : {
+				"Mute" : {
+					"actionIdentifier" : "mute",
+					"isQuickReply" : NO
+				},
+				"Reply" : {
+					"actionIdentifier" : "reply",
+					"isQuickReply" : YES
+				}
+			}
+		}
+	}
+}
+
+actionsToPerform
+[
+	{
+		@"actionID" : actionID, 
+		@"bulletinID" : bulletinID,
+		@"isReply" : @( isReply ),
+		@"replyText" : replyText
+	},
+	{
+		@"actionID" : actionID, 
+		@"bulletinID" : bulletinID,
+		@"isReply" : @( isReply ),
+		@"replyText" : replyText
+	}
+]
+
+actionsToPerformDictionary
+{
+	"12" : {
+		"actionIdentifier" : "com.atebits.Tweetie2", 
+		"bulletinIdentifier" : "C0347394", 
+		"ANCSIdentifier" : "CAB293", NSUUID!!!!
+		"isQuickReply" : YES,
+		"hasReplied" : NO,
+		"replyText" : ""
+	}
+	"12" : {
+		"actionIdentifier" : "com.atebits.Tweetie2", 
+		"bulletinIdentifier" : "C0347394", 
+		"ANCSIdentifier" : "CAB293",
+		"isQuickReply" : YES,
+		"hasReplied" : YES,
+		"replyText" : "HI"
+	}
+	"12" : {
+		"actionIdentifier" : "com.atebits.Tweetie2", 
+		"bulletinIdentifier" : "C0347394", 
+		"ANCSIdentifier" : "CAB293",
+		"isQuickReply" : NO,
+		"hasReplied" : NO,
+		"replyText" : ""
+	}
+}
