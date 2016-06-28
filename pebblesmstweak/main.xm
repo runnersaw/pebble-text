@@ -1638,7 +1638,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 // - (id /* block */)sendBlock;
 // @end
 	BBResponse *response = (BBResponse *)arg1;
-	NSLog(@"%@ %@ %@ %d", actionID, replyText, context, actionType);
+	NSLog(@"%@ %@ %@ %d", [response actionID], [response replyText], [response context], [response actionType]);
 	%orig;
 }
 
