@@ -928,6 +928,7 @@
 
 // new
 + (void)performAction:(NSString *)actionID forBulletinID:(NSString *)bulletinID;
++ (void)performReply:(NSString *)reply forAction:(NSString *)actionID andBulletinID:(NSString *)bulletinID
 @end
 
 @interface PBSMSNotificationActionHandler
@@ -1361,9 +1362,11 @@ static void saveNotificationAction(BBBulletin *bulletin)
 	{
         NSString *actionIdentifier = [action identifier];
         NSString *actionTitle = [(BBAppearance *)[action appearance] title];
+        BOOL isQuickReply = ([action behavior] == 1);
         if (![action isAuthenticationRequired] && actionIdentifier && actionTitle)
 		{
-            [actionsDict setObject:actionIdentifier forKey:actionTitle];
+			NSDictionary *actionDict = @{ @"actionIdentifier" : actionIdentifier, @"isQuickReply" : @( isQuickReply )};
+            [actionsDict setObject:actionDict forKey:actionTitle];
             hasActions = YES;
         }
     }
@@ -1412,11 +1415,14 @@ static void loadActionsToPerform()
 	}
 }
 
-static void saveActionToPerform(NSString *actionID, NSString *bulletinID)
+static void saveActionToPerform(NSString *actionID, NSString *bulletinID, BOOL isReply, NSString *replyText)
 {
 	loadActionsToPerform();
 
-	NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:actionID, @"actionID", bulletinID, @"bulletinID", NULL];
+	NSDictionary *dict = @{ @"actionID" : actionID, 
+							@"bulletinID" : bulletinID,
+							@"isReply" : @( isReply ),
+							@"replyText" : replyText };
 	[actionsToPerform addObject:dict];
 
 	[actionsToPerform writeToFile:actionsToPerformFileLocation atomically:NO];
@@ -2898,6 +2904,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 -(void)handleInvokeANCSActionMessage:(id)arg1
 {
 	PBTimelineInvokeANCSActionMessage *m = (PBTimelineInvokeANCSActionMessage *)arg1;
+	NSLog(@"%@", m);
 	if ([m actionID] == HAS_ACTIONS_IDENTIFIER)
 	{
 		loadNotificationActions();
@@ -2928,15 +2935,22 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 		   				NSArray *actionsArr = [actionsDict allKeys];
 			   			if (actionsArr)
 			   			{
-			   				for (NSString *actionName in actionsArr)
+			   				for (NSDictionary *actionInfo in actionsArr)
 			   				{
+			   					NSString *actionName = actionInfo[@"actionIdentifier"];
+			   					BOOL isQuickReply = [(NSNumber *)actionInfo[@"isQuickReply"] boolValue];
+
 								PBTimelineAttribute *attr1 = [[[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:actionName specificType:0] autorelease];
 								PBTimelineAttribute *attr2 = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"" specificType:0] autorelease];
 
 								[actions addObject:[[[%c(PBTimelineAction) alloc] initWithIdentifier:@(currentNumber) type:@"ANCSResponse" attributes:@[ attr1, attr2 ]] autorelease]];
 
 								NSString *actionIdentifier = [actionsDict objectForKey:actionName];
-								NSDictionary *actionToPerform = [NSDictionary dictionaryWithObjectsAndKeys:actionIdentifier, @"actionIdentifier", bulletinID, @"bulletinIdentifier", NULL];
+								NSDictionary *actionToPerform = @{ @"actionIdentifier" : actionIdentifier, 
+																   @"bulletinIdentifier" : bulletinID, 
+																   @"isComposeAction" : @( isQuickReply ),
+																   @"isReplyAction" : NO, 
+																   @"replyText" : @"" };
 								[actionsToPerformDictionary setObject:actionToPerform forKey:@(currentNumber)];
 
 								currentNumber = currentNumber + 1;
@@ -2966,15 +2980,33 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 		NSString *actionID = [actionToPerformDict objectForKey:@"actionIdentifier"];
 		NSString *bulletinID = [actionToPerformDict objectForKey:@"bulletinIdentifier"];
+		BOOL isQuickReply = [(NSNumber *)actionToPerformDict[@"isQuickReply"] boolValue];
+		BOOL hasReplied = [(NSNumber *)actionToPerformDict[@"hasReplied"] boolValue];
+		NSString *replyText = actionToPerformDict[@"replyText"];
 
 		if (actionID && bulletinID)
 		{
-			[%c(PBANCSActionHandler) performAction:actionID forBulletinID:bulletinID];
-		}
+			if (!isQuickReply)
+			{
+				[%c(PBANCSActionHandler) performAction:actionID forBulletinID:bulletinID];
 
-		PBTimelineAttribute *attr = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action done" specificType:0] autorelease];
-		[self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
-		return;
+				PBTimelineAttribute *attr = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action done" specificType:0] autorelease];
+				[self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
+				return;
+			}
+			else
+			{
+				PBTimelineAttribute *attr = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Reply" specificType:0] autorelease];
+				[self sendResponse:21 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
+				return;
+			}
+		}
+		else
+		{
+			PBTimelineAttribute *attr = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action failed!" specificType:0] autorelease];
+			[self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
+			return;
+		}
 	}
 
 	%orig; 
@@ -2982,6 +3014,35 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 %new
 + (void)performAction:(NSString *)actionID forBulletinID:(NSString *)bulletinID
+{
+	saveActionToPerform(actionID, bulletinID);
+
+    CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
+    rocketbootstrap_distributedmessagingcenter_apply(c);
+    [c sendMessageName:performNotificationActionCommand userInfo:NULL];
+
+    // send message after 5 seconds
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SEND_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
+        rocketbootstrap_distributedmessagingcenter_apply(c);
+        [c sendMessageName:performNotificationActionCommand userInfo:NULL];
+    });
+
+    // send message after 10 seconds
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SECOND_SEND_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
+        rocketbootstrap_distributedmessagingcenter_apply(c);
+        [c sendMessageName:performNotificationActionCommand userInfo:NULL];
+    });
+
+    // send message after 12 seconds
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)((SECOND_SEND_DELAY+2.) * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    	removeActionsToPerform();
+    });
+}
+
+%new
++ (void)performReply:(NSString *)reply forAction:(NSString *)actionID andBulletinID:(NSString *)bulletinID
 {
 	saveActionToPerform(actionID, bulletinID);
 
