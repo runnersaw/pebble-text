@@ -2902,6 +2902,23 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 	return dict; 
 }
+-(void)handleActionWithActionIdentifier:(unsigned char)arg1 attributes:(id)arg2{
+	%log;
+	%orig;
+}
+-(void)notificationHandler:(id)arg1 didSendResponse:(unsigned char)arg2 withAttributes:(id)arg3 actions:(id)arg4{
+	%log;
+	%orig;
+}
+-(void)notificationHandler:(id)arg1 didSendError:(id)arg2 withTitle:(id)arg3 icon:(id)arg4{
+	%log;
+	%orig;
+}
+-(BOOL)isHandlingNotificationWithIdentifier:(id)arg1
+{
+	%log;
+	return %orig;
+}
 
 -(void)handleInvokeANCSActionMessage:(id)arg1
 {
