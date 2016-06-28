@@ -2964,7 +2964,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 		   	NSArray *arr = [dict allKeys];
 		   	if ([arr count] > 0)
 		   	{
-		   		NSString *bulletinID = [[%c(PBANCSActionHandler) bulletinIdentifierForInvokeANCSMessage:m] UUIDString];
+		   		NSString *bulletinID = [%c(PBANCSActionHandler) bulletinIdentifierForInvokeANCSMessage:m];
 		   		if (!bulletinID)
 		   		{
 					PBTimelineAttribute *attr = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action failed!" specificType:0] autorelease];
