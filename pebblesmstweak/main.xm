@@ -1545,15 +1545,15 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 								if (observer)
 								{
 									NSLog(@"observer");
-									NSLog(@"observer2 %@", [(NSObject *)observer description]);
-									if ([observer isKindOfClass:%c(BBObserver)])
-									{
-										BBObserver *bbObserver = (BBObserver *)observer;
-										NSLog(@"observer3 %@", bbObserver);
-										[observer sendResponse:response];
-										NSLog(@"SENT RESPONSE");
+									NSLog(@"observer2 %@", observer);
+									// if ([observer isKindOfClass:%c(BBObserver)])
+									// {
+									// 	BBObserver *bbObserver = (BBObserver *)observer;
+									// 	NSLog(@"observer3 %@", bbObserver);
+									// 	[observer sendResponse:response];
+									// 	NSLog(@"SENT RESPONSE");
 										removeActionToPerform(actionID, bulletinID);
-									}
+									// }
 								}
 							}
 						}
