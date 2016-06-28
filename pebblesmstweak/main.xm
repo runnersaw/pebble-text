@@ -2904,7 +2904,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 -(void)handleInvokeANCSActionMessage:(id)arg1
 {
 	PBTimelineInvokeANCSActionMessage *m = (PBTimelineInvokeANCSActionMessage *)arg1;
-	NSLog(@"%@ %@ %@", m, @( [m actionID] ), @( [m appIdentifier]));
+	NSLog(@"%@ %@ %@", m, @( [m actionID] ), [m appIdentifier]);
 	if ([m actionID] == HAS_ACTIONS_IDENTIFIER)
 	{
 		loadNotificationActions();
@@ -2982,6 +2982,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 		NSString *actionID = [actionToPerformDict objectForKey:@"actionIdentifier"];
 		NSString *bulletinID = [actionToPerformDict objectForKey:@"bulletinIdentifier"];
 		BOOL isComposeAction = [(NSNumber *)actionToPerformDict[@"isComposeAction"] boolValue];
+		BOOL isReplyAction = [(NSNumber *)actionToPerformDict[@"isReplyAction"] boolValue];
 
 		if (actionID && bulletinID)
 		{
