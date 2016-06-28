@@ -1644,6 +1644,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 %end
 
+%end
+
 // MOBILESMS TWEAKING
 
 %group MobileSMSHooks
