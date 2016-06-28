@@ -2981,8 +2981,6 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 		NSString *actionID = [actionToPerformDict objectForKey:@"actionIdentifier"];
 		NSString *bulletinID = [actionToPerformDict objectForKey:@"bulletinIdentifier"];
 		BOOL isQuickReply = [(NSNumber *)actionToPerformDict[@"isQuickReply"] boolValue];
-		BOOL hasReplied = [(NSNumber *)actionToPerformDict[@"hasReplied"] boolValue];
-		NSString *replyText = actionToPerformDict[@"replyText"];
 
 		if (actionID && bulletinID)
 		{
@@ -3015,7 +3013,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 %new
 + (void)performAction:(NSString *)actionID forBulletinID:(NSString *)bulletinID
 {
-	saveActionToPerform(actionID, bulletinID);
+	saveActionToPerform(actionID, bulletinID, NO, @"");
 
     CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
     rocketbootstrap_distributedmessagingcenter_apply(c);
@@ -3044,7 +3042,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 %new
 + (void)performReply:(NSString *)reply forAction:(NSString *)actionID andBulletinID:(NSString *)bulletinID
 {
-	saveActionToPerform(actionID, bulletinID);
+	saveActionToPerform(actionID, bulletinID, YES, reply);
 
     CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
     rocketbootstrap_distributedmessagingcenter_apply(c);
