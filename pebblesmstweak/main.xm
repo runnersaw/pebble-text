@@ -2935,10 +2935,10 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 		   				NSArray *actionsArr = [actionsDict allKeys];
 			   			if (actionsArr)
 			   			{
-			   				for (NSDictionary *actionInfo in actionsArr)
+			   				for (NSString *actionName in actionsArr)
 			   				{
-			   					NSLog(@"actionInfo %@", actionInfo);
-			   					NSString *actionName = actionInfo[@"actionIdentifier"];
+			   					NSDictionary *actionInfo = actionsDict[actionName];
+			   					NSString *actionIdentifier = actionInfo[@"actionIdentifier"];
 			   					BOOL isQuickReply = [(NSNumber *)actionInfo[@"isQuickReply"] boolValue];
 
 								PBTimelineAttribute *attr1 = [[[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:actionName specificType:0] autorelease];
@@ -2946,7 +2946,6 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 								[actions addObject:[[[%c(PBTimelineAction) alloc] initWithIdentifier:@(currentNumber) type:@"ANCSResponse" attributes:@[ attr1, attr2 ]] autorelease]];
 
-								NSString *actionIdentifier = [actionsDict objectForKey:actionName];
 								NSDictionary *actionToPerform = @{ @"actionIdentifier" : actionIdentifier, 
 																   @"bulletinIdentifier" : bulletinID, 
 																   @"isComposeAction" : @( isQuickReply ),
