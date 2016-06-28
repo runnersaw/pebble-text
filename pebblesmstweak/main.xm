@@ -939,7 +939,7 @@
 // new
 + (void)performAction:(NSString *)actionID forBulletinID:(NSString *)bulletinID;
 + (void)performReply:(NSString *)reply forAction:(NSString *)actionID andBulletinID:(NSString *)bulletinID;
-+ (NSUUID *)bulletinIdentifierForInvokeANCSMessage:(PBTimelineInvokeANCSActionMessage *)message;
++ (NSString *)bulletinIdentifierForInvokeANCSMessage:(PBTimelineInvokeANCSActionMessage *)message;
 @end
 
 @interface PBSMSNotificationActionHandler
