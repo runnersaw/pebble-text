@@ -1541,13 +1541,19 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 							NSLog(@"bannerController %@", bannerController);
 							if (bannerController)
 							{
-								BBObserver *observer = MSHookIvar<BBObserver *>(self, "_observer");
-								NSLog(@"observer %@", observer);
+								id observer = MSHookIvar<id>(self, "_observer");
 								if (observer)
 								{
-									[observer sendResponse:response];
-									NSLog(@"SENT RESPONSE");
-									removeActionToPerform(actionID, bulletinID);
+									NSLog(@"observer");
+									NSLog(@"observer2 %@", [(NSObject *)observer description]);
+									if ([observer isKindOfClass:%c(BBObserver)])
+									{
+										BBObserver *bbObserver = (BBObserver *)observer;
+										NSLog(@"observer3 %@", bbObserver);
+										[observer sendResponse:response];
+										NSLog(@"SENT RESPONSE");
+										removeActionToPerform(actionID, bulletinID);
+									}
 								}
 							}
 						}
