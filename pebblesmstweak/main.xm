@@ -2943,7 +2943,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 {
 	PBTimelineInvokeANCSActionMessage *m = (PBTimelineInvokeANCSActionMessage *)arg1;
 	NSLog(@"%@ %@ %@", m, @( [m actionID] ), [m appIdentifier]);
-	NSLog(@"%@ %@ %@", [m notificationSender], [m notificationSubtitle], [m notificationBody], [m actionTitle]);
+	NSLog(@"%@ %@ %@ %@", [m notificationSender], [m notificationSubtitle], [m notificationBody], [m actionTitle]);
 	NSLog(@"%@", [notificationActionsDictionary objectForKey:[m appIdentifier]]);
 
 	if ([m actionID] == HAS_ACTIONS_IDENTIFIER)
@@ -2964,7 +2964,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 		   	NSArray *arr = [dict allKeys];
 		   	if ([arr count] > 0)
 		   	{
-		   		NSString *bulletinID = [%c(PBANCSActionHandler) bulletinIdentifierForInvokeANCSMessage:m];
+		   		NSString *bulletinID = [[%c(PBANCSActionHandler) bulletinIdentifierForInvokeANCSMessage:m] UUIDString];
 		   		if (!bulletinID)
 		   		{
 					PBTimelineAttribute *attr = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action failed!" specificType:0] autorelease];
@@ -2996,7 +2996,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 								NSDictionary *actionToPerform = @{ @"actionIdentifier" : actionIdentifier,
 																   @"bulletinIdentifier" : bulletinID,
-																   @"ANCSIdentifier" : [m ANCSIdentifier];
+																   @"ANCSIdentifier" : [m ANCSIdentifier],
 																   @"isComposeAction" : @( isQuickReply ),
 																   @"isReplyAction" : @( NO ), 
 																   @"replyText" : @"" };
@@ -3131,7 +3131,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 + (NSString *)bulletinIdentifierForInvokeANCSMessage:(PBTimelineInvokeANCSActionMessage *)message
 {
 	NSLog(@"%@ %@ %@", m, @( [m actionID] ), [m appIdentifier]);
-	NSLog(@"%@ %@ %@", [m notificationSender], [m notificationSubtitle], [m notificationBody], [m actionTitle]);
+	NSLog(@"%@ %@ %@ %@", [m notificationSender], [m notificationSubtitle], [m notificationBody], [m actionTitle]);
 	return nil;
 }
 
