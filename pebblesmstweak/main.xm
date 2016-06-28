@@ -907,6 +907,16 @@
 
 @end
 
+@interface PBTimelineInvokeANCSActionMessage : NSObject
+-(NSUUID *)ANCSIdentifier;
+-(NSString *)notificationSender;
+-(NSString *)notificationSubtitle;
+-(NSString *)notificationBody;
+-(unsigned char)actionID;
+-(NSString *)actionTitle;
+-(NSString *)appIdentifier;
+@end
+
 @interface PBANCSActionHandler
 +(id)actionHandlerWithDelegate:(id)arg1 ;
 -(void)dealloc;
@@ -1035,16 +1045,6 @@
 -(NSNumber *)identifier;
 -(NSString *)type;
 -(NSArray *)attributes;
-@end
-
-@interface PBTimelineInvokeANCSActionMessage : NSObject
--(NSUUID *)ANCSIdentifier;
--(NSString *)notificationSender;
--(NSString *)notificationSubtitle;
--(NSString *)notificationBody;
--(unsigned char)actionID;
--(NSString *)actionTitle;
--(NSString *)appIdentifier;
 @end
 
 @interface BBObserver : NSObject
@@ -2923,7 +2923,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 	for (NSNumber *key in actionsToPerformKeys)
 	{
-		NSDictionary *actionToPerformDict = [actionsToPerformDictionary objectForKey:@([m actionID])];
+		NSDictionary *actionToPerformDict = [actionsToPerformDictionary objectForKey:key];
 		NSUUID *actionID = actionToPerformDict[@"ANCSIdentifier"];
 		NSLog(@"actionID %@", actionToPerformDict);
 		if ([actionID isEqual:(NSUUID *)arg1])
@@ -2932,7 +2932,11 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 		}
 	}
 
-	return %orig;
+	BOOL r = %orig;
+
+	NSLog(@"isHandlingNotificationWithIdentifier %d", r);
+
+	return r;
 }
 
 -(void)handleInvokeANCSActionMessage:(id)arg1
@@ -2960,7 +2964,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 		   	NSArray *arr = [dict allKeys];
 		   	if ([arr count] > 0)
 		   	{
-		   		NSString *bulletinID = [%c(PBANCSActionHandler) bulletinIdentifierForInvokeANCSMessage:m]
+		   		NSString *bulletinID = [%c(PBANCSActionHandler) bulletinIdentifierForInvokeANCSMessage:m];
 		   		if (!bulletinID)
 		   		{
 					PBTimelineAttribute *attr = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action failed!" specificType:0] autorelease];
