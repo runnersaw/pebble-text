@@ -929,6 +929,7 @@
 // new
 + (void)performAction:(NSString *)actionID forBulletinID:(NSString *)bulletinID;
 + (void)performReply:(NSString *)reply forAction:(NSString *)actionID andBulletinID:(NSString *)bulletinID;
++ (NSUUID *)bulletinIdentifierForInvokeANCSMessage:(PBTimelineInvokeANCSActionMessage *)message;
 @end
 
 @interface PBSMSNotificationActionHandler
@@ -2917,6 +2918,20 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 -(BOOL)isHandlingNotificationWithIdentifier:(id)arg1
 {
 	%log;
+
+	NSArray *actionsToPerformKeys = [actionsToPerformDictionary allKeys];
+
+	for (NSNumber *key in actionsToPerformKeys)
+	{
+		NSDictionary *actionToPerformDict = [actionsToPerformDictionary objectForKey:@([m actionID])];
+		NSUUID *actionID = actionToPerformDict[@"ANCSIdentifier"];
+		NSLog(@"actionID %@", actionToPerformDict);
+		if ([actionID isEqual:(NSUUID *)arg1])
+		{
+			return YES;
+		}
+	}
+
 	return %orig;
 }
 
@@ -2924,6 +2939,9 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 {
 	PBTimelineInvokeANCSActionMessage *m = (PBTimelineInvokeANCSActionMessage *)arg1;
 	NSLog(@"%@ %@ %@", m, @( [m actionID] ), [m appIdentifier]);
+	NSLog(@"%@ %@ %@", [m notificationSender], [m notificationSubtitle], [m notificationBody], [m actionTitle]);
+	NSLog(@"%@", [notificationActionsDictionary objectForKey:[m appIdentifier]]);
+
 	if ([m actionID] == HAS_ACTIONS_IDENTIFIER)
 	{
 		loadNotificationActions();
@@ -2942,7 +2960,14 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 		   	NSArray *arr = [dict allKeys];
 		   	if ([arr count] > 0)
 		   	{
-		   		NSString *bulletinID = [arr objectAtIndex:0];
+		   		NSString *bulletinID = [%c(PBANCSActionHandler) bulletinIdentifierForInvokeANCSMessage:m]
+		   		if (!bulletinID)
+		   		{
+					PBTimelineAttribute *attr = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action failed!" specificType:0] autorelease];
+					[self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
+					return;
+		   		}
+
 		   		NSDictionary *bulletinDict = [dict objectForKey:bulletinID];
 
 		   		if (bulletinDict)
@@ -2965,8 +2990,9 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 								[actions addObject:[[[%c(PBTimelineAction) alloc] initWithIdentifier:@(currentNumber) type:@"ANCSResponse" attributes:@[ attr1, attr2 ]] autorelease]];
 
-								NSDictionary *actionToPerform = @{ @"actionIdentifier" : actionIdentifier, 
-																   @"bulletinIdentifier" : bulletinID, 
+								NSDictionary *actionToPerform = @{ @"actionIdentifier" : actionIdentifier,
+																   @"bulletinIdentifier" : bulletinID,
+																   @"ANCSIdentifier" : [m ANCSIdentifier];
 																   @"isComposeAction" : @( isQuickReply ),
 																   @"isReplyAction" : @( NO ), 
 																   @"replyText" : @"" };
@@ -3097,6 +3123,13 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     });
 }
 
+%new
++ (NSString *)bulletinIdentifierForInvokeANCSMessage:(PBTimelineInvokeANCSActionMessage *)message
+{
+	NSLog(@"%@ %@ %@", m, @( [m actionID] ), [m appIdentifier]);
+	NSLog(@"%@ %@ %@", [m notificationSender], [m notificationSubtitle], [m notificationBody], [m actionTitle]);
+	return nil;
+}
 
 %end
 
