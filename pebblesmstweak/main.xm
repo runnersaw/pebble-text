@@ -1601,7 +1601,6 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 						if (response)
 						{
 							NSLog(@"%@", response);
-    						NSString *appIdentifier = [bulletin sectionID];
 							if (isReply)
 							{
 								NSDictionary *dict = @{ @"UIUserNotificationActionResponseTypedTextKey" : replyText };
@@ -2905,7 +2904,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 }
 -(void)handleActionWithActionIdentifier:(unsigned char)arg1 attributes:(id)arg2{
 	NSLog(@"PBANCSActionHandler");
-    if (fp8 == 10)
+    if (arg1 == 10)
 	{
         // NSLog(@"HANDLING");
         NSData *d = [(PBTimelineItemAttributeBlob *)arg2 content];
@@ -2913,11 +2912,11 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
         NSLog(@"reply %@", reply);
 
         NSUUID *ancsIdentifier = [self handlingIdentifier];
-        NSLog(@"ANCSIdentifier %@", ANCSIdentifier);
+        NSLog(@"ANCSIdentifier %@", ancsIdentifier);
 
-        for (NSNumber *actionNumber in [actionsToPerformDict allKeys])
+        for (NSNumber *actionNumber in [actionsToPerformDictionary allKeys])
         {
-        	NSDictionary *dict = actionsToPerformDict[actionNumber];
+        	NSDictionary *dict = actionsToPerformDictionary[actionNumber];
         	NSUUID *ancsId = dict[@"ANCSIdentifier"];
 
         	if ([ancsId isEqual:ancsIdentifier])
@@ -2928,7 +2927,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 				[%c(PBANCSActionHandler) performReply:reply forAction:actionID andBulletinID:bulletinID];
 
 				PBTimelineAttribute *attr = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Reply sent" specificType:0] autorelease];
-				[self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
+				[self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:ancsIdentifier];
 				return;
         	}
         }
@@ -2955,7 +2954,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 		NSLog(@"actionID %@", actionToPerformDict);
 		if ([actionID isEqual:(NSUUID *)arg1])
 		{
-			[self setHandlingIdentifier:[[[NSUUID alloc] initWithUUIDString:actionID] autorelease];
+			[self setHandlingIdentifier:actionID];
 			return YES;
 		}
 	}
@@ -3026,7 +3025,6 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 																   @"bulletinIdentifier" : bulletinID,
 																   @"ANCSIdentifier" : [m ANCSIdentifier],
 																   @"isComposeAction" : @( isQuickReply ),
-																   @"isReplyAction" : @( NO ), 
 																   @"replyText" : @"" };
 								[actionsToPerformDictionary setObject:actionToPerform forKey:@(currentNumber)];
 
@@ -3059,7 +3057,6 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 		NSString *actionID = [actionToPerformDict objectForKey:@"actionIdentifier"];
 		NSString *bulletinID = [actionToPerformDict objectForKey:@"bulletinIdentifier"];
 		BOOL isComposeAction = [(NSNumber *)actionToPerformDict[@"isComposeAction"] boolValue];
-		BOOL isReplyAction = [(NSNumber *)actionToPerformDict[@"isReplyAction"] boolValue];
 
 		if (actionID && bulletinID)
 		{
