@@ -1584,6 +1584,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 	{
 		NSString *bulletinID = [dict objectForKey:@"bulletinID"];
 		NSString *actionID = [dict objectForKey:@"actionID"];
+		BOOL isReply = [(NSNumber *)dict[@"isReply"] boolValue];
+		NSString *replyText = dict[@"replyText"];
 
 		if (bulletinID && actionID)
 		{
@@ -1595,16 +1597,14 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 				{
 					if ([[action identifier] isEqualToString:actionID])
 					{
-						NSLog(@"BBAction %@", action);
-						NSLog(@"behavior %d", [action behavior]);
 						BBResponse *response = [bulletin responseForAction:action];
 						if (response)
 						{
 							NSLog(@"%@", response);
     						NSString *appIdentifier = [bulletin sectionID];
-							if ([appIdentifier isEqualToString:@"com.atebits.Tweetie2"] && [actionID isEqualToString:@"reply"])
+							if (isReply)
 							{
-								NSDictionary *dict = @{ @"UIUserNotificationActionResponseTypedTextKey" : @"Pebble reply" };
+								NSDictionary *dict = @{ @"UIUserNotificationActionResponseTypedTextKey" : replyText };
 								NSDictionary *finalDict = @{ @"userResponseInfo" : dict };
 								[response setContext:finalDict];
 							}
@@ -2905,16 +2905,42 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 }
 -(void)handleActionWithActionIdentifier:(unsigned char)arg1 attributes:(id)arg2{
 	NSLog(@"PBANCSActionHandler");
-	%log;
-	%orig;
-}
--(void)notificationHandler:(id)arg1 didSendResponse:(unsigned char)arg2 withAttributes:(id)arg3 actions:(id)arg4{
-	%log;
-	%orig;
-}
--(void)notificationHandler:(id)arg1 didSendError:(id)arg2 withTitle:(id)arg3 icon:(id)arg4{
-	%log;
-	%orig;
+    if (fp8 == 10)
+	{
+        // NSLog(@"HANDLING");
+        NSData *d = [(PBTimelineItemAttributeBlob *)arg2 content];
+        NSString *reply = [[NSString alloc] initWithData:d encoding:NSUTF8StringEncoding];
+        NSLog(@"reply %@", reply);
+
+        NSUUID *ancsIdentifier = [self handlingIdentifier];
+        NSLog(@"ANCSIdentifier %@", ANCSIdentifier);
+
+        for (NSNumber *actionNumber in [actionsToPerformDict allKeys])
+        {
+        	NSDictionary *dict = actionsToPerformDict[actionNumber];
+        	NSUUID *ancsId = dict[@"ANCSIdentifier"];
+
+        	if ([ancsId isEqual:ancsIdentifier])
+        	{
+        		NSString *actionID = dict[@"actionIdentifier"];
+        		NSString *bulletinID = dict[@"bulletinIdentifier"];
+
+				[%c(PBANCSActionHandler) performReply:reply forAction:actionID andBulletinID:bulletinID];
+
+				PBTimelineAttribute *attr = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Reply sent" specificType:0] autorelease];
+				[self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
+				return;
+        	}
+        }
+
+
+
+        [reply release];
+    }
+    else
+	{
+        %orig; 
+    }
 }
 -(BOOL)isHandlingNotificationWithIdentifier:(id)arg1
 {
@@ -2929,6 +2955,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 		NSLog(@"actionID %@", actionToPerformDict);
 		if ([actionID isEqual:(NSUUID *)arg1])
 		{
+			[self setHandlingIdentifier:[[[NSUUID alloc] initWithUUIDString:actionID] autorelease];
 			return YES;
 		}
 	}
@@ -3040,14 +3067,6 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 			{
 				PBTimelineAttribute *attr = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Reply" specificType:0] autorelease];
 				[self sendResponse:21 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
-				return;
-			}
-			else if (isReplyAction)
-			{
-				[%c(PBANCSActionHandler) performAction:actionID forBulletinID:bulletinID];
-
-				PBTimelineAttribute *attr = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Reply sent" specificType:0] autorelease];
-				[self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
 				return;
 			}
 			else

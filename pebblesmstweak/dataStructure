@@ -38,7 +38,7 @@ actionsToPerform
 actionsToPerformDictionary
 {
 	"12" : {
-		"actionIdentifier" : "com.atebits.Tweetie2", 
+		"actionIdentifier" : "reply", 
 		"bulletinIdentifier" : "C0347394", 
 		"ANCSIdentifier" : "CAB293", NSUUID!!!!
 		"isQuickReply" : YES,
@@ -46,7 +46,7 @@ actionsToPerformDictionary
 		"replyText" : ""
 	}
 	"12" : {
-		"actionIdentifier" : "com.atebits.Tweetie2", 
+		"actionIdentifier" : "reply", 
 		"bulletinIdentifier" : "C0347394", 
 		"ANCSIdentifier" : "CAB293",
 		"isQuickReply" : YES,
@@ -54,7 +54,7 @@ actionsToPerformDictionary
 		"replyText" : "HI"
 	}
 	"12" : {
-		"actionIdentifier" : "com.atebits.Tweetie2", 
+		"actionIdentifier" : "reply", 
 		"bulletinIdentifier" : "C0347394", 
 		"ANCSIdentifier" : "CAB293",
 		"isQuickReply" : NO,
