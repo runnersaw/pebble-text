@@ -137,19 +137,9 @@
 - (id)composedAttachmentImage;
 - (id)composedAttachmentImageForKey:(id)arg1;
 - (id)composedAttachmentImageForKey:(id)arg1 withObserver:(id)arg2;
-// - (struct CGSize
-{ float x1; float x2; })composedAttachmentImageSize;
-// - (struct CGSize
-{ float x1; float x2; })composedAttachmentImageSizeForKey:(id)arg1;
-// - (struct CGSize
-{ float x1; float x2; })composedAttachmentImageSizeForKey:(id)arg1 withObserver:(id)arg2;
-// - (struct CGSize
-{ float x1; float x2; })composedAttachmentImageSizeWithObserver:(id)arg1;
 - (id)composedAttachmentImageWithObserver:(id)arg1;
 - (id)content;
 - (id)context;
-// - (id)copyWithZone:(struct _NSZone
-{ }*)arg1;
 - (unsigned int)counter;
 - (id)date;
 - (int)dateFormatStyle;
@@ -338,9 +328,6 @@
 
 + (id)contentWithTitle:(id)arg1 subtitle:(id)arg2 message:(id)arg3;
 + (BOOL)supportsSecureCoding;
-
-// - (id)copyWithZone:(struct _NSZone
-{ }*)arg1;
 - (void)dealloc;
 - (id)description;
 - (void)encodeWithCoder:(id)arg1;
@@ -390,8 +377,6 @@
 - (id)behaviorParameters;
 - (id)bundleID;
 - (BOOL)canBypassPinLock;
-// - (id)copyWithZone:(struct _NSZone
-{ }*)arg1;
 - (void)dealloc;
 - (BOOL)deliverResponse:(id)arg1;
 - (id)description;
@@ -1499,23 +1484,28 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
         
         // Step 2
         for( k = 0; k < n; k++)
+        {
             d[k] = k;
+        }
         
         for( k = 0; k < m; k++)
+        {
             d[k * n] = k;
+        }
         
         // Step 3 and 4
         for(i=1; i < n; i++)
-	{
+		{
             for(j=1; j < m; j++)
-	{
+			{
                 
                 // Step 5
                 if([stringA characterAtIndex: i-1] == [stringB characterAtIndex: j-1])
-	{
+				{
                     change = -gain;
-                } else
-	{
+                }
+                else
+				{
                     change = cost;
                 }
                 
@@ -1571,20 +1561,20 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 		NSString *actionID = [dict objectForKey:@"actionID"];
 
 		if (bulletinID && actionID)
-	{
+		{
 			BBBulletin *bulletin = [bulletinsDict objectForKey:bulletinID];
 			NSLog(@"OHYESHERE %@", bulletin);
 			if (bulletin)
-	{
+			{
 				for (BBAction *action in [bulletin supplementaryActionsForLayout:1])
-	{
+				{
 					if ([[action identifier] isEqualToString:actionID])
-	{
+					{
 						NSLog(@"BBAction %@", action);
 						NSLog(@"behavior %d", [action behavior]);
 						BBResponse *response = [bulletin responseForAction:action];
 						if (response)
-	{
+						{
 							NSLog(@"%@", response);
 							[response send];
 							// removeActionToPerform(actionID, bulletinID);
