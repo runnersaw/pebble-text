@@ -103,7 +103,8 @@
 - (id)_actionWithID:(id)arg1 fromActions:(id)arg2;
 - (id)_allActions;
 - (id)_allSupplementaryActions;
-// - (void)_fillOutCopy:(id)arg1 withZone:(struct _NSZone { }*)arg2;
+// - (void)_fillOutCopy:(id)arg1 withZone:(struct _NSZone
+{ }*)arg2;
 - (id)_responseForAction:(id)arg1;
 - (id)_safeDescription:(BOOL)arg1;
 - (id)_sectionParameters;
@@ -136,14 +137,19 @@
 - (id)composedAttachmentImage;
 - (id)composedAttachmentImageForKey:(id)arg1;
 - (id)composedAttachmentImageForKey:(id)arg1 withObserver:(id)arg2;
-// - (struct CGSize { float x1; float x2; })composedAttachmentImageSize;
-// - (struct CGSize { float x1; float x2; })composedAttachmentImageSizeForKey:(id)arg1;
-// - (struct CGSize { float x1; float x2; })composedAttachmentImageSizeForKey:(id)arg1 withObserver:(id)arg2;
-// - (struct CGSize { float x1; float x2; })composedAttachmentImageSizeWithObserver:(id)arg1;
+// - (struct CGSize
+{ float x1; float x2; })composedAttachmentImageSize;
+// - (struct CGSize
+{ float x1; float x2; })composedAttachmentImageSizeForKey:(id)arg1;
+// - (struct CGSize
+{ float x1; float x2; })composedAttachmentImageSizeForKey:(id)arg1 withObserver:(id)arg2;
+// - (struct CGSize
+{ float x1; float x2; })composedAttachmentImageSizeWithObserver:(id)arg1;
 - (id)composedAttachmentImageWithObserver:(id)arg1;
 - (id)content;
 - (id)context;
-// - (id)copyWithZone:(struct _NSZone { }*)arg1;
+// - (id)copyWithZone:(struct _NSZone
+{ }*)arg1;
 - (unsigned int)counter;
 - (id)date;
 - (int)dateFormatStyle;
@@ -333,7 +339,8 @@
 + (id)contentWithTitle:(id)arg1 subtitle:(id)arg2 message:(id)arg3;
 + (BOOL)supportsSecureCoding;
 
-// - (id)copyWithZone:(struct _NSZone { }*)arg1;
+// - (id)copyWithZone:(struct _NSZone
+{ }*)arg1;
 - (void)dealloc;
 - (id)description;
 - (void)encodeWithCoder:(id)arg1;
@@ -383,7 +390,8 @@
 - (id)behaviorParameters;
 - (id)bundleID;
 - (BOOL)canBypassPinLock;
-// - (id)copyWithZone:(struct _NSZone { }*)arg1;
+// - (id)copyWithZone:(struct _NSZone
+{ }*)arg1;
 - (void)dealloc;
 - (BOOL)deliverResponse:(id)arg1;
 - (id)description;
@@ -1166,8 +1174,11 @@ static NSMutableDictionary *notificationActionsDictionary = [NSMutableDictionary
 static NSMutableDictionary *actionsToPerformDictionary = [NSMutableDictionary dictionary];
 static NSMutableDictionary *bulletinsDict = [NSMutableDictionary dictionary];
 
-static void loadPrefs() {
-    if ([presets count] == 0) {
+static void loadPrefs()
+{
+    if ([presets count] == 0)
+   
+{
         [presets addObject:@"OK"];
         [presets addObject:@"Yes"];
         [presets addObject:@"No"];
@@ -1183,21 +1194,27 @@ static void loadPrefs() {
 
 // RECENT MESSAGES
 
-static void loadMessagesToSend() {
+static void loadMessagesToSend()
+{
     NSArray *arr = [NSArray arrayWithContentsOfFile:messagesFileLocation];
 
-    if (arr) {
+    if (arr)
+
+	{
         [messages removeAllObjects];
         [messages addObjectsFromArray:arr];
     }
 }
 
-static void saveMessageForSending(NSDictionary *message) {
+static void saveMessageForSending(NSDictionary *message)
+{
     // check if already in messages to send
     loadMessagesToSend();
 
-    for (NSDictionary *dict in messages) {
-        if ([[dict objectForKey:@"uuid"] isEqualToString:[message objectForKey:@"uuid"]]) {
+    for (NSDictionary *dict in messages)
+	{
+        if ([[dict objectForKey:@"uuid"] isEqualToString:[message objectForKey:@"uuid"]])
+		{
             return;
         }
     }
@@ -1206,12 +1223,15 @@ static void saveMessageForSending(NSDictionary *message) {
     [messages writeToFile:messagesFileLocation atomically:NO];
 }
 
-static void removeMessageAfterSending(NSString *message) {
+static void removeMessageAfterSending(NSString *message)
+{
     loadMessagesToSend();
 
-    for (int i=[messages count]-1; i>=0; i--) {
+    for (int i=[messages count]-1; i>=0; i--)
+	{
         NSDictionary *dict = [messages objectAtIndex:i];
-        if ([[dict objectForKey:@"uuid"] isEqualToString:message]) {
+        if ([[dict objectForKey:@"uuid"] isEqualToString:message])
+		{
             [messages removeObjectAtIndex:i];
         }
     }
@@ -1221,46 +1241,55 @@ static void removeMessageAfterSending(NSString *message) {
 
 // RECENT CONTACTS
 
-static void loadRecentRecipients() {
+static void loadRecentRecipients()
+{
     NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:recentFileLocation];
 
     [names removeAllObjects];
     [phones removeAllObjects];
 
-    for (int i=0; i<maxContacts; i++) {
+    for (int i=0; i<maxContacts; i++)
+	{
         NSString *name = [dict objectForKey:[NSString stringWithFormat:@"name%d", i]];
         NSString *phone = [dict objectForKey:[NSString stringWithFormat:@"phone%d", i]];
 
-        if (name != nil && phone != nil) {
+        if (name != nil && phone != nil)
+		{
             [names addObject:name];
             [phones addObject:phone];
         }
     }
 }
 
-static void saveRecentRecipient(NSString *name, NSString *phone) {
+static void saveRecentRecipient(NSString *name, NSString *phone)
+{
     loadRecentRecipients();
 
-    for (int i=[names count]-1;i>=0;i--) {
-        if ([[names objectAtIndex:i] isEqualToString:name] || [[phones objectAtIndex:i] isEqualToString:phone]) {
+    for (int i=[names count]-1;i>=0;i--)
+	{
+        if ([[names objectAtIndex:i] isEqualToString:name] || [[phones objectAtIndex:i] isEqualToString:phone])
+		{
             [names removeObjectAtIndex:i];
             [phones removeObjectAtIndex:i];
         }
     }
 
     [names insertObject:name atIndex:0];
-    while ([names count] > maxContacts) {
+    while ([names count] > maxContacts)
+	{
         [names removeLastObject];
     }
 
     [phones insertObject:phone atIndex:0];
-    while ([phones count] > maxContacts) {
+    while ([phones count] > maxContacts)
+	{
         [phones removeLastObject];
     }
 
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
 
-    for (int i=0; i<[names count]; i++) {
+    for (int i=0; i<[names count]; i++)
+	{
         NSString *name = [names objectAtIndex:i];
         NSString *phone = [phones objectAtIndex:i];
 
@@ -1275,36 +1304,40 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 // FOR ACTIONABLE NOTIFICATIONS
 
-static void loadNotificationActions() {
+static void loadNotificationActions()
+{
 	NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:notificationsFileLocation];
 
-	if (dict) {
+	if (dict)
+	{
 		[notificationActionsDictionary setDictionary:dict];
-		// NSLog(@"loadNotificationActions %@", notificationActionsDictionary);
 	}
 }
 
-static void saveNotificationAction(BBBulletin *bulletin) {
+static void saveNotificationAction(BBBulletin *bulletin)
+{
     NSString *bulletinID = [bulletin bulletinID];
-    if ([bulletinsDict objectForKey:bulletinID]) {
+    if ([bulletinsDict objectForKey:bulletinID])
+	{
     	return;
     }
 
     NSString *appIdentifier = [bulletin sectionID];
-
     [bulletinsDict setObject:bulletin forKey:bulletinID];
-    // NSLog(@"Saved, %@", bulletinsDict);
 
-    if (appIdentifier == NULL) {
+    if (!appIdentifier)
+	{
         return;
     }
 
     NSMutableDictionary *appDict = [notificationActionsDictionary objectForKey:appIdentifier];
-    if (!appDict) {
+    if (!appDict)
+	{
         appDict = [NSMutableDictionary dictionary];
     }
 
-    if ([appDict objectForKey:bulletinID] != NULL) {
+    if ([appDict objectForKey:bulletinID])
+    {
         return;
     }
 
@@ -1313,36 +1346,40 @@ static void saveNotificationAction(BBBulletin *bulletin) {
     NSString *subtitle = [content subtitle];
     NSString *message = [content message];
     NSDate *timestamp = [NSDate date];
-    NSLog(@"SAVEDHERE %@ %@ %@", [bulletin title], bulletinID, message);
 
-    if (bulletinID == NULL) {
+    if (!bulletinID)
+	{
         return;
     }
 
     BOOL hasActions = NO;
     NSMutableDictionary *actionsDict = [NSMutableDictionary dictionary];
-    for (BBAction *action in [bulletin supplementaryActionsForLayout:1]) {
+    for (BBAction *action in [bulletin supplementaryActionsForLayout:1])
+	{
         NSString *actionIdentifier = [action identifier];
         NSString *actionTitle = [(BBAppearance *)[action appearance] title];
-        if (![action isAuthenticationRequired] && actionIdentifier && actionTitle) {
+        if (![action isAuthenticationRequired] && actionIdentifier && actionTitle)
+		{
             [actionsDict setObject:actionIdentifier forKey:actionTitle];
             hasActions = YES;
         }
     }
 
-    if (!hasActions) {
+    if (!hasActions)
+	{
         return;
     }
 
     // subtitle needs to go last in case it's null
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:timestamp, @"timestamp", actionsDict, @"actions", message, @"message", NULL];
-    if (title != NULL) {
+    if (title != NULL)
+	{
         [dict setObject:title forKey:@"title"];
     }
-    if (subtitle != NULL) {
+    if (subtitle != NULL)
+	{
         [dict setObject:subtitle forKey:@"subtitle"];
     }
-    // NSMutableDictionary *finalDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:dict, bulletinID, NULL];
 
     [appDict setObject:dict forKey:bulletinID];
     [notificationActionsDictionary setObject:appDict forKey:appIdentifier];
@@ -1351,25 +1388,29 @@ static void saveNotificationAction(BBBulletin *bulletin) {
     [notificationActionsDictionary writeToFile:notificationsFileLocation atomically:YES];
 }
 
-static void removeActionsNotInBulletinsDict() {
+static void removeActionsNotInBulletinsDict()
+{
 	[notificationActionsDictionary setDictionary:[NSDictionary dictionary]];
 	NSArray *arr = [bulletinsDict allKeys];
-	for (NSString *key in arr) {
+	for (NSString *key in arr)
+	{
 		BBBulletin *bulletin = [bulletinsDict objectForKey:key];
-
 		saveNotificationAction(bulletin);
 	}
 }
 
-static void loadActionsToPerform() {
+static void loadActionsToPerform()
+{
 	NSArray *arr = [NSArray arrayWithContentsOfFile:actionsToPerformFileLocation];
 
-	if (arr) {
+	if (arr)
+	{
 		[actionsToPerform setArray:arr];
 	}
 }
 
-static void saveActionToPerform(NSString *actionID, NSString *bulletinID) {
+static void saveActionToPerform(NSString *actionID, NSString *bulletinID)
+{
 	loadActionsToPerform();
 
 	NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:actionID, @"actionID", bulletinID, @"bulletinID", NULL];
@@ -1378,23 +1419,27 @@ static void saveActionToPerform(NSString *actionID, NSString *bulletinID) {
 	[actionsToPerform writeToFile:actionsToPerformFileLocation atomically:NO];
 }
 
-static void removeActionsToPerform() {
+static void removeActionsToPerform()
+{
 	[actionsToPerform setArray:[NSArray array]];
 }
 
-static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
+static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
+{
 	loadActionsToPerform();
 
-	for (int i=[actionsToPerform count]-1;i>=0;i--) {
+	for (int i=[actionsToPerform count]-1;i>=0;i--)
+	{
 		NSDictionary *dict = [actionsToPerform objectAtIndex:i];
-		if ([(NSString *)[dict objectForKey:@"actionID"] isEqualToString:actionID]) {
-			if ([(NSString *)[dict objectForKey:@"bulletinID"] isEqualToString:bulletinID]) {
+		if ([(NSString *)[dict objectForKey:@"actionID"] isEqualToString:actionID])
+		{
+			if ([(NSString *)[dict objectForKey:@"bulletinID"] isEqualToString:bulletinID])
+			{
 				[actionsToPerform removeObjectAtIndex:i];
 			}
 		}
 	}
 	[bulletinsDict removeObjectForKey:bulletinID];
-    // NSLog(@"REmoved, %@", bulletinsDict);
 
 	[actionsToPerform writeToFile:actionsToPerformFileLocation atomically:YES];
 }
@@ -1407,7 +1452,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 // default cost: 1
 
 // calculate the mean distance between all words in stringA and stringB
-- (CGFloat) compareWithString: (NSString *)stringB matchGain:(NSInteger)gain missingCost:(NSInteger)cost {
+- (CGFloat) compareWithString: (NSString *)stringB matchGain:(NSInteger)gain missingCost:(NSInteger)cost
+{
     CGFloat averageSmallestDistance = 0.0;
     CGFloat smallestDistance;
     
@@ -1417,10 +1463,12 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
     NSArray *arrayA = [mStringA componentsSeparatedByString: @" "];
     NSArray *arrayB = [mStringB componentsSeparatedByString: @" "];
     
-    for (NSString *tokenA in arrayA) {
+    for (NSString *tokenA in arrayA)
+	{
         smallestDistance = 99999999.0;
         
-        for (NSString *tokenB in arrayB) {
+        for (NSString *tokenB in arrayB)
+		{
             smallestDistance = MIN((CGFloat) [tokenA compareWithWord:tokenB matchGain:gain missingCost:cost], smallestDistance);
         }
         
@@ -1432,7 +1480,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 
 
 // calculate the distance between two string treating them eash as a single word
-- (NSInteger) compareWithWord:(NSString *)stringB matchGain:(NSInteger)gain missingCost:(NSInteger)cost {
+- (NSInteger) compareWithWord:(NSString *)stringB matchGain:(NSInteger)gain missingCost:(NSInteger)cost
+{
     // normalize strings
     NSString * stringA = [NSString stringWithString: self];
     stringA = [[stringA stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] lowercaseString];
@@ -1444,7 +1493,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
     NSUInteger n = [stringA length];
     NSUInteger m = [stringB length];    
     
-    if( n++ != 0 && m++ != 0 ) {
+    if( n++ != 0 && m++ != 0 )
+	{
         d = (NSInteger *)malloc( sizeof(NSInteger) * m * n );
         
         // Step 2
@@ -1455,13 +1505,17 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
             d[k * n] = k;
         
         // Step 3 and 4
-        for(i=1; i < n; i++) {
-            for(j=1; j < m; j++) {
+        for(i=1; i < n; i++)
+	{
+            for(j=1; j < m; j++)
+	{
                 
                 // Step 5
-                if([stringA characterAtIndex: i-1] == [stringB characterAtIndex: j-1]) {
+                if([stringA characterAtIndex: i-1] == [stringB characterAtIndex: j-1])
+	{
                     change = -gain;
-                } else {
+                } else
+	{
                     change = cost;
                 }
                 
@@ -1484,7 +1538,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 
 %hook SpringBoard
 
-- (void)applicationDidFinishLaunching:(id)application {
+- (void)applicationDidFinishLaunching:(id)application
+{
     %orig;
 
     // register to recieve notifications when messages need to be sent
@@ -1493,46 +1548,43 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
     [c runServerOnCurrentThread];
     [c registerForMessageName:openMessagesCommand target:self selector:@selector(messagesMessageNamed:withUserInfo:)];
     [c registerForMessageName:performNotificationActionCommand target:self selector:@selector(notificationsMessageNamed:withUserInfo:)];
-    // [c registerForMessageName:openPebbleCommand target:self selector:@selector(pebbleMessageNamed:withUserInfo:)];
 }
  
 %new
-- (void)messagesMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo {
-    // NSLog(@"PEBBLESMS: messagesMessageNamed");
-    // NSLog(@"PB Launching messages!");
+- (void)messagesMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo
+{
     [[%c(UIApplication) sharedApplication] launchApplicationWithIdentifier:@"com.apple.MobileSMS" suspended:YES];
 }
 
 %new
-- (void)pebbleMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo {
-    // NSLog(@"PB Launching pebble in 10 seconds!");
-    // send message after 5 seconds
-    // dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(OPEN_PEBBLE_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-    //     [[%c(UIApplication) sharedApplication] launchApplicationWithIdentifier:@"com.getpebble.pebbletime" suspended:YES];
-    // });
-}
-
-%new
-- (void)notificationsMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo {
+- (void)notificationsMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo
+{
 	// NSLog(@"notificationsMessageNamed");
 	loadActionsToPerform();
 	// NSLog(@"%@", actionsToPerform);
 	// NSLog(@"%@", bulletinsDict);
     NSLog(@"Saved, %@", bulletinsDict);
 
-	for (NSDictionary *dict in actionsToPerform) {
+	for (NSDictionary *dict in actionsToPerform)
+	{
 		NSString *bulletinID = [dict objectForKey:@"bulletinID"];
 		NSString *actionID = [dict objectForKey:@"actionID"];
 
-		if (bulletinID && actionID) {
+		if (bulletinID && actionID)
+	{
 			BBBulletin *bulletin = [bulletinsDict objectForKey:bulletinID];
 			NSLog(@"OHYESHERE %@", bulletin);
-			if (bulletin) {
-				for (BBAction *action in [bulletin supplementaryActionsForLayout:1]) {
-					if ([[action identifier] isEqualToString:actionID]) {
+			if (bulletin)
+	{
+				for (BBAction *action in [bulletin supplementaryActionsForLayout:1])
+	{
+					if ([[action identifier] isEqualToString:actionID])
+	{
 						NSLog(@"BBAction %@", action);
+						NSLog(@"behavior %d", [action behavior]);
 						BBResponse *response = [bulletin responseForAction:action];
-						if (response) {
+						if (response)
+	{
 							NSLog(@"%@", response);
 							[response send];
 							// removeActionToPerform(actionID, bulletinID);
@@ -1568,25 +1620,27 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 
 %hook BBBulletin
 
-+ (id)addBulletinToCache:(id)arg1 { 
-    // %log; 
++ (id)addBulletinToCache:(id)arg1
+{
     id r = %orig; 
-    if (![r isMemberOfClass:%c(BBBulletinRequest)]) {
+    if (![r isMemberOfClass:%c(BBBulletinRequest)])
+	{
     	removeActionsNotInBulletinsDict();
         saveNotificationAction([%c(BBBulletin) bulletinWithBulletin:(BBBulletin *)r]);
     }
     return r; 
 }
 
-+ (id)bulletinReferenceDateFromDate:(id)arg1 { %log; return %orig; }
-+ (id)bulletinWithBulletin:(id)arg1 { %log; return %orig; }
-+ (id)copyCachedBulletinWithBulletinID:(id)arg1 { %log; return %orig; }
-+ (void)removeBulletinFromCache:(id)arg1 { %log; %orig; }
-+ (BOOL)supportsSecureCoding { %log; return %orig; }
-+ (id)validSortDescriptorsFromSortDescriptors:(id)arg1 { %log; return %orig; }
-+ (void)vetSortDescriptor:(id)arg1 { %log; %orig; }
-
 %end
+
+%hook BBObserver
+
+- (void)sendResponse:(id)arg1
+{
+	%log;
+	NSLog(@"sendResponse %@", arg1);
+	%orig;
+}
 
 %end
 
@@ -1596,7 +1650,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 
 %hook SMSApplication 
 
-- (BOOL)application:(id)arg1 didFinishLaunchingWithOptions:(id)arg2 {
+- (BOOL)application:(id)arg1 didFinishLaunchingWithOptions:(id)arg2
+{
     // NSLog(@"PEBBLESMS: messages launched");
 
     BOOL s = %orig;
@@ -1613,10 +1668,12 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 }
 
 %new
-- (void)sendMessagesForTextSender {
+- (void)sendMessagesForTextSender
+{
     loadMessagesToSend();
 
-    for (NSDictionary *message in messages) {
+    for (NSDictionary *message in messages)
+{
         NSString *number = [message objectForKey:@"number"];
         NSString *messageText = [message objectForKey:@"message"];
         NSNumber *notify = [message objectForKey:@"notify"];
@@ -1628,22 +1685,27 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
         NSDate *expirationDate = [message objectForKey:@"expirationDate"];
 
         // timeout so message doesn't get sent super late
-        if ([expirationDate compare:[NSDate date]] == NSOrderedAscending) {
+        if ([expirationDate compare:[NSDate date]] == NSOrderedAscending)
+{
             removeMessageAfterSending(uuid);
             return;
         }
 
         // TODO: find proper conditions
-        if (number == NULL || messageText == NULL || notify == NULL || newNumber == NULL || recordId == NULL) {
+        if (number == NULL || messageText == NULL || notify == NULL || newNumber == NULL || recordId == NULL)
+{
             return;
         }
 
-        if ([recent boolValue] && ![reply boolValue]) {
+        if ([recent boolValue] && ![reply boolValue])
+{
             // NSLog(@"PEBBLESMS: sendMessageToNumber");
             [self sendMessageToNumber:number recordId:recordId withText:messageText notify:[notify boolValue]];
-        // } else if ([newNumber boolValue]) {
+        // } else if ([newNumber boolValue])
+{
         //     [self sendMessageToNewNumber:number withText:message notify:[notify boolValue]];
-        } else {
+        } else
+{
             // NSLog(@"PEBBLESMS: sendMessageTo number");
             [self sendMessageTo:recordId number:number withText:messageText notify:[notify boolValue]];
         }
@@ -1653,7 +1715,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 }
 
 %new
-- (void)sendMessageTo:(NSNumber *)personId number:(NSString *)number withText:(NSString *)text notify:(BOOL)notify {
+- (void)sendMessageTo:(NSNumber *)personId number:(NSString *)number withText:(NSString *)text notify:(BOOL)notify
+{
     // NSLog(@"PEBBLESMS: sendMessageTo number withText notify");
     // NSLog(@"PB sendmessageto personId");
     // NSLog(@"PEBBLESMS: sendMessageTo %@", personId);
@@ -1664,28 +1727,34 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 
     NSString *finalPhone = NULL;
     int highestCount = 0;
-    for (int i=0;i<[handles count];i++) {
+    for (int i=0;i<[handles count];i++)
+{
         IMHandle *h = [handles objectAtIndex:i];
 
-        if ([h phoneNumberRef] != NULL) {
+        if ([h phoneNumberRef] != NULL)
+{
             NSString *p = [NSMutableString stringWithString:[[h phoneNumberRef] description]];
             NSString *phone = [@"+" stringByAppendingString:[[p componentsSeparatedByCharactersInSet: [[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""]];
 
-            if ([phone isEqualToString:number]) {
+            if ([phone isEqualToString:number])
+{
                 finalPhone = [NSMutableString stringWithString:phone];
                 break;
             }
 
             int iterate = MIN([phone length], [number length]);
             int i;
-            for (i=0;i<iterate; i++) {
+            for (i=0;i<iterate; i++)
+{
                 int phoneIndex = [phone length] - i - 1;
                 int numberIndex = [number length] - i - 1;
-                if ([phone characterAtIndex:phoneIndex] != [number characterAtIndex:numberIndex]) {
+                if ([phone characterAtIndex:phoneIndex] != [number characterAtIndex:numberIndex])
+{
                     break;
                 }
             }
-            if (i>highestCount) {
+            if (i>highestCount)
+{
                 highestCount = i;
                 finalPhone = [NSMutableString stringWithString:phone];
             }
@@ -1693,8 +1762,10 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
     }
     // NSLog(@"PEBBLESMS: finalPhone == NULL %d", (finalPhone == NULL));
 
-    if (finalPhone == NULL) {
-        if (notify) {
+    if (finalPhone == NULL)
+{
+        if (notify)
+{
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 // NSLog(@"PB Send not success");
                 NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
@@ -1708,7 +1779,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
     CKConversation *conversation = [conversationList conversationForExistingChatWithGroupID:finalPhone];
     // NSLog(@"PEBBLESMS: conversation %@", [conversation class]);
 
-    if (conversation == NULL) {
+    if (conversation == NULL)
+{
         [self sendNewMessageTo:personId number:finalPhone withText:text notify:notify];
         return;
     }
@@ -1724,7 +1796,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
     [composition release];
 
     // send success
-    if (notify) {
+    if (notify)
+{
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             // NSLog(@"PEBBLESMS: Send success");
             NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
@@ -1734,7 +1807,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 }
 
 %new
-- (void)sendMessageToNumber:(NSString *)number recordId:(NSNumber *)recordId withText:(NSString *)text notify:(BOOL)notify {
+- (void)sendMessageToNumber:(NSString *)number recordId:(NSNumber *)recordId withText:(NSString *)text notify:(BOOL)notify
+{
     // NSLog(@"PEBBLESMS: sendMessageToNumber withText notify");
     // NSLog(@"PB sendmessageto number");
     NSString *num = [@"+" stringByAppendingString:[[number componentsSeparatedByCharactersInSet: [[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""]];
@@ -1743,7 +1817,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
     CKConversation *conversation = [conversationList conversationForExistingChatWithGroupID:num];
     // NSLog(@"PEBBLESMS: conversation %@", [conversation class]);
 
-    if (conversation == NULL) {
+    if (conversation == NULL)
+{
         [self sendNewMessageTo:recordId number:number withText:text notify:notify];
         return;
     }
@@ -1759,7 +1834,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
     [composition release];
 
     // send success
-    if (notify) {
+    if (notify)
+{
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             // NSLog(@"PEBBLESMS: Send success");
             NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
@@ -1769,7 +1845,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 }
 
 %new
-- (void)sendNewMessageTo:(NSNumber *)personId number:(NSString *)number withText:(NSString *)text notify:(BOOL)notify {
+- (void)sendNewMessageTo:(NSNumber *)personId number:(NSString *)number withText:(NSString *)text notify:(BOOL)notify
+{
     // NSLog(@"PEBBLESMS: sendNewMessageTo number withText notify");
     // NSLog(@"PB sendmessageto personId");
     // NSLog(@"PEBBLESMS: sendNewMessageTo");
@@ -1780,28 +1857,34 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 
     IMHandle *finalHandle = NULL;
     int highestCount = 0;
-    for (int i=0;i<[handles count];i++) {
+    for (int i=0;i<[handles count];i++)
+{
         IMHandle *h = [handles objectAtIndex:i];
 
-        if ([h phoneNumberRef] != NULL) {
+        if ([h phoneNumberRef] != NULL)
+{
             NSString *p = [NSMutableString stringWithString:[[h phoneNumberRef] description]];
             NSString *phone = [@"+" stringByAppendingString:[[p componentsSeparatedByCharactersInSet: [[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""]];
 
-            if ([phone isEqualToString:number]) {
+            if ([phone isEqualToString:number])
+{
                 finalHandle = h;
                 break;
             }
 
             int iterate = MIN([phone length], [number length]);
             int i;
-            for (i=0;i<iterate; i++) {
+            for (i=0;i<iterate; i++)
+{
                 int phoneIndex = [phone length] - i - 1;
                 int numberIndex = [number length] - i - 1;
-                if ([phone characterAtIndex:phoneIndex] != [number characterAtIndex:numberIndex]) {
+                if ([phone characterAtIndex:phoneIndex] != [number characterAtIndex:numberIndex])
+{
                     break;
                 }
             }
-            if (i>highestCount) {
+            if (i>highestCount)
+{
                 highestCount = i;
                 finalHandle = h;
             }
@@ -1809,8 +1892,10 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
     }
     // NSLog(@"PEBBLESMS: finalHandle == NULL %d", (finalHandle == NULL));
 
-    if (finalHandle == NULL) {
-        if (notify) {
+    if (finalHandle == NULL)
+{
+        if (notify)
+{
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 // NSLog(@"PB Send not success");
                 NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
@@ -1834,7 +1919,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
     [composition release];
 
     // send success
-    if (notify) {
+    if (notify)
+{
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             // NSLog(@"PB Send success");
             NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
@@ -1844,15 +1930,18 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 }
 
 %new
-- (void)sendMessageToNewNumber:(NSString *)number withText:(NSString *)text notify:(BOOL)notify {
+- (void)sendMessageToNewNumber:(NSString *)number withText:(NSString *)text notify:(BOOL)notify
+{
 }
  
 %new
-- (void)handleMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo {
+- (void)handleMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo
+{
     // NSLog(@"PEBBLESMS: handleMessageNamed in MobileSMS");
     // NSLog(@"PB sendmessageto %@", [userinfo description]);
     // Process userinfo (simple dictionary) and send message
-    if ([name isEqualToString:sendMessageCommand]) {
+    if ([name isEqualToString:sendMessageCommand])
+{
         [self sendMessagesForTextSender];
     }
 }
@@ -1863,7 +1952,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 
 %hook CKConversation
 
-- (void)sendMessage:(id)arg1 onService:(id)arg2 newComposition:(BOOL)arg3 {
+- (void)sendMessage:(id)arg1 onService:(id)arg2 newComposition:(BOOL)arg3
+{
     // NSLog(@"PEBBLESMS: sendMessage");
     %orig;
     
@@ -1873,17 +1963,21 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 }
 
 %new
-- (void)saveRecipient {
+- (void)saveRecipient
+{
     // NSLog(@"PEBBLESMS: saveRecipient");
 
     NSArray *handles = [self handles];
     // NSLog(@"PEBBLESMS: handles %@", [handles class]);
-    if (handles != NULL) {
-        if ([handles count] == 1) {
+    if (handles != NULL)
+{
+        if ([handles count] == 1)
+{
             IMHandle *handle = (IMHandle *)[handles objectAtIndex:0];
             // NSLog(@"PEBBLESMS: handle == NULL %d", (handle == NULL));
             id p = [handle phoneNumberRef];
-            if (p) {
+            if (p)
+{
                 NSString *phone = [NSString stringWithString:(NSString *)[p description]];
                 NSString *name = [NSString stringWithString:(NSString *)[handle fullName]];
 
@@ -1900,17 +1994,22 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 
 %hook IMDaemonListener
 
-- (void)account:(id)arg1 chat:(id)arg2 style:(unsigned char)arg3 chatProperties:(id)arg4 messageReceived:(id)arg5 {
+- (void)account:(id)arg1 chat:(id)arg2 style:(unsigned char)arg3 chatProperties:(id)arg4 messageReceived:(id)arg5
+{
     // NSLog(@"PEBBLESMS: account chat style chatProperties messageReceived");
-    if ([arg5 isKindOfClass:[IMMessageItem class]]) {
+    if ([arg5 isKindOfClass:[IMMessageItem class]])
+{
         NSString *sender = [(IMMessageItem *)arg5 sender];
         // NSLog(@"PEBBLESMS: sender %@", [sender class]);
-        if (![arg5 isFromMe]) {
+        if (![arg5 isFromMe])
+{
             CKConversationList *conversationList = [%c(CKConversationList) sharedConversationList];
-            if (conversationList != NULL) {
+            if (conversationList != NULL)
+{
                 CKConversation *conversation = [conversationList conversationForExistingChatWithGroupID:sender];
                 // NSLog(@"PEBBLESMS: conversation %@", [conversation class]);
-                if (conversation != NULL) {
+                if (conversation != NULL)
+{
                     [conversation saveRecipient];
                 }
             }
@@ -1930,16 +2029,21 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 %hook PBPhoneNumber
 
 %new
--(NSString *)getStringRepresentationForTextSender {
+-(NSString *)getStringRepresentationForTextSender
+{
     // NSLog(@"PEBBLESMS: getStringRepresentationForTextSender");
-    if ([self respondsToSelector:@selector(stringValue)]) {
+    if ([self respondsToSelector:@selector(stringValue)])
+{
         return [NSString stringWithString:[self stringValue]];
-    } else {
+    } else
+{
         // NSLog(@"PEBBLESMS: %@ %@ %@ %@", [self rawStringValue], [self countryCallingCode], [self stringRepresentationForWatch], [self stringRepresentationForWeb]);
-        if ([self stringRepresentationForWeb] != NULL && ![[self stringRepresentationForWeb] isEqual:@""]) {
+        if ([self stringRepresentationForWeb] != NULL && ![[self stringRepresentationForWeb] isEqual:@""])
+{
             return [NSString stringWithString:[self stringRepresentationForWeb]];
         }
-        if ([self rawStringValue] != NULL) {
+        if ([self rawStringValue] != NULL)
+{
             return [NSString stringWithString:[self rawStringValue]];
         }
         return @"";
@@ -1951,7 +2055,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 %hook PBContact
 
 %new
-+ (NSString *)phoneWithPrefix:(NSString *)number {
++ (NSString *)phoneWithPrefix:(NSString *)number
+{
     // NSLog(@"PEBBLESMS: phoneWithPrefix");
     NSDictionary *dictCodes = [NSDictionary dictionaryWithObjectsAndKeys:
         @"93",@"AF",@"355",@"AL",@"213",@"DZ",@"1",@"AS", @"376",@"AD",@"244",@"AO",@"1",@"AI",@"1",@"AG",@"54",@"AR",@"374",@"AM",@"297",@"AW",@"61",@"AU",@"43",@"AT",@"994",@"AZ",@"1",@"BS",@"973",@"BH",
@@ -1976,10 +2081,12 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
     NSString *callingCode = [dictCodes objectForKey:countryCode];
 
     NSString *n;
-    if ([number rangeOfString:@"+"].location == NSNotFound && callingCode != NULL) {
+    if ([number rangeOfString:@"+"].location == NSNotFound && callingCode != NULL)
+{
         // NSLog(@"PB prefix %@", callingCode);
         n = [callingCode stringByAppendingString:number];
-    } else {
+    } else
+{
         n = number;
     }
     NSString *num = [@"+" stringByAppendingString:[[n componentsSeparatedByCharactersInSet: [[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""]];
@@ -1988,7 +2095,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 }
 
 %new
-- (NSNumber *)recordId {
+- (NSNumber *)recordId
+{
     // NSLog(@"PEBBLESMS: recordId");
     return [NSNumber numberWithInt:(int)ABRecordGetRecordID([self recordRef])];
 }
@@ -1998,12 +2106,16 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 %hook PBAddressBook
 
 %new
-- (id)contactWithPhoneNumber:(PBPhoneNumber *)phoneNumber {
+- (id)contactWithPhoneNumber:(PBPhoneNumber *)phoneNumber
+{
     // NSLog(@"PEBBLESMS: contactWithPhoneNumber");
-    for (PBContact *contact in (NSArray *)[self allContacts]) {
-        for (PBLabeledValue *label in (NSArray *)[contact phoneNumbers]) {
+    for (PBContact *contact in (NSArray *)[self allContacts])
+{
+        for (PBLabeledValue *label in (NSArray *)[contact phoneNumbers])
+{
             NSString *contactPhone = [(PBPhoneNumber *)[label value] getStringRepresentationForTextSender];
-            if ([contactPhone isEqualToString:[phoneNumber getStringRepresentationForTextSender]]) {
+            if ([contactPhone isEqualToString:[phoneNumber getStringRepresentationForTextSender]])
+{
                 return contact;
             }
         }
@@ -2012,31 +2124,38 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 }
 
 %new
-- (id)contactWithPrefixedPhoneNumber:(NSString *)phoneNumber {
+- (id)contactWithPrefixedPhoneNumber:(NSString *)phoneNumber
+{
     // NSLog(@"PEBBLESMS: contactWithPrefixedPhoneNumber");
     PBContact *finalContact = NULL;
     int highestCount = 0;
 
-    for (PBContact *contact in (NSArray *)[self allContacts]) {
-        for (PBLabeledValue *label in (NSArray *)[contact phoneNumbers]) {
+    for (PBContact *contact in (NSArray *)[self allContacts])
+{
+        for (PBLabeledValue *label in (NSArray *)[contact phoneNumbers])
+{
 
             NSString *number = [%c(PBContact) phoneWithPrefix:[(PBPhoneNumber *)[label value] getStringRepresentationForTextSender]];
             NSString *phone = [@"+" stringByAppendingString:[[phoneNumber componentsSeparatedByCharactersInSet: [[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""]];
 
-            if ([phone isEqualToString:number]) {
+            if ([phone isEqualToString:number])
+{
                 return contact;
             }
 
             int iterate = MIN([phone length], [number length]);
             int i;
-            for (i=0;i<iterate; i++) {
+            for (i=0;i<iterate; i++)
+{
                 int phoneIndex = [phone length] - i - 1;
                 int numberIndex = [number length] - i - 1;
-                if ([phone characterAtIndex:phoneIndex] != [number characterAtIndex:numberIndex]) {
+                if ([phone characterAtIndex:phoneIndex] != [number characterAtIndex:numberIndex])
+{
                     break;
                 }
             }
-            if (i>highestCount) {
+            if (i>highestCount)
+{
                 highestCount = i;
                 finalContact = contact;
             }
@@ -2044,7 +2163,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
     }
 
     // NSLog(@"PEBBLESMS: finalContact == NULL %d", (finalContact == NULL));
-    if (highestCount >= 6) { // just double check that there was actually a find
+    if (highestCount >= 6)
+{ // just double check that there was actually a find
         return finalContact;
     }
 
@@ -2052,11 +2172,13 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 }
 
 %new
-- (id)searchContactsList:(NSString *)search tries:(int)tries {
+- (id)searchContactsList:(NSString *)search tries:(int)tries
+{
     // NSLog(@"PEBBLESMS: searchContactsList");
     NSMutableArray *results = [NSMutableArray array];
 
-    for (id item in (NSArray *)[self allContacts]) {
+    for (id item in (NSArray *)[self allContacts])
+{
         // note the modified weighting, this ends up working similiar to Alfred / TextMate searching method
         // TextMate takes into account camelcase while matching and is a little smarter, but you get the idea
         NSInteger score0 = [[search lowercaseString] compareWithWord:[[item fullName] lowercaseString] matchGain:10 missingCost:1];
@@ -2066,16 +2188,20 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
         NSInteger score4 = [[search lowercaseString] compareWithWord:[[item middleName] lowercaseString] matchGain:10 missingCost:1];
 
         NSInteger min = score0;
-        if (score1 < min) {
+        if (score1 < min)
+{
             min = score1;
         }
-        if (score2 < min) {
+        if (score2 < min)
+{
             min = score2;
         }
-        if (score3 < min) {
+        if (score3 < min)
+{
             min = score3;
         }
-        if (score4 < min) {
+        if (score4 < min)
+{
             min = score4;
         }
 
@@ -2083,7 +2209,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
     }
 
     // sort list
-    NSArray *res = [results sortedArrayUsingComparator: (NSComparator)^(id obj1, id obj2) {
+    NSArray *res = [results sortedArrayUsingComparator: (NSComparator)^(id obj1, id obj2)
+{
         return [[obj1 valueForKey:@"score"] compare:[obj2 valueForKey:@"score"]];
     }];
 
@@ -2093,13 +2220,16 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
     int i = 0;
     int contactIndex = 0;
 
-    while (i < tries * maxContactsToSend && contactIndex < [res count]) {
+    while (i < tries * maxContactsToSend && contactIndex < [res count])
+{
         c = [[res objectAtIndex:contactIndex] objectForKey:@"item"];
         contactIndex++;
-        for (int j=0;j<[[c phoneNumbers] count];j++) {
+        for (int j=0;j<[[c phoneNumbers] count];j++)
+{
             number = [(PBPhoneNumber *)[(PBLabeledValue *)[[c phoneNumbers] objectAtIndex:j] value] getStringRepresentationForTextSender];
             i++;
-            if (i == tries+1) {
+            if (i == tries+1)
+{
                 break;
             }
         }
@@ -2107,17 +2237,20 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 
     NSMutableArray *contacts = [NSMutableArray array];
     NSMutableArray *numbers = [NSMutableArray array];
-    for (int k = i; i < k+maxContactsToSend;) {
+    for (int k = i; i < k+maxContactsToSend;)
+{
         // NSLog(@"i %d", i);
         c = [[res objectAtIndex:contactIndex] objectForKey:@"item"];
         contactIndex++;
-        for (int j=0;j<[[c phoneNumbers] count];j++) {
+        for (int j=0;j<[[c phoneNumbers] count];j++)
+{
             number = [(PBPhoneNumber *)[(PBLabeledValue *)[[c phoneNumbers] objectAtIndex:j] value] getStringRepresentationForTextSender];
             // NSLog(@"i %d %@ %@", i, [c fullName], number);
             [contacts addObject:c];
             [numbers addObject:number];
             i++;
-            if (i == tries+1) {
+            if (i == tries+1)
+{
                 break;
             }
         }
@@ -2127,11 +2260,13 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 }
 
 %new
-- (id)searchContacts:(NSString *)search tries:(int)tries {
+- (id)searchContacts:(NSString *)search tries:(int)tries
+{
     // NSLog(@"PEBBLESMS: searchContacts tries");
     NSMutableArray *results = [NSMutableArray array];
 
-    for (id item in (NSArray *)[self allContacts]) {
+    for (id item in (NSArray *)[self allContacts])
+{
         // note the modified weighting, this ends up working similiar to Alfred / TextMate searching method
         // TextMate takes into account camelcase while matching and is a little smarter, but you get the idea
         NSInteger score0 = [[search lowercaseString] compareWithWord:[[item fullName] lowercaseString] matchGain:10 missingCost:1];
@@ -2141,16 +2276,20 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
         NSInteger score4 = [[search lowercaseString] compareWithWord:[[item middleName] lowercaseString] matchGain:10 missingCost:1];
 
         NSInteger min = score0;
-        if (score1 < min) {
+        if (score1 < min)
+{
             min = score1;
         }
-        if (score2 < min) {
+        if (score2 < min)
+{
             min = score2;
         }
-        if (score3 < min) {
+        if (score3 < min)
+{
             min = score3;
         }
-        if (score4 < min) {
+        if (score4 < min)
+{
             min = score4;
         }
 
@@ -2158,7 +2297,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
     }
 
     // sort list
-    NSArray *res = [results sortedArrayUsingComparator: (NSComparator)^(id obj1, id obj2) {
+    NSArray *res = [results sortedArrayUsingComparator: (NSComparator)^(id obj1, id obj2)
+{
         return [[obj1 valueForKey:@"score"] compare:[obj2 valueForKey:@"score"]];
     }];
 
@@ -2168,13 +2308,16 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
     int i = 0;
     int contactIndex = 0;
 
-    while (i <= tries && contactIndex < [res count]) {
+    while (i <= tries && contactIndex < [res count])
+{
         c = [[res objectAtIndex:contactIndex] objectForKey:@"item"];
         contactIndex++;
-        for (int j=0;j<[[c phoneNumbers] count];j++) {
+        for (int j=0;j<[[c phoneNumbers] count];j++)
+{
             number = [(PBPhoneNumber *)[(PBLabeledValue *)[[c phoneNumbers] objectAtIndex:j] value] getStringRepresentationForTextSender];
             i++;
-            if (i == tries+1) {
+            if (i == tries+1)
+{
                 break;
             }
         }
@@ -2190,7 +2333,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 %hook PBWatch
 
 %new
-- (NSMutableDictionary *)getContactSearchResponse:(NSString *)name tries:(int)tries {
+- (NSMutableDictionary *)getContactSearchResponse:(NSString *)name tries:(int)tries
+{
     // NSLog(@"PEBBLESMS: getContactSearchResponse");
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
@@ -2198,7 +2342,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
     NSMutableDictionary *contactsInfo = [[%c(PBAddressBook) addressBook] searchContactsList:name tries:tries];
     PBContact *c = [contactInfo objectForKey:@"contact"];
     NSString *num = [contactInfo objectForKey:@"number"];
-    if (c != NULL && num != NULL && contactsInfo != NULL) {
+    if (c != NULL && num != NULL && contactsInfo != NULL)
+{
         // to maintain compatibility with old watchapp versions (<=v1.1)
         [dict setObject:[c fullName] forKey:CONTACT_NAME_KEY];
         [dict setObject:num forKey:CONTACT_NUMBER_KEY];
@@ -2212,20 +2357,24 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
         NSMutableArray *phones = [NSMutableArray array];
         NSMutableArray *ids = [NSMutableArray array];
 
-        for (int i=0; i<[contacts count]; i++) {
+        for (int i=0; i<[contacts count]; i++)
+{
             [names addObject:[[contacts objectAtIndex:i] fullName]];
         }
-        for (int i=0; i<[contacts count]; i++) {
+        for (int i=0; i<[contacts count]; i++)
+{
             [ids addObject:[NSNumber numberWithInt:[[[contacts objectAtIndex:i] recordId] intValue]]];
         }
-        for (int i=0; i<[numbers count]; i++) {
+        for (int i=0; i<[numbers count]; i++)
+{
             [phones addObject:[numbers objectAtIndex:i]];
         }
 
         [dict setObject:[names componentsJoinedByString:@"\n"] forKey:CONTACT_NAMES_KEY];
         [dict setObject:[phones componentsJoinedByString:@"\n"] forKey:CONTACT_NUMBERS_KEY];
         [dict setObject:[ids componentsJoinedByString:@"\n"] forKey:CONTACT_IDS_KEY];
-    } else {
+    } else
+{
         [dict setObject:@"No more contacts" forKey:CONTACT_NAME_KEY];
         [dict setObject:@"" forKey:CONTACT_NUMBER_KEY];
     }
@@ -2238,7 +2387,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 }
 
 %new
-- (NSMutableDictionary *)getFinalRecievedResponse {
+- (NSMutableDictionary *)getFinalRecievedResponse
+{
     // NSLog(@"PEBBLESMS: getFinalRecievedResponse");
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
@@ -2248,7 +2398,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 }
 
 %new
-- (NSMutableDictionary *)getSentResponse {
+- (NSMutableDictionary *)getSentResponse
+{
     // NSLog(@"PEBBLESMS: getSentResponse");
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
@@ -2259,7 +2410,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 }
 
 %new
-- (NSMutableDictionary *)getFailedResponse {
+- (NSMutableDictionary *)getFailedResponse
+{
     // NSLog(@"PEBBLESMS: getFailedResponse");
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
@@ -2270,7 +2422,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 }
 
 %new
-- (NSMutableDictionary *)getConnectionResponse {
+- (NSMutableDictionary *)getConnectionResponse
+{
     // NSLog(@"PEBBLESMS: getConnectionResponse");
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
@@ -2280,13 +2433,15 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 }
 
 %new
-- (NSMutableDictionary *)getRecentContactsResponse {
+- (NSMutableDictionary *)getRecentContactsResponse
+{
     // NSLog(@"PEBBLESMS: getRecentContactsResponse");
     loadRecentRecipients();
 
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
-    if ([names count] != 0 && [phones count] != 0) {
+    if ([names count] != 0 && [phones count] != 0)
+{
         [dict setObject:[names componentsJoinedByString:@"\n"] forKey:RECENT_CONTACTS_NAME_KEY];
         [dict setObject:[phones componentsJoinedByString:@"\n"] forKey:RECENT_CONTACTS_NUMBER_KEY];
         isRecentContact = YES;
@@ -2297,7 +2452,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 }
 
 %new
-- (NSMutableDictionary *)getPresets {
+- (NSMutableDictionary *)getPresets
+{
     // NSLog(@"PEBBLESMS: getPresets");
     loadPrefs();
 
@@ -2311,56 +2467,68 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
     return dict;
 }
 
-- (void)appMessagesPushUpdate:(id)fp8 onSent:(id)fp1001 uuid:(id)fp12 launcher:(id)fp16 {
+- (void)appMessagesPushUpdate:(id)fp8 onSent:(id)fp1001 uuid:(id)fp12 launcher:(id)fp16
+{
     // NSLog(@"PEBBLESMS: appMessagesPushUpdate");
     NSMutableDictionary *message = (NSMutableDictionary *)fp8;
     id isSMS = [message objectForKey:IS_PEBBLE_SMS_KEY];
-    if (isSMS != NULL && [isSMS intValue] == [[NSNumber numberWithInt:1] intValue]) {
+    if (isSMS != NULL && [isSMS intValue] == [[NSNumber numberWithInt:1] intValue])
+{
         NSMutableDictionary *response;
         BOOL initialized = NO;
         
         id connectionTest = [message objectForKey:CONNECTION_TEST_KEY];
-        if (connectionTest != NULL) {
+        if (connectionTest != NULL)
+{
             response = [self getConnectionResponse];
             initialized = YES;
         }
 
         id confirmation = [message objectForKey:MESSAGE_CONFIRMATION_KEY];
-        if (confirmation != NULL) {
+        if (confirmation != NULL)
+{
             // NSLog(@"PB sending confirmation %@", [message description]);
             %orig;
             return;
         }
 
         NSNumber *state = [message objectForKey:STATE_KEY];
-        if (state != NULL) {
-            if ([state intValue] == [GETTING_RECENT_CONTACTS_STATE intValue]) {
+        if (state != NULL)
+{
+            if ([state intValue] == [GETTING_RECENT_CONTACTS_STATE intValue])
+{
                 response = [self getRecentContactsResponse];
                 initialized = YES;
             }
             
-            if ([state intValue] == [GETTING_PRESETS_STATE intValue]) {
+            if ([state intValue] == [GETTING_PRESETS_STATE intValue])
+{
                 response = [self getPresets];
                 initialized = YES;
             }
             
-            if ([state intValue] == [CHECKING_CONTACT_STATE intValue]) {
+            if ([state intValue] == [CHECKING_CONTACT_STATE intValue])
+{
                 NSNumber *tries = [message objectForKey:ATTEMPT_NUMBER_KEY];
                 NSString *name = [message objectForKey:DICTATED_NAME_KEY];
-                if (tries != NULL && name != NULL) {
+                if (tries != NULL && name != NULL)
+{
                     response = [self getContactSearchResponse:name tries: [tries intValue]];
                     initialized = YES;
                 }
             }
             
-            if ([state intValue] == [SENDING_FINAL_MESSAGE_STATE intValue]) {
+            if ([state intValue] == [SENDING_FINAL_MESSAGE_STATE intValue])
+{
                 NSString *number = [message objectForKey:CONTACT_NUMBER_KEY];
                 NSString *m = [message objectForKey:FINAL_MESSAGE_KEY];
 
-                if (number != NULL && m != NULL) {
+                if (number != NULL && m != NULL)
+{
                     NSString *contactId = [message objectForKey:CONTACT_ID_KEY];
                     NSNumber *finalContactId = NULL;
-                    if (contactId != NULL && ![contactId isEqual:@""]) {
+                    if (contactId != NULL && ![contactId isEqual:@""])
+{
                         NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
                         f.numberStyle = NSNumberFormatterDecimalStyle;
                         finalContactId = [f numberFromString:contactId];
@@ -2369,9 +2537,11 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 
                     // NSLog(@"finalContactId %@", finalContactId);
 
-                    if (finalContactId != NULL) {
+                    if (finalContactId != NULL)
+{
                         [%c(PBWatch) sendSMS:finalContactId number:[%c(PBContact) phoneWithPrefix:number] withText:m];
-                    } else {
+                    } else
+{
                         [%c(PBWatch) sendSMS:currentContactId number:[%c(PBContact) phoneWithPrefix:number] withText:m];
                     }
                     response = [self getFinalRecievedResponse];
@@ -2380,28 +2550,34 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
             }
         }
 
-        if (initialized) {
+        if (initialized)
+{
             // NSLog(@"PEBBLESMS: %@", response);
             %orig(response, fp1001, fp12, fp16); 
-        } else {
+        } else
+{
             %orig;
         }
-    } else {
+    } else
+{
         %orig;
     }
 }
 
 %new
-+ (void)sendSMS:(NSNumber *)recordId number:(NSString *)number withText:(NSString *)text {
++ (void)sendSMS:(NSNumber *)recordId number:(NSString *)number withText:(NSString *)text
+{
     // NSLog(@"PEBBLESMS: sendSMS PBWatch");
     // launch messages
     // CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), (CFStringRef)messageNotificationString, nil, nil, YES);
 
     NSNumber *rId;
-    if (isRecentContact) {
+    if (isRecentContact)
+{
         PBContact *c = [[%c(PBAddressBook) addressBook] contactWithPrefixedPhoneNumber:number];
         rId = [NSNumber numberWithInt:[[c recordId] intValue]];
-    } else {
+    } else
+{
         rId = [NSNumber numberWithInt:[recordId intValue]];
     }
     NSNumber *r = [NSNumber numberWithBool:isRecentContact];
@@ -2448,7 +2624,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 
 %hook PBSMSSessionManager
 
-- (id)sendSMSSendRequestWithMessage:(id)fp8 account:(id)fp12 transactionID:(id)fp16 {
+- (id)sendSMSSendRequestWithMessage:(id)fp8 account:(id)fp12 transactionID:(id)fp16
+{
     // NSLog(@"PEBBLESMS: sendSMSSendRequestWithMessage");
     PBSMSMessage *message = (PBSMSMessage *)fp8;
     NSString *text = [message text];
@@ -2459,7 +2636,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 }
 
 %new
-+ (void)sendSMS:(NSNumber *)recordId number:(NSString *)number withText:(NSString *)text {
++ (void)sendSMS:(NSNumber *)recordId number:(NSString *)number withText:(NSString *)text
+{
     // NSLog(@"PEBBLESMS: sendSMS PBSMSSessionManager");
     // launch messages
     // CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), (CFStringRef)messageNotificationString, nil, nil, YES);
@@ -2508,15 +2686,18 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 
 %hook PBAppDelegate
 
-- (void)applicationDidBecomeActive:(id)fp8 {
+- (void)applicationDidBecomeActive:(id)fp8
+{
     %orig;
 
-    if ([%c(PBAddressBookAuthorizationManager) authorizationStatus] == kABAuthorizationStatusNotDetermined) {
+    if ([%c(PBAddressBookAuthorizationManager) authorizationStatus] == kABAuthorizationStatusNotDetermined)
+{
         [%c(PBAddressBookAuthorizationManager) requestAuthorizationWithCompletion:^(BOOL granted,CFErrorRef error){}];
     }
 }
 
-- (BOOL)application:(id)arg1 didFinishLaunchingWithOptions:(id)arg2 {
+- (BOOL)application:(id)arg1 didFinishLaunchingWithOptions:(id)arg2
+{
 
     // NSLog(@"PB pebble got launched");
 
@@ -2530,7 +2711,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
     return s;
 }
 
-- (void)applicationWillTerminate:(id)fp8 {
+- (void)applicationWillTerminate:(id)fp8
+{
     // relaunch self
     %orig;
 
@@ -2542,22 +2724,26 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 }
 
 %new
-- (void)sentCallbackWithNotification:(NSNotification *)myNotification {
+- (void)sentCallbackWithNotification:(NSNotification *)myNotification
+{
     // NSLog(@"PB handleSendNotification %@", [[%c(PBPebbleCentral) defaultCentral] class]);
     // NSLog(@"PEBBLESMS: sentCallbackWithNotification");
     PBPebbleCentral *central = [%c(PBPebbleCentral) defaultCentral];
-    for (int i=0; i<[[central connectedWatches] count]; i++) {
+    for (int i=0; i<[[central connectedWatches] count]; i++)
+{
         PBWatch *watch = [[central connectedWatches] objectAtIndex:i];
         [watch appMessagesPushUpdate:[watch getSentResponse] onSent:^(PBWatch *watch, NSDictionary *update, NSError *error){} uuid:appUUID launcher:NULL];
     }
 }
 
 %new
-- (void)failedCallbackWithNotification:(NSNotification *)myNotification {
+- (void)failedCallbackWithNotification:(NSNotification *)myNotification
+{
     // NSLog(@"PEBBLESMS: failedCallbackWithNotification");
     // NSLog(@"PB handleFailedNotification %@", [[%c(PBPebbleCentral) defaultCentral] class]);
     PBPebbleCentral *central = [%c(PBPebbleCentral) defaultCentral];
-    for (int i=0; i<[[central connectedWatches] count]; i++) {
+    for (int i=0; i<[[central connectedWatches] count]; i++)
+{
         PBWatch *watch = [[central connectedWatches] objectAtIndex:i];
         [watch appMessagesPushUpdate:[watch getFailedResponse] onSent:^(PBWatch *watch, NSDictionary *update, NSError *error){} uuid:appUUID launcher:NULL];
     }
@@ -2568,18 +2754,22 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 
 %hook PBCannedResponseManager
 
-- (id)cannedResponsesForAppIdentifier:(id)fp8 { 
+- (id)cannedResponsesForAppIdentifier:(id)fp8
+{ 
     // NSLog(@"PEBBLESMS: cannedResponsesForAppIdentifier %@", fp8);
     id r = %orig;
-    if ([(NSString *)fp8 isEqualToString:@"com.apple.MobileSMS"]) {
+    if ([(NSString *)fp8 isEqualToString:@"com.apple.MobileSMS"])
+{
         [presets removeAllObjects];
         [presets addObjectsFromArray:(NSArray *)r];
     }
     return r; 
 }
-- (void)setCannedResponses:(id)fp8 forAppIdentifier:(id)fp12 {
+- (void)setCannedResponses:(id)fp8 forAppIdentifier:(id)fp12
+{
     // NSLog(@"PEBBLESMS: setCannedResponses %@", fp12);
-    if ([(NSString *)fp12 isEqualToString:@"com.apple.MobileSMS"]) {
+    if ([(NSString *)fp12 isEqualToString:@"com.apple.MobileSMS"])
+{
         [presets removeAllObjects];
         [presets addObjectsFromArray:(NSArray *)fp8];
     }
@@ -2590,11 +2780,13 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 
 %hook PBSendSMSActionHandler
 
-- (void)handleActionWithActionIdentifier:(unsigned char)fp8 attributes:(id)fp12 {
+- (void)handleActionWithActionIdentifier:(unsigned char)fp8 attributes:(id)fp12
+{
     // NSLog(@"PEBBLESMS: handleActionWithActionIdentifier");
     %log;
 
-    if (fp8 == 2) {
+    if (fp8 == 2)
+{
         // NSLog(@"HANDLING");
         NSData *d = [(PBTimelineItemAttributeBlob *)[(NSArray *)fp12 objectAtIndex:0] content];
         NSString *reply = [[NSString alloc] initWithData:d encoding:NSUTF8StringEncoding];
@@ -2608,7 +2800,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
         [(PBANCSActionHandler *)[self delegate] notificationHandler:self didSendResponse:15 withAttributes:@[attr] actions:NULL];
         [%c(PBSMSSessionManager) sendSMS:[contact recordId] number:phone withText:reply];
         [reply release];
-    } else {
+    } else
+{
         %orig; 
     }
 }
@@ -2617,9 +2810,11 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 
 %hook PBSendTextAppActionHandler
 
--(void)handleAction:(unsigned char)arg1 forItemIdentifier:(id)arg2 attributes:(id)arg3 {
+-(void)handleAction:(unsigned char)arg1 forItemIdentifier:(id)arg2 attributes:(id)arg3
+{
     // %log;
-    if (arg1 == 2) {
+    if (arg1 == 2)
+{
         NSData *responseData = [(PBTimelineItemAttributeBlob *)[self responseFromAttributes:arg3] content];
         NSData *phoneData = [(PBTimelineItemAttributeBlob *)[self phoneNumberFromAttributes:arg3] content];
 
@@ -2630,20 +2825,24 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
         PBContact *contact = [[%c(PBAddressBook) addressBook] contactWithPhoneNumber:pbPhone];
 
         PBContact *finalContact;
-        if (contact == NULL) {
+        if (contact == NULL)
+{
             NSString *prefixedPhone = [%c(PBContact) phoneWithPrefix:phone];
             finalContact = [[%c(PBAddressBook) addressBook] contactWithPrefixedPhoneNumber:prefixedPhone];
-        } else {
+        } else
+{
             finalContact = contact;
         }
 
-        if (finalContact != NULL) {
+        if (finalContact != NULL)
+{
             PBTimelineAttributeContentLocalizedString *localString = [[%c(PBTimelineAttributeContentLocalizedString) alloc] initWithLocalizationKey:@"Sending..."];
             PBTimelineAttribute *attr = [%c(PBTimelineAttribute) attributeWithType:@"subtitle" content:localString];
             [(PBTimelineActionsWatchService *)[self delegate] sendTextAppActionHandler:self didSendResponse:0 withAttributes:@[attr] forItemIdentifier:arg2];
             [%c(PBSMSSessionManager) sendSMS:[finalContact recordId] number:phone withText:response];
             [localString release];
-        } else {
+        } else
+{
             NSString *message = [NSString stringWithFormat:@"Sending failed to %@", phone];
             PBTimelineAttribute *attr = [%c(PBTimelineAttribute) attributeWithType:@"subtitle" content:message];
             [(PBTimelineActionsWatchService *)[self delegate] sendTextAppActionHandler:self didSendResponse:0 withAttributes:@[attr] forItemIdentifier:arg2];
@@ -2653,7 +2852,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
         [response release];
         [phone release];
         [pbPhone release];
-    } else {
+    } else
+{
         %orig; 
     }
 }
@@ -2663,7 +2863,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 // THIS PART IS FOR ACTIONABLE NOTIFICATIONS
 
 %hook PBSMSReplyManager
--(NSSet *)smsApps {
+-(NSSet *)smsApps
+{
 	// %log;
 	NSSet *r = %orig;
 	NSMutableSet *set = [NSMutableSet setWithCapacity:3];
@@ -2672,25 +2873,27 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 	// NSLog(@"set %@", set);
 	return set;
 }
--(NSSet *)ancsReplyEnabledApps {
+-(NSSet *)ancsReplyEnabledApps
+{
 	// %log;
 	NSSet *r = %orig;
 	NSMutableSet *set = [NSMutableSet setWithCapacity:3];
 	[set setSet:r];
 	[set addObjectsFromArray:appsArray];
-	// NSLog(@"set %@", set);
 	return set;
 }
 %end
 
 %hook PBCannedResponseManager
--(id)defaultResponsesForAppIdentifier:(id)arg1 {
-	// %log;
-
+-(id)defaultResponsesForAppIdentifier:(id)arg1
+{
 	NSArray *enabledApps = [NSArray arrayWithObjects:@"com.apple.MobileSMS", @"com.apple.mobilephone", @"com.pebble.sendText", nil];
-	if ([enabledApps containsObject:(NSString *)arg1]) {
+	if ([enabledApps containsObject:(NSString *)arg1])
+	{
 		return %orig;
-	} else {
+	}
+	else
+	{
 		return [NSMutableArray array];
 	}
 }
@@ -2698,48 +2901,27 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 
 %hook PBANCSActionHandler
 
--(NSDictionary *)actionHandlersByAppIdentifier {
-	// %log;
+-(NSDictionary *)actionHandlersByAppIdentifier
+{
 	NSDictionary * r = %orig;
-	NSLog(@" = %@", r); 
 	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:r];
-	NSLog(@" = %@", dict); 
 
-	for (NSString *app in appsArray) {
+	for (NSString *app in appsArray)
+	{
 		[dict setObject:[%c(PBANCSActionHandler) actionHandlerWithDelegate:self] forKey:app];
 	}
-	NSLog(@" = %@", dict); 
-	// NSLog(@" = %@", dict); 
+
 	return dict; 
 }
 
--(void)handleInvokeANCSActionMessage:(id)arg1 {
-	// %log;
-	// NSLog(@"%@ %@", arg1, [arg1 class]);
-
+-(void)handleInvokeANCSActionMessage:(id)arg1
+{
 	PBTimelineInvokeANCSActionMessage *m = (PBTimelineInvokeANCSActionMessage *)arg1;
-	// NSLog(@"%@", [m notificationSender]);
-	// NSLog(@"%@", [m notificationSubtitle]);
-	// NSLog(@"%@", [m notificationBody]);
-	// NSLog(@"%hhu", [m actionID]);
-	// NSLog(@"%@", [m actionTitle]);
-	// NSLog(@"%@", [m appIdentifier]);
-	// May 29 18:11:08 svaughans-iPhone PebbleTime[6448] <Warning>: (null)
-	// May 29 18:11:08 svaughans-iPhone PebbleTime[6448] <Warning>: (null)
-	// May 29 18:11:08 svaughans-iPhone PebbleTime[6448] <Warning>: John Vaughan: test
-	// May 29 18:11:08 svaughans-iPhone PebbleTime[6448] <Warning>: 4
-	// May 29 18:11:08 svaughans-iPhone PebbleTime[6448] <Warning>: (null)
-	// May 29 18:11:08 svaughans-iPhone PebbleTime[6448] <Warning>: com.facebook.Messenger
-	// May 29 18:11:08 svaughans-iPhone PebbleTime[6448] <Warning>: Facebook MESSENGER!
-	// [m ANCSIdentifier] 89DBCEFE-8697-4CB7-AA43-5C15185F294C
-	if ([m actionID] == HAS_ACTIONS_IDENTIFIER) {
-		// NSLog(@"Custom app!");
+	if ([m actionID] == HAS_ACTIONS_IDENTIFIER)
+{
 		loadNotificationActions();
 
-	    // NSLog(@"Notification actions dictionary %@", notificationActionsDictionary);
-
 	    NSMutableDictionary *dict = [notificationActionsDictionary objectForKey:[m appIdentifier]];
-	    // NSLog(@"%@", dict);
 
 	    NSMutableArray *actions = [NSMutableArray array];
 		
@@ -2748,26 +2930,26 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 
 		[actions addObject:[[[%c(PBTimelineAction) alloc] initWithIdentifier:@(DISMISS_IDENTIFIER) type:@"ANCSResponse" attributes:@[ a1, a2 ]] autorelease]];
 
-	    if (dict) {
+	    if (dict)
+	   
+{
 		   	NSArray *arr = [dict allKeys];
-		   	if ([arr count] > 0) {
-		   		// NSLog(@"Has arr %@", arr);
-
+		   	if ([arr count] > 0)
+		   	{
 		   		NSString *bulletinID = [arr objectAtIndex:0];
 		   		NSDictionary *bulletinDict = [dict objectForKey:bulletinID];
 
-		   		if (bulletinDict) {
-		   			// NSLog(@"Has bulletinDict %@", bulletinDict);
+		   		if (bulletinDict)
+		   		{
 		   			NSDictionary *actionsDict = [bulletinDict objectForKey:@"actions"];
 
-		   			if (actionsDict) {
-		   				// NSLog(@"Has actionsDict %@", actionsDict);
+		   			if (actionsDict)
+		   			{
 		   				NSArray *actionsArr = [actionsDict allKeys];
-			   			if (actionsArr) {
-			   				// NSLog(@"Has actionsArr %@", actionsArr);
-			   				for (NSString *actionName in actionsArr) {
-			   					// NSLog(@"Has final action %@", actionName);
-
+			   			if (actionsArr)
+			   			{
+			   				for (NSString *actionName in actionsArr)
+			   				{
 								PBTimelineAttribute *attr1 = [[[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:actionName specificType:0] autorelease];
 								PBTimelineAttribute *attr2 = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"" specificType:0] autorelease];
 
@@ -2778,7 +2960,6 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 								[actionsToPerformDictionary setObject:actionToPerform forKey:@(currentNumber)];
 
 								currentNumber = currentNumber + 1;
-								// NSLog(@"At currentNumber %@", @(currentNumber));
 			   				}
 						}
 					}
@@ -2792,36 +2973,36 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 		PBTimelineAttribute *attr2 = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action" specificType:0] autorelease];
 		[self sendResponse:16 withAttributes:@[ attr1, attr2 ] actions:actions forItemIdentifier:[m ANCSIdentifier]];
 		return;
-	} else if ([m actionID] == DISMISS_IDENTIFIER) {
-		NSLog(@"DISMISSED 2");
+	}
+	else if ([m actionID] == DISMISS_IDENTIFIER)
+	{
 		PBTimelineAttribute *attr = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Dismissed" specificType:0] autorelease];
 		[self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
 		return;
-	} else if ([m actionID] > DISMISS_IDENTIFIER) {
-		NSLog(@"Custom action");
+	}
+	else if ([m actionID] > DISMISS_IDENTIFIER)
+	{
 		NSDictionary *actionToPerformDict = [actionsToPerformDictionary objectForKey:@([m actionID])];
-		// NSLog(@"actionToPerform %@", actionToPerformDict);
 
 		NSString *actionID = [actionToPerformDict objectForKey:@"actionIdentifier"];
 		NSString *bulletinID = [actionToPerformDict objectForKey:@"bulletinIdentifier"];
 
-		if (actionID && bulletinID) {
-			NSLog(@"PERFORM COMMAND %@ %@", actionID, bulletinID);
+		if (actionID && bulletinID)
+		{
 			[%c(PBANCSActionHandler) performAction:actionID forBulletinID:bulletinID];
 		}
 
-		// NSLog(@"MESSENGER 2");
 		PBTimelineAttribute *attr = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action done" specificType:0] autorelease];
 		[self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
 		return;
 	}
 
-	NSLog(@"Original action");
 	%orig; 
 }
 
 %new
-+ (void)performAction:(NSString *)actionID forBulletinID:(NSString *)bulletinID {
++ (void)performAction:(NSString *)actionID forBulletinID:(NSString *)bulletinID
+{
 	saveActionToPerform(actionID, bulletinID);
 
     CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
@@ -2853,30 +3034,24 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 
 %hook PBNotificationSource
 
-+(id)notificationSourceWithAppIdentifier:(id)arg1 flags:(unsigned)arg2 version:(unsigned short)arg3 attributes:(id)arg4 actions:(id)arg5 {
-	// %log;
-	// NSMutableArray *actions = [NSMutableArray array];
-	// NSLog(@"App identifier %@", arg1);
-	// NSLog(@"Has custom actions");
++(id)notificationSourceWithAppIdentifier:(id)arg1 flags:(unsigned)arg2 version:(unsigned short)arg3 attributes:(id)arg4 actions:(id)arg5
+{
 	NSArray *enabledApps = [NSArray arrayWithObjects:@"com.apple.MobileSMS", @"com.apple.mobilephone", @"com.pebble.sendText", nil];
-	if ([enabledApps containsObject:(NSString *)arg1]) {
+	if ([enabledApps containsObject:(NSString *)arg1])
+{
 		return %orig;
 	}
 
 	NSString *appID = (NSString *)arg1;
-	if (![appsArray containsObject:appID]) {
+	if (![appsArray containsObject:appID])
+{
 		[appsArray addObject:appID];
-		// NSLog(@"Added app %@", appID);
 	}
 
 	PBTimelineAttribute *attr1 = [[[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:@"Action" specificType:0] autorelease];
-	// PBTimelineAttribute *attr2 = [[[%c(PBTimelineAttribute) alloc] initWithType:@"emojiSupported" content:@(YES) specificType:[attr specificType]] autorelease];
-	// // PBTimelineAttribute *attr3 = [[[%c(PBTimelineAttribute) alloc] initWithType:[attr type] content:@"Reply2" specificType:[attr specificType]] autorelease];
 	PBTimelineAction *b = [[[%c(PBTimelineAction) alloc] initWithIdentifier:@(HAS_ACTIONS_IDENTIFIER) type:@"ANCSResponse" attributes:@[ attr1 ]] autorelease];
 	id r = %orig(arg1, arg2, arg3, arg4, @[ b ]);
-	// NSLog(@"PBSMSOVERRIDEN");
-	// NSLog(@"%@", b); 
-	// NSLog(@" = %@", r);
+
 	return r;
 }
 
@@ -2884,46 +3059,16 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID) {
 
 %end
 
-@interface BBServer : NSObject
-- (void)deliverResponse:(id)arg1;
-- (void)observer:(id)arg1 handleResponse:(id)arg2;
-@end
-
-// @interface BBResponse : NSObject
-// - (id)actionID;
-// - (id)replyText;
-// - (void)send;
-// - (id /* block */)sendBlock;
-// @end
-
-// %hook BBServer
-// - (void)deliverResponse:(id)arg1 { %log; return %orig; }
-// - (void)observer:(id)arg1 handleResponse:(id)arg2 { %log; return %orig; }
-// %end
-
-// %hook BBResponse
-// // - (id)actionID { %log; id r = %orig; NSLog(@"= %@", r); return r; }
-// // - (id)replyText { %log; id r = %orig; NSLog(@"= %@", r); NSLog(@"OVERRIDEN HELLO"); return @"HELLO"; }
-// - (void)send { %log; %orig; }
-// // - (id /* block */)sendBlock { %log; id r = %orig; NSLog(@"= %@", r); return r; }
-// %end
-
-// %hook BBObserver
-// - (void)noteServerReceivedResponseForBulletin:(id)arg1 { %log; return %orig; }
-// - (void)sendResponse:(id)arg1 { %log; return %orig; }
-// - (id)init { %log; id r = %orig; NSLog(@"= %@", r); return r; }
-// - (id)initWithQueue:(id)arg1 { %log; id r = %orig; NSLog(@"= %@", r); return r; }
-// - (id)initWithQueue:(id)arg1 asGateway:(id)arg2 priority:(unsigned int)arg3 { %log; id r = %orig; NSLog(@"= %@", r); return r; }
-// - (id)initWithQueue:(id)arg1 forGateway:(id)arg2 { %log; id r = %orig; NSLog(@"= %@", r); return r; }
-// - (void)updateBulletin:(id)arg1 forFeeds:(unsigned int)arg2 withReply:(id /* block */)arg3 { %log; %orig; }
-// %end
-
-%ctor {
-    if ([%c(PBAppDelegate) class]) {
+%ctor
+{
+    if ([%c(PBAppDelegate) class])
+{
         %init(PebbleMain);
-    } else if ([%c(SpringBoard) class]) {
+    } else if ([%c(SpringBoard) class])
+{
         %init(SpringboardHooks);
-    } else if ([%c(SMSApplication) class]) {
+    } else if ([%c(SMSApplication) class])
+{
         %init(MobileSMSHooks);
     }
     %init;

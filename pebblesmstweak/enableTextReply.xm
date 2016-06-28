@@ -123,7 +123,8 @@
 
 %hook PBLinkedAccountExtendedCredentials
 
-- (id)accountData {
+- (id)accountData
+{
 	// %log;
 	return @"JWE:TESTEST";
 }
@@ -132,37 +133,45 @@
 
 %hook PBSMSReplyManager
 
-- (id)SMSProviders {
+- (id)SMSProviders
+{
 	// %log;
 	return [NSSet setWithArray:@[[NSNumber numberWithInt:1]]];
 }
 
-- (void)setHasLinkedSMSAccount:(BOOL)fp8 {
+- (void)setHasLinkedSMSAccount:(BOOL)fp8
+{
 	// %log;
 	%orig(YES);
 }
 
-- (BOOL)hasLinkedSMSAccount {
+- (BOOL)hasLinkedSMSAccount
+{
 	// %log;
 	return YES;
 }
-- (unsigned char)linkedSMSProvider {
+- (unsigned char)linkedSMSProvider
+{
 	// %log;
 	return 1;
 }
-- (void)disableSMSActions {
+- (void)disableSMSActions
+{
 	// %log;
 	[self enableSMSActions];
 }
-- (BOOL)isCarrierProviderEnabled {
+- (BOOL)isCarrierProviderEnabled
+{
 	// %log;
 	return YES;
 }
-- (void)setSMSActionsEnabled:(BOOL)fp8 {
+- (void)setSMSActionsEnabled:(BOOL)fp8
+{
 	// %log;
 	%orig(YES);
 }
-- (unsigned char)providerFromCarrier {
+- (unsigned char)providerFromCarrier
+{
 	// %log;
 	return 1;
 }
@@ -170,22 +179,26 @@
 
 %hook PBLinkedAccount
 
-- (unsigned char)provider {
+- (unsigned char)provider
+{
 	// %log;
 	return 1;
 }
 
-- (id)uuid {
+- (id)uuid
+{
 	// %log;
 	return [NSUUID UUID];
 }
 
-- (BOOL)isAccountExpired {
+- (BOOL)isAccountExpired
+{
 	// %log;
 	return NO;
 }
 
--(BOOL)isExpired {
+-(BOOL)isExpired
+{
 	// %log;
 	return NO;
 }
@@ -194,14 +207,16 @@
 
 %hook PBLinkedAccountCredentials
 
-- (id)expiration {
+- (id)expiration
+{
 	// %log;
 	NSTimeInterval t = 36000;
 	NSDate *d = [NSDate dateWithTimeIntervalSinceNow:t];
 	return d;
 }
 
-- (id)apiData {
+- (id)apiData
+{
 	// %log;
 	return @"JWE:test";
 }
@@ -210,32 +225,38 @@
 
 %hook PBLinkedAccountsManager
 
-+ (id) providerToString:(unsigned char)arg {
++ (id) providerToString:(unsigned char)arg
+{
 	// %log;
 	return @"vzw";
 }
 
-+ (unsigned char) stringToProvider:(id)arg {
++ (unsigned char) stringToProvider:(id)arg
+{
 	// %log;
 	return 1;
 }
 
-- (BOOL) hasLinkedAccountForProvider:(unsigned char)arg {
+- (BOOL) hasLinkedAccountForProvider:(unsigned char)arg
+{
 	// %log;
 	return YES;
 }
 
-- (BOOL) isProviderEnabled:(unsigned char)arg {
+- (BOOL) isProviderEnabled:(unsigned char)arg
+{
 	// %log;
 	return YES;
 }
 
-- (id) enabledProviders {
+- (id) enabledProviders
+{
 	// %log;
 	return [NSSet setWithArray:@[[NSNumber numberWithInt:1]]];
 }
 
--(BOOL)hasLinkedAccountForApp:(id)arg1 {
+-(BOOL)hasLinkedAccountForApp:(id)arg1
+{
 	// %log;
 	return YES;
 }
@@ -244,10 +265,14 @@
 
 %hook PBTimelineAttribute
 
-- (id)content {
-    if ([[self type] isEqual:@"emojiSupported"]) {
+- (id)content
+{
+    if ([[self type] isEqual:@"emojiSupported"])
+	{
         return [NSNumber numberWithBool:YES];
-    } else {
+    }
+    else
+	{
         return %orig;
     }
 }
@@ -256,8 +281,10 @@
 
 %end
 
-%ctor {
-    if ([%c(PBAppDelegate) class]) {
+%ctor
+{
+    if ([%c(PBAppDelegate) class])
+	{
         %init(PebbleTextReply);
     }
 }

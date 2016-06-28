@@ -1,5 +1,6 @@
 {
-    entry = {
+    entry =
+		{
 		bundle = pebblesmstweak;
 		cell = PSLinkCell;
 		detail = PebbleSMSTweakListController;
