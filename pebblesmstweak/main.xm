@@ -2937,6 +2937,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 			   			{
 			   				for (NSDictionary *actionInfo in actionsArr)
 			   				{
+			   					NSLog(@"actionInfo %@", actionInfo);
 			   					NSString *actionName = actionInfo[@"actionIdentifier"];
 			   					BOOL isQuickReply = [(NSNumber *)actionInfo[@"isQuickReply"] boolValue];
 
@@ -2978,6 +2979,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 	{
 		NSDictionary *actionToPerformDict = [actionsToPerformDictionary objectForKey:@([m actionID])];
 
+		NSLog(@"actionToPerformDict %@", actionToPerformDict);
 		NSString *actionID = [actionToPerformDict objectForKey:@"actionIdentifier"];
 		NSString *bulletinID = [actionToPerformDict objectForKey:@"bulletinIdentifier"];
 		BOOL isQuickReply = [(NSNumber *)actionToPerformDict[@"isQuickReply"] boolValue];
