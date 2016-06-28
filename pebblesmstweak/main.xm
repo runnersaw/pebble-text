@@ -2904,7 +2904,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 -(void)handleInvokeANCSActionMessage:(id)arg1
 {
 	PBTimelineInvokeANCSActionMessage *m = (PBTimelineInvokeANCSActionMessage *)arg1;
-	NSLog(@"%@", m);
+	NSLog(@"%@ %@ %@", m, @( [m actionID] ), @( [m appIdentifier]));
 	if ([m actionID] == HAS_ACTIONS_IDENTIFIER)
 	{
 		loadNotificationActions();
@@ -2981,22 +2981,30 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 		NSLog(@"actionToPerformDict %@", actionToPerformDict);
 		NSString *actionID = [actionToPerformDict objectForKey:@"actionIdentifier"];
 		NSString *bulletinID = [actionToPerformDict objectForKey:@"bulletinIdentifier"];
-		BOOL isQuickReply = [(NSNumber *)actionToPerformDict[@"isQuickReply"] boolValue];
+		BOOL isComposeAction = [(NSNumber *)actionToPerformDict[@"isComposeAction"] boolValue];
 
 		if (actionID && bulletinID)
 		{
-			if (!isQuickReply)
+			if (isComposeAction)
+			{
+				PBTimelineAttribute *attr = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Reply" specificType:0] autorelease];
+				[self sendResponse:21 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
+				return;
+			}
+			else if (isReplyAction)
 			{
 				[%c(PBANCSActionHandler) performAction:actionID forBulletinID:bulletinID];
 
-				PBTimelineAttribute *attr = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action done" specificType:0] autorelease];
+				PBTimelineAttribute *attr = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Reply sent" specificType:0] autorelease];
 				[self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
 				return;
 			}
 			else
 			{
-				PBTimelineAttribute *attr = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Reply" specificType:0] autorelease];
-				[self sendResponse:21 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
+				[%c(PBANCSActionHandler) performAction:actionID forBulletinID:bulletinID];
+
+				PBTimelineAttribute *attr = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action done" specificType:0] autorelease];
+				[self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
 				return;
 			}
 		}
