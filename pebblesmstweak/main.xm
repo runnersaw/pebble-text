@@ -1595,7 +1595,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 						{
 							NSLog(@"%@", response);
     						NSString *appIdentifier = [bulletin sectionID];
-							if ([appIdentifier isEqualToString:@"com.atebits.Tweetie2"] && [actionID isEqualToString:@"reply")
+							if ([appIdentifier isEqualToString:@"com.atebits.Tweetie2"] && [actionID isEqualToString:@"reply"])
 							{
 								NSDictionary *dict = @{ UIUserNotificationActionResponseTypedTextKey : @"Pebble reply" };
 								NSDictionary *finalDict = @{ @"userResponseInfo" : dict };
