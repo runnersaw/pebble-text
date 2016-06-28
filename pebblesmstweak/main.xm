@@ -342,11 +342,29 @@
 
 @interface BBResponse : NSObject
 - (id)actionID;
-- (id)replyText;
 - (int)actionType;
-- (NSDictionary *)context;
+- (BOOL)activated;
+- (id)bulletinID;
+- (id)buttonID;
+- (id)context;
+- (void)dealloc;
+- (void)encodeWithCoder:(id)arg1;
+- (id)initWithCoder:(id)arg1;
+- (id)lifeAssertions;
+- (id)originID;
+- (id)replyText;
 - (void)send;
 - (id /* block */)sendBlock;
+- (void)setActionID:(id)arg1;
+- (void)setActionType:(int)arg1;
+- (void)setActivated:(BOOL)arg1;
+- (void)setBulletinID:(id)arg1;
+- (void)setButtonID:(id)arg1;
+- (void)setContext:(id)arg1;
+- (void)setLifeAssertions:(id)arg1;
+- (void)setOriginID:(id)arg1;
+- (void)setReplyText:(id)arg1;
+- (void)setSendBlock:(id /* block */)arg1;
 @end
 
 @interface BBAppearance : NSObject
@@ -1576,7 +1594,13 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 						if (response)
 						{
 							NSLog(@"%@", response);
-							[response send];
+    						NSString *appIdentifier = [bulletin sectionID];
+							if ([appIdentifier isEqualToString:@"com.atebits.Tweetie2"] && [actionID isEqualToString:@"reply")
+							{
+								NSDictionary *dict = @{ UIUserNotificationActionResponseTypedTextKey : @"Pebble reply" };
+								NSDictionary *finalDict = @{ @"userResponseInfo" : dict };
+								[response setContext:finalDict];
+							}
 							// removeActionToPerform(actionID, bulletinID);
 
 							SBBulletinBannerController *bannerController = [%c(SBBulletinBannerController) sharedInstance];
@@ -1619,27 +1643,6 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
         saveNotificationAction([%c(BBBulletin) bulletinWithBulletin:(BBBulletin *)r]);
     }
     return r; 
-}
-
-%end
-
-%hook BBObserver
-
-- (void)sendResponse:(id)arg1
-{
-	%log;
-	NSLog(@"sendResponse %@", arg1);
-// 	@interface BBResponse : NSObject
-// - (id)actionID;
-// - (id)replyText;
-// - (int)actionType;
-// - (NSDictionary *)context;
-// - (void)send;
-// - (id /* block */)sendBlock;
-// @end
-	BBResponse *response = (BBResponse *)arg1;
-	NSLog(@"%@ %@ %@ %d", [response actionID], [response replyText], [response context], [response actionType]);
-	%orig;
 }
 
 %end
