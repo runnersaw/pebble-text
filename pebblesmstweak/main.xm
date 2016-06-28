@@ -2773,7 +2773,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 - (void)handleActionWithActionIdentifier:(unsigned char)fp8 attributes:(id)fp12
 {
-	NSLog(@"handleActionWithActionIdentifier %@ %@", @( fp8 ), fp12);
+	NSLog(@"PBSendSMSActionHandler handleActionWithActionIdentifier %@ %@", @( fp8 ), fp12);
     if (fp8 == 2)
 	{
         // NSLog(@"HANDLING");
@@ -2904,6 +2904,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 	return dict; 
 }
 -(void)handleActionWithActionIdentifier:(unsigned char)arg1 attributes:(id)arg2{
+	NSLog(@"PBANCSActionHandler");
 	%log;
 	%orig;
 }
