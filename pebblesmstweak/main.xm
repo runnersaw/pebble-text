@@ -2013,7 +2013,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 -(id)timelineWatchService{
 	%log;
 	id r = %orig;
-	NSLog(@"%@r");
+	NSLog(@"%@",r);
 	return r;
 }
 -(void)ANCSActionHandler:(id)arg1 didSendResponse:(unsigned char)arg2 withAttributes:(id)arg3 actions:(id)arg4 forItemIdentifier:(id)arg5{
@@ -2023,13 +2023,13 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 -(id)timelineManager{
 	%log;
 	id r = %orig;
-	NSLog(@"%@r");
+	NSLog(@"%@",r);
 	return r;
 }
 -(id)initWithWatch:(id)arg1 watchServicesSet:(id)arg2 timelineManager:(id)arg3 currentUserLockerAppManager:(id)arg4{
 	%log;
 	id r = %orig;
-	NSLog(@"%@r");
+	NSLog(@"%@",r);
 	return r;
 }
 -(void)sendTextAppActionHandler:(id)arg1 didSendResponse:(unsigned char)arg2 withAttributes:(id)arg3 forItemIdentifier:(id)arg4{
@@ -2047,13 +2047,13 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 -(id)invokeActionHandler{
 	%log;
 	id r = %orig;
-	NSLog(@"%@r");
+	NSLog(@"%@",r);
 	return r;
 }
 -(id)ANCSActionHandler{
 	%log;
 	id r = %orig;
-	NSLog(@"%@r");
+	NSLog(@"%@",r);
 	return r;
 }
 -(void)handleANCSActionForInvokeActionMessage:(id)arg1{
@@ -2067,13 +2067,13 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 -(id)notificationHandler{
 	%log;
 	id r = %orig;
-	NSLog(@"%@r");
+	NSLog(@"%@",r);
 	return r;
 }
 -(id)sendTextAppActionHandler{
 	%log;
 	id r = %orig;
-	NSLog(@"%@r");
+	NSLog(@"%@",r);
 	return r;
 }
 -(void)handleActionForItem:(id)arg1 actionIdentifier:(unsigned char)arg2 attributes:(id)arg3{
@@ -2095,7 +2095,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 -(id)subtitleAttributeForLocalizedString:(id)arg1{
 	%log;
 	id r = %orig;
-	NSLog(@"%@r");
+	NSLog(@"%@",r);
 	return r;
 }
 -(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 subtitle:(id)arg3 icon:(id)arg4{
@@ -2109,13 +2109,13 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 -(NSString *)accountUserID{
 	%log;
 	id r = %orig;
-	NSLog(@"%@r");
+	NSLog(@"%@",r);
 	return r;
 }
 -(id)httpActionSessionManager{
 	%log;
 	id r = %orig;
-	NSLog(@"%@r");
+	NSLog(@"%@",r);
 	return r;
 }
 -(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 subtitle:(id)arg3 icon:(id)arg4 specificType:(long long)arg5{
