@@ -1890,17 +1890,6 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     return s;
 }
 
-- (void)applicationWillTerminate:(id)fp8 {
-    // relaunch self
-    %orig;
-
-    // NSLog(@"PB going to terminate, launch myself again pls. ");
-
-    // CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
-    // rocketbootstrap_distributedmessagingcenter_apply(c);
-    // [c sendMessageName:openPebbleCommand userInfo:NULL];
-}
-
 %new
 - (void)sentCallbackWithNotification:(NSNotification *)myNotification {
     // NSLog(@"PB handleSendNotification %@", [[%c(PBPebbleCentral) defaultCentral] class]);
@@ -1929,7 +1918,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 %hook PBCannedResponseManager
 
 - (id)cannedResponsesForAppIdentifier:(id)fp8 { 
-    // NSLog(@"PEBBLESMS: cannedResponsesForAppIdentifier %@", fp8);
+    NSLog(@"PEBBLESMS: cannedResponsesForAppIdentifier %@", fp8);
     id r = %orig;
     if ([(NSString *)fp8 isEqualToString:@"com.apple.MobileSMS"]) {
         [presets removeAllObjects];
@@ -1938,7 +1927,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     return r; 
 }
 - (void)setCannedResponses:(id)fp8 forAppIdentifier:(id)fp12 {
-    // NSLog(@"PEBBLESMS: setCannedResponses %@", fp12);
+    NSLog(@"PEBBLESMS: setCannedResponses %@", fp12);
     if ([(NSString *)fp12 isEqualToString:@"com.apple.MobileSMS"]) {
         [presets removeAllObjects];
         [presets addObjectsFromArray:(NSArray *)fp8];
@@ -1951,16 +1940,16 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 %hook PBSendSMSActionHandler
 
 - (void)handleActionWithActionIdentifier:(unsigned char)fp8 attributes:(id)fp12 {
-    // NSLog(@"PEBBLESMS: handleActionWithActionIdentifier");
-    // %log;
+    NSLog(@"PEBBLESMS: handleActionWithActionIdentifier");
+    %log;
     if (fp8 == 2) {
-        // NSLog(@"HANDLING");
+        NSLog(@"HANDLING");
         NSData *d = [(PBTimelineItemAttributeBlob *)[(NSArray *)fp12 objectAtIndex:0] content];
         NSString *reply = [[NSString alloc] initWithData:d encoding:NSUTF8StringEncoding];
         PBContact *contact = [[self addressBookQuerySession] selectedContact];
         PBPhoneNumber *pbPhoneNumber = (PBPhoneNumber *)[(PBLabeledValue *)[[self addressBookQuerySession] selectedLabeledValue] value];
         NSString *phone = [pbPhoneNumber getStringRepresentationForTextSender];
-        // NSLog(@"Wants to send reply with content '%@' to '%@' at number '%@'", reply, contact, phone);
+        NSLog(@"Wants to send reply with content '%@' to '%@' at number '%@'", reply, contact, phone);
         PBTimelineAttributeContentLocalizedString *localString = [[%c(PBTimelineAttributeContentLocalizedString) alloc] initWithLocalizationKey:@"Sending..."];
         PBTimelineAttribute *attr = [%c(PBTimelineAttribute) attributeWithType:@"subtitle" content:localString];
         [localString release];
@@ -1977,7 +1966,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 %hook PBSendTextAppActionHandler
 
 -(void)handleAction:(unsigned char)arg1 forItemIdentifier:(id)arg2 attributes:(id)arg3 {
-    // %log;
+    %log;
     if (arg1 == 2) {
         NSData *responseData = [(PBTimelineItemAttributeBlob *)[self responseFromAttributes:arg3] content];
         NSData *phoneData = [(PBTimelineItemAttributeBlob *)[self phoneNumberFromAttributes:arg3] content];

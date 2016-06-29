@@ -171,22 +171,26 @@
 %hook PBLinkedAccount
 
 - (unsigned char)provider {
-	// %log;
+	%log;
 	return 1;
 }
 
 - (id)uuid {
-	// %log;
-	return [NSUUID UUID];
+	%log;
+	id r = %orig;
+	NSLog(@"=%@", r);
+	return r;
 }
 
 - (BOOL)isAccountExpired {
-	// %log;
-	return NO;
+	%log;
+	BOOL r = %orig;
+	NSLog(@"=%d", r);
+	return r;
 }
 
 -(BOOL)isExpired {
-	// %log;
+	%log;
 	return NO;
 }
 
@@ -195,16 +199,18 @@
 %hook PBLinkedAccountCredentials
 
 - (id)expiration {
-	// %log;
-	NSTimeInterval t = 36000;
-	NSDate *d = [NSDate dateWithTimeIntervalSinceNow:t];
-	return d;
+	%log;
+	id r = %orig;
+	NSLog(@"=%@", r);
+	return r;
 }
 
-// - (id)apiData {
-// 	// %log;
-// 	return @"JWE:test";
-// }
+- (id)apiData {
+	%log;
+	id r = %orig;
+	NSLog(@"=%@", r);
+	return r;
+}
 
 %end
 
