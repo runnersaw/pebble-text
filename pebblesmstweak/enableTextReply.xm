@@ -119,149 +119,149 @@
 -(void)migrateSMSAccountFrom3Dot6To3Dot7ForProvider:(unsigned char)arg1;
 @end
 
-%group PebbleTextReply
+// %group PebbleTextReply
 
-// %hook PBLinkedAccountExtendedCredentials
+// // %hook PBLinkedAccountExtendedCredentials
 
-// - (id)accountData {
+// // - (id)accountData {
+// // 	// %log;
+// // 	return @"JWE:TESTEST";
+// // }
+
+// // %end
+
+// %hook PBSMSReplyManager
+
+// - (id)SMSProviders {
 // 	// %log;
-// 	return @"JWE:TESTEST";
+// 	return [NSSet setWithArray:@[[NSNumber numberWithInt:1]]];
+// }
+
+// - (void)setHasLinkedSMSAccount:(BOOL)fp8 {
+// 	// %log;
+// 	%orig(YES);
+// }
+
+// - (BOOL)hasLinkedSMSAccount {
+// 	// %log;
+// 	return YES;
+// }
+// - (unsigned char)linkedSMSProvider {
+// 	// %log;
+// 	return 1;
+// }
+// - (void)disableSMSActions {
+// 	// %log;
+// 	[self enableSMSActions];
+// }
+// - (BOOL)isCarrierProviderEnabled {
+// 	// %log;
+// 	return YES;
+// }
+// - (void)setSMSActionsEnabled:(BOOL)fp8 {
+// 	// %log;
+// 	%orig(YES);
+// }
+// - (unsigned char)providerFromCarrier {
+// 	// %log;
+// 	return 1;
+// }
+// %end
+
+// %hook PBLinkedAccount
+
+// - (unsigned char)provider {
+// 	%log;
+// 	return 1;
+// }
+
+// - (id)uuid {
+// 	%log;
+// 	id r = %orig;
+// 	NSLog(@"=%@", r);
+// 	return r;
+// }
+
+// - (BOOL)isAccountExpired {
+// 	%log;
+// 	BOOL r = %orig;
+// 	NSLog(@"=%d", r);
+// 	return r;
+// }
+
+// -(BOOL)isExpired {
+// 	%log;
+// 	return NO;
 // }
 
 // %end
 
-%hook PBSMSReplyManager
+// %hook PBLinkedAccountCredentials
 
-- (id)SMSProviders {
-	// %log;
-	return [NSSet setWithArray:@[[NSNumber numberWithInt:1]]];
-}
+// - (id)expiration {
+// 	%log;
+// 	id r = %orig;
+// 	NSLog(@"=%@", r);
+// 	return r;
+// }
 
-- (void)setHasLinkedSMSAccount:(BOOL)fp8 {
-	// %log;
-	%orig(YES);
-}
+// - (id)apiData {
+// 	%log;
+// 	id r = %orig;
+// 	NSLog(@"=%@", r);
+// 	return r;
+// }
 
-- (BOOL)hasLinkedSMSAccount {
-	// %log;
-	return YES;
-}
-- (unsigned char)linkedSMSProvider {
-	// %log;
-	return 1;
-}
-- (void)disableSMSActions {
-	// %log;
-	[self enableSMSActions];
-}
-- (BOOL)isCarrierProviderEnabled {
-	// %log;
-	return YES;
-}
-- (void)setSMSActionsEnabled:(BOOL)fp8 {
-	// %log;
-	%orig(YES);
-}
-- (unsigned char)providerFromCarrier {
-	// %log;
-	return 1;
-}
-%end
+// %end
 
-%hook PBLinkedAccount
+// %hook PBLinkedAccountsManager
 
-- (unsigned char)provider {
-	%log;
-	return 1;
-}
+// - (BOOL) hasLinkedAccountForProvider:(unsigned char)arg {
+// 	// %log;
+// 	return YES;
+// }
 
-- (id)uuid {
-	%log;
-	id r = %orig;
-	NSLog(@"=%@", r);
-	return r;
-}
+// - (BOOL) isProviderEnabled:(unsigned char)arg {
+// 	// %log;
+// 	return YES;
+// }
 
-- (BOOL)isAccountExpired {
-	%log;
-	BOOL r = %orig;
-	NSLog(@"=%d", r);
-	return r;
-}
+// - (id) enabledProviders {
+// 	// %log;
+// 	return [NSSet setWithArray:@[[NSNumber numberWithInt:1]]];
+// }
 
--(BOOL)isExpired {
-	%log;
-	return NO;
-}
+// -(BOOL)hasLinkedAccountForApp:(id)arg1 {
+// 	if ([arg1 isKindOfClass:[%c(PBMobilePhoneApp) class]])
+// 	{
+// 		return YES;
+// 	}
+// 	if ([arg1 isKindOfClass:[%c(PBMobileSMSApp) class]])
+// 	{
+// 		return YES;
+// 	}
 
-%end
+// 	return %orig;
+// }
 
-%hook PBLinkedAccountCredentials
+// %end
 
-- (id)expiration {
-	%log;
-	id r = %orig;
-	NSLog(@"=%@", r);
-	return r;
-}
+// %hook PBTimelineAttribute
 
-- (id)apiData {
-	%log;
-	id r = %orig;
-	NSLog(@"=%@", r);
-	return r;
-}
+// - (id)content {
+//     if ([[self type] isEqual:@"emojiSupported"]) {
+//         return [NSNumber numberWithBool:YES];
+//     } else {
+//         return %orig;
+//     }
+// }
 
-%end
+// %end
 
-%hook PBLinkedAccountsManager
+// %end
 
-- (BOOL) hasLinkedAccountForProvider:(unsigned char)arg {
-	// %log;
-	return YES;
-}
-
-- (BOOL) isProviderEnabled:(unsigned char)arg {
-	// %log;
-	return YES;
-}
-
-- (id) enabledProviders {
-	// %log;
-	return [NSSet setWithArray:@[[NSNumber numberWithInt:1]]];
-}
-
--(BOOL)hasLinkedAccountForApp:(id)arg1 {
-	if ([arg1 isKindOfClass:[%c(PBMobilePhoneApp) class]])
-	{
-		return YES;
-	}
-	if ([arg1 isKindOfClass:[%c(PBMobileSMSApp) class]])
-	{
-		return YES;
-	}
-
-	return %orig;
-}
-
-%end
-
-%hook PBTimelineAttribute
-
-- (id)content {
-    if ([[self type] isEqual:@"emojiSupported"]) {
-        return [NSNumber numberWithBool:YES];
-    } else {
-        return %orig;
-    }
-}
-
-%end
-
-%end
-
-%ctor {
-    if ([%c(PBAppDelegate) class]) {
-        %init(PebbleTextReply);
-    }
-}
+// %ctor {
+//     if ([%c(PBAppDelegate) class]) {
+//         %init(PebbleTextReply);
+//     }
+// }
