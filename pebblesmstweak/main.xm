@@ -16,6 +16,8 @@
 // My headers
 
 #import "PBSMSHelper.h"
+#import <PBSMSClasses/PBSMSTextMessage.h>
+#import <PBSMSClasses/PBSMSTextHelper.h>
 #import "PBSMSTextMessage.h"
 #import "PBSMSTextHelper.h"
 
