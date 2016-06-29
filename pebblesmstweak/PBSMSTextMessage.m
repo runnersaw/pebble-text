@@ -39,12 +39,12 @@
     PBSMSTextMessage *message = [[PBSMSTextMessage alloc] init];
     message.number = number;
     message.messageText = messageText;
+    message.uuid = uuid;
     message.shouldNotify = [shouldNotify boolValue];
     message.isNewNumber = [isNewNumber boolValue];
     message.isRecentContact = [isNewNumber boolValue];
     message.isReply = [isReply boolValue];
     message.recordId = recordId;
-    message.uuid = uuid;
     message.expirationDate = expirationDate;
     return message;
 }

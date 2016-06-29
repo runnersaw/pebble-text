@@ -834,8 +834,6 @@ static void saveRecentRecipient(NSString *name, NSString *phone)
     }
 
     [dict writeToFile:recentFileLocation atomically:YES];
-
-    [dict release];
 }
 
 // FOR ACTIONABLE NOTIFICATIONS
@@ -1297,12 +1295,10 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     //Make a new composition
     NSAttributedString* t = [[NSAttributedString alloc] initWithString:text];
     CKComposition* composition = [[CKComposition alloc] initWithText:t subject:nil];
-    [t release];
 
     // make message and send
     CKMessage *message = (CKMessage *)[conversation messageWithComposition:composition];
     [conversation sendMessage:message newComposition:YES];
-    [composition release];
 
     // send success
     if (notify)
@@ -1335,12 +1331,10 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     //Make a new composition
     NSAttributedString* t = [[NSAttributedString alloc] initWithString:text];
     CKComposition* composition = [[CKComposition alloc] initWithText:t subject:nil];
-    [t release];
 
     // make message and send
     CKMessage *message = (CKMessage *)[conversation messageWithComposition:composition];
     [conversation sendMessage:message newComposition:YES];
-    [composition release];
 
     // send success
     if (notify)
@@ -1361,8 +1355,6 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     // NSLog(@"PEBBLESMS: sendNewMessageTo");
     IMPerson *person = [[IMPerson alloc] initWithABRecordID:(ABRecordID)[personId intValue]];
     NSArray *handles = [%c(IMHandle) imHandlesForIMPerson:person];
-    [person release];
-    // NSLog(@"PEBBLESMS: sendMessageTo %@", [handles class]);
 
     IMHandle *finalHandle = NULL;
     int highestCount = 0;
@@ -1420,12 +1412,10 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
     NSAttributedString* t = [[NSAttributedString alloc] initWithString:text];
     CKComposition* composition = [[CKComposition alloc] initWithText:t subject:nil];
-    [t release];
 
     // make message and send
     CKMessage *message = (CKMessage *)[conversation messageWithComposition:composition];
     [conversation sendMessage:message newComposition:YES];
-    [composition release];
 
     // send success
     if (notify)
@@ -1978,20 +1968,20 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     NSMutableDictionary *message = (NSMutableDictionary *)fp8;
     id isSMS = [message objectForKey:IS_PEBBLE_SMS_KEY];
     if (isSMS != NULL && [isSMS intValue] == [[NSNumber numberWithInt:1] intValue])
-{
+	{
         NSMutableDictionary *response;
         BOOL initialized = NO;
         
         id connectionTest = [message objectForKey:CONNECTION_TEST_KEY];
         if (connectionTest != NULL)
-{
+		{
             response = [self getConnectionResponse];
             initialized = YES;
         }
 
         id confirmation = [message objectForKey:MESSAGE_CONFIRMATION_KEY];
         if (confirmation != NULL)
-{
+		{
             // NSLog(@"PB sending confirmation %@", [message description]);
             %orig;
             return;
@@ -1999,54 +1989,54 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
         NSNumber *state = [message objectForKey:STATE_KEY];
         if (state != NULL)
-{
+		{
             if ([state intValue] == [GETTING_RECENT_CONTACTS_STATE intValue])
-{
+			{
                 response = [self getRecentContactsResponse];
                 initialized = YES;
             }
             
             if ([state intValue] == [GETTING_PRESETS_STATE intValue])
-{
+			{
                 response = [self getPresets];
                 initialized = YES;
             }
             
             if ([state intValue] == [CHECKING_CONTACT_STATE intValue])
-{
+			{
                 NSNumber *tries = [message objectForKey:ATTEMPT_NUMBER_KEY];
                 NSString *name = [message objectForKey:DICTATED_NAME_KEY];
                 if (tries != NULL && name != NULL)
-{
+				{
                     response = [self getContactSearchResponse:name tries: [tries intValue]];
                     initialized = YES;
                 }
             }
             
             if ([state intValue] == [SENDING_FINAL_MESSAGE_STATE intValue])
-{
+			{
                 NSString *number = [message objectForKey:CONTACT_NUMBER_KEY];
                 NSString *m = [message objectForKey:FINAL_MESSAGE_KEY];
 
                 if (number != NULL && m != NULL)
-{
+				{
                     NSString *contactId = [message objectForKey:CONTACT_ID_KEY];
                     NSNumber *finalContactId = NULL;
                     if (contactId != NULL && ![contactId isEqual:@""])
-{
+					{
                         NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
                         f.numberStyle = NSNumberFormatterDecimalStyle;
                         finalContactId = [f numberFromString:contactId];
-                        [f release];
                     }
 
                     // NSLog(@"finalContactId %@", finalContactId);
 
                     if (finalContactId != NULL)
-{
+					{
                         [%c(PBWatch) sendSMS:finalContactId number:[%c(PBContact) phoneWithPrefix:number] withText:m];
-                    } else
-{
+                    }
+                    else
+					{
                         [%c(PBWatch) sendSMS:currentContactId number:[%c(PBContact) phoneWithPrefix:number] withText:m];
                     }
                     response = [self getFinalRecievedResponse];
@@ -2056,15 +2046,17 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
         }
 
         if (initialized)
-{
+		{
             // NSLog(@"PEBBLESMS: %@", response);
             %orig(response, fp1001, fp12, fp16); 
-        } else
-{
+        }
+        else
+		{
             %orig;
         }
-    } else
-{
+    }
+    else
+	{
         %orig;
     }
 }
@@ -2089,7 +2081,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     NSString *n = [NSMutableString stringWithString:number];
     NSString *t = [NSMutableString stringWithString:text];
 
-    NSDictionary *dict = [[[NSDictionary alloc] initWithObjectsAndKeys:
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
         t, @"message", 
         n, @"number", 
         [NSNumber numberWithBool:YES], @"notify", 
@@ -2099,7 +2091,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
         [NSNumber numberWithBool:NO], @"isReply",
         [[NSUUID UUID] UUIDString], @"uuid",
         [NSDate dateWithTimeIntervalSinceNow:MESSAGE_SEND_TIMEOUT], @"expirationDate",
-        nil] autorelease];
+        nil];
 
     saveMessageForSending(dict);
 
@@ -2281,10 +2273,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
         // NSLog(@"Wants to send reply with content '%@' to '%@' at number '%@'", reply, contact, phone);
         PBTimelineAttributeContentLocalizedString *localString = [[%c(PBTimelineAttributeContentLocalizedString) alloc] initWithLocalizationKey:@"Sending..."];
         PBTimelineAttribute *attr = [%c(PBTimelineAttribute) attributeWithType:@"subtitle" content:localString];
-        [localString release];
         [(PBANCSActionHandler *)[self delegate] notificationHandler:self didSendResponse:15 withAttributes:@[attr] actions:NULL];
         [%c(PBSMSSessionManager) sendSMS:[contact recordId] number:phone withText:reply];
-        [reply release];
     }
     else
 	{
@@ -2327,7 +2317,6 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
             PBTimelineAttribute *attr = [%c(PBTimelineAttribute) attributeWithType:@"subtitle" content:localString];
             [(PBTimelineActionsWatchService *)[self delegate] sendTextAppActionHandler:self didSendResponse:0 withAttributes:@[attr] forItemIdentifier:arg2];
             [%c(PBSMSSessionManager) sendSMS:[finalContact recordId] number:phone withText:response];
-            [localString release];
         }
         else
 		{
@@ -2335,11 +2324,6 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
             PBTimelineAttribute *attr = [%c(PBTimelineAttribute) attributeWithType:@"subtitle" content:message];
             [(PBTimelineActionsWatchService *)[self delegate] sendTextAppActionHandler:self didSendResponse:0 withAttributes:@[attr] forItemIdentifier:arg2];
         }
-
-
-        [response release];
-        [phone release];
-        [pbPhone release];
     }
     else
 	{
@@ -2424,15 +2408,11 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 				[%c(PBANCSActionHandler) performReply:reply forAction:actionID andBulletinID:bulletinID];
 
-				PBTimelineAttribute *attr = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Reply sent" specificType:0] autorelease];
+				PBTimelineAttribute *attr = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Reply sent" specificType:0];
 				[self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:ancsIdentifier];
 				return;
         	}
         }
-
-
-
-        [reply release];
     }
     else
 	{
@@ -2479,10 +2459,10 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 	    NSMutableArray *actions = [NSMutableArray array];
 		
-		PBTimelineAttribute *a1 = [[[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:@"Dismiss" specificType:0] autorelease];
-		PBTimelineAttribute *a2 = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"" specificType:0] autorelease];
+		PBTimelineAttribute *a1 = [[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:@"Dismiss" specificType:0];
+		PBTimelineAttribute *a2 = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"" specificType:0];
 
-		[actions addObject:[[[%c(PBTimelineAction) alloc] initWithIdentifier:@(DISMISS_IDENTIFIER) type:@"ANCSResponse" attributes:@[ a1, a2 ]] autorelease]];
+		[actions addObject:[[%c(PBTimelineAction) alloc] initWithIdentifier:@(DISMISS_IDENTIFIER) type:@"ANCSResponse" attributes:@[ a1, a2 ]]];
 
 	    if (dict)
 	   	{
@@ -2492,7 +2472,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 		   		NSString *bulletinID = [%c(PBANCSActionHandler) bulletinIdentifierForInvokeANCSMessage:m];
 		   		if (!bulletinID)
 		   		{
-					PBTimelineAttribute *attr = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action failed!" specificType:0] autorelease];
+					PBTimelineAttribute *attr = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action failed!" specificType:0];
 					[self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
 					return;
 		   		}
@@ -2514,10 +2494,10 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 			   					NSString *actionIdentifier = actionInfo[@"actionIdentifier"];
 			   					BOOL isQuickReply = [(NSNumber *)actionInfo[@"isQuickReply"] boolValue];
 
-								PBTimelineAttribute *attr1 = [[[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:actionName specificType:0] autorelease];
-								PBTimelineAttribute *attr2 = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"" specificType:0] autorelease];
+								PBTimelineAttribute *attr1 = [[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:actionName specificType:0];
+								PBTimelineAttribute *attr2 = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"" specificType:0];
 
-								[actions addObject:[[[%c(PBTimelineAction) alloc] initWithIdentifier:@(currentNumber) type:@"ANCSResponse" attributes:@[ attr1, attr2 ]] autorelease]];
+								[actions addObject:[[%c(PBTimelineAction) alloc] initWithIdentifier:@(currentNumber) type:@"ANCSResponse" attributes:@[ attr1, attr2 ]]];
 
 								NSDictionary *actionToPerform = @{ @"actionIdentifier" : actionIdentifier,
 																   @"bulletinIdentifier" : bulletinID,
