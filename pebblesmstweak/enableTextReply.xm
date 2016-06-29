@@ -1,4 +1,4 @@
-
+#import "PBSMSHelper.h"
 
 @interface PBSMSReplyManager
 - (id)SMSProviders;
@@ -121,15 +121,17 @@
 
 %group PebbleTextReply
 
-// %hook PBLinkedAccountExtendedCredentials
+%hook PBLinkedAccountExtendedCredentials
 
-// - (id)accountData
-// {
-// 	%log;
-// 	return @"JWE:TESTEST";
-// }
+- (id)accountData
+{
+	%log;
+	id r = %orig;
+	log(@"%@", r);
+	return r;
+}
 
-// %end
+%end
 
 %hook PBSMSReplyManager
 
@@ -177,108 +179,105 @@
 }
 %end
 
-// %hook PBLinkedAccount
+%hook PBLinkedAccount
 
-// - (unsigned char)provider
-// {
-// 	%log;
-// 	return 1;
-// }
+- (unsigned char)provider
+{
+	%log;
+	return 1;
+}
 
-// - (id)uuid
-// {
-// 	%log;
-// 	return [NSUUID UUID];
-// }
+- (id)uuid
+{
+	%log;
+	return [NSUUID UUID];
+}
 
-// - (BOOL)isAccountExpired
-// {
-// 	%log;
-// 	return NO;
-// }
+- (BOOL)isAccountExpired
+{
+	%log;
+	return NO;
+}
 
-// -(BOOL)isExpired
-// {
-// 	%log;
-// 	return NO;
-// }
+-(BOOL)isExpired
+{
+	%log;
+	return NO;
+}
 
-// %end
+%end
 
-// %hook PBLinkedAccountCredentials
+%hook PBLinkedAccountCredentials
 
-// - (id)expiration
-// {
-// 	%log;
-// 	NSTimeInterval t = 36000;
-// 	NSDate *d = [NSDate dateWithTimeIntervalSinceNow:t];
-// 	return d;
-// }
+- (id)expiration
+{
+	%log;
+	id r = %orig;
+	log(@"%@", r);
+	return r;
+}
 
-// - (id)apiData
-// {
-// 	%log;
-// 	return @"JWE:test";
-// }
+- (id)apiData
+{
+	%log;
+	id r = %orig;
+	log(@"%@", r);
+	return r;
+}
 
-// %end
+%end
 
-// %hook PBLinkedAccountsManager
+%hook PBLinkedAccountsManager
 
-// + (id) providerToString:(unsigned char)arg
-// {
-// 	%log;
-// 	return @"vzw";
-// }
+- (BOOL) hasLinkedAccountForProvider:(unsigned char)arg
+{
+	%log;
+	id r = %orig;
+	log(@"%@", r);
+	return r;
+}
 
-// + (unsigned char) stringToProvider:(id)arg
-// {
-// 	%log;
-// 	return 1;
-// }
+- (BOOL) isProviderEnabled:(unsigned char)arg
+{
+	%log;
+	id r = %orig;
+	log(@"%@", r);
+	return r;
+}
 
-// - (BOOL) hasLinkedAccountForProvider:(unsigned char)arg
-// {
-// 	%log;
-// 	return YES;
-// }
+- (id) enabledProviders
+{
+	%log;
+	id r = %orig;
+	log(@"%@", r);
+	return r;
+}
 
-// - (BOOL) isProviderEnabled:(unsigned char)arg
-// {
-// 	%log;
-// 	return YES;
-// }
+-(BOOL)hasLinkedAccountForApp:(id)arg1
+{
+	%log;
+	BOOL r = %orig;
+	log(@"%d", r);
+	return r;
+}
 
-// - (id) enabledProviders
-// {
-// 	%log;
-// 	return [NSSet setWithArray:@[[NSNumber numberWithInt:1]]];
-// }
+%end
 
-// -(BOOL)hasLinkedAccountForApp:(id)arg1
-// {
-// 	%log;
-// 	return %orig;
-// 	// return YES;
-// }
+%hook PBTimelineAttribute
 
-// %end
+- (id)content
+{
+    if ([[self type] isEqual:@"emojiSupported"])
+	{
+        return [NSNumber numberWithBool:YES];
+    }
+    else
+	{
+        return %orig;
+    }
+}
 
-// %hook PBTimelineAttribute
-
-// - (id)content
-// {
-//     if ([[self type] isEqual:@"emojiSupported"])
-// 	{
-//         return [NSNumber numberWithBool:YES];
-//     }
-//     else
-// 	{
-//         return %orig;
-//     }
-// }
-
-// %end
+%end
 
 %end
 

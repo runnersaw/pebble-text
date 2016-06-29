@@ -2093,6 +2093,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
     [[PBSMSTextHelper sharedHelper] saveMessageToSend:message];
 
+    NSDictionary *userInfo = [message serializeToDictionary];
+
     CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
     rocketbootstrap_distributedmessagingcenter_apply(c);
     [c sendMessageName:openMessagesCommand userInfo:NULL];
@@ -2102,14 +2104,14 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SEND_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSmsCenterName];
         rocketbootstrap_distributedmessagingcenter_apply(c);
-        [c sendMessageName:sendMessageCommand userInfo:NULL];
+        [c sendMessageName:sendMessageCommand userInfo:userInfo];
     });
 
     // send message after 10 seconds
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SECOND_SEND_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSmsCenterName];
         rocketbootstrap_distributedmessagingcenter_apply(c);
-        [c sendMessageName:sendMessageCommand userInfo:NULL];
+        [c sendMessageName:sendMessageCommand userInfo:userInfo];
     });
 }
 
