@@ -119,7 +119,7 @@
 -(void)migrateSMSAccountFrom3Dot6To3Dot7ForProvider:(unsigned char)arg1;
 @end
 
-// %group PebbleTextReply
+%group PebbleTextReply
 
 // %hook PBLinkedAccountExtendedCredentials
 
