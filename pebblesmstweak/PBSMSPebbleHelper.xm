@@ -21,9 +21,9 @@
 
 - (NSArray *)presets
 {
-    if (self.presets.count == 0)
+    if (_presets.count == 0)
 	{
-        self.presets = @[ @"OK", 
+        _presets = @[ @"OK", 
         	@"Yes", 
         	@"No", 
         	@"Call me", 
@@ -35,7 +35,7 @@
         	@"Busy right now - give me a second?" ];
     }
 
-
+    return _presets;
 }
 
 @end
