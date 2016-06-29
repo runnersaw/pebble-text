@@ -125,7 +125,7 @@
 
 - (id)accountData
 {
-	// %log;
+	%log;
 	return @"JWE:TESTEST";
 }
 
@@ -135,44 +135,44 @@
 
 - (id)SMSProviders
 {
-	// %log;
+	%log;
 	return [NSSet setWithArray:@[[NSNumber numberWithInt:1]]];
 }
 
 - (void)setHasLinkedSMSAccount:(BOOL)fp8
 {
-	// %log;
+	%log;
 	%orig(YES);
 }
 
 - (BOOL)hasLinkedSMSAccount
 {
-	// %log;
+	%log;
 	return YES;
 }
 - (unsigned char)linkedSMSProvider
 {
-	// %log;
+	%log;
 	return 1;
 }
 - (void)disableSMSActions
 {
-	// %log;
+	%log;
 	[self enableSMSActions];
 }
 - (BOOL)isCarrierProviderEnabled
 {
-	// %log;
+	%log;
 	return YES;
 }
 - (void)setSMSActionsEnabled:(BOOL)fp8
 {
-	// %log;
+	%log;
 	%orig(YES);
 }
 - (unsigned char)providerFromCarrier
 {
-	// %log;
+	%log;
 	return 1;
 }
 %end
@@ -181,25 +181,25 @@
 
 - (unsigned char)provider
 {
-	// %log;
+	%log;
 	return 1;
 }
 
 - (id)uuid
 {
-	// %log;
+	%log;
 	return [NSUUID UUID];
 }
 
 - (BOOL)isAccountExpired
 {
-	// %log;
+	%log;
 	return NO;
 }
 
 -(BOOL)isExpired
 {
-	// %log;
+	%log;
 	return NO;
 }
 
@@ -209,7 +209,7 @@
 
 - (id)expiration
 {
-	// %log;
+	%log;
 	NSTimeInterval t = 36000;
 	NSDate *d = [NSDate dateWithTimeIntervalSinceNow:t];
 	return d;
@@ -217,7 +217,7 @@
 
 - (id)apiData
 {
-	// %log;
+	%log;
 	return @"JWE:test";
 }
 
@@ -227,37 +227,37 @@
 
 + (id) providerToString:(unsigned char)arg
 {
-	// %log;
+	%log;
 	return @"vzw";
 }
 
 + (unsigned char) stringToProvider:(id)arg
 {
-	// %log;
+	%log;
 	return 1;
 }
 
 - (BOOL) hasLinkedAccountForProvider:(unsigned char)arg
 {
-	// %log;
+	%log;
 	return YES;
 }
 
 - (BOOL) isProviderEnabled:(unsigned char)arg
 {
-	// %log;
+	%log;
 	return YES;
 }
 
 - (id) enabledProviders
 {
-	// %log;
+	%log;
 	return [NSSet setWithArray:@[[NSNumber numberWithInt:1]]];
 }
 
 -(BOOL)hasLinkedAccountForApp:(id)arg1
 {
-	// %log;
+	%log;
 	return YES;
 }
 
