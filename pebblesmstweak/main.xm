@@ -610,6 +610,7 @@
 -(id)delegate;
 -(NSIndexSet *)actions;
 @end
+
 @interface PBTimelineActionsWatchService : NSObject
 
 +(id)watchServiceForWatch:(id)arg1 watchServicesSet:(id)arg2 ;
@@ -2006,6 +2007,137 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     }
 }
 
+%end
+
+%hook PBTimelineActionsWatchService
+-(id)timelineWatchService{
+	%log;
+	id r = %orig;
+	NSLog(@"%@r");
+	return r;
+}
+-(void)ANCSActionHandler:(id)arg1 didSendResponse:(unsigned char)arg2 withAttributes:(id)arg3 actions:(id)arg4 forItemIdentifier:(id)arg5{
+	%log;
+	return %orig;
+}
+-(id)timelineManager{
+	%log;
+	id r = %orig;
+	NSLog(@"%@r");
+	return r;
+}
+-(id)initWithWatch:(id)arg1 watchServicesSet:(id)arg2 timelineManager:(id)arg3 currentUserLockerAppManager:(id)arg4{
+	%log;
+	id r = %orig;
+	NSLog(@"%@r");
+	return r;
+}
+-(void)sendTextAppActionHandler:(id)arg1 didSendResponse:(unsigned char)arg2 withAttributes:(id)arg3 forItemIdentifier:(id)arg4{
+	%log;
+	return %orig;
+}
+-(void)registerInvokeActionHandler{
+	%log;
+	return %orig;
+}
+-(void)registerInvokeANCSActionHandler{
+	%log;
+	return %orig;
+}
+-(id)invokeActionHandler{
+	%log;
+	id r = %orig;
+	NSLog(@"%@r");
+	return r;
+}
+-(id)ANCSActionHandler{
+	%log;
+	id r = %orig;
+	NSLog(@"%@r");
+	return r;
+}
+-(void)handleANCSActionForInvokeActionMessage:(id)arg1{
+	%log;
+	return %orig;
+}
+-(void)handleActionForItemIdentifier:(id)arg1 actionIdentifier:(unsigned char)arg2 attributes:(id)arg3{
+	%log;
+	return %orig;
+}
+-(id)notificationHandler{
+	%log;
+	id r = %orig;
+	NSLog(@"%@r");
+	return r;
+}
+-(id)sendTextAppActionHandler{
+	%log;
+	id r = %orig;
+	NSLog(@"%@r");
+	return r;
+}
+-(void)handleActionForItem:(id)arg1 actionIdentifier:(unsigned char)arg2 attributes:(id)arg3{
+	%log;
+	return %orig;
+}
+-(void)sendResponseForItemIdentifier:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4{
+	%log;
+	return %orig;
+}
+-(void)processAction:(id)arg1 forItem:(id)arg2 attributes:(id)arg3{
+	%log;
+	return %orig;
+}
+-(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3{
+	%log;
+	return %orig;
+}
+-(id)subtitleAttributeForLocalizedString:(id)arg1{
+	%log;
+	id r = %orig;
+	NSLog(@"%@r");
+	return r;
+}
+-(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 subtitle:(id)arg3 icon:(id)arg4{
+	%log;
+	return %orig;
+}
+-(void)processHTTPActionForItem:(id)arg1 actionAttributes:(id)arg2{
+	%log;
+	return %orig;
+}
+-(NSString *)accountUserID{
+	%log;
+	id r = %orig;
+	NSLog(@"%@r");
+	return r;
+}
+-(id)httpActionSessionManager{
+	%log;
+	id r = %orig;
+	NSLog(@"%@r");
+	return r;
+}
+-(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 subtitle:(id)arg3 icon:(id)arg4 specificType:(long long)arg5{
+	%log;
+	return %orig;
+}
+-(void)sendResponseForItemIdentifier:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4 mapperSignal:(id)arg5{
+	%log;
+	return %orig;
+}
+-(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4{
+	%log;
+	return %orig;
+}
+-(void)sendANCSResponseForItemIdentifier:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4{
+	%log;
+	return %orig;
+}
+-(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2{
+	%log;
+	return %orig;
+}
 %end
 
 %end
