@@ -566,17 +566,17 @@
 -(void)startHandlingInvokeActionMessage:(id)arg1 ;
 -(void)handleActionWithActionIdentifier:(unsigned char)arg1 attributes:(id)arg2 ;
 -(NSString *)notificationSourceIdentifier;
--(PBLinkedAccountsManager *)linkedAccountsManager;
+-(id)linkedAccountsManager;
 -(id)initWithNotificationSourceIdentifier:(id)arg1 linkedAccountsManager:(id)arg2 ;
 -(id)emailNotification;
--(PBEmailApp *)emailApp;
--(PBTimelineInvokeANCSActionMessage *)currentANCSActionMessage;
--(void)setCurrentANCSActionMessage:(PBTimelineInvokeANCSActionMessage *)arg1 ;
+-(id)emailApp;
+-(id)currentANCSActionMessage;
+-(void)setCurrentANCSActionMessage:(id)arg1 ;
 -(BOOL)detectAndSendError;
 -(void)showPerformingActionScreenOnWatchForAction:(unsigned long long)arg1 ;
 -(void)performEmailAction:(unsigned long long)arg1 ;
 -(void)replyToEmailWithMessage:(id)arg1 ;
--(PBANCSEmailNotification *)ANCSEmailNotification;
+-(id)ANCSEmailNotification;
 -(void)saveANCSActionMessage:(id)arg1 ;
 -(id)emailsFromAddressBookMatchingQuery:(id)arg1 ;
 -(void)sendRequestWithClient:(id)arg1 ;
@@ -588,20 +588,20 @@
 @interface PBANCSActionHandler
 +(id)actionHandlerWithDelegate:(id)arg1 ;
 -(void)dealloc;
--(NSUUID *)handlingIdentifier;
--(void)setHandlingIdentifier:(NSUUID *)arg1 ;
+-(id)handlingIdentifier;
+-(void)setHandlingIdentifier:(id)arg1 ;
 -(void)sendResponse:(unsigned char)arg1 withAttributes:(id)arg2 actions:(id)arg3 forItemIdentifier:(id)arg4 ;
 -(NSDictionary *)actionHandlersByAppIdentifier;
 -(void)setCurrentActionHandler:(id)arg1 ;
 -(id)currentActionHandler;
 -(void)handleActionWithActionIdentifier:(unsigned char)arg1 attributes:(id)arg2 ;
 -(id)backgroundColorForNotificationHandler:(id)arg1 ;
--(PBTimelineWatchService *)timelineWatchService;
+-(id)timelineWatchService;
 -(void)notificationHandler:(id)arg1 didSendResponse:(unsigned char)arg2 withAttributes:(id)arg3 actions:(id)arg4 ;
 -(void)notificationHandler:(id)arg1 didSendError:(id)arg2 withTitle:(id)arg3 icon:(id)arg4 ;
 -(BOOL)isHandlingNotificationWithIdentifier:(id)arg1 ;
 -(void)handleInvokeANCSActionMessage:(id)arg1 ;
--(id<PBANCSActionHandlerDelegate>)delegate;
+-(id)delegate;
 -(id)initWithDelegate:(id)arg1 ;
 
 // pebble 3.14
