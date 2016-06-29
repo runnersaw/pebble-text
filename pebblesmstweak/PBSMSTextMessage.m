@@ -11,17 +11,17 @@
 		return nil;
     }
 
-    NSDictionary *message = (NSDictionary *)object;
+    NSDictionary *dict = (NSDictionary *)object;
 
-    NSString *number = [message safeObjectForKey:@"number" ofClass:[NSString class]];   
-    NSString *messageText = [message safeObjectForKey:@"message" ofClass:[NSString class]];
-    NSString *uuid = [message safeObjectForKey:@"uuid" ofClass:[NSString class]];
-    NSNumber *shouldNotify = [message safeObjectForKey:@"notify" ofClass:[NSNumber class]];
-    NSNumber *isNewNumber = [message safeObjectForKey:@"newNumber" ofClass:[NSNumber class]];
-    NSNumber *isRecentContact = [message safeObjectForKey:@"isRecentContact" ofClass:[NSNumber class]];
-    NSNumber *isReply = [message safeObjectForKey:@"isReply" ofClass:[NSNumber class]];
-    NSNumber *recordId = [message safeObjectForKey:@"recordId" ofClass:[NSNumber class]];
-    NSDate *expirationDate = [message safeObjectForKey:@"expirationDate" ofClass:[NSDate class]];
+    NSString *number = [dict safeObjectForKey:@"number" ofType:[NSString class]];   
+    NSString *messageText = [dict safeObjectForKey:@"message" ofType:[NSString class]];
+    NSString *uuid = [dict safeObjectForKey:@"uuid" ofType:[NSString class]];
+    NSNumber *shouldNotify = [dict safeObjectForKey:@"notify" ofType:[NSNumber class]];
+    NSNumber *isNewNumber = [dict safeObjectForKey:@"newNumber" ofType:[NSNumber class]];
+    NSNumber *isRecentContact = [dict safeObjectForKey:@"isRecentContact" ofType:[NSNumber class]];
+    NSNumber *isReply = [dict safeObjectForKey:@"isReply" ofType:[NSNumber class]];
+    NSNumber *recordId = [dict safeObjectForKey:@"recordId" ofType:[NSNumber class]];
+    NSDate *expirationDate = [dict safeObjectForKey:@"expirationDate" ofType:[NSDate class]];
 
     if (!number ||
     	!messageText ||
@@ -40,10 +40,10 @@
 		messageText:messageText
 		uuid:uuid
 		recordId:recordId
-		isRecentContact:@( isRecentContact )
-		isReply:@( isReply )
-		shouldNotify:@( shouldNotify )
-		isNewNumber:@( isNewNumber )
+		isRecentContact:[isRecentContact boolValue]
+		isReply:[isReply
+		shouldNotify:[shouldNotify boolValue]
+		isNewNumber:[isNewNumber boolValue]
 		expirationDate:expirationDate];
     return message;
 }
