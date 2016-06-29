@@ -9,7 +9,7 @@ ADDITIONAL_OBJCFLAGS = -fobjc-arc
 include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = pebblesmstweak
-pebblesmstweak_FILES = main.xm enableTextReply.xm PBSMSPebbleHelper.xm PBSMSMessagesHelper.xm PBSMSSpringboardHelper.xm
+pebblesmstweak_FILES = main.xm enableTextReply.xm PBSMSHelper.xm PBSMSTextHelper.xm PBSMSTextMessage.xm
 pebblesmstweak_FRAMEWORKS = UIKit AddressBook
 pebblesmstweak_PRIVATE_FRAMEWORKS = CoreTelephony ChatKit AppSupport IMCore IMFoundation
 pebblesmstweak_LDFLAGS += -Wl,-segalign,4000
