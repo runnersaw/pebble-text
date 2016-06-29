@@ -119,165 +119,166 @@
 -(void)migrateSMSAccountFrom3Dot6To3Dot7ForProvider:(unsigned char)arg1;
 @end
 
-%group PebbleTextReply
+// %group PebbleTextReply
 
-%hook PBLinkedAccountExtendedCredentials
+// %hook PBLinkedAccountExtendedCredentials
 
-- (id)accountData
-{
-	%log;
-	return @"JWE:TESTEST";
-}
+// - (id)accountData
+// {
+// 	%log;
+// 	return @"JWE:TESTEST";
+// }
 
-%end
+// %end
 
-%hook PBSMSReplyManager
+// %hook PBSMSReplyManager
 
-- (id)SMSProviders
-{
-	%log;
-	return [NSSet setWithArray:@[[NSNumber numberWithInt:1]]];
-}
+// - (id)SMSProviders
+// {
+// 	%log;
+// 	return [NSSet setWithArray:@[[NSNumber numberWithInt:1]]];
+// }
 
-- (void)setHasLinkedSMSAccount:(BOOL)fp8
-{
-	%log;
-	%orig(YES);
-}
+// - (void)setHasLinkedSMSAccount:(BOOL)fp8
+// {
+// 	%log;
+// 	%orig(YES);
+// }
 
-- (BOOL)hasLinkedSMSAccount
-{
-	%log;
-	return YES;
-}
-- (unsigned char)linkedSMSProvider
-{
-	%log;
-	return 1;
-}
-- (void)disableSMSActions
-{
-	%log;
-	[self enableSMSActions];
-}
-- (BOOL)isCarrierProviderEnabled
-{
-	%log;
-	return YES;
-}
-- (void)setSMSActionsEnabled:(BOOL)fp8
-{
-	%log;
-	%orig(YES);
-}
-- (unsigned char)providerFromCarrier
-{
-	%log;
-	return 1;
-}
-%end
+// - (BOOL)hasLinkedSMSAccount
+// {
+// 	%log;
+// 	return YES;
+// }
+// - (unsigned char)linkedSMSProvider
+// {
+// 	%log;
+// 	return 1;
+// }
+// - (void)disableSMSActions
+// {
+// 	%log;
+// 	[self enableSMSActions];
+// }
+// - (BOOL)isCarrierProviderEnabled
+// {
+// 	%log;
+// 	return YES;
+// }
+// - (void)setSMSActionsEnabled:(BOOL)fp8
+// {
+// 	%log;
+// 	%orig(YES);
+// }
+// - (unsigned char)providerFromCarrier
+// {
+// 	%log;
+// 	return 1;
+// }
+// %end
 
-%hook PBLinkedAccount
+// %hook PBLinkedAccount
 
-- (unsigned char)provider
-{
-	%log;
-	return 1;
-}
+// - (unsigned char)provider
+// {
+// 	%log;
+// 	return 1;
+// }
 
-- (id)uuid
-{
-	%log;
-	return [NSUUID UUID];
-}
+// - (id)uuid
+// {
+// 	%log;
+// 	return [NSUUID UUID];
+// }
 
-- (BOOL)isAccountExpired
-{
-	%log;
-	return NO;
-}
+// - (BOOL)isAccountExpired
+// {
+// 	%log;
+// 	return NO;
+// }
 
--(BOOL)isExpired
-{
-	%log;
-	return NO;
-}
+// -(BOOL)isExpired
+// {
+// 	%log;
+// 	return NO;
+// }
 
-%end
+// %end
 
-%hook PBLinkedAccountCredentials
+// %hook PBLinkedAccountCredentials
 
-- (id)expiration
-{
-	%log;
-	NSTimeInterval t = 36000;
-	NSDate *d = [NSDate dateWithTimeIntervalSinceNow:t];
-	return d;
-}
+// - (id)expiration
+// {
+// 	%log;
+// 	NSTimeInterval t = 36000;
+// 	NSDate *d = [NSDate dateWithTimeIntervalSinceNow:t];
+// 	return d;
+// }
 
-- (id)apiData
-{
-	%log;
-	return @"JWE:test";
-}
+// - (id)apiData
+// {
+// 	%log;
+// 	return @"JWE:test";
+// }
 
-%end
+// %end
 
-%hook PBLinkedAccountsManager
+// %hook PBLinkedAccountsManager
 
-+ (id) providerToString:(unsigned char)arg
-{
-	%log;
-	return @"vzw";
-}
+// + (id) providerToString:(unsigned char)arg
+// {
+// 	%log;
+// 	return @"vzw";
+// }
 
-+ (unsigned char) stringToProvider:(id)arg
-{
-	%log;
-	return 1;
-}
+// + (unsigned char) stringToProvider:(id)arg
+// {
+// 	%log;
+// 	return 1;
+// }
 
-- (BOOL) hasLinkedAccountForProvider:(unsigned char)arg
-{
-	%log;
-	return YES;
-}
+// - (BOOL) hasLinkedAccountForProvider:(unsigned char)arg
+// {
+// 	%log;
+// 	return YES;
+// }
 
-- (BOOL) isProviderEnabled:(unsigned char)arg
-{
-	%log;
-	return YES;
-}
+// - (BOOL) isProviderEnabled:(unsigned char)arg
+// {
+// 	%log;
+// 	return YES;
+// }
 
-- (id) enabledProviders
-{
-	%log;
-	return [NSSet setWithArray:@[[NSNumber numberWithInt:1]]];
-}
+// - (id) enabledProviders
+// {
+// 	%log;
+// 	return [NSSet setWithArray:@[[NSNumber numberWithInt:1]]];
+// }
 
--(BOOL)hasLinkedAccountForApp:(id)arg1
-{
-	%log;
-	return YES;
-}
+// -(BOOL)hasLinkedAccountForApp:(id)arg1
+// {
+// 	%log;
+// 	return %orig;
+// 	// return YES;
+// }
 
-%end
+// %end
 
-%hook PBTimelineAttribute
+// %hook PBTimelineAttribute
 
-- (id)content
-{
-    if ([[self type] isEqual:@"emojiSupported"])
-	{
-        return [NSNumber numberWithBool:YES];
-    }
-    else
-	{
-        return %orig;
-    }
-}
+// - (id)content
+// {
+//     if ([[self type] isEqual:@"emojiSupported"])
+// 	{
+//         return [NSNumber numberWithBool:YES];
+//     }
+//     else
+// 	{
+//         return %orig;
+//     }
+// }
 
-%end
+// %end
 
 %end
 
