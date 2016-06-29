@@ -5,6 +5,8 @@
 
 @interface PBSMSTextHelper ()
 
+@property (nonatomic, strong) NSArray *messages;
+
 @end
 
 @implementation PBSMSTextHelper
@@ -37,14 +39,15 @@
     return _presets;
 }
 
-- (NSArray *)messages
+- (void)loadMessages
 {
+	log(@"loadMessages");
     NSArray *arr = [NSArray arrayWithContentsOfFile:messagesFileLocation];
 
     NSMutableArray *finalMessages = [[NSMutableArray alloc] init];
     for (id object in arr)
     {
-    	PBSMSTextMessage *textMessage = [PBSMSTextMessage serializeFromObject:object];
+    	PBSMSTextMessage *textMessage = [PBSMSTextMessage deserializeFromObject:object];
         if (textMessage.isExpired)
 		{
             removeMessageAfterSending(uuid);
@@ -56,7 +59,40 @@
     	}
     }
 
-    return [finalMessages copy];
+    self.messages = [finalMessages copy];
+}
+
+- (void)saveMessages
+{
+	log(@"saveMessages");
+	NSArray *messages = self.messages;
+	NSArray *serializedMessages = [NSMutableArray array];
+
+	for (PBSMSTextMessage *message in messages)
+	{
+		[serializedMessages addObject:[message serializeToDictionary]];
+	}
+
+    [serializedMessages writeToFile:messagesFileLocation];
+}
+
+- (void)messageWasSent:(PBSMSTextMessage *)sentMessage
+{
+	log(@"messageWasSent %@", sentMessage);
+	NSArray *messages = self.messages;
+
+	NSMutableArray *messagesToKeep = [NSMutableArray array];
+	for (PBSMSTextMessage *message in messages)
+	{
+		if (![message.uuid isEqualToString:sentMessage.uuid])
+		{
+			[messagesToKeep addObject:message];
+		}
+	}
+
+	self.messages = [messagesToKeep copy];
+
+	[self saveMessages];
 }
 
 @end

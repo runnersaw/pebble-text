@@ -772,52 +772,6 @@ static NSMutableDictionary *notificationActionsDictionary = [NSMutableDictionary
 static NSMutableDictionary *actionsToPerformDictionary = [NSMutableDictionary dictionary];
 static NSMutableDictionary *bulletinsDict = [NSMutableDictionary dictionary];
 
-// RECENT MESSAGES
-
-static void loadMessagesToSend()
-{
-    NSArray *arr = [NSArray arrayWithContentsOfFile:messagesFileLocation];
-
-    if (arr)
-	{
-        [messages removeAllObjects];
-        [messages addObjectsFromArray:arr];
-    }
-}
-
-static void saveMessageForSending(NSDictionary *message)
-{
-    // check if already in messages to send
-    loadMessagesToSend();
-
-    for (NSDictionary *dict in messages)
-	{
-        if ([[dict objectForKey:@"uuid"] isEqualToString:[message objectForKey:@"uuid"]])
-		{
-            return;
-        }
-    }
-        
-    [messages addObject:message];
-    [messages writeToFile:messagesFileLocation atomically:NO];
-}
-
-static void removeMessageAfterSending(NSString *message)
-{
-    loadMessagesToSend();
-
-    for (int i=[messages count]-1; i>=0; i--)
-	{
-        NSDictionary *dict = [messages objectAtIndex:i];
-        if ([[dict objectForKey:@"uuid"] isEqualToString:message])
-		{
-            [messages removeObjectAtIndex:i];
-        }
-    }
-
-    [messages writeToFile:messagesFileLocation atomically:YES];
-}
-
 // RECENT CONTACTS
 
 static void loadRecentRecipients()
@@ -1258,41 +1212,24 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 	NSArray *messages = [[PBSMSTextHelper sharedHelper] messages];
     for (PBSMSTextMessage *message in messages)
 	{
-        // TODO: find proper conditions
-        if (number == NULL || messageText == NULL || notify == NULL || newNumber == NULL || recordId == NULL)
+        if (message.isRecentContact && !message.isReply)
 		{
-            return;
-        }
-
-        if ([recent boolValue] && ![reply boolValue])
-		{
-            // NSLog(@"PEBBLESMS: sendMessageToNumber");
-            [self sendMessageToNumber:number recordId:recordId withText:messageText notify:[notify boolValue]];
-        //}
-        //else if ([newNumber boolValue])
-		//{
-        //     [self sendMessageToNewNumber:number withText:message notify:[notify boolValue]];
+            [self sendMessageToNumber:message.number recordId:message.recordId withText:message.messageText notify:message.shouldNotify];
         }
         else
 		{
-            // NSLog(@"PEBBLESMS: sendMessageTo number");
-            [self sendMessageTo:recordId number:number withText:messageText notify:[notify boolValue]];
+            [self sendMessageTo:message.recordId number:message.number withText:message.messageText notify:message.shouldNotify];
         }
 
-        removeMessageAfterSending(uuid);
+        [[PBSMSTextHelper sharedHelper] messageWasSent:message];
     }
 }
 
 %new
 - (void)sendMessageTo:(NSNumber *)personId number:(NSString *)number withText:(NSString *)text notify:(BOOL)notify
 {
-    // NSLog(@"PEBBLESMS: sendMessageTo number withText notify");
-    // NSLog(@"PB sendmessageto personId");
-    // NSLog(@"PEBBLESMS: sendMessageTo %@", personId);
     IMPerson *person = [[IMPerson alloc] initWithABRecordID:(ABRecordID)[personId intValue]];
     NSArray *handles = [%c(IMHandle) imHandlesForIMPerson:person];
-    [person release];
-    // NSLog(@"PEBBLESMS: sendMessageTo %@", [handles class]);
 
     NSString *finalPhone = NULL;
     int highestCount = 0;
@@ -1314,7 +1251,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
             int iterate = MIN([phone length], [number length]);
             int i;
             for (i=0;i<iterate; i++)
-	{
+			{
                 int phoneIndex = [phone length] - i - 1;
                 int numberIndex = [number length] - i - 1;
                 if ([phone characterAtIndex:phoneIndex] != [number characterAtIndex:numberIndex])

@@ -4,7 +4,7 @@
 
 @implementation PBSMSTextMessage
 
-+ (PBSMSTextMessage *)serializeFromObject:(id)object
++ (PBSMSTextMessage *)deserializeFromObject:(id)object
 {
 	if (![object isKindOfClass:[NSDictionary class]])
 	{
@@ -37,7 +37,33 @@
     }
 
     PBSMSTextMessage *message = [[PBSMSTextMessage alloc] init];
+    message.number = number;
+    message.messageText = messageText;
+    message.shouldNotify = [shouldNotify boolValue];
+    message.isNewNumber = [isNewNumber boolValue];
+    message.isRecentContact = [isNewNumber boolValue];
+    message.isReply = [isReply boolValue];
+    message.recordId = recordId;
+    message.uuid = uuid;
+    message.expirationDate = expirationDate;
     return message;
+}
+
+- (NSDictionary *)serializeToDictionary
+{
+	NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
+
+	[dictionary setObject:self.number forKey:@"number"];
+	[dictionary setObject:self.number forKey:@"message"];
+	[dictionary setObject:self.number forKey:@"notify"];
+	[dictionary setObject:self.number forKey:@"newNumber"];
+	[dictionary setObject:self.number forKey:@"isRecentContact"];
+	[dictionary setObject:self.number forKey:@"isReply"];
+	[dictionary setObject:self.number forKey:@"recordId"];
+	[dictionary setObject:self.number forKey:@"uuid"];
+	[dictionary setObject:self.number forKey:@"expirationDate"];
+
+    return dictionary;
 }
 
 - (BOOL)isExpired

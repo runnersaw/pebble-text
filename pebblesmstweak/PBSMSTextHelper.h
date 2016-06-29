@@ -1,4 +1,4 @@
-
+@class PBSMSTextMessage;
 
 @interface PBSMSTextHelper : NSObject
 
@@ -8,5 +8,9 @@
 @property (nonatomic, readonly) NSArray *messages;
 
 + (PBSMSTextHelper *)sharedHelper;
+
+- (void)loadMessages;
+- (void)saveMessages;
+- (void)messageWasSent:(PBSMSTextMessage *)message;
 
 @end
