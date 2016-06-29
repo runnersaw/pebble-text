@@ -1943,18 +1943,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 %new
 - (NSMutableDictionary *)getPresets
 {
-	return [NSMutableDictionary dictionaryWithDictionary:@{ PRESETS_KEY : @[ @"HI", @"HI" ] }];
-    // NSLog(@"PEBBLESMS: getPresets");
-    // loadPrefs();
-
-    // // NSLog(@"PEBBLESMS: loadPrefs4 %@", presets);
-    // NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-
-    // // NSLog(@"PEBBLESMS: loadPrefs5");
-    // [dict setObject:[presets componentsJoinedByString:@"\n"] forKey:PRESETS_KEY];
-    
-    // // NSLog(@"PEBBLESMS: loadPrefs6");
-    // return dict;
+	return [NSMutableDictionary dictionaryWithDictionary:@{ PRESETS_KEY : [PBSMSTextHelper sharedHelper].presets }];
 }
 
 - (void)appMessagesPushUpdate:(id)fp8 onSent:(id)fp1001 uuid:(id)fp12 launcher:(id)fp16
@@ -2217,8 +2206,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     id r = %orig;
     if ([(NSString *)fp8 isEqualToString:@"com.apple.MobileSMS"])
 	{
-        [presets removeAllObjects];
-        [presets addObjectsFromArray:(NSArray *)r];
+        [PBSMSTextHelper sharedHelper].presets = (NSArray *)r;
     }
     return r; 
 }
@@ -2226,8 +2214,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 {
     if ([(NSString *)fp12 isEqualToString:@"com.apple.MobileSMS"])
 	{
-        [presets removeAllObjects];
-        [presets addObjectsFromArray:(NSArray *)fp8];
+        [PBSMSTextHelper sharedHelper].presets = (NSArray *)r;
     }
     %orig; 
 }
@@ -2238,16 +2225,14 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 - (void)handleActionWithActionIdentifier:(unsigned char)fp8 attributes:(id)fp12
 {
-	NSLog(@"PBSendSMSActionHandler handleActionWithActionIdentifier %@ %@", @( fp8 ), fp12);
+	log(@"handleActionWithActionIdentifier %@ %@", @( fp8 ), fp12);
     if (fp8 == 2)
 	{
-        // NSLog(@"HANDLING");
         NSData *d = [(PBTimelineItemAttributeBlob *)[(NSArray *)fp12 objectAtIndex:0] content];
         NSString *reply = [[NSString alloc] initWithData:d encoding:NSUTF8StringEncoding];
         PBContact *contact = [[self addressBookQuerySession] selectedContact];
         PBPhoneNumber *pbPhoneNumber = (PBPhoneNumber *)[(PBLabeledValue *)[[self addressBookQuerySession] selectedLabeledValue] value];
         NSString *phone = [pbPhoneNumber getStringRepresentationForTextSender];
-        // NSLog(@"Wants to send reply with content '%@' to '%@' at number '%@'", reply, contact, phone);
         PBTimelineAttributeContentLocalizedString *localString = [[%c(PBTimelineAttributeContentLocalizedString) alloc] initWithLocalizationKey:@"Sending..."];
         PBTimelineAttribute *attr = [%c(PBTimelineAttribute) attributeWithType:@"subtitle" content:localString];
         [(PBANCSActionHandler *)[self delegate] notificationHandler:self didSendResponse:15 withAttributes:@[attr] actions:NULL];
@@ -2265,7 +2250,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 -(void)handleAction:(unsigned char)arg1 forItemIdentifier:(id)arg2 attributes:(id)arg3
 {
-	NSLog(@"handleAction %@ %@ %@", @( arg1 ), arg2, arg3);
+	log(@"handleAction %@ %@ %@", @( arg1 ), arg2, arg3);
     if (arg1 == 2)
 	{
         NSData *responseData = [(PBTimelineItemAttributeBlob *)[self responseFromAttributes:arg3] content];
