@@ -37,20 +37,20 @@
 #define GETTING_PRESETS_STATE [NSNumber numberWithInt:7]
 #define SENDING_FINAL_MESSAGE_STATE [NSNumber numberWithInt:8]
 
-extern NSString *sendMessageCommand = @"messageNeedsSending";
-extern NSString *openMessagesCommand = @"messagesNeedsOpening";
-extern NSString *performNotificationActionCommand = @"performNotificationAction";
-extern NSString *messageSendNotification = @"pebbleMessageSend";
-extern NSString *messageFailedNotification = @"pebbleMessageFailed";
+extern NSString *sendMessageCommand;
+extern NSString *openMessagesCommand;
+extern NSString *performNotificationActionCommand;
+extern NSString *messageSendNotification;
+extern NSString *messageFailedNotification;
 
-extern NSString *rocketbootstrapSmsCenterName = @"com.sawyervaughan.pebblesms.sms";
-extern NSString *rocketbootstrapSpringboardCenterName = @"com.sawyervaughan.pebblesms.springboard";
-extern NSString *distributedCenterName = @"com.sawyervaughan.pebblesms.pebble";
+extern NSString *rocketbootstrapSmsCenterName;
+extern NSString *rocketbootstrapSpringboardCenterName;
+extern NSString *distributedCenterName;
 
-extern NSString *notificationsFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.notifications.plist";
-extern NSString *actionsToPerformFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.perform-action.plist";
-extern NSString *messagesFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.messages.plist";
-extern NSString *recentFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.recent.plist";
+extern NSString *notificationsFileLocation;
+extern NSString *actionsToPerformFileLocation;
+extern NSString *messagesFileLocation;
+extern NSString *recentFileLocation;
 
 #ifdef DEBUG
 	#define log( s, ... ) NSLog( @"<%@:%d> %@", [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__,  [NSString stringWithFormat:(s), ##__VA_ARGS__] )
