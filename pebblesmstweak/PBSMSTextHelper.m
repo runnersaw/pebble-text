@@ -65,7 +65,7 @@
 {
 	log(@"saveMessages");
 	NSArray *messages = self.messages;
-	NSArray *serializedMessages = [NSMutableArray array];
+	NSMutableArray *serializedMessages = [NSMutableArray array];
 
 	for (PBSMSTextMessage *message in messages)
 	{
