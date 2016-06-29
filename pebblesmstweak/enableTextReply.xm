@@ -233,7 +233,7 @@
 {
 	%log;
 	BOOL r = %orig;
-	log(@"%@", r);
+	log(@"%d", r);
 	return r;
 }
 
@@ -241,7 +241,7 @@
 {
 	%log;
 	BOOL r = %orig;
-	log(@"%@", r);
+	log(@"%d", r);
 	return r;
 }
 
