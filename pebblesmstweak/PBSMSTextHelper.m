@@ -48,14 +48,13 @@
     for (id object in arr)
     {
     	PBSMSTextMessage *textMessage = [PBSMSTextMessage deserializeFromObject:object];
-        if (textMessage.isExpired)
-		{
-            removeMessageAfterSending(uuid);
-            return;
-        }
-    	if (textMessage)
+    	if (textMessage && !textMessage.isExpired)
     	{
     		[finalMessages addObject:textMessage];
+    	}
+    	if (textMessage.isExpired)
+    	{
+    		[self removeMessage:textMessage];
     	}
     }
 
@@ -73,7 +72,7 @@
 		[serializedMessages addObject:[message serializeToDictionary]];
 	}
 
-    [serializedMessages writeToFile:messagesFileLocation];
+    [serializedMessages writeToFile:messagesFileLocation atomically:YES];
 }
 
 - (void)saveMessageToSend:(PBSMSTextMessage *)message
@@ -83,7 +82,7 @@
 	NSMutableArray *messages = [NSMutableArray arrayWithArray:self.messages];
 	[messages addObject:message];
 
-	self.messages = [messages copy]
+	self.messages = [messages copy];
 }
 
 - (void)messageWasSent:(PBSMSTextMessage *)sentMessage
@@ -95,6 +94,25 @@
 	for (PBSMSTextMessage *message in messages)
 	{
 		if (![message.uuid isEqualToString:sentMessage.uuid])
+		{
+			[messagesToKeep addObject:message];
+		}
+	}
+
+	self.messages = [messagesToKeep copy];
+
+	[self saveMessages];
+}
+
+- (void)removeMessage:(PBSMSTextMessage *)removedMessage
+{
+	log(@"removeMessage %@", removedMessage);
+	NSArray *messages = self.messages;
+
+	NSMutableArray *messagesToKeep = [NSMutableArray array];
+	for (PBSMSTextMessage *message in messages)
+	{
+		if (![message.uuid isEqualToString:removedMessage.uuid])
 		{
 			[messagesToKeep addObject:message];
 		}
