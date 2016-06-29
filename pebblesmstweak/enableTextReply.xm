@@ -121,14 +121,14 @@
 
 %group PebbleTextReply
 
-%hook PBLinkedAccountExtendedCredentials
+// %hook PBLinkedAccountExtendedCredentials
 
-- (id)accountData {
-	// %log;
-	return @"JWE:TESTEST";
-}
+// - (id)accountData {
+// 	// %log;
+// 	return @"JWE:TESTEST";
+// }
 
-%end
+// %end
 
 %hook PBSMSReplyManager
 
@@ -201,24 +201,14 @@
 	return d;
 }
 
-- (id)apiData {
-	// %log;
-	return @"JWE:test";
-}
+// - (id)apiData {
+// 	// %log;
+// 	return @"JWE:test";
+// }
 
 %end
 
 %hook PBLinkedAccountsManager
-
-+ (id) providerToString:(unsigned char)arg {
-	// %log;
-	return @"vzw";
-}
-
-+ (unsigned char) stringToProvider:(id)arg {
-	// %log;
-	return 1;
-}
 
 - (BOOL) hasLinkedAccountForProvider:(unsigned char)arg {
 	// %log;
@@ -236,8 +226,16 @@
 }
 
 -(BOOL)hasLinkedAccountForApp:(id)arg1 {
-	// %log;
-	return YES;
+	if ([arg1 isKindOfClass:[%c(PBMobilePhoneApp) class]])
+	{
+		return YES;
+	}
+	if ([arg1 isKindOfClass:[%c(PBMobileSMSApp) class]])
+	{
+		return YES;
+	}
+
+	return %orig;
 }
 
 %end
