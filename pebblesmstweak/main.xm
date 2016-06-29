@@ -551,6 +551,40 @@
 
 @end
 
+// pebble 3.14
+@protocol PBNotificationActionHandler <NSObject>
++(id)handlerWithNotificationSourceIdentifier:(id)arg1 delegate:(id)arg2;
+-(void)startHandlingInvokeActionMessage:(id)arg1;
+-(void)handleActionWithActionIdentifier:(unsigned char)arg1 attributes:(id)arg2;
+-(NSString *)notificationSourceIdentifier;
+-(id<PBNotificationActionHandlerDelegate>)delegate;
+@end
+
+// pebble 3.14
+@interface PBEmailNotificationActionHandler : NSObject
++(id)handlerWithNotificationSourceIdentifier:(id)arg1 delegate:(id)arg2 ;
+-(void)startHandlingInvokeActionMessage:(id)arg1 ;
+-(void)handleActionWithActionIdentifier:(unsigned char)arg1 attributes:(id)arg2 ;
+-(NSString *)notificationSourceIdentifier;
+-(PBLinkedAccountsManager *)linkedAccountsManager;
+-(id)initWithNotificationSourceIdentifier:(id)arg1 linkedAccountsManager:(id)arg2 ;
+-(id)emailNotification;
+-(PBEmailApp *)emailApp;
+-(PBTimelineInvokeANCSActionMessage *)currentANCSActionMessage;
+-(void)setCurrentANCSActionMessage:(PBTimelineInvokeANCSActionMessage *)arg1 ;
+-(BOOL)detectAndSendError;
+-(void)showPerformingActionScreenOnWatchForAction:(unsigned long long)arg1 ;
+-(void)performEmailAction:(unsigned long long)arg1 ;
+-(void)replyToEmailWithMessage:(id)arg1 ;
+-(PBANCSEmailNotification *)ANCSEmailNotification;
+-(void)saveANCSActionMessage:(id)arg1 ;
+-(id)emailsFromAddressBookMatchingQuery:(id)arg1 ;
+-(void)sendRequestWithClient:(id)arg1 ;
+-(void)setDelegate:(id<PBNotificationActionHandlerDelegate>)arg1 ;
+-(id)init;
+-(id<PBNotificationActionHandlerDelegate>)delegate;
+@end
+
 @interface PBANCSActionHandler
 +(id)actionHandlerWithDelegate:(id)arg1 ;
 -(void)dealloc;
@@ -558,17 +592,22 @@
 -(void)setHandlingIdentifier:(NSUUID *)arg1 ;
 -(void)sendResponse:(unsigned char)arg1 withAttributes:(id)arg2 actions:(id)arg3 forItemIdentifier:(id)arg4 ;
 -(NSDictionary *)actionHandlersByAppIdentifier;
--(void)setCurrentActionHandler:(id)arg1 ;
--(id)currentActionHandler;
+-(void)setCurrentActionHandler:(id<PBNotificationActionHandler>)arg1 ;
+-(id<PBNotificationActionHandler>)currentActionHandler;
 -(void)handleActionWithActionIdentifier:(unsigned char)arg1 attributes:(id)arg2 ;
 -(id)backgroundColorForNotificationHandler:(id)arg1 ;
--(id)timelineWatchService;
+-(PBTimelineWatchService *)timelineWatchService;
 -(void)notificationHandler:(id)arg1 didSendResponse:(unsigned char)arg2 withAttributes:(id)arg3 actions:(id)arg4 ;
 -(void)notificationHandler:(id)arg1 didSendError:(id)arg2 withTitle:(id)arg3 icon:(id)arg4 ;
 -(BOOL)isHandlingNotificationWithIdentifier:(id)arg1 ;
 -(void)handleInvokeANCSActionMessage:(id)arg1 ;
--(id)delegate;
+-(id<PBANCSActionHandlerDelegate>)delegate;
 -(id)initWithDelegate:(id)arg1 ;
+
+// pebble 3.14
++(id)bulletinIdentifierForInvokeANCSMessage:(id)arg1 ;
++(void)performReply:(id)arg1 forAction:(id)arg2 andBulletinID:(id)arg3 ;
++(void)performAction:(id)arg1 forBulletinID:(id)arg2 ;
 @end
 
 @interface PBSMSNotificationActionHandler
@@ -1936,6 +1975,154 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     %orig; 
 }
 
+%end
+
+%hook PBEmailNotificationActionHandler
++(id)handlerWithNotificationSourceIdentifier:(id)arg1 delegate:(id)arg2{
+	%log;
+	id r = %orig;
+	NSLog(@"%@",r);
+	return r;
+}
+-(void)startHandlingInvokeActionMessage:(id)arg1{
+	%log;
+	return %orig;
+}
+-(void)handleActionWithActionIdentifier:(unsigned char)arg1 attributes:(id)arg2{
+	%log;
+	return %orig;
+}
+-(NSString *)notificationSourceIdentifier{
+	%log;
+	id r = %orig;
+	NSLog(@"%@",r);
+	return r;
+}
+-(id)linkedAccountsManager{
+	%log;
+	id r = %orig;
+	NSLog(@"%@",r);
+	return r;
+}
+-(id)initWithNotificationSourceIdentifier:(id)arg1 linkedAccountsManager:(id)arg2{
+	%log;
+	id r = %orig;
+	NSLog(@"%@",r);
+	return r;
+}
+-(id)emailNotification{
+	%log;
+	id r = %orig;
+	NSLog(@"%@",r);
+	return r;
+}
+-(id)emailApp{
+	%log;
+	id r = %orig;
+	NSLog(@"%@",r);
+	return r;
+}
+-(id)currentANCSActionMessage{
+	%log;
+	id r = %orig;
+	NSLog(@"%@",r);
+	return r;
+}
+-(void)setCurrentANCSActionMessage:(id)arg1{
+	%log;
+	return %orig;
+}
+-(void)showPerformingActionScreenOnWatchForAction:(unsigned long long)arg1{
+	%log;
+	return %orig;
+}
+-(void)performEmailAction:(unsigned long long)arg1{
+	%log;
+	return %orig;
+}
+-(void)replyToEmailWithMessage:(id)arg1{
+	%log;
+	return %orig;
+}
+-(id)ANCSEmailNotification{
+	%log;
+	id r = %orig;
+	NSLog(@"%@",r);
+	return r;
+}
+-(void)saveANCSActionMessage:(id)arg1{
+	%log;
+	return %orig;
+}
+-(void)sendRequestWithClient:(id)arg1{
+	%log;
+	return %orig;
+}
+-(void)setDelegate:(id<PBNotificationActionHandlerDelegate>)arg1{
+	%log;
+	return %orig;
+}
+%end
+
+%hook PBANCSActionHandler
++(id)actionHandlerWithDelegate:(id)arg1{
+	%log;
+	id r = %orig;
+	NSLog(@"%@",r);
+	return r;
+}
+-(void)sendResponse:(unsigned char)arg1 withAttributes:(id)arg2 actions:(id)arg3 forItemIdentifier:(id)arg4{
+	%log;
+	return %orig;
+}
+-(NSDictionary *)actionHandlersByAppIdentifier{
+	%log;
+	id r = %orig;
+	NSLog(@"%@",r);
+	return r;
+}
+-(void)setCurrentActionHandler:(id<PBNotificationActionHandler>)arg1{
+	%log;
+	return %orig;
+}
+-(id<PBNotificationActionHandler>)currentActionHandler{
+	%log;
+	id r = %orig;
+	NSLog(@"%@",r);
+	return r;
+}
+-(void)handleActionWithActionIdentifier:(unsigned char)arg1 attributes:(id)arg2{
+	%log;
+	return %orig;
+}
+-(void)notificationHandler:(id)arg1 didSendResponse:(unsigned char)arg2 withAttributes:(id)arg3 actions:(id)arg4{
+	%log;
+	return %orig;
+}
+-(void)notificationHandler:(id)arg1 didSendError:(id)arg2 withTitle:(id)arg3 icon:(id)arg4{
+	%log;
+	return %orig;
+}
+-(void)handleInvokeANCSActionMessage:(id)arg1{
+	%log;
+	return %orig;
+}
+
+// pebble 3.14
++(id)bulletinIdentifierForInvokeANCSMessage:(id)arg1{
+	%log;
+	id r = %orig;
+	NSLog(@"%@",r);
+	return r;
+}
++(void)performReply:(id)arg1 forAction:(id)arg2 andBulletinID:(id)arg3{
+	%log;
+	return %orig;
+}
++(void)performAction:(id)arg1 forBulletinID:(id)arg2{
+	%log;
+	return %orig;
+}
 %end
 
 %hook PBSendSMSActionHandler
