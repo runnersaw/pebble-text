@@ -232,7 +232,7 @@
 - (BOOL) hasLinkedAccountForProvider:(unsigned char)arg
 {
 	%log;
-	id r = %orig;
+	BOOL r = %orig;
 	log(@"%@", r);
 	return r;
 }
@@ -240,7 +240,7 @@
 - (BOOL) isProviderEnabled:(unsigned char)arg
 {
 	%log;
-	id r = %orig;
+	BOOL r = %orig;
 	log(@"%@", r);
 	return r;
 }
