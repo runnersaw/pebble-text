@@ -2214,7 +2214,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 {
     if ([(NSString *)fp12 isEqualToString:@"com.apple.MobileSMS"])
 	{
-        [PBSMSTextHelper sharedHelper].presets = (NSArray *)r;
+        [PBSMSTextHelper sharedHelper].presets = (NSArray *)fp8;
     }
     %orig; 
 }
