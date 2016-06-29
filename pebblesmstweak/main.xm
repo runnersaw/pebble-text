@@ -71,6 +71,7 @@
 
 // new
 - (void)sendMessagesForTextSender;
+- (void)sendMessageForTextSender:(PBSMSTextMessage *)message;
 - (void)sendMessageTo:(NSNumber *)personId number:(NSString *)number withText:(NSString *)text notify:(BOOL)notify;
 - (void)sendMessageToNumber:(NSString *)number recordId:(NSNumber *)recordId withText:(NSString *)text notify:(BOOL)notify;
 - (void)sendMessageToNewNumber:(NSString *)number withText:(NSString *)text notify:(BOOL)notify;
