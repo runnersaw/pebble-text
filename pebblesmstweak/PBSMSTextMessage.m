@@ -61,15 +61,15 @@
 	self = [super init];
 	if (self)
 	{
-	    message.number = number;
-	    message.messageText = messageText;
-	    message.uuid = uuid;
-	    message.shouldNotify = shouldNotify;
-	    message.isNewNumber = isNewNumber;
-	    message.isRecentContact = isNewNumber;
-	    message.isReply = isReply;
-	    message.recordId = recordId;
-	    message.expirationDate = expirationDate;
+	    self.number = number;
+	    self.messageText = messageText;
+	    self.uuid = uuid;
+	    self.shouldNotify = shouldNotify;
+	    self.isNewNumber = isNewNumber;
+	    self.isRecentContact = isNewNumber;
+	    self.isReply = isReply;
+	    self.recordId = recordId;
+	    self.expirationDate = expirationDate;
 	}
 	return self;
 }
