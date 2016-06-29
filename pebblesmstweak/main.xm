@@ -10,14 +10,12 @@
 #import <AddressBook/AddressBook.h>
 #import <AppSupport/CPDistributedMessagingCenter.h>
 #import <UIKit/UIApplication.h>
-#import "rocketbootstrap.h"
 #import <substrate.h>
+#import "rocketbootstrap.h"
 
 // My headers
 
 #import "PBSMSHelper.h"
-#import <PBSMSClasses/PBSMSTextMessage.h>
-#import <PBSMSClasses/PBSMSTextHelper.h>
 #import "PBSMSTextMessage.h"
 #import "PBSMSTextHelper.h"
 
