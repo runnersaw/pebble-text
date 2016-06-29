@@ -24,6 +24,7 @@
 	shouldNotify:(BOOL)shouldNotify
 	isNewNumber:(BOOL)isNewNumber
 	expirationDate:(NSDate *)expirationDate;
+	
 - (NSDictionary *)serializeToDictionary;
 
 @end

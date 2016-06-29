@@ -131,51 +131,51 @@
 
 // %end
 
-// %hook PBSMSReplyManager
+%hook PBSMSReplyManager
 
-// - (id)SMSProviders
-// {
-// 	%log;
-// 	return [NSSet setWithArray:@[[NSNumber numberWithInt:1]]];
-// }
+- (id)SMSProviders
+{
+	%log;
+	return [NSSet setWithArray:@[[NSNumber numberWithInt:1]]];
+}
 
-// - (void)setHasLinkedSMSAccount:(BOOL)fp8
-// {
-// 	%log;
-// 	%orig(YES);
-// }
+- (void)setHasLinkedSMSAccount:(BOOL)fp8
+{
+	%log;
+	%orig(YES);
+}
 
-// - (BOOL)hasLinkedSMSAccount
-// {
-// 	%log;
-// 	return YES;
-// }
-// - (unsigned char)linkedSMSProvider
-// {
-// 	%log;
-// 	return 1;
-// }
-// - (void)disableSMSActions
-// {
-// 	%log;
-// 	[self enableSMSActions];
-// }
-// - (BOOL)isCarrierProviderEnabled
-// {
-// 	%log;
-// 	return YES;
-// }
-// - (void)setSMSActionsEnabled:(BOOL)fp8
-// {
-// 	%log;
-// 	%orig(YES);
-// }
-// - (unsigned char)providerFromCarrier
-// {
-// 	%log;
-// 	return 1;
-// }
-// %end
+- (BOOL)hasLinkedSMSAccount
+{
+	%log;
+	return YES;
+}
+- (unsigned char)linkedSMSProvider
+{
+	%log;
+	return 1;
+}
+- (void)disableSMSActions
+{
+	%log;
+	[self enableSMSActions];
+}
+- (BOOL)isCarrierProviderEnabled
+{
+	%log;
+	return YES;
+}
+- (void)setSMSActionsEnabled:(BOOL)fp8
+{
+	%log;
+	%orig(YES);
+}
+- (unsigned char)providerFromCarrier
+{
+	%log;
+	return 1;
+}
+%end
 
 // %hook PBLinkedAccount
 
