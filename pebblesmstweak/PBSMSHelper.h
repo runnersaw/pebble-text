@@ -59,6 +59,6 @@ extern NSString *recentFileLocation;
 #endif
 
 @interface NSDictionary (PBSMS)
-- (id)safeObjectForKey:(id)key ofClass:(Class)class;
+- (id)safeObjectForKey:(id)key ofClass:(id)class;
 @end
 

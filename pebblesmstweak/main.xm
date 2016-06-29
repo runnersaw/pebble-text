@@ -1273,12 +1273,6 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 	NSArray *messages = [[PBSMSTextHelper sharedHelper] messages];
     for (PBSMSTextMessage *message in messages)
 	{
-        if ([expirationDate compare:[NSDate date]] == NSOrderedAscending)
-		{
-            removeMessageAfterSending(uuid);
-            return;
-        }
-
         // TODO: find proper conditions
         if (number == NULL || messageText == NULL || notify == NULL || newNumber == NULL || recordId == NULL)
 		{
