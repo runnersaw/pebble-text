@@ -8,7 +8,7 @@ TARGET_IPHONEOS_DEPLOYMENT_VERSION := 8.0
 include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = pebblesmstweak
-pebblesmstweak_FILES = main.xm enableTextReply.xm
+pebblesmstweak_FILES = main.xm enableTextReply.xm PBSMSPebbleHelper.xm PBSMSMessagesHelper.xm PBSMSSpringboardHelper.xm
 pebblesmstweak_FRAMEWORKS = UIKit AddressBook
 pebblesmstweak_PRIVATE_FRAMEWORKS = CoreTelephony ChatKit AppSupport IMCore IMFoundation
 pebblesmstweak_LDFLAGS += -Wl,-segalign,4000

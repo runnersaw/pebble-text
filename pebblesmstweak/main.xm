@@ -12,7 +12,10 @@
 #import <UIKit/UIApplication.h>
 #import "rocketbootstrap.h"
 #import <substrate.h>
-//#import <objc/runtime.h>
+
+// My headers
+
+#import "PBSMSHelper.h"
 
 // NS EXTENSIONS
 
@@ -46,6 +49,16 @@
 - (void)handleMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo;
 @end
 
+@interface SBBulletinBannerController : NSObject
+@property(readonly, copy) NSString *debugDescription;
+@property(readonly, copy) NSString *description;
++ (id)sharedInstanceIfExists;
++ (id)sharedInstance;
++ (id)_sharedInstanceCreateIfNecessary:(_Bool)arg1;
+- (void)_showTestBanner:(_Bool)arg1;
+- (id)init;
+@end
+
 // SMS STUFF HEADERS
 
 @interface CKMessage : NSObject
@@ -53,6 +66,8 @@
 
 @interface SMSApplication : UIApplication
 - (BOOL)application:(id)arg1 didFinishLaunchingWithOptions:(id)arg2;
+
+// new
 - (void)sendMessagesForTextSender;
 - (void)sendMessageTo:(NSNumber *)personId number:(NSString *)number withText:(NSString *)text notify:(BOOL)notify;
 - (void)sendMessageToNumber:(NSString *)number recordId:(NSNumber *)recordId withText:(NSString *)text notify:(BOOL)notify;
@@ -69,8 +84,6 @@
 -(NSArray *)participants;
 -(IMHandle *)recipient;
 -(IMMessage *)lastMessage;
-- (void)_postNotification:(id)arg1 userInfo:(id)arg2;
-- (void)_postNotification:(id)arg1 userInfo:(id)arg2 shouldLog:(BOOL)arg3;
 @end
 
 @interface CKConversation (PebbleSMS)
@@ -89,101 +102,31 @@
 // BULLETIN BOARD
 
 @interface BBBulletin : NSObject
-
 + (id)addBulletinToCache:(id)arg1;
 + (id)bulletinReferenceDateFromDate:(id)arg1;
 + (id)bulletinWithBulletin:(id)arg1;
-+ (id)copyCachedBulletinWithBulletinID:(id)arg1;
-+ (void)removeBulletinFromCache:(id)arg1;
-+ (BOOL)supportsSecureCoding;
-+ (id)validSortDescriptorsFromSortDescriptors:(id)arg1;
-+ (void)vetSortDescriptor:(id)arg1;
-
-- (id)_actionKeyForType:(int)arg1;
-- (id)_actionWithID:(id)arg1 fromActions:(id)arg2;
-- (id)_allActions;
-- (id)_allSupplementaryActions;
-- (id)_responseForAction:(id)arg1;
-- (id)_safeDescription:(BOOL)arg1;
-- (id)_sectionParameters;
-- (id)_sectionSubtypeParameters;
-- (id)accessoryIconMask;
 - (id)acknowledgeAction;
 - (id)actionForResponse:(id)arg1;
 - (id)actionWithIdentifier:(id)arg1;
 - (id)actions;
-- (void)addLifeAssertion:(id)arg1;
 - (void)addObserver:(id)arg1;
-- (int)addressBookRecordID;
-- (id)alertSuppressionAppIDs;
-- (id)alertSuppressionAppIDs_deprecated;
-- (id)alertSuppressionContexts;
-- (BOOL)allowsAddingToLockScreenWhenUnlocked;
-- (BOOL)allowsAutomaticRemovalFromLockScreen;
-- (id)alternateAction;
-- (id)alternateActionLabel;
-- (id)attachments;
-- (id)attachmentsCreatingIfNecessary:(BOOL)arg1;
-- (id)bannerAccessoryRemoteServiceBundleIdentifier;
-- (id)bannerAccessoryRemoteViewControllerClassName;
 - (id)bulletinID;
 - (id)bulletinVersionID;
 - (id)buttons;
-- (BOOL)canBeSilencedByMenuButtonPress;
-- (BOOL)clearable;
-- (BOOL)coalescesWhenLocked;
-- (id)composedAttachmentImage;
-- (id)composedAttachmentImageForKey:(id)arg1;
-- (id)composedAttachmentImageForKey:(id)arg1 withObserver:(id)arg2;
-- (id)composedAttachmentImageWithObserver:(id)arg1;
 - (id)content;
 - (id)context;
-- (unsigned int)counter;
 - (id)date;
-- (int)dateFormatStyle;
-- (BOOL)dateIsAllDay;
-- (void)dealloc;
-- (id)defaultAction;
 - (id)description;
 - (id)dismissAction;
 - (id)dismissalID;
-- (void)encodeWithCoder:(id)arg1;
-- (id)endDate;
-- (id)expirationDate;
-- (unsigned int)expirationEvents;
-- (id)expireAction;
-- (BOOL)expiresOnPublisherDeath;
-- (id)firstValidObserver;
-- (id)fullAlternateActionLabel;
-- (id)fullUnlockActionLabel;
-- (BOOL)hasEventDate;
-- (int)iPodOutAlertType;
-- (BOOL)ignoresQuietMode;
-- (BOOL)inertWhenLocked;
 - (id)init;
-- (id)initWithCoder:(id)arg1;
-- (BOOL)isLoading;
-- (id)lastInterruptDate;
-- (id)lifeAssertions;
 - (id)message;
 - (unsigned int)messageNumberOfLines;
-- (id)missedBannerDescriptionFormat;
-- (id)modalAlertContent;
-- (unsigned int)numberOfAdditionalAttachments;
-- (unsigned int)numberOfAdditionalAttachmentsOfType:(int)arg1;
 - (id)observers;
-- (BOOL)orderSectionUsingRecencyDate;
-- (id)parentSectionID;
-- (BOOL)playsSoundForModify;
-- (BOOL)preservesUnlockActionCase;
-- (BOOL)preventLock;
-- (int)primaryAttachmentType;
 - (id)publicationDate;
 - (id)publisherBulletinID;
 - (id)publisherMatchID;
 - (id)raiseAction;
-- (unsigned int)realertCount;
-- (unsigned int)realertCount_deprecated;
 - (id)recencyDate;
 - (id)recordID;
 - (id)responseForAcknowledgeAction;
@@ -194,115 +137,42 @@
 - (id)responseForRaiseAction;
 - (id)responseForSnoozeAction;
 - (id)responseSendBlock;
-- (id)safeDescription;
-- (id)secondaryContentRemoteServiceBundleIdentifier;
-- (id)secondaryContentRemoteViewControllerClassName;
 - (id)section;
 - (id)sectionDisplayName;
-- (BOOL)sectionDisplaysCriticalBulletins;
 - (id)sectionID;
 - (id)sectionIcon;
 - (int)sectionSubtype;
-- (void)setAccessoryIconMask:(id)arg1;
 - (void)setAcknowledgeAction:(id)arg1;
 - (void)setActions:(id)arg1;
-- (void)setAddressBookRecordID:(int)arg1;
-- (void)setAlertSuppressionAppIDs_deprecated:(id)arg1;
-- (void)setAlertSuppressionContexts:(id)arg1;
-- (void)setAlternateAction:(id)arg1;
-- (void)setAttachments:(id)arg1;
 - (void)setBulletinID:(id)arg1;
 - (void)setBulletinVersionID:(id)arg1;
 - (void)setButtons:(id)arg1;
-- (void)setClearable:(BOOL)arg1;
 - (void)setContent:(id)arg1;
 - (void)setContext:(id)arg1;
-- (void)setCounter:(unsigned int)arg1;
 - (void)setDate:(id)arg1;
-- (void)setDateFormatStyle:(int)arg1;
-- (void)setDateIsAllDay:(BOOL)arg1;
 - (void)setDefaultAction:(id)arg1;
 - (void)setDismissAction:(id)arg1;
 - (void)setDismissalID:(id)arg1;
-- (void)setEndDate:(id)arg1;
-- (void)setExpirationDate:(id)arg1;
-- (void)setExpirationEvents:(unsigned int)arg1;
-- (void)setExpireAction:(id)arg1;
-- (void)setExpiresOnPublisherDeath:(BOOL)arg1;
-- (void)setHasEventDate:(BOOL)arg1;
-- (void)setLastInterruptDate:(id)arg1;
-- (void)setLifeAssertions:(id)arg1;
-- (void)setLoading:(BOOL)arg1;
 - (void)setMessage:(id)arg1;
-- (void)setModalAlertContent:(id)arg1;
 - (void)setObservers:(id)arg1;
-- (void)setParentSectionID:(id)arg1;
 - (void)setPublicationDate:(id)arg1;
 - (void)setPublisherBulletinID:(id)arg1;
 - (void)setRaiseAction:(id)arg1;
-- (void)setRealertCount_deprecated:(unsigned int)arg1;
-- (void)setRecencyDate:(id)arg1;
 - (void)setRecordID:(id)arg1;
 - (void)setSection:(id)arg1;
 - (void)setSectionID:(id)arg1;
 - (void)setSectionSubtype:(int)arg1;
-- (void)setShowsMessagePreview:(BOOL)arg1;
-- (void)setSnoozeAction:(id)arg1;
-- (void)setSound:(id)arg1;
-- (void)setStarkBannerContent:(id)arg1;
-- (void)setSubsectionIDs:(id)arg1;
 - (void)setSubtitle:(id)arg1;
 - (void)setSupplementaryActionsByLayout:(id)arg1;
-- (void)setTimeZone:(id)arg1;
 - (void)setTitle:(id)arg1;
-- (void)setUniversalSectionID:(id)arg1;
-- (void)setUnlockActionLabelOverride:(id)arg1;
-- (void)setUsesExternalSync:(BOOL)arg1;
-- (void)setWantsFullscreenPresentation:(BOOL)arg1;
 - (id)shortDescription;
-- (BOOL)showsContactPhoto;
-- (BOOL)showsDateInFloatingLockScreenAlert;
-- (BOOL)showsMessagePreview;
-- (BOOL)showsSubtitle;
-- (BOOL)showsUnreadIndicatorForNoticesFeed;
-- (id)snoozeAction;
-- (id)sound;
-- (id)starkBannerContent;
 - (id)subsectionIDs;
 - (id)subtitle;
-- (unsigned int)subtypePriority;
 - (id)supplementaryActions;
 - (id)supplementaryActionsByLayout;
 - (id)supplementaryActionsForLayout:(int)arg1;
-- (BOOL)suppressesAlertsWhenAppIsActive;
-- (BOOL)suppressesMessageForPrivacy;
-- (BOOL)suppressesTitle;
-- (id)syncHash;
-- (id)timeZone;
-- (id)tintColor;
 - (id)title;
-- (id)topic;
 - (id)uniqueIdentifier;
-- (id)universalSectionID;
-- (id)unlockActionLabel;
-- (id)unlockActionLabelOverride;
-- (BOOL)usesExternalSync;
-- (BOOL)usesVariableLayout;
-- (BOOL)visuallyIndicatesWhenDateIsInFuture;
-- (BOOL)wantsFullscreenPresentation;
-
-// Image: /System/Library/PrivateFrameworks/BulletinDistributorCompanion.framework/BulletinDistributorCompanion
-
-- (id)dateOrRecencyDate;
-- (BOOL)matchesPublisherBulletinID:(id)arg1 andRecordID:(id)arg2;
-- (id)publishDate;
-- (id)sectionMatchID;
-
-// Image: /System/Library/PrivateFrameworks/SpringBoardUI.framework/SpringBoardUI
-
-+ (void)killSounds;
-
-- (id)_defaultActionWithFilter:(id)arg1;
 - (BOOL)_isPushOrLocalNotification;
 - (id)_launchURLForAction:(id)arg1 context:(id)arg2;
 - (id)_responseForAction:(id)arg1 withOrigin:(int)arg2 context:(id)arg3;
@@ -310,31 +180,13 @@
 - (id)actionBlockForAction:(id)arg1 withOrigin:(int)arg2;
 - (id)actionBlockForAction:(id)arg1 withOrigin:(int)arg2 context:(id)arg3;
 - (id)actionBlockForButton:(id)arg1;
-- (BOOL)bulletinAlertShouldOverridePocketMode;
-- (BOOL)bulletinAlertShouldOverrideQuietMode;
-- (BOOL)isPlayingSound;
-- (void)killSound;
-- (BOOL)playSound;
-- (id)sb_minimalSupplementaryActions;
-- (id)sb_nonPluginDefaultAction;
-- (BOOL)sb_shouldSuppressMessageForPrivacy;
-- (BOOL)sb_supportsRaiseAction;
-
 @end
 
 @interface BBContent : NSObject
-
 + (id)contentWithTitle:(id)arg1 subtitle:(id)arg2 message:(id)arg3;
-+ (BOOL)supportsSecureCoding;
-- (void)dealloc;
 - (id)description;
-- (void)encodeWithCoder:(id)arg1;
-- (id)initWithCoder:(id)arg1;
 - (BOOL)isEqualToContent:(id)arg1;
 - (id)message;
-- (void)setMessage:(id)arg1;
-- (void)setSubtitle:(id)arg1;
-- (void)setTitle:(id)arg1;
 - (id)subtitle;
 - (id)title;
 
@@ -343,26 +195,16 @@
 @interface BBResponse : NSObject
 - (id)actionID;
 - (int)actionType;
-- (BOOL)activated;
 - (id)bulletinID;
 - (id)buttonID;
 - (id)context;
-- (void)dealloc;
-- (void)encodeWithCoder:(id)arg1;
-- (id)initWithCoder:(id)arg1;
-- (id)lifeAssertions;
-- (id)originID;
 - (id)replyText;
 - (void)send;
 - (id /* block */)sendBlock;
 - (void)setActionID:(id)arg1;
 - (void)setActionType:(int)arg1;
-- (void)setActivated:(BOOL)arg1;
 - (void)setBulletinID:(id)arg1;
-- (void)setButtonID:(id)arg1;
 - (void)setContext:(id)arg1;
-- (void)setLifeAssertions:(id)arg1;
-- (void)setOriginID:(id)arg1;
 - (void)setReplyText:(id)arg1;
 - (void)setSendBlock:(id /* block */)arg1;
 @end
@@ -372,9 +214,7 @@
 @end
 
 @interface BBAction : NSObject
-
 + (id)action;
-+ (id)actionWithActivatePluginName:(id)arg1 activationContext:(id)arg2;
 + (id)actionWithAppearance:(id)arg1;
 + (id)actionWithCallblock:(id)arg1;
 + (id)actionWithIdentifier:(id)arg1;
@@ -383,44 +223,24 @@
 + (id)actionWithLaunchBundleID:(id)arg1 callblock:(id)arg2;
 + (id)actionWithLaunchURL:(id)arg1;
 + (id)actionWithLaunchURL:(id)arg1 callblock:(id)arg2;
-+ (BOOL)supportsSecureCoding;
-
-- (id)_nameForActionType:(int)arg1;
 - (int)actionType;
-- (id)activatePluginContext;
-- (id)activatePluginName;
-- (unsigned int)activationMode;
 - (id)appearance;
 - (int)behavior;
 - (id)behaviorParameters;
 - (id)bundleID;
 - (BOOL)canBypassPinLock;
-- (void)dealloc;
 - (BOOL)deliverResponse:(id)arg1;
 - (id)description;
-- (void)encodeWithCoder:(id)arg1;
-- (BOOL)hasInteractiveAction;
-- (BOOL)hasLaunchAction;
-- (BOOL)hasPluginAction;
-- (BOOL)hasRemoteViewAction;
-- (unsigned int)hash;
 - (id)identifier;
 - (id)init;
-- (id)initWithCoder:(id)arg1;
 - (id)initWithIdentifier:(id)arg1;
-- (id)internalBlock;
 - (BOOL)isAuthenticationRequired;
 - (BOOL)isEqual:(id)arg1;
 - (id)launchBundleID;
 - (BOOL)launchCanBypassPinLock;
 - (id)launchURL;
 - (id)partialDescription;
-- (id)remoteServiceBundleIdentifier;
-- (id)remoteViewControllerClassName;
 - (void)setActionType:(int)arg1;
-- (void)setActivatePluginContext:(id)arg1;
-- (void)setActivatePluginName:(id)arg1;
-- (void)setActivationMode:(unsigned int)arg1;
 - (void)setAppearance:(id)arg1;
 - (void)setAuthenticationRequired:(BOOL)arg1;
 - (void)setBehavior:(int)arg1;
@@ -432,12 +252,19 @@
 - (void)setLaunchBundleID:(id)arg1;
 - (void)setLaunchCanBypassPinLock:(BOOL)arg1;
 - (void)setLaunchURL:(id)arg1;
-- (void)setRemoteServiceBundleIdentifier:(id)arg1;
-- (void)setRemoteViewControllerClassName:(id)arg1;
 - (void)setShouldDismissBulletin:(BOOL)arg1;
 - (BOOL)shouldDismissBulletin;
 - (id)url;
+@end
 
+@interface BBObserver : NSObject
+- (void)noteServerReceivedResponseForBulletin:(id)arg1;
+- (void)sendResponse:(id)arg1;
+- (id)init;
+- (id)initWithQueue:(id)arg1;
+- (id)initWithQueue:(id)arg1 asGateway:(id)arg2 priority:(unsigned int)arg3;
+- (id)initWithQueue:(id)arg1 forGateway:(id)arg2;
+- (void)updateBulletin:(id)arg1 forFeeds:(unsigned int)arg2 withReply:(id /* block */)arg3;
 @end
 
 // PEBBLE HEADERS
@@ -460,13 +287,15 @@
 - (id)actionSubtitle;
 - (id)actionTitle;
 - (void)performActionOnAddressBookQuerySession:(id)fp8;
-+ (NSString *)phoneWithPrefix:(NSString *)number;
-- (NSNumber *)recordId;
 
 // 3.12
 +(id)fallbackName;
 -(id)computeOrderableName;
 -(id)orderableName;
+
+//new
++ (NSString *)phoneWithPrefix:(NSString *)number;
+- (NSNumber *)recordId;
 
 @end
 
@@ -496,7 +325,7 @@
 -(NSString *)stringRepresentationForWeb;
 -(BOOL)isEqual:(id)arg1;
 
-// mine
+// new
 -(NSString *)getStringRepresentationForTextSender;
 @end
 
@@ -508,6 +337,8 @@
 - (id)initWithAddressBookRef:(void *)fp8;
 - (id)init;
 - (id)contactsMatchingQuery:(id)fp8;
+
+// new
 - (id)searchContacts:(NSString *)search tries:(int)tries;
 - (id)searchContactsList:(NSString *)search tries:(int)tries;
 - (id)contactWithPhoneNumber:(PBPhoneNumber *)phoneNumber;
@@ -516,47 +347,22 @@
 
 @interface PBPebbleCentral
 +(id) defaultCentral;
-+(void) setDebugLogsEnabled:(BOOL)arg1;
-+(void) setLogLevel:(unsigned int)arg1;
 -(id) appUUID;
 -(id) connectedWatches;
 -(void) setAppUUID:(id)arg1;
--(void) setTransportFilterPredicate:(id)arg;
 -(id) registeredWatches;
--(void) removeRegisteredWatch:(id)arg;
--(void) watchTransportManager:(id)arg1 didConnectTransport:(id)arg2;
--(void) watchTransportManager:(id)arg1 didDisconnectTransport:(id)arg2;
 -(id) lastConnectedWatch;
 -(id) appUUIDs;
--(void) registerForAutoReleaseOfSharedSessions;
 -(void) addAppUUID:(id)arg;
--(void) candidateDidPair:(id)arg;
 -(BOOL) currentAppIsThePebbleApp;
 -(id) endpointsByUUID;
--(void) startReconnectionService;
--(id) reconnectionService;
--(id) internalConnectedWatches;
--(id) registerAndAddToConnectedWatchesForTransport:(id)arg;
--(id) removeFromConnectedWatchesForTransport:(id)arg;
--(id) findWatchForTransport:(id)arg1 inCollection:(id)arg2;
--(id) transportFilterPredicate;
--(id) dataLoggingService;
 -(void) handleApplicationWillResignActiveNotification:(id)arg;
--(BOOL) isMobileAppInstalled;
--(void) installMobileApp;
--(void) unregisterAllWatches;
 -(void) setAppUUIDs:(id)arg;
--(id) watchForTransport:(id)arg;
--(id) dataLoggingServiceForAppUUID:(id)arg;
--(id) classicWatchTransportManager;
 -(BOOL) hasValidAppUUID;
--(id) store;
 -(void) setDelegate:(id)arg;
--(void) dealloc;
 -(id) delegate;
 -(id) _init;
 -(void) run;
--(id) internalQueue;
 -(BOOL) running;
 -(unsigned long long) capabilities;
 @end
@@ -566,6 +372,8 @@
 - (void)appMessagesPushUpdate:(id)arg1 onSent:(id)arg2;
 - (void)appMessagesPushUpdate:(id)arg1 withUUID:(id)arg2 onSent:(id)arg3;
 - (void)send:(id)fp8 onDone:(id)fp1001 onTimeout:(void *)fp12 processInQueue:(id)fp10301;
+
+// new
 - (NSMutableDictionary *)getContactSearchResponse:(NSString *)name tries:(int)tries;
 - (NSMutableDictionary *)getSentResponse;
 - (NSMutableDictionary *)getFailedResponse;
@@ -579,32 +387,6 @@
 @interface PBAppDelegate
 
 + (id)applicationDelegate;
-- (void)setHockeyApp:(id)fp8;
-- (id)hockeyApp;
-- (void)setBluetoothStuckLocalNotification:(id)fp8;
-- (id)bluetoothStuckLocalNotification;
-- (void)setConnectedFirstWatchNotification:(id)fp8;
-- (id)connectedFirstWatchNotification;
-- (void)setShowingBluetoothStuckAlert:(BOOL)fp8;
-- (BOOL)showingBluetoothStuckAlert;
-- (void)setFileURLRouter:(id)fp8;
-- (id)fileURLRouter;
-- (void)setBackgroundFetchManager:(id)fp8;
-- (id)backgroundFetchManager;
-- (void)setRemoteNotificationManager:(id)fp8;
-- (id)remoteNotificationManager;
-- (void)setDependencies:(id)fp8;
-- (id)dependencies;
-- (void)setWindow:(id)fp8;
-- (id)window;
-- (void)setupInitiallyConnectedWatches;
-- (void)initializeJSApps;
-- (void)setupWebRequestCache;
-- (void)handleDisconnect:(id)fp8;
-- (void)handleConnect:(id)fp8;
-- (void)getVersionInfo:(id)fp8;
-- (void)bluetoothSessionStuckNotificationReceived;
-- (void)watch:(id)fp8 handleError:(id)fp12;
 - (void)pebbleCentral:(id)fp8 watchDidConnect:(id)fp12 isNew:(BOOL)fp16;
 - (void)pebbleCentral:(id)fp8 watchDidDisconnect:(id)fp12;
 - (void)application:(id)fp8 performFetchWithCompletionHandler:(id)fp1;
@@ -615,8 +397,6 @@
 - (void)application:(id)fp8 didFailToRegisterForRemoteNotificationsWithError:(id)fp12;
 - (void)application:(id)fp8 didRegisterForRemoteNotificationsWithDeviceToken:(id)fp12;
 - (void)application:(id)fp8 didRegisterUserNotificationSettings:(id)fp12;
-- (void)applicationProtectedDataDidBecomeAvailable:(id)fp8;
-- (void)applicationProtectedDataWillBecomeUnavailable:(id)fp8;
 - (void)application:(id)fp8 didReceiveLocalNotification:(id)fp12;
 - (void)applicationWillTerminate:(id)fp8;
 - (void)applicationDidBecomeActive:(id)fp8;
@@ -641,13 +421,8 @@
 - (id)watchfaces;
 - (id)watchapps;
 - (id)applications;
-- (void)dealloc;
 - (id)init;
 - (id)initWithUserAccountID:(id)fp8 localAppsStorage:(id)fp12 lockerSessionManager:(id)fp16 timelineBlobMapperConfigurationCache:(id)fp20;
-@end
-
-@interface PBLockerSessionManager
-+ (id)lockerCache;
 @end
 
 @interface PBAddressBookAuthorizationManager
@@ -656,9 +431,8 @@
 @end
 
 @interface PBPhoneApp : NSObject
-
-+(id)appWithSystemPhoneApp:(unsigned long long)arg1 ;
-+(unsigned long long)systemPhoneAppFromBundleIdentifier:(id)arg1 ;
++(id)appWithSystemPhoneApp:(unsigned long long)arg1;
++(unsigned long long)systemPhoneAppFromBundleIdentifier:(id)arg1;
 -(BOOL)isInstalled;
 -(NSString *)localizedName;
 -(NSString *)appBundleIdentifier;
@@ -681,7 +455,6 @@
 - (id)linkedSMSAccount;
 - (void)removeSMSAccount;
 - (void)setSMSAccount:(id)fp8;
-- (void)dealloc;
 - (id)initWithNotificationSourceManager:(id)fp8 linkedAccountsManager:(id)fp12;
 
 // 3.12
@@ -690,7 +463,7 @@
 -(id)smsApp;//PBPhoneApp
 -(void)prepareSMSSetup;
 -(id)currentCarrier;
--(void)setLastKnownCarrier:(id)arg1 ;
+-(void)setLastKnownCarrier:(id)arg1;
 -(NSUserDefaults *)smsUserDefaults;
 -(BOOL)checkIfProviderIsSupported:(unsigned char)arg1 forCarrier:(id)arg2 linkedAccount:(id)arg3;
 -(BOOL)needToShowSMSSetup;
@@ -702,9 +475,9 @@
 @end
 
 @interface PBSMSSessionManager
+// new
 + (void)sendSMS:(NSString *)number withText:(NSString *)text;
 - (id)sendSMSSendRequestWithMessage:(id)fp8 account:(id)fp12 transactionID:(id)fp16;
-- (id)initWithBaseURL:(id)fp8 sessionConfiguration:(id)fp12;
 @end
 
 @interface PBSMSApiClient
@@ -712,7 +485,6 @@
 - (id)smsReplyManager;
 - (id)linkedAccountsManager;
 - (id)SMSSessionManager;
-+ (void)sendSMS:(NSNumber *)recordId number:(NSString *)number withText:(NSString *)text;
 - (id)sendSMSWithRecipients:(id)fp8 text:(id)fp12 transactionID:(id)fp16;
 - (id)initWithLinkedAccountsManager:(id)fp8 smsReplyManager:(id)fp12;
 
@@ -721,46 +493,27 @@
 -(id)initWithLinkedAccountsManager:(id)arg1 smsReplyManager:(id)arg2 message:(id)arg3 transactionID:(id)arg4;
 -(id)smsApp;
 -(id)phoneApp;
--(void)revokeAccounts:(id)arg1;
--(id)sendRequestWithRefreshedLinkedAccounts:(id)arg1;
--(void)revokeAccountsFromError:(id)arg1;
--(BOOL)needToRefreshLinkedAccountsForError:(id)arg1;
 -(id)SMSSessionManager;
 -(id)message;
--(id)transactionID;
 -(id)sendRequest;
+
+// new
++ (void)sendSMS:(NSNumber *)recordId number:(NSString *)number withText:(NSString *)text;
 
 @end
 
 @interface PBSMSMessage
-+ (id)recipientsJSONTransformer;
-+ (id)JSONKeyPathsByPropertyKey;
 + (id)messageWithRecipients:(id)fp8 text:(id)fp12;
 - (id)text;
 - (id)recipients;
 @end
 
 @interface PBLinkedAccountsRequest
-+ (id)credentialsJSONTransformer;
-+ (id)JSONKeyPathsByPropertyKey;
 + (id)requestWithCredentials:(id)fp8;
 - (id)credentials;
 @end
 
-@interface PBLinkedAccountsSessionManager
-- (id)revokeLinkedAccount:(id)fp8;
-- (id)refreshLinkedAccount:(id)fp8;
-- (id)authorizationURLRequestForProvider:(unsigned char)fp8;
-- (id)initWithBaseURL:(id)fp8 sessionConfiguration:(id)fp12;
-@end
-
 @interface PBLinkedAccount
-+ (id)credentialsJSONTransformer;
-+ (id)settingsJSONTransformer;
-+ (id)providerJSONTransformer;
-+ (id)uuidJSONTransformer;
-+ (id)encodingBehaviorsByPropertyKey;
-+ (id)JSONKeyPathsByPropertyKey;
 - (void)setCredentials:(id)fp8;
 - (id)credentials;
 - (void)setSettings:(id)fp8;
@@ -776,8 +529,6 @@
 @end
 
 @interface PBLinkedAccountCredentials
-+ (id)expirationJSONTransformer;
-+ (id)JSONKeyPathsByPropertyKey;
 - (id)expiration;
 - (id)apiData;
 @end
@@ -805,29 +556,21 @@
 -(BOOL)addLinkedAccount:(id)arg1 toApp:(id)arg2;
 -(BOOL)removeLinkedAccount:(id)arg1 forApp:(id)arg2;
 -(id)linkedAccountsSessionManager;
--(void)migrateLinkedAccountsFrom3Dot6To3Dot7;
--(void)migrateSMSAccountFrom3Dot6To3Dot7ForProvider:(unsigned char)arg1;
 @end
 
 @interface PBSendSMSActionHandler : NSObject
 + (id)handlerWithDelegate:(id)fp8;
-- (void)setAddressBookQuerySession:(id)fp8;
 - (id)addressBookQuerySession;
 - (id)SMSAPIClient;
 - (id)SMSReplyManager;
 - (id)preferredPhoneManager;
 - (id)delegate;
-- (void)addressBookQuerySession:(id)fp8 foundMultipleContactMatches:(id)fp12;
-- (void)addressBookQuerySessionFailedWithNoContactAccess:(id)fp8;
-- (void)addressBookQuerySessionFailedToFindContactMatch:(id)fp8;
-- (void)addressBookQuerySession:(id)fp8 foundMultipleAddresses:(id)fp12;
-- (void)addressBookQuerySession:(id)fp8 finishedWithContact:(id)fp12 labeledValue:(id)fp16;
 - (void)handleActionWithActionIdentifier:(unsigned char)fp8 attributes:(id)fp12;
 - (void)startHandlingInvokeActionMessage:(id)fp8;
 - (id)initWithDelegate:(id)fp8 SMSReplyManager:(id)fp12 contactPreferredPhoneManager:(id)fp16;
 
 // 3.12
-+(id)actionHandlerWithDelegate:(id)arg1 ;
++(id)actionHandlerWithDelegate:(id)arg1;
 +(id)handlerWithNotificationSourceIdentifier:(id)arg1 delegate:(id)arg2;
 -(NSString *)notificationSourceIdentifier;
 -(id)initWithNotificationSourceIdentifier:(id)arg1 delegate:(id)arg2 SMSReplyManager:(id)arg3 contactPreferredPhoneManager:(id)arg4 sendSMSService:(id)arg5;
@@ -835,22 +578,15 @@
 @end
 
 @interface PBTimelineAttribute
-
 + (id)attributeWithType:(id)fp8 content:(id)fp12 specificType:(int)fp16;
 + (id)attributeWithType:(id)fp8 content:(id)fp12;
-+ (id)timelineAttributesFromWebTimelineAttributable:(id)fp8;
-+ (id)timelineAttributeFromManagedTimelineItemAttribute:(id)fp8;
-+ (id)attributesForCalendarEvent:(id)fp8 withOptions:(unsigned int)fp12;
 - (int)specificType;
 - (id)content;
 - (id)type;
 - (id)description;
-- (unsigned int)hash;
 - (BOOL)isEqual:(id)fp8;
 - (id)initWithType:(id)fp8 content:(id)fp12 specificType:(int)fp16;
 - (id)init;
-- (id)blobRepresentationWithMapper:(id)fp8;
-
 @end
 
 @interface PBCannedResponseManager
@@ -873,7 +609,6 @@
 @end
 
 @interface PBAddressBookQuerySession
-
 + (id)addressBookQuerySessionWithIdentifier:(id)fp8 query:(id)fp12 delegate:(id)fp16;
 - (id)actions;
 - (void)setNextActionId:(unsigned char)fp8;
@@ -882,21 +617,10 @@
 - (id)addressBook;
 - (id)addressBookManager;
 - (id)delegate;
-- (id)query;
-- (void)setHasResolvedAmbiguity:(BOOL)fp8;
-- (BOOL)hasResolvedAmbiguity;
 - (void)setSelectedLabeledValue:(id)fp8;
 - (id)selectedLabeledValue;
 - (void)setSelectedContact:(id)fp8;
 - (id)selectedContact;
-- (id)sessionIdentifier;
-- (id)cleanSearchQuery:(id)fp8;
-- (BOOL)isQueryValidPhoneNumber:(id)fp8;
-- (void)handleSingleContact:(id)fp8;
-- (void)handleNoMatches;
-- (void)handleMultipleAddresses:(id)fp8;
-- (void)handleMultipleContacts:(id)fp8;
-- (id)preferredPhoneForContact:(id)fp8;
 - (void)handleActionWithIdentifier:(unsigned char)fp8;
 - (id)newActionWithType:(id)fp8 attributes:(id)fp12 content:(id)fp16;
 - (void)selectAddressLabeledValue:(id)fp8;
@@ -918,21 +642,21 @@
 @end
 
 @interface PBANCSActionHandler
-+(id)actionHandlerWithDelegate:(id)arg1 ;
++(id)actionHandlerWithDelegate:(id)arg1;
 -(void)dealloc;
 -(NSUUID *)handlingIdentifier;
--(void)setHandlingIdentifier:(NSUUID *)arg1 ;
--(void)sendResponse:(unsigned char)arg1 withAttributes:(id)arg2 actions:(id)arg3 forItemIdentifier:(id)arg4 ;
+-(void)setHandlingIdentifier:(NSUUID *)arg1;
+-(void)sendResponse:(unsigned char)arg1 withAttributes:(id)arg2 actions:(id)arg3 forItemIdentifier:(id)arg4;
 -(NSDictionary *)actionHandlersByAppIdentifier;
--(void)setCurrentActionHandler:(id)arg1 ;
+-(void)setCurrentActionHandler:(id)arg1;
 -(id)currentActionHandler;
--(void)handleActionWithActionIdentifier:(unsigned char)arg1 attributes:(id)arg2 ;
--(id)backgroundColorForNotificationHandler:(id)arg1 ;
+-(void)handleActionWithActionIdentifier:(unsigned char)arg1 attributes:(id)arg2;
+-(id)backgroundColorForNotificationHandler:(id)arg1;
 -(id)timelineWatchService;
--(void)notificationHandler:(id)arg1 didSendResponse:(unsigned char)arg2 withAttributes:(id)arg3 actions:(id)arg4 ;
--(void)notificationHandler:(id)arg1 didSendError:(id)arg2 withTitle:(id)arg3 icon:(id)arg4 ;
--(BOOL)isHandlingNotificationWithIdentifier:(id)arg1 ;
--(void)handleInvokeANCSActionMessage:(id)arg1 ;
+-(void)notificationHandler:(id)arg1 didSendResponse:(unsigned char)arg2 withAttributes:(id)arg3 actions:(id)arg4;
+-(void)notificationHandler:(id)arg1 didSendError:(id)arg2 withTitle:(id)arg3 icon:(id)arg4;
+-(BOOL)isHandlingNotificationWithIdentifier:(id)arg1;
+-(void)handleInvokeANCSActionMessage:(id)arg1;
 -(id)delegate;
 -(id)initWithDelegate:(id)arg1;
 
@@ -943,7 +667,6 @@
 @end
 
 @interface PBSMSNotificationActionHandler
-
 + (id)handlerWithDelegate:(id)fp8;
 - (void)setAddressBookQuerySession:(id)fp8;
 - (id)addressBookQuerySession;
@@ -951,21 +674,13 @@
 - (id)SMSReplyManager;
 - (id)preferredPhoneManager;
 - (id)delegate;
-- (void)addressBookQuerySession:(id)fp8 foundMultipleContactMatches:(id)fp12;
-- (void)addressBookQuerySessionFailedWithNoContactAccess:(id)fp8;
-- (void)addressBookQuerySessionFailedToFindContactMatch:(id)fp8;
-- (void)addressBookQuerySession:(id)fp8 foundMultipleAddresses:(id)fp12;
-- (void)addressBookQuerySession:(id)fp8 finishedWithContact:(id)fp12 labeledValue:(id)fp16;
 - (void)handleActionWithActionIdentifier:(unsigned char)fp8 attributes:(id)fp12;
 - (void)startHandlingInvokeActionMessage:(id)fp8;
 - (id)initWithDelegate:(id)fp8 SMSReplyManager:(id)fp12 contactPreferredPhoneManager:(id)fp16;
-
 @end
 
 @interface PBSendTextAppActionHandler : NSObject
 +(id)handlerWithDelegate:(id)arg1;
-+(void)load;
--(void)dealloc;
 -(id)timelineWatchService;
 -(id)initWithSMSReplyManager:(id)arg1 delegate:(id)arg2 sendSMSService:(id)arg3;
 -(id)SMSReplyManager;
@@ -975,64 +690,55 @@
 -(void)notifyUserWithError:(id)arg1;
 -(BOOL)handlesAction:(unsigned char)arg1 forItem:(id)arg2;
 -(void)handleAction:(unsigned char)arg1 forItemIdentifier:(id)arg2 attributes:(id)arg3;
--(id)currentTimelineItem;
--(void)setCurrentTimelineItem:(id)arg1;
 -(id)init;
 -(id)delegate;
 -(NSIndexSet *)actions;
 @end
-@interface PBTimelineActionsWatchService : NSObject
 
-+(id)watchServiceForWatch:(id)arg1 watchServicesSet:(id)arg2 ;
--(void)dealloc;
--(id)lockerAppManager;
--(id)keyedTokenGenerator;
+// TODO HERE
+@interface PBTimelineActionsWatchService : NSObject
++(id)watchServiceForWatch:(id)arg1 watchServicesSet:(id)arg2;
 -(id)contactPreferredPhoneManager;
 -(id)addressBookManager;
 -(id)timelineWatchService;
--(void)ANCSActionHandler:(id)arg1 didSendResponse:(unsigned char)arg2 withAttributes:(id)arg3 actions:(id)arg4 forItemIdentifier:(id)arg5 ;
+-(void)ANCSActionHandler:(id)arg1 didSendResponse:(unsigned char)arg2 withAttributes:(id)arg3 actions:(id)arg4 forItemIdentifier:(id)arg5;
 -(id)timelineManager;
--(id)initWithWatch:(id)arg1 watchServicesSet:(id)arg2 timelineManager:(id)arg3 currentUserLockerAppManager:(id)arg4 ;
+-(id)initWithWatch:(id)arg1 watchServicesSet:(id)arg2 timelineManager:(id)arg3 currentUserLockerAppManager:(id)arg4;
 -(id)addressBookQuerySession;
--(void)setAddressBookQuerySession:(id)arg1 ;
--(void)sendTextAppActionHandler:(id)arg1 didSendResponse:(unsigned char)arg2 withAttributes:(id)arg3 forItemIdentifier:(id)arg4 ;
+-(void)setAddressBookQuerySession:(id)arg1;
+-(void)sendTextAppActionHandler:(id)arg1 didSendResponse:(unsigned char)arg2 withAttributes:(id)arg3 forItemIdentifier:(id)arg4;
 -(void)registerInvokeActionHandler;
 -(void)registerInvokeANCSActionHandler;
 -(id)invokeActionHandler;
 -(id)ANCSActionHandler;
--(void)handleANCSActionForInvokeActionMessage:(id)arg1 ;
--(void)handleActionForItemIdentifier:(id)arg1 actionIdentifier:(unsigned char)arg2 attributes:(id)arg3 ;
+-(void)handleANCSActionForInvokeActionMessage:(id)arg1;
+-(void)handleActionForItemIdentifier:(id)arg1 actionIdentifier:(unsigned char)arg2 attributes:(id)arg3;
 -(id)notificationHandler;
 -(id)sendTextAppActionHandler;
--(void)handleActionForItem:(id)arg1 actionIdentifier:(unsigned char)arg2 attributes:(id)arg3 ;
--(void)sendResponseForItemIdentifier:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4 ;
--(void)processAction:(id)arg1 forItem:(id)arg2 attributes:(id)arg3 ;
--(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 ;
--(id)subtitleAttributeForLocalizedString:(id)arg1 ;
--(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 subtitle:(id)arg3 icon:(id)arg4 ;
--(id)subtitleWithMuted:(BOOL)arg1 forDataSourceUUID:(id)arg2 ;
--(void)processHTTPActionForItem:(id)arg1 actionAttributes:(id)arg2 ;
+-(void)handleActionForItem:(id)arg1 actionIdentifier:(unsigned char)arg2 attributes:(id)arg3;
+-(void)sendResponseForItemIdentifier:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4;
+-(void)processAction:(id)arg1 forItem:(id)arg2 attributes:(id)arg3;
+-(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3;
+-(id)subtitleAttributeForLocalizedString:(id)arg1;
+-(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 subtitle:(id)arg3 icon:(id)arg4;
+-(id)subtitleWithMuted:(BOOL)arg1 forDataSourceUUID:(id)arg2;
 -(NSString *)accountUserID;
 -(id)httpActionSessionManager;
--(id)subtitleAttributeForString:(id)arg1 ;
--(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 subtitle:(id)arg3 icon:(id)arg4 specificType:(long long)arg5 ;
--(void)sendResponseForItemIdentifier:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4 mapperSignal:(id)arg5 ;
--(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4 ;
--(void)sendANCSResponseForItemIdentifier:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4 ;
--(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 ;
+-(id)subtitleAttributeForString:(id)arg1;
+-(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 subtitle:(id)arg3 icon:(id)arg4 specificType:(long long)arg5;
+-(void)sendResponseForItemIdentifier:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4 mapperSignal:(id)arg5;
+-(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4;
+-(void)sendANCSResponseForItemIdentifier:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4;
+-(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2;
 -(id)init;
--(void)deactivate;
 -(id)watch;
 @end
 
 @interface PBTimelineAttributeContentLocalizedString : NSObject
-+(BOOL)supportsSecureCoding;
 -(id)initWithLocalizationKey:(id)arg1;
 -(id)initWithLocalizationKey:(id)arg1 placeholderKeyPaths:(id)arg2;
 -(NSArray *)placeholderKeyPaths;
 -(id)localizedStringWithLocalizedBundle:(id)arg1 binding:(id)arg2;
--(id)initWithCoder:(id)arg1;
--(void)encodeWithCoder:(id)arg1;
 -(id)init;
 -(NSString *)localizationKey;
 @end
@@ -1045,65 +751,6 @@
 -(NSNumber *)identifier;
 -(NSString *)type;
 -(NSArray *)attributes;
-@end
-
-@interface BBObserver : NSObject
-- (void)noteServerReceivedResponseForBulletin:(id)arg1;
-- (void)sendResponse:(id)arg1;
-- (id)init;
-- (id)initWithQueue:(id)arg1;
-- (id)initWithQueue:(id)arg1 asGateway:(id)arg2 priority:(unsigned int)arg3;
-- (id)initWithQueue:(id)arg1 forGateway:(id)arg2;
-- (void)updateBulletin:(id)arg1 forFeeds:(unsigned int)arg2 withReply:(id /* block */)arg3;
-@end
-
-@interface SBBulletinBannerController : NSObject
-
-+ (id)sharedInstanceIfExists;
-+ (id)sharedInstance;
-+ (id)_sharedInstanceCreateIfNecessary:(_Bool)arg1;
-- (void)observer:(id)arg1 noteAlertBehaviorOverridesChanged:(unsigned long long)arg2;
-- (void)observer:(id)arg1 noteServerReceivedResponseForBulletin:(id)arg2;
-- (void)observer:(id)arg1 noteServerConnectionStateChanged:(_Bool)arg2;
-- (void)observer:(id)arg1 noteInvalidatedBulletinIDs:(id)arg2;
-- (id)observer:(id)arg1 composedAttachmentImageForType:(long long)arg2 thumbnailData:(id)arg3 key:(id)arg4;
-- (id)observer:(id)arg1 thumbnailSizeConstraintsForAttachmentType:(long long)arg2;
-- (_Bool)observerShouldFetchAttachmentImageBeforeBulletinDelivery:(id)arg1;
-- (void)observer:(id)arg1 updateSectionInfo:(id)arg2;
-- (void)observer:(id)arg1 removeBulletin:(id)arg2;
-- (void)observer:(id)arg1 modifyBulletin:(id)arg2;
-- (void)observer:(id)arg1 addBulletin:(id)arg2 forFeed:(unsigned long long)arg3 playLightsAndSirens:(_Bool)arg4 withReply:(id /*block*/)arg5;
-- (void)observer:(id)arg1 addBulletin:(id)arg2 forFeed:(unsigned long long)arg3;
-- (void)bannerTargetManager:(id)arg1 didRemoveTarget:(id)arg2;
-- (void)bannerTargetManager:(id)arg1 didAddTarget:(id)arg2;
-- (id)newBannerViewForContext:(id)arg1;
-- (void)_syncLockScreenDismissalsForSeedBulletin:(id)arg1 additionalBulletins:(id)arg2;
-- (id)dequeueNextBannerItemForTarget:(id)arg1;
-- (id)peekNextBannerItemForTarget:(id)arg1;
-- (void)_dismissWithdrawnBannerIfNecessaryFromBulletinIDs:(id)arg1;
-- (void)_showTestBanner:(_Bool)arg1;
-- (void)_removeNextBulletinIfNecessary;
-- (void)_queueBulletin:(id)arg1;
-- (_Bool)_replaceBulletin:(id)arg1;
-- (void)_removeBulletin:(id)arg1;
-- (unsigned long long)_indexOfQueuedBulletinID:(id)arg1;
-- (void)handleVolumeDecrease;
-- (void)handleVolumeIncrease;
-- (void)_reloadVolumePressBanditPreference;
-- (id)_bannerContextForBulletin:(id)arg1;
-- (void)removeAllCachedBanners;
-- (void)removeCachedBannerForBulletinID:(id)arg1;
-- (void)cacheBannerForBulletin:(id)arg1 completion:(id /*block*/)arg2;
-- (void)modallyPresentBannerForBulletin:(id)arg1 action:(id)arg2;
-- (void)dealloc;
-- (id)init;
-
-// Remaining properties
-@property(readonly, copy) NSString *debugDescription;
-@property(readonly, copy) NSString *description;
-@property(readonly) unsigned long long hash;
-@property(readonly) Class superclass;
-
 @end
 
 #define SEND_DELAY 4.0
@@ -1160,13 +807,13 @@ static NSString *recentFileLocation = @"/var/mobile/Library/Preferences/com.sawy
 
 static NSUUID *appUUID = [[NSUUID alloc] initWithUUIDString:@"36BF8B7A-A043-4E1B-8518-B6BB389EC110"];
 
-static NSNumber *currentContactId = NULL;//[NSMutableArray array];
+static NSNumber *currentContactId = NULL;
 static BOOL isRecentContact = NO;
 
 static int maxContacts = 10;
 static int maxContactsToSend = 10;
 
-static long long currentNumber = 12;
+static long long currentNumber = 30;
 
 static NSMutableArray *presets = [NSMutableArray array];
 static NSMutableArray *names = [NSMutableArray array];
@@ -1179,24 +826,6 @@ static NSMutableDictionary *notificationActionsDictionary = [NSMutableDictionary
 static NSMutableDictionary *actionsToPerformDictionary = [NSMutableDictionary dictionary];
 static NSMutableDictionary *bulletinsDict = [NSMutableDictionary dictionary];
 
-static void loadPrefs()
-{
-    if ([presets count] == 0)
-   
-{
-        [presets addObject:@"OK"];
-        [presets addObject:@"Yes"];
-        [presets addObject:@"No"];
-        [presets addObject:@"Call me"];
-        [presets addObject:@"Call you later"];
-        [presets addObject:@"Thank you"];
-        [presets addObject:@"See you soon"];
-        [presets addObject:@"Running late"];
-        [presets addObject:@"On my way"];
-        [presets addObject:@"Busy right now - give me a second?"];
-    }
-}
-
 // RECENT MESSAGES
 
 static void loadMessagesToSend()
@@ -1204,7 +833,6 @@ static void loadMessagesToSend()
     NSArray *arr = [NSArray arrayWithContentsOfFile:messagesFileLocation];
 
     if (arr)
-
 	{
         [messages removeAllObjects];
         [messages addObjectsFromArray:arr];
@@ -1574,7 +1202,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 %new
 - (void)notificationsMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo
 {
-	// NSLog(@"notificationsMessageNamed");
+	log(@"notificationsMessageNamed");
 	loadActionsToPerform();
 	// NSLog(@"%@", actionsToPerform);
 	// NSLog(@"%@", bulletinsDict);
@@ -3210,6 +2838,45 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 }
 
 %end
+
+
+@interface PBTimelineActionsWatchService : NSObject
++(id)watchServiceForWatch:(id)arg1 watchServicesSet:(id)arg2;
+-(id)contactPreferredPhoneManager;
+-(id)addressBookManager;
+-(id)timelineWatchService;
+-(void)ANCSActionHandler:(id)arg1 didSendResponse:(unsigned char)arg2 withAttributes:(id)arg3 actions:(id)arg4 forItemIdentifier:(id)arg5;
+-(id)timelineManager;
+-(id)initWithWatch:(id)arg1 watchServicesSet:(id)arg2 timelineManager:(id)arg3 currentUserLockerAppManager:(id)arg4;
+-(id)addressBookQuerySession;
+-(void)setAddressBookQuerySession:(id)arg1;
+-(void)sendTextAppActionHandler:(id)arg1 didSendResponse:(unsigned char)arg2 withAttributes:(id)arg3 forItemIdentifier:(id)arg4;
+-(void)registerInvokeActionHandler;
+-(void)registerInvokeANCSActionHandler;
+-(id)invokeActionHandler;
+-(id)ANCSActionHandler;
+-(void)handleANCSActionForInvokeActionMessage:(id)arg1;
+-(void)handleActionForItemIdentifier:(id)arg1 actionIdentifier:(unsigned char)arg2 attributes:(id)arg3;
+-(id)notificationHandler;
+-(id)sendTextAppActionHandler;
+-(void)handleActionForItem:(id)arg1 actionIdentifier:(unsigned char)arg2 attributes:(id)arg3;
+-(void)sendResponseForItemIdentifier:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4;
+-(void)processAction:(id)arg1 forItem:(id)arg2 attributes:(id)arg3;
+-(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3;
+-(id)subtitleAttributeForLocalizedString:(id)arg1;
+-(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 subtitle:(id)arg3 icon:(id)arg4;
+-(id)subtitleWithMuted:(BOOL)arg1 forDataSourceUUID:(id)arg2;
+-(NSString *)accountUserID;
+-(id)httpActionSessionManager;
+-(id)subtitleAttributeForString:(id)arg1;
+-(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 subtitle:(id)arg3 icon:(id)arg4 specificType:(long long)arg5;
+-(void)sendResponseForItemIdentifier:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4 mapperSignal:(id)arg5;
+-(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4;
+-(void)sendANCSResponseForItemIdentifier:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4;
+-(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2;
+-(id)init;
+-(id)watch;
+@end
 
 %end
 
