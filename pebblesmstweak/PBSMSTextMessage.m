@@ -11,7 +11,7 @@
 		return nil;
     }
 
-    NSDictionary *dict = (NSDictionary *)object;
+    NSDictionary *message = (NSDictionary *)object;
 
     NSString *number = [message safeObjectForKey:@"number" ofClass:[NSString class]];   
     NSString *messageText = [message safeObjectForKey:@"message" ofClass:[NSString class]];
@@ -40,10 +40,10 @@
 		messageText:messageText
 		uuid:uuid
 		recordId:recordId
-		isRecentContact:isRecentContact
-		isReply:isReply
-		shouldNotify:shouldNotify
-		isNewNumber:isNewNumber
+		isRecentContact:@( isRecentContact )
+		isReply:@( isReply )
+		shouldNotify:@( shouldNotify )
+		isNewNumber:@( isNewNumber )
 		expirationDate:expirationDate];
     return message;
 }
@@ -64,10 +64,10 @@
 	    message.number = number;
 	    message.messageText = messageText;
 	    message.uuid = uuid;
-	    message.shouldNotify = [shouldNotify boolValue];
-	    message.isNewNumber = [isNewNumber boolValue];
-	    message.isRecentContact = [isNewNumber boolValue];
-	    message.isReply = [isReply boolValue];
+	    message.shouldNotify = shouldNotify;
+	    message.isNewNumber = isNewNumber;
+	    message.isRecentContact = isNewNumber;
+	    message.isReply = isReply;
 	    message.recordId = recordId;
 	    message.expirationDate = expirationDate;
 	}
