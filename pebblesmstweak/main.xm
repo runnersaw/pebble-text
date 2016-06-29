@@ -2090,7 +2090,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 %new
 - (NSMutableDictionary *)getPresets
 {
-	return [NSMutableArray arrayWithArray:@[ @"HI", @"HI" ]];
+	return [NSMutableDictionary dictionaryWithDictionary:@{ PRESETS_KEY : @[ @"HI", @"HI" ] }];
     // NSLog(@"PEBBLESMS: getPresets");
     // loadPrefs();
 
