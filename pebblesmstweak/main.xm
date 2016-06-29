@@ -16,8 +16,8 @@
 // My headers
 
 #import "PBSMSHelper.h"
-// #import "PBSMSTextHelper.h"
-// #import "PBSMSTextMessage.h"
+#import "PBSMSTextHelper.h"
+#import "PBSMSTextMessage.h"
 
 // NS EXTENSIONS
 
@@ -754,21 +754,6 @@
 -(NSString *)type;
 -(NSArray *)attributes;
 @end
-
-static NSString *sendMessageCommand = @"messageNeedsSending";
-static NSString *openMessagesCommand = @"messagesNeedsOpening";
-static NSString *performNotificationActionCommand = @"performNotificationAction";
-static NSString *messageSendNotification = @"pebbleMessageSend";
-static NSString *messageFailedNotification = @"pebbleMessageFailed";
-
-static NSString *rocketbootstrapSmsCenterName = @"com.sawyervaughan.pebblesms.sms";
-static NSString *rocketbootstrapSpringboardCenterName = @"com.sawyervaughan.pebblesms.springboard";
-static NSString *distributedCenterName = @"com.sawyervaughan.pebblesms.pebble";
-
-static NSString *notificationsFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.notifications.plist";
-static NSString *actionsToPerformFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.perform-action.plist";
-static NSString *messagesFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.messages.plist";
-static NSString *recentFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.recent.plist";
 
 static NSUUID *appUUID = [[NSUUID alloc] initWithUUIDString:@"36BF8B7A-A043-4E1B-8518-B6BB389EC110"];
 
