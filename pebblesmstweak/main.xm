@@ -552,13 +552,13 @@
 @end
 
 // pebble 3.14
-@protocol PBNotificationActionHandler <NSObject>
-+(id)handlerWithNotificationSourceIdentifier:(id)arg1 delegate:(id)arg2;
--(void)startHandlingInvokeActionMessage:(id)arg1;
--(void)handleActionWithActionIdentifier:(unsigned char)arg1 attributes:(id)arg2;
--(NSString *)notificationSourceIdentifier;
--(id<PBNotificationActionHandlerDelegate>)delegate;
-@end
+// @protocol PBNotificationActionHandler <NSObject>
+// +(id)handlerWithNotificationSourceIdentifier:(id)arg1 delegate:(id)arg2;
+// -(void)startHandlingInvokeActionMessage:(id)arg1;
+// -(void)handleActionWithActionIdentifier:(unsigned char)arg1 attributes:(id)arg2;
+// -(NSString *)notificationSourceIdentifier;
+// -(id)delegate;
+// @end
 
 // pebble 3.14
 @interface PBEmailNotificationActionHandler : NSObject
@@ -580,9 +580,9 @@
 -(void)saveANCSActionMessage:(id)arg1 ;
 -(id)emailsFromAddressBookMatchingQuery:(id)arg1 ;
 -(void)sendRequestWithClient:(id)arg1 ;
--(void)setDelegate:(id<PBNotificationActionHandlerDelegate>)arg1 ;
+-(void)setDelegate:(id)arg1 ;
 -(id)init;
--(id<PBNotificationActionHandlerDelegate>)delegate;
+-(id)delegate;
 @end
 
 @interface PBANCSActionHandler
@@ -592,8 +592,8 @@
 -(void)setHandlingIdentifier:(NSUUID *)arg1 ;
 -(void)sendResponse:(unsigned char)arg1 withAttributes:(id)arg2 actions:(id)arg3 forItemIdentifier:(id)arg4 ;
 -(NSDictionary *)actionHandlersByAppIdentifier;
--(void)setCurrentActionHandler:(id<PBNotificationActionHandler>)arg1 ;
--(id<PBNotificationActionHandler>)currentActionHandler;
+-(void)setCurrentActionHandler:(id)arg1 ;
+-(id)currentActionHandler;
 -(void)handleActionWithActionIdentifier:(unsigned char)arg1 attributes:(id)arg2 ;
 -(id)backgroundColorForNotificationHandler:(id)arg1 ;
 -(PBTimelineWatchService *)timelineWatchService;
@@ -2058,7 +2058,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 	%log;
 	return %orig;
 }
--(void)setDelegate:(id<PBNotificationActionHandlerDelegate>)arg1{
+-(void)setDelegate:(id)arg1{
 	%log;
 	return %orig;
 }
@@ -2081,11 +2081,11 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 	NSLog(@"%@",r);
 	return r;
 }
--(void)setCurrentActionHandler:(id<PBNotificationActionHandler>)arg1{
+-(void)setCurrentActionHandler:(id)arg1{
 	%log;
 	return %orig;
 }
--(id<PBNotificationActionHandler>)currentActionHandler{
+-(id)currentActionHandler{
 	%log;
 	id r = %orig;
 	NSLog(@"%@",r);
