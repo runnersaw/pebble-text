@@ -2090,17 +2090,18 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 %new
 - (NSMutableDictionary *)getPresets
 {
+	return [NSMutableArray arrayWithArray:@[ @"HI", @"HI" ]];
     // NSLog(@"PEBBLESMS: getPresets");
-    loadPrefs();
+    // loadPrefs();
 
-    // NSLog(@"PEBBLESMS: loadPrefs4 %@", presets);
-    NSMutableDictionary *dict = [NSMutableDictionary dictionary];
+    // // NSLog(@"PEBBLESMS: loadPrefs4 %@", presets);
+    // NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
-    // NSLog(@"PEBBLESMS: loadPrefs5");
-    [dict setObject:[presets componentsJoinedByString:@"\n"] forKey:PRESETS_KEY];
+    // // NSLog(@"PEBBLESMS: loadPrefs5");
+    // [dict setObject:[presets componentsJoinedByString:@"\n"] forKey:PRESETS_KEY];
     
-    // NSLog(@"PEBBLESMS: loadPrefs6");
-    return dict;
+    // // NSLog(@"PEBBLESMS: loadPrefs6");
+    // return dict;
 }
 
 - (void)appMessagesPushUpdate:(id)fp8 onSent:(id)fp1001 uuid:(id)fp12 launcher:(id)fp16
@@ -2839,44 +2840,43 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 %end
 
-
-@interface PBTimelineActionsWatchService : NSObject
-+(id)watchServiceForWatch:(id)arg1 watchServicesSet:(id)arg2;
--(id)contactPreferredPhoneManager;
--(id)addressBookManager;
--(id)timelineWatchService;
--(void)ANCSActionHandler:(id)arg1 didSendResponse:(unsigned char)arg2 withAttributes:(id)arg3 actions:(id)arg4 forItemIdentifier:(id)arg5;
--(id)timelineManager;
--(id)initWithWatch:(id)arg1 watchServicesSet:(id)arg2 timelineManager:(id)arg3 currentUserLockerAppManager:(id)arg4;
--(id)addressBookQuerySession;
--(void)setAddressBookQuerySession:(id)arg1;
--(void)sendTextAppActionHandler:(id)arg1 didSendResponse:(unsigned char)arg2 withAttributes:(id)arg3 forItemIdentifier:(id)arg4;
--(void)registerInvokeActionHandler;
--(void)registerInvokeANCSActionHandler;
--(id)invokeActionHandler;
--(id)ANCSActionHandler;
--(void)handleANCSActionForInvokeActionMessage:(id)arg1;
--(void)handleActionForItemIdentifier:(id)arg1 actionIdentifier:(unsigned char)arg2 attributes:(id)arg3;
--(id)notificationHandler;
--(id)sendTextAppActionHandler;
--(void)handleActionForItem:(id)arg1 actionIdentifier:(unsigned char)arg2 attributes:(id)arg3;
--(void)sendResponseForItemIdentifier:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4;
--(void)processAction:(id)arg1 forItem:(id)arg2 attributes:(id)arg3;
--(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3;
--(id)subtitleAttributeForLocalizedString:(id)arg1;
--(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 subtitle:(id)arg3 icon:(id)arg4;
--(id)subtitleWithMuted:(BOOL)arg1 forDataSourceUUID:(id)arg2;
--(NSString *)accountUserID;
--(id)httpActionSessionManager;
--(id)subtitleAttributeForString:(id)arg1;
--(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 subtitle:(id)arg3 icon:(id)arg4 specificType:(long long)arg5;
--(void)sendResponseForItemIdentifier:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4 mapperSignal:(id)arg5;
--(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4;
--(void)sendANCSResponseForItemIdentifier:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4;
--(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2;
--(id)init;
--(id)watch;
-@end
+// @interface PBTimelineActionsWatchService : NSObject
+// +(id)watchServiceForWatch:(id)arg1 watchServicesSet:(id)arg2;
+// -(id)contactPreferredPhoneManager;
+// -(id)addressBookManager;
+// -(id)timelineWatchService;
+// -(void)ANCSActionHandler:(id)arg1 didSendResponse:(unsigned char)arg2 withAttributes:(id)arg3 actions:(id)arg4 forItemIdentifier:(id)arg5;
+// -(id)timelineManager;
+// -(id)initWithWatch:(id)arg1 watchServicesSet:(id)arg2 timelineManager:(id)arg3 currentUserLockerAppManager:(id)arg4;
+// -(id)addressBookQuerySession;
+// -(void)setAddressBookQuerySession:(id)arg1;
+// -(void)sendTextAppActionHandler:(id)arg1 didSendResponse:(unsigned char)arg2 withAttributes:(id)arg3 forItemIdentifier:(id)arg4;
+// -(void)registerInvokeActionHandler;
+// -(void)registerInvokeANCSActionHandler;
+// -(id)invokeActionHandler;
+// -(id)ANCSActionHandler;
+// -(void)handleANCSActionForInvokeActionMessage:(id)arg1;
+// -(void)handleActionForItemIdentifier:(id)arg1 actionIdentifier:(unsigned char)arg2 attributes:(id)arg3;
+// -(id)notificationHandler;
+// -(id)sendTextAppActionHandler;
+// -(void)handleActionForItem:(id)arg1 actionIdentifier:(unsigned char)arg2 attributes:(id)arg3;
+// -(void)sendResponseForItemIdentifier:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4;
+// -(void)processAction:(id)arg1 forItem:(id)arg2 attributes:(id)arg3;
+// -(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3;
+// -(id)subtitleAttributeForLocalizedString:(id)arg1;
+// -(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 subtitle:(id)arg3 icon:(id)arg4;
+// -(id)subtitleWithMuted:(BOOL)arg1 forDataSourceUUID:(id)arg2;
+// -(NSString *)accountUserID;
+// -(id)httpActionSessionManager;
+// -(id)subtitleAttributeForString:(id)arg1;
+// -(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 subtitle:(id)arg3 icon:(id)arg4 specificType:(long long)arg5;
+// -(void)sendResponseForItemIdentifier:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4 mapperSignal:(id)arg5;
+// -(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4;
+// -(void)sendANCSResponseForItemIdentifier:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4;
+// -(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2;
+// -(id)init;
+// -(id)watch;
+// @end
 
 %end
 
