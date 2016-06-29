@@ -1,3 +1,7 @@
+
+#import "PBSMSTextMessage.h"
+#import "PBSMSTextHelper.h"
+
 #define DEBUG 1
 
 #define SEND_DELAY 4.0
