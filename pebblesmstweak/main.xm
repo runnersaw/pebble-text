@@ -16,6 +16,8 @@
 // My headers
 
 #import "PBSMSHelper.h"
+#import "PBSMSTextMessage.h"
+#import "PBSMSTextHelper.h"
 
 // NS EXTENSIONS
 

@@ -1,7 +1,3 @@
-
-#import "PBSMSTextMessage.h"
-#import "PBSMSTextHelper.h"
-
 #define DEBUG 1
 
 #define SEND_DELAY 4.0
@@ -61,8 +57,4 @@ extern NSString *recentFileLocation;
 #else
 	#define log( s, ... )
 #endif
-
-@interface NSDictionary (PBSMS)
-- (id)safeObjectForKey:(id)key ofType:(Class)type;
-@end
 
