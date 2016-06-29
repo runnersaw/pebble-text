@@ -41,7 +41,7 @@
 		uuid:uuid
 		recordId:recordId
 		isRecentContact:[isRecentContact boolValue]
-		isReply:[isReply
+		isReply:[isReply boolValue]
 		shouldNotify:[shouldNotify boolValue]
 		isNewNumber:[isNewNumber boolValue]
 		expirationDate:expirationDate];
