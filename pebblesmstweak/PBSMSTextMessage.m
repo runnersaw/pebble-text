@@ -93,7 +93,7 @@
 
 - (BOOL)isExpired
 {
-	return ([_expirationDate compare:[NSDate date]] == NSOrderedAscending)
+	return ([_expirationDate compare:[NSDate date]] == NSOrderedAscending);
 }
 
 @end
