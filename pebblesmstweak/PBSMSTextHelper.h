@@ -11,6 +11,7 @@
 
 - (void)loadMessages;
 - (void)saveMessages;
+- (void)saveMessageToSend:(PBSMSTextMessage *)message;
 - (void)messageWasSent:(PBSMSTextMessage *)message;
 
 @end

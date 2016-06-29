@@ -76,6 +76,16 @@
     [serializedMessages writeToFile:messagesFileLocation];
 }
 
+- (void)saveMessageToSend:(PBSMSTextMessage *)message
+{
+	[self loadMessages];
+
+	NSMutableArray *messages = [NSMutableArray arrayWithArray:self.messages];
+	[messages addObject:message];
+
+	self.messages = [messages copy]
+}
+
 - (void)messageWasSent:(PBSMSTextMessage *)sentMessage
 {
 	log(@"messageWasSent %@", sentMessage);

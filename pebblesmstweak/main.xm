@@ -2143,7 +2143,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     NSString *t = [NSMutableString stringWithString:text];
     NSNumber *rId = [NSNumber numberWithInt:[recordId intValue]];
 
-    NSMutableDictionary *dict = [[[NSMutableDictionary alloc] initWithObjectsAndKeys:
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
         t, @"message", 
         n, @"number", 
         [NSNumber numberWithBool:NO], @"notify", 
@@ -2153,7 +2153,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
         [NSNumber numberWithBool:YES], @"isReply",
         [[NSUUID UUID] UUIDString], @"uuid",
         [NSDate dateWithTimeIntervalSinceNow:MESSAGE_SEND_TIMEOUT], @"expirationDate",
-        nil] autorelease];
+        nil];
 
     saveMessageForSending(dict);
 
@@ -2516,14 +2516,14 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 	   	// TODO send response 21 for quick reply
 
-		PBTimelineAttribute *attr1 = [[[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:@"Action" specificType:0] autorelease];
-		PBTimelineAttribute *attr2 = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action" specificType:0] autorelease];
+		PBTimelineAttribute *attr1 = [[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:@"Action" specificType:0];
+		PBTimelineAttribute *attr2 = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action" specificType:0];
 		[self sendResponse:16 withAttributes:@[ attr1, attr2 ] actions:actions forItemIdentifier:[m ANCSIdentifier]];
 		return;
 	}
 	else if ([m actionID] == DISMISS_IDENTIFIER)
 	{
-		PBTimelineAttribute *attr = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Dismissed" specificType:0] autorelease];
+		PBTimelineAttribute *attr = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Dismissed" specificType:0];
 		[self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
 		return;
 	}
@@ -2540,7 +2540,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 		{
 			if (isComposeAction)
 			{
-				PBTimelineAttribute *attr = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Reply" specificType:0] autorelease];
+				PBTimelineAttribute *attr = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Reply" specificType:0];
 				[self sendResponse:21 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
 				return;
 			}
@@ -2548,14 +2548,14 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 			{
 				[%c(PBANCSActionHandler) performAction:actionID forBulletinID:bulletinID];
 
-				PBTimelineAttribute *attr = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action done" specificType:0] autorelease];
+				PBTimelineAttribute *attr = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action done" specificType:0];
 				[self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
 				return;
 			}
 		}
 		else
 		{
-			PBTimelineAttribute *attr = [[[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action failed!" specificType:0] autorelease];
+			PBTimelineAttribute *attr = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action failed!" specificType:0];
 			[self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
 			return;
 		}
@@ -2679,8 +2679,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 		[appsArray addObject:appID];
 	}
 
-	PBTimelineAttribute *attr1 = [[[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:@"Action" specificType:0] autorelease];
-	PBTimelineAction *b = [[[%c(PBTimelineAction) alloc] initWithIdentifier:@(HAS_ACTIONS_IDENTIFIER) type:@"ANCSResponse" attributes:@[ attr1 ]] autorelease];
+	PBTimelineAttribute *attr1 = [[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:@"Action" specificType:0];
+	PBTimelineAction *b = [[%c(PBTimelineAction) alloc] initWithIdentifier:@(HAS_ACTIONS_IDENTIFIER) type:@"ANCSResponse" attributes:@[ attr1 ]];
 	id r = %orig(arg1, arg2, arg3, arg4, @[ b ]);
 
 	return r;
