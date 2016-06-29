@@ -4,14 +4,14 @@
 
 @interface PBSMSPebbleHelper ()
 
-@property (nonatomic, copy) NSArray<NSString *> *presets;
+@property (nonatomic, copy) NSArray *presets;
 
 @end
 
 @implementation PBSMSPebbleHelper
 
 + (id)sharedHelper {
-    static PebbleSMSHelper *sharedPebbleHelper = nil;
+    static PBSMSPebbleHelper *sharedPebbleHelper = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedPebbleHelper = [[self alloc] init];
@@ -21,9 +21,9 @@
 
 - (NSArray *)presets
 {
-    if ([presets count] == 0)
+    if (self.presets.count == 0)
 	{
-        presets = @[ @"OK", 
+        self.presets = @[ @"OK", 
         	@"Yes", 
         	@"No", 
         	@"Call me", 
