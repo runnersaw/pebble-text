@@ -1192,8 +1192,6 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 - (BOOL)application:(id)arg1 didFinishLaunchingWithOptions:(id)arg2
 {
-    // NSLog(@"PEBBLESMS: messages launched");
-
     BOOL s = %orig;
 
     [self sendMessagesForTextSender];
@@ -1205,6 +1203,16 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     [c registerForMessageName:sendMessageCommand target:self selector:@selector(handleMessageNamed:withUserInfo:)];
 
     return s;
+}
+ 
+%new
+- (void)handleMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo
+{
+    log(@"handleMessageNamed %@", [userinfo description]);
+    if ([name isEqualToString:sendMessageCommand])
+	{
+        [self sendMessagesForTextSender];
+    }
 }
 
 %new
@@ -1267,7 +1275,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
             }
         }
     }
-    // NSLog(@"PEBBLESMS: finalPhone == NULL %d", (finalPhone == NULL));
+    log(@"finalPhone %@", finalPhone);
 
     if (finalPhone == NULL)
 	{
@@ -1284,7 +1292,6 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
     CKConversationList *conversationList = [%c(CKConversationList) sharedConversationList];
     CKConversation *conversation = [conversationList conversationForExistingChatWithGroupID:finalPhone];
-    // NSLog(@"PEBBLESMS: conversation %@", [conversation class]);
 
     if (conversation == NULL)
 	{
@@ -1425,18 +1432,6 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
             NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
             [center postNotificationName:messageSendNotification object:distributedCenterName userInfo:nil deliverImmediately:YES];
         });
-    }
-}
- 
-%new
-- (void)handleMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo
-{
-    // NSLog(@"PEBBLESMS: handleMessageNamed in MobileSMS");
-    // NSLog(@"PB sendmessageto %@", [userinfo description]);
-    // Process userinfo (simple dictionary) and send message
-    if ([name isEqualToString:sendMessageCommand])
-	{
-        [self sendMessagesForTextSender];
     }
 }
 
@@ -2064,36 +2059,28 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 %new
 + (void)sendSMS:(NSNumber *)recordId number:(NSString *)number withText:(NSString *)text
 {
-    // NSLog(@"PEBBLESMS: sendSMS PBWatch");
-    // launch messages
-    // CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), (CFStringRef)messageNotificationString, nil, nil, YES);
-
     NSNumber *rId;
     if (isRecentContact)
-{
+	{
         PBContact *c = [[%c(PBAddressBook) addressBook] contactWithPrefixedPhoneNumber:number];
         rId = [NSNumber numberWithInt:[[c recordId] intValue]];
-    } else
-{
+    }
+    else
+	{
         rId = [NSNumber numberWithInt:[recordId intValue]];
     }
-    NSNumber *r = [NSNumber numberWithBool:isRecentContact];
-    NSString *n = [NSMutableString stringWithString:number];
-    NSString *t = [NSMutableString stringWithString:text];
 
-    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:
-        t, @"message", 
-        n, @"number", 
-        [NSNumber numberWithBool:YES], @"notify", 
-        [NSNumber numberWithBool:NO], @"newNumber", 
-        rId, @"recordId", 
-        r, @"isRecentContact",
-        [NSNumber numberWithBool:NO], @"isReply",
-        [[NSUUID UUID] UUIDString], @"uuid",
-        [NSDate dateWithTimeIntervalSinceNow:MESSAGE_SEND_TIMEOUT], @"expirationDate",
-        nil];
+    PBSMSTextMessage *message = [[PBSMSTextMessage alloc] initWithNumber:number
+		messageText:text
+		uuid:[[NSUUID UUID] UUIDString]
+		recordId:rId
+		isRecentContact:isRecentContact
+		isReply:NO
+		shouldNotify:YES
+		isNewNumber:NO
+		expirationDate:[NSDate dateWithTimeIntervalSinceNow:MESSAGE_SEND_TIMEOUT]];
 
-    saveMessageForSending(dict);
+    [[PBSMSTextHelper sharedHelper] saveMessageToSend:message];
 
     CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
     rocketbootstrap_distributedmessagingcenter_apply(c);
@@ -2135,27 +2122,17 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 %new
 + (void)sendSMS:(NSNumber *)recordId number:(NSString *)number withText:(NSString *)text
 {
-    // NSLog(@"PEBBLESMS: sendSMS PBSMSSessionManager");
-    // launch messages
-    // CFNotificationCenterPostNotification(CFNotificationCenterGetDarwinNotifyCenter(), (CFStringRef)messageNotificationString, nil, nil, YES);
+    PBSMSTextMessage *message = [[PBSMSTextMessage alloc] initWithNumber:number
+		messageText:text
+		uuid:[[NSUUID UUID] UUIDString]
+		recordId:recordId
+		isRecentContact:NO
+		isReply:YES
+		shouldNotify:NO
+		isNewNumber:NO
+		expirationDate:[NSDate dateWithTimeIntervalSinceNow:MESSAGE_SEND_TIMEOUT]];
 
-    NSString *n = [NSMutableString stringWithString:number];
-    NSString *t = [NSMutableString stringWithString:text];
-    NSNumber *rId = [NSNumber numberWithInt:[recordId intValue]];
-
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
-        t, @"message", 
-        n, @"number", 
-        [NSNumber numberWithBool:NO], @"notify", 
-        [NSNumber numberWithBool:NO], @"newNumber", 
-        rId, @"recordId", 
-        [NSNumber numberWithBool:NO], @"isRecentContact",
-        [NSNumber numberWithBool:YES], @"isReply",
-        [[NSUUID UUID] UUIDString], @"uuid",
-        [NSDate dateWithTimeIntervalSinceNow:MESSAGE_SEND_TIMEOUT], @"expirationDate",
-        nil];
-
-    saveMessageForSending(dict);
+    [[PBSMSTextHelper sharedHelper] saveMessageToSend:message];
 
     CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
     rocketbootstrap_distributedmessagingcenter_apply(c);
