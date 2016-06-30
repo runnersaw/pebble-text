@@ -551,45 +551,11 @@
 
 @end
 
-// pebble 3.14
-// @protocol PBNotificationActionHandler <NSObject>
-// +(id)handlerWithNotificationSourceIdentifier:(id)arg1 delegate:(id)arg2;
-// -(void)startHandlingInvokeActionMessage:(id)arg1;
-// -(void)handleActionWithActionIdentifier:(unsigned char)arg1 attributes:(id)arg2;
-// -(NSString *)notificationSourceIdentifier;
-// -(id)delegate;
-// @end
-
-// pebble 3.14
-@interface PBEmailNotificationActionHandler : NSObject
-+(id)handlerWithNotificationSourceIdentifier:(id)arg1 delegate:(id)arg2 ;
--(void)startHandlingInvokeActionMessage:(id)arg1 ;
--(void)handleActionWithActionIdentifier:(unsigned char)arg1 attributes:(id)arg2 ;
--(NSString *)notificationSourceIdentifier;
--(id)linkedAccountsManager;
--(id)initWithNotificationSourceIdentifier:(id)arg1 linkedAccountsManager:(id)arg2 ;
--(id)emailNotification;
--(id)emailApp;
--(id)currentANCSActionMessage;
--(void)setCurrentANCSActionMessage:(id)arg1 ;
--(BOOL)detectAndSendError;
--(void)showPerformingActionScreenOnWatchForAction:(unsigned long long)arg1 ;
--(void)performEmailAction:(unsigned long long)arg1 ;
--(void)replyToEmailWithMessage:(id)arg1 ;
--(id)ANCSEmailNotification;
--(void)saveANCSActionMessage:(id)arg1 ;
--(id)emailsFromAddressBookMatchingQuery:(id)arg1 ;
--(void)sendRequestWithClient:(id)arg1 ;
--(void)setDelegate:(id)arg1 ;
--(id)init;
--(id)delegate;
-@end
-
 @interface PBANCSActionHandler
 +(id)actionHandlerWithDelegate:(id)arg1 ;
 -(void)dealloc;
--(id)handlingIdentifier;
--(void)setHandlingIdentifier:(id)arg1 ;
+-(NSUUID *)handlingIdentifier;
+-(void)setHandlingIdentifier:(NSUUID *)arg1 ;
 -(void)sendResponse:(unsigned char)arg1 withAttributes:(id)arg2 actions:(id)arg3 forItemIdentifier:(id)arg4 ;
 -(NSDictionary *)actionHandlersByAppIdentifier;
 -(void)setCurrentActionHandler:(id)arg1 ;
@@ -603,11 +569,6 @@
 -(void)handleInvokeANCSActionMessage:(id)arg1 ;
 -(id)delegate;
 -(id)initWithDelegate:(id)arg1 ;
-
-// pebble 3.14
-+(id)bulletinIdentifierForInvokeANCSMessage:(id)arg1 ;
-+(void)performReply:(id)arg1 forAction:(id)arg2 andBulletinID:(id)arg3 ;
-+(void)performAction:(id)arg1 forBulletinID:(id)arg2 ;
 @end
 
 @interface PBSMSNotificationActionHandler
@@ -649,7 +610,6 @@
 -(id)delegate;
 -(NSIndexSet *)actions;
 @end
-
 @interface PBTimelineActionsWatchService : NSObject
 
 +(id)watchServiceForWatch:(id)arg1 watchServicesSet:(id)arg2 ;
@@ -1930,6 +1890,17 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     return s;
 }
 
+- (void)applicationWillTerminate:(id)fp8 {
+    // relaunch self
+    %orig;
+
+    // NSLog(@"PB going to terminate, launch myself again pls. ");
+
+    // CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
+    // rocketbootstrap_distributedmessagingcenter_apply(c);
+    // [c sendMessageName:openPebbleCommand userInfo:NULL];
+}
+
 %new
 - (void)sentCallbackWithNotification:(NSNotification *)myNotification {
     // NSLog(@"PB handleSendNotification %@", [[%c(PBPebbleCentral) defaultCentral] class]);
@@ -1958,7 +1929,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 %hook PBCannedResponseManager
 
 - (id)cannedResponsesForAppIdentifier:(id)fp8 { 
-    NSLog(@"PEBBLESMS: cannedResponsesForAppIdentifier %@", fp8);
+    // NSLog(@"PEBBLESMS: cannedResponsesForAppIdentifier %@", fp8);
     id r = %orig;
     if ([(NSString *)fp8 isEqualToString:@"com.apple.MobileSMS"]) {
         [presets removeAllObjects];
@@ -1967,7 +1938,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     return r; 
 }
 - (void)setCannedResponses:(id)fp8 forAppIdentifier:(id)fp12 {
-    NSLog(@"PEBBLESMS: setCannedResponses %@", fp12);
+    // NSLog(@"PEBBLESMS: setCannedResponses %@", fp12);
     if ([(NSString *)fp12 isEqualToString:@"com.apple.MobileSMS"]) {
         [presets removeAllObjects];
         [presets addObjectsFromArray:(NSArray *)fp8];
@@ -1977,167 +1948,19 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 
 %end
 
-%hook PBEmailNotificationActionHandler
-+(id)handlerWithNotificationSourceIdentifier:(id)arg1 delegate:(id)arg2{
-	%log;
-	id r = %orig;
-	NSLog(@"%@",r);
-	return r;
-}
--(void)startHandlingInvokeActionMessage:(id)arg1{
-	%log;
-	return %orig;
-}
--(void)handleActionWithActionIdentifier:(unsigned char)arg1 attributes:(id)arg2{
-	%log;
-	return %orig;
-}
--(NSString *)notificationSourceIdentifier{
-	%log;
-	id r = %orig;
-	NSLog(@"%@",r);
-	return r;
-}
--(id)linkedAccountsManager{
-	%log;
-	id r = %orig;
-	NSLog(@"%@",r);
-	return r;
-}
--(id)initWithNotificationSourceIdentifier:(id)arg1 linkedAccountsManager:(id)arg2{
-	%log;
-	id r = %orig;
-	NSLog(@"%@",r);
-	return r;
-}
--(id)emailNotification{
-	%log;
-	id r = %orig;
-	NSLog(@"%@",r);
-	return r;
-}
--(id)emailApp{
-	%log;
-	id r = %orig;
-	NSLog(@"%@",r);
-	return r;
-}
--(id)currentANCSActionMessage{
-	%log;
-	id r = %orig;
-	NSLog(@"%@",r);
-	return r;
-}
--(void)setCurrentANCSActionMessage:(id)arg1{
-	%log;
-	return %orig;
-}
--(void)showPerformingActionScreenOnWatchForAction:(unsigned long long)arg1{
-	%log;
-	return %orig;
-}
--(void)performEmailAction:(unsigned long long)arg1{
-	%log;
-	return %orig;
-}
--(void)replyToEmailWithMessage:(id)arg1{
-	%log;
-	return %orig;
-}
--(id)ANCSEmailNotification{
-	%log;
-	id r = %orig;
-	NSLog(@"%@",r);
-	return r;
-}
--(void)saveANCSActionMessage:(id)arg1{
-	%log;
-	return %orig;
-}
--(void)sendRequestWithClient:(id)arg1{
-	%log;
-	return %orig;
-}
--(void)setDelegate:(id)arg1{
-	%log;
-	return %orig;
-}
-%end
-
-%hook PBANCSActionHandler
-+(id)actionHandlerWithDelegate:(id)arg1{
-	%log;
-	id r = %orig;
-	NSLog(@"%@",r);
-	return r;
-}
--(void)sendResponse:(unsigned char)arg1 withAttributes:(id)arg2 actions:(id)arg3 forItemIdentifier:(id)arg4{
-	%log;
-	return %orig;
-}
--(NSDictionary *)actionHandlersByAppIdentifier{
-	%log;
-	id r = %orig;
-	NSLog(@"%@",r);
-	return r;
-}
--(void)setCurrentActionHandler:(id)arg1{
-	%log;
-	return %orig;
-}
--(id)currentActionHandler{
-	%log;
-	id r = %orig;
-	NSLog(@"%@",r);
-	return r;
-}
--(void)handleActionWithActionIdentifier:(unsigned char)arg1 attributes:(id)arg2{
-	%log;
-	return %orig;
-}
--(void)notificationHandler:(id)arg1 didSendResponse:(unsigned char)arg2 withAttributes:(id)arg3 actions:(id)arg4{
-	%log;
-	return %orig;
-}
--(void)notificationHandler:(id)arg1 didSendError:(id)arg2 withTitle:(id)arg3 icon:(id)arg4{
-	%log;
-	return %orig;
-}
--(void)handleInvokeANCSActionMessage:(id)arg1{
-	%log;
-	return %orig;
-}
-
-// pebble 3.14
-+(id)bulletinIdentifierForInvokeANCSMessage:(id)arg1{
-	%log;
-	id r = %orig;
-	NSLog(@"%@",r);
-	return r;
-}
-+(void)performReply:(id)arg1 forAction:(id)arg2 andBulletinID:(id)arg3{
-	%log;
-	return %orig;
-}
-+(void)performAction:(id)arg1 forBulletinID:(id)arg2{
-	%log;
-	return %orig;
-}
-%end
-
 %hook PBSendSMSActionHandler
 
 - (void)handleActionWithActionIdentifier:(unsigned char)fp8 attributes:(id)fp12 {
-    NSLog(@"PEBBLESMS: handleActionWithActionIdentifier");
-    %log;
+    // NSLog(@"PEBBLESMS: handleActionWithActionIdentifier");
+    // %log;
     if (fp8 == 2) {
-        NSLog(@"HANDLING");
+        // NSLog(@"HANDLING");
         NSData *d = [(PBTimelineItemAttributeBlob *)[(NSArray *)fp12 objectAtIndex:0] content];
         NSString *reply = [[NSString alloc] initWithData:d encoding:NSUTF8StringEncoding];
         PBContact *contact = [[self addressBookQuerySession] selectedContact];
         PBPhoneNumber *pbPhoneNumber = (PBPhoneNumber *)[(PBLabeledValue *)[[self addressBookQuerySession] selectedLabeledValue] value];
         NSString *phone = [pbPhoneNumber getStringRepresentationForTextSender];
-        NSLog(@"Wants to send reply with content '%@' to '%@' at number '%@'", reply, contact, phone);
+        // NSLog(@"Wants to send reply with content '%@' to '%@' at number '%@'", reply, contact, phone);
         PBTimelineAttributeContentLocalizedString *localString = [[%c(PBTimelineAttributeContentLocalizedString) alloc] initWithLocalizationKey:@"Sending..."];
         PBTimelineAttribute *attr = [%c(PBTimelineAttribute) attributeWithType:@"subtitle" content:localString];
         [localString release];
@@ -2154,7 +1977,7 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
 %hook PBSendTextAppActionHandler
 
 -(void)handleAction:(unsigned char)arg1 forItemIdentifier:(id)arg2 attributes:(id)arg3 {
-    %log;
+    // %log;
     if (arg1 == 2) {
         NSData *responseData = [(PBTimelineItemAttributeBlob *)[self responseFromAttributes:arg3] content];
         NSData *phoneData = [(PBTimelineItemAttributeBlob *)[self phoneNumberFromAttributes:arg3] content];
@@ -2194,137 +2017,6 @@ static void saveRecentRecipient(NSString *name, NSString *phone) {
     }
 }
 
-%end
-
-%hook PBTimelineActionsWatchService
--(id)timelineWatchService{
-	%log;
-	id r = %orig;
-	NSLog(@"%@",r);
-	return r;
-}
--(void)ANCSActionHandler:(id)arg1 didSendResponse:(unsigned char)arg2 withAttributes:(id)arg3 actions:(id)arg4 forItemIdentifier:(id)arg5{
-	%log;
-	return %orig;
-}
--(id)timelineManager{
-	%log;
-	id r = %orig;
-	NSLog(@"%@",r);
-	return r;
-}
--(id)initWithWatch:(id)arg1 watchServicesSet:(id)arg2 timelineManager:(id)arg3 currentUserLockerAppManager:(id)arg4{
-	%log;
-	id r = %orig;
-	NSLog(@"%@",r);
-	return r;
-}
--(void)sendTextAppActionHandler:(id)arg1 didSendResponse:(unsigned char)arg2 withAttributes:(id)arg3 forItemIdentifier:(id)arg4{
-	%log;
-	return %orig;
-}
--(void)registerInvokeActionHandler{
-	%log;
-	return %orig;
-}
--(void)registerInvokeANCSActionHandler{
-	%log;
-	return %orig;
-}
--(id)invokeActionHandler{
-	%log;
-	id r = %orig;
-	NSLog(@"%@",r);
-	return r;
-}
--(id)ANCSActionHandler{
-	%log;
-	id r = %orig;
-	NSLog(@"%@",r);
-	return r;
-}
--(void)handleANCSActionForInvokeActionMessage:(id)arg1{
-	%log;
-	return %orig;
-}
--(void)handleActionForItemIdentifier:(id)arg1 actionIdentifier:(unsigned char)arg2 attributes:(id)arg3{
-	%log;
-	return %orig;
-}
--(id)notificationHandler{
-	%log;
-	id r = %orig;
-	NSLog(@"%@",r);
-	return r;
-}
--(id)sendTextAppActionHandler{
-	%log;
-	id r = %orig;
-	NSLog(@"%@",r);
-	return r;
-}
--(void)handleActionForItem:(id)arg1 actionIdentifier:(unsigned char)arg2 attributes:(id)arg3{
-	%log;
-	return %orig;
-}
--(void)sendResponseForItemIdentifier:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4{
-	%log;
-	return %orig;
-}
--(void)processAction:(id)arg1 forItem:(id)arg2 attributes:(id)arg3{
-	%log;
-	return %orig;
-}
--(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3{
-	%log;
-	return %orig;
-}
--(id)subtitleAttributeForLocalizedString:(id)arg1{
-	%log;
-	id r = %orig;
-	NSLog(@"%@",r);
-	return r;
-}
--(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 subtitle:(id)arg3 icon:(id)arg4{
-	%log;
-	return %orig;
-}
--(void)processHTTPActionForItem:(id)arg1 actionAttributes:(id)arg2{
-	%log;
-	return %orig;
-}
--(NSString *)accountUserID{
-	%log;
-	id r = %orig;
-	NSLog(@"%@",r);
-	return r;
-}
--(id)httpActionSessionManager{
-	%log;
-	id r = %orig;
-	NSLog(@"%@",r);
-	return r;
-}
--(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 subtitle:(id)arg3 icon:(id)arg4 specificType:(long long)arg5{
-	%log;
-	return %orig;
-}
--(void)sendResponseForItemIdentifier:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4 mapperSignal:(id)arg5{
-	%log;
-	return %orig;
-}
--(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4{
-	%log;
-	return %orig;
-}
--(void)sendANCSResponseForItemIdentifier:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4{
-	%log;
-	return %orig;
-}
--(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2{
-	%log;
-	return %orig;
-}
 %end
 
 %end
