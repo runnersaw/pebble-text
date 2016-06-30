@@ -121,123 +121,35 @@
 
 %group PebbleTextReply
 
-%hook PBLinkedAccountExtendedCredentials
-
-- (id)accountData {
-	// %log;
-	return @"JWE:TESTEST";
-}
-
-%end
-
 %hook PBSMSReplyManager
 
-- (id)SMSProviders {
-	// %log;
-	return [NSSet setWithArray:@[[NSNumber numberWithInt:1]]];
-}
-
-- (void)setHasLinkedSMSAccount:(BOOL)fp8 {
-	// %log;
-	%orig(YES);
-}
-
 - (BOOL)hasLinkedSMSAccount {
-	// %log;
 	return YES;
 }
-- (unsigned char)linkedSMSProvider {
-	// %log;
-	return 1;
-}
-- (void)disableSMSActions {
-	// %log;
-	[self enableSMSActions];
-}
+
 - (BOOL)isCarrierProviderEnabled {
-	// %log;
 	return YES;
 }
+
 - (void)setSMSActionsEnabled:(BOOL)fp8 {
-	// %log;
 	%orig(YES);
-}
-- (unsigned char)providerFromCarrier {
-	// %log;
-	return 1;
-}
-%end
-
-%hook PBLinkedAccount
-
-- (unsigned char)provider {
-	// %log;
-	return 1;
-}
-
-- (id)uuid {
-	// %log;
-	return [NSUUID UUID];
-}
-
-- (BOOL)isAccountExpired {
-	// %log;
-	return NO;
-}
-
--(BOOL)isExpired {
-	// %log;
-	return NO;
-}
-
-%end
-
-%hook PBLinkedAccountCredentials
-
-- (id)expiration {
-	// %log;
-	NSTimeInterval t = 36000;
-	NSDate *d = [NSDate dateWithTimeIntervalSinceNow:t];
-	return d;
-}
-
-- (id)apiData {
-	// %log;
-	return @"JWE:test";
 }
 
 %end
 
 %hook PBLinkedAccountsManager
 
-+ (id) providerToString:(unsigned char)arg {
-	// %log;
-	return @"vzw";
-}
-
-+ (unsigned char) stringToProvider:(id)arg {
-	// %log;
-	return 1;
-}
-
-- (BOOL) hasLinkedAccountForProvider:(unsigned char)arg {
-	// %log;
-	return YES;
-}
-
-- (BOOL) isProviderEnabled:(unsigned char)arg {
-	// %log;
-	return YES;
-}
-
-- (id) enabledProviders {
-	// %log;
-	return [NSSet setWithArray:@[[NSNumber numberWithInt:1]]];
-}
-
 -(BOOL)hasLinkedAccountForApp:(id)arg1 {
-	// %log;
-	return YES;
+	if ([arg1 isKindOfClass:[%c(PBMobilePhoneApp) class]])
+	{
+		return YES;
+	}
+	if ([arg1 isKindOfClass:[%c(PBMobileSMSApp) class]])
+	{
+		return YES;
+	}
+
+	return %orig;
 }
 
 %end
