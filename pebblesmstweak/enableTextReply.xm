@@ -128,12 +128,10 @@
 }
 
 - (BOOL)isCarrierProviderEnabled {
-	%log;
 	return YES;
 }
 
 - (void)setSMSActionsEnabled:(BOOL)fp8 {
-	%log;
 	%orig(YES);
 }
 
