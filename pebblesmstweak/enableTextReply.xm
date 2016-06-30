@@ -121,115 +121,25 @@
 
 %group PebbleTextReply
 
-// // %hook PBLinkedAccountExtendedCredentials
-
-// // - (id)accountData {
-// // 	// %log;
-// // 	return @"JWE:TESTEST";
-// // }
-
-// // %end
-
 %hook PBSMSReplyManager
 
-// - (id)SMSProviders {
-// 	// %log;
-// 	return [NSSet setWithArray:@[[NSNumber numberWithInt:1]]];
-// }
-
-// - (void)setHasLinkedSMSAccount:(BOOL)fp8 {
-// 	// %log;
-// 	%orig(YES);
-// }
-
 - (BOOL)hasLinkedSMSAccount {
-	// %log;
 	return YES;
 }
-// - (unsigned char)linkedSMSProvider {
-// 	// %log;
-// 	return 1;
-// }
-- (void)disableSMSActions {
-	%log;
-// 	[self enableSMSActions];
-}
+
 - (BOOL)isCarrierProviderEnabled {
 	%log;
 	return YES;
 }
+
 - (void)setSMSActionsEnabled:(BOOL)fp8 {
 	%log;
 	%orig(YES);
 }
-// - (unsigned char)providerFromCarrier {
-// 	// %log;
-// 	return 1;
-// }
+
 %end
 
-// %hook PBLinkedAccount
-
-// - (unsigned char)provider {
-// 	%log;
-// 	return 1;
-// }
-
-// - (id)uuid {
-// 	%log;
-// 	id r = %orig;
-// 	NSLog(@"=%@", r);
-// 	return r;
-// }
-
-// - (BOOL)isAccountExpired {
-// 	%log;
-// 	BOOL r = %orig;
-// 	NSLog(@"=%d", r);
-// 	return r;
-// }
-
-// -(BOOL)isExpired {
-// 	%log;
-// 	return NO;
-// }
-
-// %end
-
-// %hook PBLinkedAccountCredentials
-
-// - (id)expiration {
-// 	%log;
-// 	id r = %orig;
-// 	NSLog(@"=%@", r);
-// 	return r;
-// }
-
-// - (id)apiData {
-// 	%log;
-// 	id r = %orig;
-// 	NSLog(@"=%@", r);
-// 	return r;
-// }
-
-// %end
-
 %hook PBLinkedAccountsManager
-
-// - (BOOL) hasLinkedAccountForProvider:(unsigned char)arg {
-// 	// %log;
-// 	return YES;
-// }
-
-// - (BOOL) isProviderEnabled:(unsigned char)arg {
-// 	// %log;
-// 	return YES;
-// }
-
-// - (id) enabledProviders {
-// 	// %log;
-// 	return [NSSet setWithArray:@[[NSNumber numberWithInt:1]]];
-// }
 
 -(BOOL)hasLinkedAccountForApp:(id)arg1 {
 	if ([arg1 isKindOfClass:[%c(PBMobilePhoneApp) class]])
