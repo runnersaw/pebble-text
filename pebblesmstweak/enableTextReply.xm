@@ -119,37 +119,157 @@
 -(void)migrateSMSAccountFrom3Dot6To3Dot7ForProvider:(unsigned char)arg1;
 @end
 
+// %group PebbleTextReply
+
+// %hook PBSMSReplyManager
+
+// - (BOOL)hasLinkedSMSAccount {
+// 	return YES;
+// }
+
+// - (BOOL)isCarrierProviderEnabled {
+// 	return YES;
+// }
+
+// - (void)setSMSActionsEnabled:(BOOL)fp8 {
+// 	%orig(YES);
+// }
+
+// %end
+
+// %hook PBLinkedAccountsManager
+
+// -(BOOL)hasLinkedAccountForApp:(id)arg1 {
+// 	if ([arg1 isKindOfClass:[%c(PBMobilePhoneApp) class]])
+// 	{
+// 		return YES;
+// 	}
+// 	if ([arg1 isKindOfClass:[%c(PBMobileSMSApp) class]])
+// 	{
+// 		return YES;
+// 	}
+
+// 	return %orig;
+// }
+
+// %end
+
+// %hook PBTimelineAttribute
+
+// - (id)content {
+//     if ([[self type] isEqual:@"emojiSupported"]) {
+//         return [NSNumber numberWithBool:YES];
+//     } else {
+//         return %orig;
+//     }
+// }
+
+// %end
+
+// %end
+
+// %ctor {
+//     if ([%c(PBAppDelegate) class]) {
+//         %init(PebbleTextReply);
+//     }
+// }
+
 %group PebbleTextReply
+
+%hook PBLinkedAccountExtendedCredentials
+
+- (id)accountData {
+	%log;
+	id r = %orig;
+	NSLog(@"%@",r);
+	return r;
+}
+
+%end
 
 %hook PBSMSReplyManager
 
 - (BOOL)hasLinkedSMSAccount {
+	%log;
 	return YES;
 }
 
 - (BOOL)isCarrierProviderEnabled {
+	%log;
 	return YES;
 }
 
 - (void)setSMSActionsEnabled:(BOOL)fp8 {
+	%log;
 	%orig(YES);
+}
+
+%end
+
+%hook PBLinkedAccount
+
+- (id)uuid {
+	%log;
+	id r = %orig;
+	NSLog(@"%@",r);
+	return r;
+}
+
+- (BOOL)isAccountExpired {
+	%log;
+	BOOL r = %orig;
+	NSLog(@"%d",r);
+	return r;
+}
+
+-(BOOL)isExpired {
+	%log;
+	BOOL r = %orig;
+	NSLog(@"%d",r);
+	return r;
+}
+
+%end
+
+%hook PBLinkedAccountCredentials
+
+- (id)expiration {
+	%log;
+	id r = %orig;
+	NSLog(@"%@",r);
+	return r;
+}
+
+- (id)apiData {
+	%log;
+	id r = %orig;
+	NSLog(@"%@",r);
+	return r;
 }
 
 %end
 
 %hook PBLinkedAccountsManager
 
--(BOOL)hasLinkedAccountForApp:(id)arg1 {
-	if ([arg1 isKindOfClass:[%c(PBMobilePhoneApp) class]])
-	{
-		return YES;
-	}
-	if ([arg1 isKindOfClass:[%c(PBMobileSMSApp) class]])
-	{
-		return YES;
-	}
+- (BOOL) hasLinkedAccountForProvider:(unsigned char)arg {
+	%log;
+	BOOL r = %orig;
+	NSLog(@"%d",r);
+	return r;
+}
 
-	return %orig;
+- (BOOL) isProviderEnabled:(unsigned char)arg {
+	%log;
+	BOOL r = %orig;
+	NSLog(@"%d",r);
+	return r;
+}
+
+-(BOOL)hasLinkedAccountForApp:(id)arg1 {
+	%log;
+	BOOL r = %orig;
+	NSLog(@"%d",r);
+	return r;
 }
 
 %end
@@ -173,3 +293,5 @@
         %init(PebbleTextReply);
     }
 }
+
+
