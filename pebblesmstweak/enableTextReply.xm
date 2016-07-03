@@ -121,144 +121,35 @@
 
 %group PebbleTextReply
 
-%hook PBLinkedAccountExtendedCredentials
-
-- (id)accountData
-{
-	%log;
-	id r = %orig;
-	log(@"%@", r);
-	return r;
-}
-
-%end
-
 %hook PBSMSReplyManager
 
-- (id)SMSProviders
-{
-	%log;
-	return [NSSet setWithArray:@[[NSNumber numberWithInt:1]]];
-}
-
-- (void)setHasLinkedSMSAccount:(BOOL)fp8
-{
-	%log;
-	%orig(YES);
-}
-
-- (BOOL)hasLinkedSMSAccount
-{
-	%log;
+- (BOOL)hasLinkedSMSAccount {
 	return YES;
 }
-- (unsigned char)linkedSMSProvider
-{
-	%log;
-	return 1;
-}
-- (void)disableSMSActions
-{
-	%log;
-	[self enableSMSActions];
-}
-- (BOOL)isCarrierProviderEnabled
-{
-	%log;
+
+- (BOOL)isCarrierProviderEnabled {
 	return YES;
 }
-- (void)setSMSActionsEnabled:(BOOL)fp8
-{
-	%log;
+
+- (void)setSMSActionsEnabled:(BOOL)fp8 {
 	%orig(YES);
-}
-- (unsigned char)providerFromCarrier
-{
-	%log;
-	return 1;
-}
-%end
-
-%hook PBLinkedAccount
-
-- (unsigned char)provider
-{
-	%log;
-	return 1;
-}
-
-- (id)uuid
-{
-	%log;
-	return [NSUUID UUID];
-}
-
-- (BOOL)isAccountExpired
-{
-	%log;
-	return NO;
-}
-
--(BOOL)isExpired
-{
-	%log;
-	return NO;
-}
-
-%end
-
-%hook PBLinkedAccountCredentials
-
-- (id)expiration
-{
-	%log;
-	id r = %orig;
-	log(@"%@", r);
-	return r;
-}
-
-- (id)apiData
-{
-	%log;
-	id r = %orig;
-	log(@"%@", r);
-	return r;
 }
 
 %end
 
 %hook PBLinkedAccountsManager
 
-- (BOOL) hasLinkedAccountForProvider:(unsigned char)arg
-{
-	%log;
-	BOOL r = %orig;
-	log(@"%d", r);
-	return r;
-}
+-(BOOL)hasLinkedAccountForApp:(id)arg1 {
+	if ([arg1 isKindOfClass:[%c(PBMobilePhoneApp) class]])
+	{
+		return YES;
+	}
+	if ([arg1 isKindOfClass:[%c(PBMobileSMSApp) class]])
+	{
+		return YES;
+	}
 
-- (BOOL) isProviderEnabled:(unsigned char)arg
-{
-	%log;
-	BOOL r = %orig;
-	log(@"%d", r);
-	return r;
-}
-
-- (id) enabledProviders
-{
-	%log;
-	id r = %orig;
-	log(@"%@", r);
-	return r;
-}
-
--(BOOL)hasLinkedAccountForApp:(id)arg1
-{
-	%log;
-	BOOL r = %orig;
-	log(@"%d", r);
-	return r;
+	return %orig;
 }
 
 %end
@@ -288,3 +179,4 @@
         %init(PebbleTextReply);
     }
 }
+
