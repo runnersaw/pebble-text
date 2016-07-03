@@ -77,6 +77,7 @@
 
 - (void)saveMessageToSend:(PBSMSTextMessage *)message
 {
+	log(@"saveMessageToSend %@", message);
 	[self loadMessages];
 
 	NSMutableArray *messages = [NSMutableArray arrayWithArray:self.messages];
