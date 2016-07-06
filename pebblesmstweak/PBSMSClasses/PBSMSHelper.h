@@ -54,12 +54,6 @@ extern NSString *actionsToPerformFileLocation;
 extern NSString *messagesFileLocation;
 extern NSString *recentFileLocation;
 
-#ifdef DEBUG
-	#define log( s, ... ) NSLog( @"<%@:%d> %@", [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__,  [NSString stringWithFormat:(s), ##__VA_ARGS__] )
-#else
-	#define log( s, ... )
-#endif
-
 void dumpMethods(Class clz)
 {
     unsigned int methodCount = 0;
@@ -81,8 +75,12 @@ void dumpMethods(Class clz)
 
 #ifdef DEBUG
 	#define dumpInstanceMethods( c ) dumpMethods(c)
-#else
 	#define dumpClassMethods( c ) dumpMethods(object_getClass(c))
+	#define log( s, ... ) NSLog( @"<%@:%d> %@", [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__,  [NSString stringWithFormat:(s), ##__VA_ARGS__] )
+#else
+	#define dumpInstanceMethods( c )
+	#define dumpClassMethods( c )
+	#define log( s, ... )
 #endif
 
 @interface NSDictionary (PBSMS)
