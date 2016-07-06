@@ -1,5 +1,7 @@
 #import "PBSMSNotificationAction.h"
 
+#import "PBSMSHelper.h"
+
 @implementation PBSMSNotificationAction
 
 + (PBSMSNotificationAction *)deserializeFromObject:(id)object
@@ -24,7 +26,7 @@
 
     PBSMSNotificationAction *action = [[PBSMSNotificationAction alloc] initWithTitle:title
         actionIdentifier:actionIdentifier
-        isQuickReply:[isQuickReply boolValue];
+        isQuickReply:[isQuickReply boolValue]];
     return action;
 }
 

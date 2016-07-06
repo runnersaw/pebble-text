@@ -13,6 +13,7 @@
 - (void)saveNotification:(PBSMSNotification *)notification;
 
 // Saving Pebble Actions
+- (void)savePebbleAction
 
 // Action handling
 - (void)saveActionToPerform:(PBSMSNotificationAction *)action;

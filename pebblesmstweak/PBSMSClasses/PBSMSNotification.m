@@ -1,14 +1,9 @@
 #import "PBSMSNotification.h"
 
+#import "PBSMSHelper.h"
 #import "PBSMSNotificationAction.h"
 
 @implementation PBSMSNotification
-
-@property (nonatomic, copy) NSString *appIdentifier;
-@property (nonatomic, copy) NSString *bulletinId;
-@property (nonatomic, copy) NSString *message;
-@property (nonatomic, copy) NSDate *timestamp;
-@property (nonatomic, copy) NSArray *actions;
 
 + (PBSMSNotification *)deserializeFromObject:(id)object
 {
@@ -48,7 +43,7 @@
 		bulletinId:bulletinId
 		message:message
 		timestamp:timestamp
-		actions:[finalActions copy];
+		actions:[finalActions copy]];
     return notification;
 }
 

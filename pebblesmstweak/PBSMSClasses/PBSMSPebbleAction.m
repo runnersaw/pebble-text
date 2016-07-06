@@ -1,5 +1,7 @@
 #import "PBSMSPebbleAction.h"
 
+#import "PBSMSHelper.h"
+
 @implementation PBSMSPebbleAction : NSObject
 
 + (PBSMSPebbleAction *)deserializeFromObject:(id)object
@@ -36,7 +38,7 @@
 		ANCSIdentifier:ANCSIdentifier
 		isBeginQuickReplyAction:[isBeginQuickReplyAction boolValue]
 		isReplyAction:[isReplyAction boolValue]
-		replyText:replyText;
+		replyText:replyText];
     return pebbleAction;
 }
 
