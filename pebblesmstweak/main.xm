@@ -2709,8 +2709,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 	if ([%c(PBEmailAppManager) class])
 	{
-		NSArray *enabledEmailApps = [(PBEmailAppManager *)[[%c(PBEmailAppManager) class] manager] emailApps];
-		NSArray *availableEmailApps = [(PBEmailAppManager *)[[%c(PBEmailAppManager) class] manager] availableEmailApps];
+		NSArray *enabledEmailApps = [[[%c(PBEmailAppManager) alloc] init] emailApps];
+		NSArray *availableEmailApps = [[[%c(PBEmailAppManager) alloc] init] availableEmailApps];
 		log(@"email apps %@ %@", enabledEmailApps, availableEmailApps);
 	}
 
