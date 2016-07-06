@@ -5,6 +5,8 @@
 
 @interface PBSMSTextHelper ()
 
+@property (nonatomic, strong) NSArray *messages;
+
 @end
 
 @implementation PBSMSTextHelper
@@ -21,42 +23,104 @@
 - (NSArray *)presets
 {
     if (_presets.count == 0)
-	{
+    {
         _presets = @[ @"OK", 
-        	@"Yes", 
-        	@"No", 
-        	@"Call me", 
-        	@"Call you later", 
-        	@"Thank you", 
-        	@"See you soon", 
-        	@"Running late", 
-        	@"On my way", 
-        	@"Busy right now - give me a second?" ];
+            @"Yes", 
+            @"No", 
+            @"Call me", 
+            @"Call you later", 
+            @"Thank you", 
+            @"See you soon", 
+            @"Running late", 
+            @"On my way", 
+            @"Busy right now - give me a second?" ];
     }
 
     return _presets;
 }
 
-- (NSArray *)messages
+- (void)loadMessages
 {
+    log(@"loadMessages");
     NSArray *arr = [NSArray arrayWithContentsOfFile:messagesFileLocation];
 
     NSMutableArray *finalMessages = [[NSMutableArray alloc] init];
     for (id object in arr)
     {
-    	PBSMSTextMessage *textMessage = [PBSMSTextMessage serializeFromObject:object];
-        if (textMessage.isExpired)
-		{
-            removeMessageAfterSending(uuid);
-            return;
+        PBSMSTextMessage *textMessage = [PBSMSTextMessage deserializeFromObject:object];
+        if (textMessage && !textMessage.isExpired)
+        {
+            [finalMessages addObject:textMessage];
         }
-    	if (textMessage)
-    	{
-    		[finalMessages addObject:textMessage];
-    	}
+        if (textMessage.isExpired)
+        {
+            [self removeMessage:textMessage];
+        }
     }
 
-    return [finalMessages copy];
+    self.messages = [finalMessages copy];
+}
+
+- (void)saveMessages
+{
+    log(@"saveMessages");
+    NSArray *messages = self.messages;
+    NSMutableArray *serializedMessages = [NSMutableArray array];
+
+    for (PBSMSTextMessage *message in messages)
+    {
+        [serializedMessages addObject:[message serializeToDictionary]];
+    }
+
+    [serializedMessages writeToFile:messagesFileLocation atomically:YES];
+}
+
+- (void)saveMessageToSend:(PBSMSTextMessage *)message
+{
+    [self loadMessages];
+
+    NSMutableArray *messages = [NSMutableArray arrayWithArray:self.messages];
+    [messages addObject:message];
+
+    self.messages = [messages copy];
+}
+
+- (void)messageWasSent:(PBSMSTextMessage *)sentMessage
+{
+    log(@"messageWasSent %@", sentMessage);
+    NSArray *messages = self.messages;
+
+    NSMutableArray *messagesToKeep = [NSMutableArray array];
+    for (PBSMSTextMessage *message in messages)
+    {
+        if (![message.uuid isEqualToString:sentMessage.uuid])
+        {
+            [messagesToKeep addObject:message];
+        }
+    }
+
+    self.messages = [messagesToKeep copy];
+
+    [self saveMessages];
+}
+
+- (void)removeMessage:(PBSMSTextMessage *)removedMessage
+{
+    log(@"removeMessage %@", removedMessage);
+    NSArray *messages = self.messages;
+
+    NSMutableArray *messagesToKeep = [NSMutableArray array];
+    for (PBSMSTextMessage *message in messages)
+    {
+        if (![message.uuid isEqualToString:removedMessage.uuid])
+        {
+            [messagesToKeep addObject:message];
+        }
+    }
+
+    self.messages = [messagesToKeep copy];
+
+    [self saveMessages];
 }
 
 @end
