@@ -760,6 +760,32 @@
 -(NSArray *)attributes;
 @end
 
+@interface PBNotificationSource : NSObject
++(id)notificationSourceFromManagedEntry:(id)arg1 ;
++(id)blobEntryModelFromBlobEntry:(id)arg1 ;
++(id)notificationSourceWithBlob:(id)arg1 mapper:(id)arg2 ;
++(id)notificationSourceWithAppIdentifier:(id)arg1 flags:(unsigned)arg2 version:(unsigned short)arg3 attributes:(id)arg4 actions:(id)arg5 ;
+-(PBTimelineAttribute *)authAttribute;
+-(id)initWithManagedNotificationSource:(id)arg1 ;
+-(NSString *)modelIdentifier;
+-(id)blobRepresentationWithMapper:(id)arg1 ;
+-(id)initWithAppIdentifier:(id)arg1 flags:(unsigned)arg2 version:(unsigned short)arg3 attributes:(id)arg4 actions:(id)arg5 ;
+-(PBTimelineAttribute *)muteAttribute;
+-(PBTimelineAttribute *)appNameAttribute;
+-(PBTimelineAttribute *)lastUpdatedAttribute;
+-(unsigned char)muteDaysOfWeekFlag;
+-(id)notificationSourceByApplyingMuteDaysOfWeekFlag:(unsigned char)arg1 ;
+-(id)notificationSourceByRemovingAuthCode;
+-(NSString *)description;
+-(NSArray *)actions;
+-(unsigned short)version;
+-(NSArray *)attributes;
+-(NSDate *)lastUpdated;
+-(NSString *)appIdentifier;
+-(unsigned)flags;
+-(NSString *)appName;
+@end
+
 // Pebble 3.14
 @interface PBEmailAppManager : NSObject
 + (id)manager;
@@ -2702,33 +2728,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 		return %orig;
 	}
 
-	Class emailManager = [%c(PBEmailAppManager) class];
-
-	NSLog(@"dump %d", [emailManager respondsToSelector:@selector(manager)]);
-
-	id test = [emailManager performSelector:@selector(manager)];
-	NSLog(@"%@", test);
-
-	log(@"dump1");
-	dumpClassMethods([%c(PBEmailAppManager) class]);
-	log(@"dump2");
-	dumpInstanceMethods([%c(PBEmailAppManager) class]);
-
-	if ([%c(PBEmailAppManager) class])
-	{
-		PBEmailAppManager *manager = [emailManager manager];
-		log(@"dump3 %@", NSStringFromClass(%c(PBEmailAppManager)));
-		if (manager)
-		{
-			NSArray *enabledEmailApps = [manager emailApps];
-			NSArray *availableEmailApps = [manager availableEmailApps];
-			log(@"email apps %@ %@", enabledEmailApps, availableEmailApps);
-		}
-		else
-		{
-			log(@"no init method on PBEmailAppManager");
-		}
-	}
+	id orig = %orig;
+	log(@"notificationSource %@", [(PBNotificationSource *)orig actions]);
 
 	NSString *appID = (NSString *)arg1;
 	if (![appsArray containsObject:appID])
