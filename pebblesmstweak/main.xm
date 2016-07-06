@@ -2234,7 +2234,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 	NSString *build = infoDictionary[(NSString*)kCFBundleVersionKey];
 	NSString *bundleName = infoDictionary[(NSString *)kCFBundleNameKey];
 
-	log(@"%@ %@ %@", version, build, bundleName);
+	log(@"appVersion %@ %@ %@", version, build, bundleName);
 }
 
 %end
