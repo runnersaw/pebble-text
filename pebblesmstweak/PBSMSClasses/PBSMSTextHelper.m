@@ -22,6 +22,7 @@
 
 - (NSArray *)presets
 {
+    log(@"presets %@", _presets);
     if (_presets.count == 0)
     {
         _presets = @[ @"OK", 
