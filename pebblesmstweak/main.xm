@@ -416,7 +416,8 @@
 - (void)failedCallbackWithNotification:(NSNotification *)myNotification;
 
 // new
-+ (void)appVersion;
++ (NSNumber *)majorAppVersion;
++ (NSNumber *)minorAppVersion;
 
 @end
 
@@ -759,6 +760,17 @@
 -(NSArray *)attributes;
 @end
 
+// Pebble 3.14
+@interface PBEmailAppManager : NSObject
++(id)manager;
+-(PBLinkedAccountsManager *)linkedAccountsManager;
+-(id)initWithLinkedAccountsManager:(id)arg1 ;
+-(NSArray *)emailApps;
+-(id)supportedProvidersForEmailApp:(id)arg1 ;
+-(NSArray *)availableEmailApps;
+-(id)init;
+@end
+
 static NSMutableArray *names = [NSMutableArray array];
 static NSMutableArray *phones = [NSMutableArray array];
 
@@ -838,94 +850,6 @@ static void saveRecentRecipient(NSString *name, NSString *phone)
     }
 
     [dict writeToFile:recentFileLocation atomically:YES];
-}
-
-// FOR ACTIONABLE NOTIFICATIONS
-
-static void loadNotificationActions()
-{
-	NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:notificationsFileLocation];
-
-	if (dict)
-	{
-		[notificationActionsDictionary setDictionary:dict];
-	}
-}
-
-static void saveNotificationAction(BBBulletin *bulletin)
-{
-    NSString *bulletinID = [bulletin bulletinID];
-    if ([bulletinsDict objectForKey:bulletinID])
-	{
-    	return;
-    }
-
-    NSString *appIdentifier = [bulletin sectionID];
-    [bulletinsDict setObject:bulletin forKey:bulletinID];
-
-    if (!appIdentifier)
-	{
-        return;
-    }
-
-    NSMutableDictionary *appDict = [notificationActionsDictionary objectForKey:appIdentifier];
-    if (!appDict)
-	{
-        appDict = [NSMutableDictionary dictionary];
-    }
-
-    if ([appDict objectForKey:bulletinID])
-    {
-        return;
-    }
-
-    BBContent *content = [bulletin content];
-    NSString *title = [content title];
-    NSString *subtitle = [content subtitle];
-    NSString *message = [content message];
-    NSDate *timestamp = [NSDate date];
-
-    if (!bulletinID)
-	{
-        return;
-    }
-
-    BOOL hasActions = NO;
-    NSMutableDictionary *actionsDict = [NSMutableDictionary dictionary];
-    for (BBAction *action in [bulletin supplementaryActionsForLayout:1])
-	{
-        NSString *actionIdentifier = [action identifier];
-        NSString *actionTitle = [(BBAppearance *)[action appearance] title];
-        BOOL isQuickReply = ([action behavior] == 1);
-        if (![action isAuthenticationRequired] && actionIdentifier && actionTitle)
-		{
-			NSDictionary *actionDict = @{ @"actionIdentifier" : actionIdentifier, @"isQuickReply" : @( isQuickReply )};
-            [actionsDict setObject:actionDict forKey:actionTitle];
-            hasActions = YES;
-        }
-    }
-
-    if (!hasActions)
-	{
-        return;
-    }
-
-    // subtitle needs to go last in case it's null
-    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:timestamp, @"timestamp", actionsDict, @"actions", message, @"message", NULL];
-    if (title != NULL)
-	{
-        [dict setObject:title forKey:@"title"];
-    }
-    if (subtitle != NULL)
-	{
-        [dict setObject:subtitle forKey:@"subtitle"];
-    }
-
-    [appDict setObject:dict forKey:bulletinID];
-    [notificationActionsDictionary setObject:appDict forKey:appIdentifier];
-    // NSLog(@"Saved bulletin %@", notificationActionsDictionary);
-
-    [notificationActionsDictionary writeToFile:notificationsFileLocation atomically:YES];
 }
 
 static void removeActionsNotInBulletinsDict()
@@ -2226,11 +2150,27 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 }
 
 %new
-+ (void)appVersion
++ (NSNumber *)majorAppVersion
 {
 	NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
 	NSString *version = infoDictionary[@"CFBundleShortVersionString"];
-	log(@"appVersion %@ %@ %@", version);
+	NSArray *versionArray = [versions componentsSeparatedByString:@"."];
+
+	NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
+	f.numberStyle = NSNumberFormatterDecimalStyle;
+	return [f numberFromString:versionArray[0]];
+}
+
+%new
++ (NSNumber *)minorAppVersion
+{
+	NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+	NSString *version = infoDictionary[@"CFBundleShortVersionString"];
+	NSArray *versionArray = [versions componentsSeparatedByString:@"."];
+
+	NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
+	f.numberStyle = NSNumberFormatterDecimalStyle;
+	return [f numberFromString:versionArray[1]];
 }
 
 %end
@@ -2676,6 +2616,10 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 		return %orig;
 	}
 
+	NSArray *enabledEmailApps = [[%c(PBEmailAppManager) manager] emailApps];
+	NSArray *availableEmailApps = [[%c(PBEmailAppManager) manager] availableEmailApps];
+	log(@"email apps %@ %@", enabledEmailApps, availableEmailApps);
+
 	NSString *appID = (NSString *)arg1;
 	if (![appsArray containsObject:appID])
 	{
@@ -2821,7 +2765,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     if ([%c(PBAppDelegate) class])
 	{
         %init(PebbleMain);
-        [%c(PBAppDelegate) appVersion];
+        log(@"major %@", [%c(PBAppDelegate) majorAppVersion]);
+        log(@"minor %@", [%c(PBAppDelegate) minorAppVersion]);
     }
     else if ([%c(SpringBoard) class])
 	{
