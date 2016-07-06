@@ -39,20 +39,20 @@
 #define GETTING_PRESETS_STATE [NSNumber numberWithInt:7]
 #define SENDING_FINAL_MESSAGE_STATE [NSNumber numberWithInt:8]
 
-extern NSString *sendMessageCommand;
-extern NSString *openMessagesCommand;
-extern NSString *performNotificationActionCommand;
-extern NSString *messageSendNotification;
-extern NSString *messageFailedNotification;
+extern NSString * const sendMessageCommand;
+extern NSString * const openMessagesCommand;
+extern NSString * const performNotificationActionCommand;
+extern NSString * const messageSendNotification;
+extern NSString * const messageFailedNotification;
 
-extern NSString *rocketbootstrapSmsCenterName;
-extern NSString *rocketbootstrapSpringboardCenterName;
-extern NSString *distributedCenterName;
+extern NSString * const rocketbootstrapSmsCenterName;
+extern NSString * const rocketbootstrapSpringboardCenterName;
+extern NSString * const distributedCenterName;
 
-extern NSString *notificationsFileLocation;
-extern NSString *actionsToPerformFileLocation;
-extern NSString *messagesFileLocation;
-extern NSString *recentFileLocation;
+extern NSString * const notificationsFileLocation;
+extern NSString * const actionsToPerformFileLocation;
+extern NSString * const messagesFileLocation;
+extern NSString * const recentFileLocation;
 
 #ifdef DEBUG
 	#define log( s, ... ) NSLog( @"<%@:%d> %@", [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__,  [NSString stringWithFormat:(s), ##__VA_ARGS__] )
