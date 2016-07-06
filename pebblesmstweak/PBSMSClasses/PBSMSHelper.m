@@ -15,6 +15,25 @@ NSString * const actionsToPerformFileLocation = @"/var/mobile/Library/Preference
 NSString * const messagesFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.messages.plist";
 NSString * const recentFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.recent.plist";
 
+void dumpMethods(Class clz)
+{
+    unsigned int methodCount = 0;
+    Method *methods = class_copyMethodList(clz, &methodCount);
+
+    log(@"Found %d methods on '%s'\n", methodCount, class_getName(clz));
+
+    for (unsigned int i = 0; i < methodCount; i++) {
+        Method method = methods[i];
+
+        log(@"\t'%s' has method named '%s' of encoding '%s'\n",
+            class_getName(clz),
+            sel_getName(method_getName(method)),
+            method_getTypeEncoding(method));
+    }
+
+    free(methods);
+}
+
 @implementation NSDictionary (PBSMS)
 
 - (id)safeObjectForKey:(id)key ofType:(Class)type
