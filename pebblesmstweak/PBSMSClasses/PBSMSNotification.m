@@ -39,7 +39,7 @@
     	}
     }
 
-    PBSMSNotification *notification = [[PBSMSNotificationAction alloc] initWithAppIdentifier:appIdentifier
+    PBSMSNotification *notification = [[PBSMSNotification alloc] initWithAppIdentifier:appIdentifier
 		bulletinId:bulletinId
 		message:message
 		timestamp:timestamp
