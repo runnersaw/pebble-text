@@ -1,4 +1,4 @@
-#import "PBSMSHelper.h"
+#import "PBSMSClasses/PBSMSHelper.h"
 
 @interface PBSMSReplyManager
 - (id)SMSProviders;
