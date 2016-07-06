@@ -1977,6 +1977,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 %new
 - (NSMutableDictionary *)getPresets
 {
+	log(@"presets2 %@", [PBSMSTextHelper sharedHelper].presets);
 	return [NSMutableDictionary dictionaryWithDictionary:@{ PRESETS_KEY : [PBSMSTextHelper sharedHelper].presets }];
 }
 
