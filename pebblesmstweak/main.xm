@@ -415,6 +415,9 @@
 - (void)sentCallbackWithNotification:(NSNotification *)myNotification;
 - (void)failedCallbackWithNotification:(NSNotification *)myNotification;
 
+// new
++ (void)appVersion;
+
 @end
 
 @interface PBLockerAppManager
@@ -2728,7 +2731,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 -(void)handleANCSActionForInvokeActionMessage:(id)arg1{
 	%log;
 	PBTimelineInvokeANCSActionMessage *message = (PBTimelineInvokeANCSActionMessage *)arg1;
-	log(@"%@", [(PBANCSActionHandler *)[self notificationHandler] bulletinIdentifierForInvokeANCSMessage:message]);
+	log(@"%@", [%c(PBANCSActionHandler) bulletinIdentifierForInvokeANCSMessage:message]);
 	%orig;
 }
 -(void)handleActionForItemIdentifier:(id)arg1 actionIdentifier:(unsigned char)arg2 attributes:(id)arg3{
