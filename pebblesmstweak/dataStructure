@@ -1,64 +1,69 @@
-notificationActionsDictionary
-{
-	"com.facebook.Messenger" : {
-		"C09343" : 
-		{
-			"message" : "HI",
-			"timestamp" : 12/1/1/4242/4
-			"actions" : {
-				"Mute" : {
-					"actionIdentifier" : "mute",
-					"isQuickReply" : NO
-				},
-				"Reply" : {
-					"actionIdentifier" : "reply",
-					"isQuickReply" : YES
-				}
-			}
-		}
-	}
-}
+actions
+[
+	{
+		"actionTitle" : "Mute",
+		"actionIdentifier" : "mute",
+		"isQuickReply" : NO
+	},
+	{
+		"actionTitle" : "Reply",
+		"actionIdentifier" : "reply",
+		"isQuickReply" : YES
+	},
+]
 
-actionsToPerform
+notifications
+[
+	{
+		"appIdentifier" : com.facebook.Messenger",
+		"bulletinId" : "C09343",
+		"message" : "HI",
+		"timestamp" : 12/1/1/4242/4,
+		"actions" : actions
+	}, ...
+]
+
+performedActions
 [
 	{
 		@"actionID" : actionID, 
 		@"bulletinID" : bulletinID,
-		@"isReply" : @( isReply ),
 		@"replyText" : replyText
 	},
 	{
 		@"actionID" : actionID, 
 		@"bulletinID" : bulletinID,
-		@"isReply" : @( isReply ),
 		@"replyText" : replyText
 	}
 ]
 
-actionsToPerformDictionary
-{
-	"12" : {
-		"actionIdentifier" : "reply", 
-		"bulletinIdentifier" : "C0347394", 
-		"ANCSIdentifier" : "CAB293", NSUUID!!!!
-		"isQuickReply" : YES,
-		"hasReplied" : NO,
-		"replyText" : ""
-	}
-	"12" : {
+pebbleActions
+[
+	{
+		"pebbleActionId" : "12"
 		"actionIdentifier" : "reply", 
 		"bulletinIdentifier" : "C0347394", 
 		"ANCSIdentifier" : "CAB293",
-		"isQuickReply" : YES,
-		"hasReplied" : YES,
-		"replyText" : "HI"
-	}
-	"12" : {
+		"isBeginQuickReplyAction" : YES,
+		"isReplyAction" : NO,
+		"replyText" : ""
+	},
+	{
+		"pebbleActionId" : "13"
 		"actionIdentifier" : "reply", 
 		"bulletinIdentifier" : "C0347394", 
 		"ANCSIdentifier" : "CAB293",
-		"isQuickReply" : NO,
-		"hasReplied" : NO,
+		"isBeginQuickReplyAction" : NO,
+		"isReplyAction" : YES,
+		"replyText" : "Hello"
+	},
+	{
+		"pebbleActionId" : "14"
+		"actionIdentifier" : "mute", 
+		"bulletinIdentifier" : "C0347394", 
+		"ANCSIdentifier" : "CAB293",
+		"isBeginQuickReplyAction" : NO,
+		"isReplyAction" : NO,
 		"replyText" : ""
-	}
+	},
 }

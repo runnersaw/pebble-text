@@ -808,7 +808,7 @@ static BOOL isRecentContact = NO;
 static int maxContacts = 10;
 static int maxContactsToSend = 10;
 
-static long long currentNumber = 30;
+static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
 static NSMutableArray *actionsToPerform = [NSMutableArray array];
 static NSMutableArray *appsArray = [NSMutableArray array];
@@ -2749,6 +2749,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 	{
 		return orig;
 	}
+
+	log(@"Adding actions to %@", orig);
 
 	NSString *appID = (NSString *)arg1;
 	if (![appsArray containsObject:appID])
