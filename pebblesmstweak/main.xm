@@ -2388,14 +2388,14 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 // THIS PART IS FOR ACTIONABLE NOTIFICATIONS
 
 %hook PBSMSReplyManager
--(NSSet *)smsApps
-{
-	NSSet *r = %orig;
-	NSMutableSet *set = [NSMutableSet setWithCapacity:3];
-	[set setSet:r];
-	[set addObjectsFromArray:appsArray];
-	return set;
-}
+// -(NSSet *)smsApps
+// {
+// 	NSSet *r = %orig;
+// 	NSMutableSet *set = [NSMutableSet setWithCapacity:3];
+// 	[set setSet:r];
+// 	[set addObjectsFromArray:appsArray];
+// 	return set;
+// }
 -(NSSet *)ancsReplyEnabledApps
 {
 	NSSet *r = %orig;
@@ -2411,8 +2411,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 {
 	NSArray *enabledApps = @[ @"com.apple.MobileSMS", 
 		@"com.apple.mobilephone", 
-		@"com.pebble.sendText",
-		@"" ];
+		@"com.pebble.sendText" ];
 	if ([enabledApps containsObject:(NSString *)arg1])
 	{
 		return %orig;
@@ -2722,21 +2721,29 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 +(id)notificationSourceWithAppIdentifier:(id)arg1 flags:(unsigned)arg2 version:(unsigned short)arg3 attributes:(id)arg4 actions:(id)arg5
 {
-	NSArray *enabledApps = [NSArray arrayWithObjects:@"com.apple.MobileSMS", @"com.apple.mobilephone", @"com.pebble.sendText", nil];
-	if ([enabledApps containsObject:(NSString *)arg1])
-	{
-		return %orig;
-	}
+	BOOL shouldAddAction = NO;
 
-	id orig = %orig;
-	log(@"notificationSource %@", [(PBNotificationSource *)orig actions]);
-	for (PBTimelineAction *action in [(PBNotificationSource *)orig actions])
+	PBNotificationSource *orig = (PBNotificationSource *)%orig;
+	if ([[orig actions] count] == 0)
 	{
-		log(@"%@ %@", action, [action identifier]);
+		shouldAddAction = YES;
+	}
+	if ([[orig actions] count] == 1)
+	{
+		PBTimelineAction *action = [[orig actions] objectAtIndex:0];
 		for (PBTimelineAttribute *attribute in [action attributes])
 		{
-			log(@"%@ %@", [attribute content], [attribute description]);
+			if ([(NSString *)[attribute content] isEqualToString:@"Action"])
+			{
+				shouldAddAction = YES;
+				break;
+			}
 		}
+	}
+
+	if (!shouldAddAction)
+	{
+		return orig;
 	}
 
 	NSString *appID = (NSString *)arg1;
