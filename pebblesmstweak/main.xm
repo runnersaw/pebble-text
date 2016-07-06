@@ -2240,7 +2240,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 {
 	NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
 	NSString *version = infoDictionary[@"CFBundleShortVersionString"];
-	NSArray *versionArray = [versions componentsSeparatedByString:@"."];
+	NSArray *versionArray = [version componentsSeparatedByString:@"."];
 
 	NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
 	f.numberStyle = NSNumberFormatterDecimalStyle;
@@ -2252,7 +2252,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 {
 	NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
 	NSString *version = infoDictionary[@"CFBundleShortVersionString"];
-	NSArray *versionArray = [versions componentsSeparatedByString:@"."];
+	NSArray *versionArray = [version componentsSeparatedByString:@"."];
 
 	NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
 	f.numberStyle = NSNumberFormatterDecimalStyle;
