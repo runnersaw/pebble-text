@@ -1,4 +1,4 @@
-
+#import <objc/runtime.h>
 
 NSString * const sendMessageCommand = @"messageNeedsSending";
 NSString * const openMessagesCommand = @"messagesNeedsOpening";
