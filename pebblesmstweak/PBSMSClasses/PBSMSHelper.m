@@ -24,7 +24,6 @@ NSString * const recentFileLocation = @"/var/mobile/Library/Preferences/com.sawy
 	{
 		return nil;
 	}
-
 	return object;
 }
 

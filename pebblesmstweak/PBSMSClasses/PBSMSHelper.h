@@ -58,3 +58,6 @@ extern NSString *recentFileLocation;
 	#define log( s, ... )
 #endif
 
+@interface NSDictionary (PBSMS)
+- (id)safeObjectForKey:(id)key ofType:(Class)type;
+@end
