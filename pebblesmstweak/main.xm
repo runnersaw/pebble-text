@@ -2229,12 +2229,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 + (void)appVersion
 {
 	NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
-
 	NSString *version = infoDictionary[@"CFBundleShortVersionString"];
-	NSString *build = infoDictionary[(NSString*)kCFBundleVersionKey];
-	NSString *bundleName = infoDictionary[(NSString *)kCFBundleNameKey];
-
-	log(@"appVersion %@ %@ %@", version, build, bundleName);
+	log(@"appVersion %@ %@ %@", version);
 }
 
 %end
@@ -2244,6 +2240,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 - (id)cannedResponsesForAppIdentifier:(id)fp8
 {
     id r = %orig;
+	log(@"cannedResponses %@ %@", fp8, r);
     if ([(NSString *)fp8 isEqualToString:@"com.apple.MobileSMS"])
 	{
         [PBSMSTextHelper sharedHelper].presets = (NSArray *)r;
@@ -2256,6 +2253,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 	{
         [PBSMSTextHelper sharedHelper].presets = (NSArray *)fp8;
     }
+	log(@"setCannedResponses %@ %@", fp12, fp8);
     %orig; 
 }
 
