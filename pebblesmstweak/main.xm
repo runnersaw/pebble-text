@@ -762,13 +762,13 @@
 
 // Pebble 3.14
 @interface PBEmailAppManager : NSObject
-+(id)manager;
--(PBLinkedAccountsManager *)linkedAccountsManager;
--(id)initWithLinkedAccountsManager:(id)arg1 ;
--(NSArray *)emailApps;
--(id)supportedProvidersForEmailApp:(id)arg1 ;
--(NSArray *)availableEmailApps;
--(id)init;
++ (id)manager;
+- (PBLinkedAccountsManager *)linkedAccountsManager;
+- (id)initWithLinkedAccountsManager:(id)arg1 ;
+- (NSArray *)emailApps;
+- (id)supportedProvidersForEmailApp:(id)arg1 ;
+- (NSArray *)availableEmailApps;
+- (id)init;
 @end
 
 static NSMutableArray *names = [NSMutableArray array];
@@ -2702,8 +2702,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 		return %orig;
 	}
 
-	dumpClassMethods([PBEmailAppManager class]);
-	dumpInstanceMethods([PBEmailAppManager class]);
+	dumpClassMethods([%c(PBEmailAppManager) class]);
+	dumpInstanceMethods([%c(PBEmailAppManager) class]);
 
 	NSArray *enabledEmailApps = [[%c(PBEmailAppManager) manager] emailApps];
 	NSArray *availableEmailApps = [[%c(PBEmailAppManager) manager] availableEmailApps];
