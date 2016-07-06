@@ -2222,6 +2222,17 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     }
 }
 
+%new
++ (void)appVersion
+{
+	NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+
+	NSString *version = infoDictionary[@"CFBundleShortVersionString"];
+	NSString *build = infoDictionary[(NSString*)kCFBundleVersionKey];
+	NSString *bundleName = infoDictionary[(NSString *)kCFBundleNameKey];
+
+	log(@"%@ %@ %@", version, build, bundleName);
+}
 
 %end
 
@@ -2345,7 +2356,10 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 %hook PBCannedResponseManager
 -(id)defaultResponsesForAppIdentifier:(id)arg1
 {
-	NSArray *enabledApps = [NSArray arrayWithObjects:@"com.apple.MobileSMS", @"com.apple.mobilephone", @"com.pebble.sendText", nil];
+	NSArray *enabledApps = @[ @"com.apple.MobileSMS", 
+		@"com.apple.mobilephone", 
+		@"com.pebble.sendText",
+		@"" ];
 	if ([enabledApps containsObject:(NSString *)arg1])
 	{
 		return %orig;
@@ -2713,6 +2727,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 }
 -(void)handleANCSActionForInvokeActionMessage:(id)arg1{
 	%log;
+	PBTimelineInvokeANCSActionMessage *message = (PBTimelineInvokeANCSActionMessage *)arg1;
+	log(@"%@", [(PBANCSActionHandler *)[self notificationHandler] bulletinIdentifierForInvokeANCSMessage:message]);
 	%orig;
 }
 -(void)handleActionForItemIdentifier:(id)arg1 actionIdentifier:(unsigned char)arg2 attributes:(id)arg3{
@@ -2804,6 +2820,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     if ([%c(PBAppDelegate) class])
 	{
         %init(PebbleMain);
+        [%c(PBAppDelegate) appVersion];
     }
     else if ([%c(SpringBoard) class])
 	{
