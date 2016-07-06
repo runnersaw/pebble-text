@@ -2713,13 +2713,12 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 	if ([%c(PBEmailAppManager) class])
 	{
-		PBEmailAppManager *manager = [%c(PBEmailAppManager) alloc];
+		PBEmailAppManager *manager = [emailManager manager];
 		log(@"dump3 %@", NSStringFromClass(%c(PBEmailAppManager)));
-		if (NO)
+		if (manager)
 		{
-			PBEmailAppManager *emailManager = [manager init];
-			NSArray *enabledEmailApps = [emailManager emailApps];
-			NSArray *availableEmailApps = [emailManager availableEmailApps];
+			NSArray *enabledEmailApps = [manager emailApps];
+			NSArray *availableEmailApps = [manager availableEmailApps];
 			log(@"email apps %@ %@", enabledEmailApps, availableEmailApps);
 		}
 		else
