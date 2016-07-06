@@ -2713,9 +2713,18 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 	if ([%c(PBEmailAppManager) class])
 	{
-		NSArray *enabledEmailApps = [[[%c(PBEmailAppManager) alloc] init] emailApps];
-		NSArray *availableEmailApps = [[[%c(PBEmailAppManager) alloc] init] availableEmailApps];
-		log(@"email apps %@ %@", enabledEmailApps, availableEmailApps);
+		PBEmailAppManager *manager = [%c(PBEmailAppManager) alloc];
+		if ([manager respondsToSelector:@selector(init)])
+		{
+			PBEmailAppManager *emailManager = [manager init];
+			NSArray *enabledEmailApps = [emailManager emailApps];
+			NSArray *availableEmailApps = [emailManager availableEmailApps];
+			log(@"email apps %@ %@", enabledEmailApps, availableEmailApps);
+		}
+		else
+		{
+			log(@"no init method on PBEmailAppManager");
+		}
 	}
 
 	NSString *appID = (NSString *)arg1;
