@@ -1655,31 +1655,31 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     int highestCount = 0;
 
     for (PBContact *contact in (NSArray *)[self allContacts])
-{
+	{
         for (PBLabeledValue *label in (NSArray *)[contact phoneNumbers])
-{
+		{
 
             NSString *number = [%c(PBContact) phoneWithPrefix:[(PBPhoneNumber *)[label value] getStringRepresentationForTextSender]];
             NSString *phone = [@"+" stringByAppendingString:[[phoneNumber componentsSeparatedByCharactersInSet: [[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""]];
 
             if ([phone isEqualToString:number])
-{
+			{
                 return contact;
             }
 
             int iterate = MIN([phone length], [number length]);
             int i;
             for (i=0;i<iterate; i++)
-{
+			{
                 int phoneIndex = [phone length] - i - 1;
                 int numberIndex = [number length] - i - 1;
                 if ([phone characterAtIndex:phoneIndex] != [number characterAtIndex:numberIndex])
-{
+				{
                     break;
                 }
             }
             if (i>highestCount)
-{
+			{
                 highestCount = i;
                 finalContact = contact;
             }
@@ -1688,7 +1688,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
     // NSLog(@"PEBBLESMS: finalContact == NULL %d", (finalContact == NULL));
     if (highestCount >= 6)
-{ // just double check that there was actually a find
+	{ // just double check that there was actually a find
         return finalContact;
     }
 
@@ -1702,7 +1702,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     NSMutableArray *results = [NSMutableArray array];
 
     for (id item in (NSArray *)[self allContacts])
-{
+	{
         // note the modified weighting, this ends up working similiar to Alfred / TextMate searching method
         // TextMate takes into account camelcase while matching and is a little smarter, but you get the idea
         NSInteger score0 = [[search lowercaseString] compareWithWord:[[item fullName] lowercaseString] matchGain:10 missingCost:1];
@@ -1713,19 +1713,19 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
         NSInteger min = score0;
         if (score1 < min)
-{
+		{
             min = score1;
         }
         if (score2 < min)
-{
+		{
             min = score2;
         }
         if (score3 < min)
-{
+		{
             min = score3;
         }
         if (score4 < min)
-{
+		{
             min = score4;
         }
 
@@ -1734,7 +1734,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
     // sort list
     NSArray *res = [results sortedArrayUsingComparator: (NSComparator)^(id obj1, id obj2)
-{
+	{
         return [[obj1 valueForKey:@"score"] compare:[obj2 valueForKey:@"score"]];
     }];
 
@@ -1745,15 +1745,15 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     int contactIndex = 0;
 
     while (i < tries * maxContactsToSend && contactIndex < [res count])
-{
+	{
         c = [[res objectAtIndex:contactIndex] objectForKey:@"item"];
         contactIndex++;
         for (int j=0;j<[[c phoneNumbers] count];j++)
-{
+		{
             number = [(PBPhoneNumber *)[(PBLabeledValue *)[[c phoneNumbers] objectAtIndex:j] value] getStringRepresentationForTextSender];
             i++;
             if (i == tries+1)
-{
+			{
                 break;
             }
         }
@@ -1762,19 +1762,19 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     NSMutableArray *contacts = [NSMutableArray array];
     NSMutableArray *numbers = [NSMutableArray array];
     for (int k = i; i < k+maxContactsToSend;)
-{
+	{
         // NSLog(@"i %d", i);
         c = [[res objectAtIndex:contactIndex] objectForKey:@"item"];
         contactIndex++;
         for (int j=0;j<[[c phoneNumbers] count];j++)
-{
+		{
             number = [(PBPhoneNumber *)[(PBLabeledValue *)[[c phoneNumbers] objectAtIndex:j] value] getStringRepresentationForTextSender];
             // NSLog(@"i %d %@ %@", i, [c fullName], number);
             [contacts addObject:c];
             [numbers addObject:number];
             i++;
             if (i == tries+1)
-{
+			{
                 break;
             }
         }
@@ -1790,7 +1790,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     NSMutableArray *results = [NSMutableArray array];
 
     for (id item in (NSArray *)[self allContacts])
-{
+	{
         // note the modified weighting, this ends up working similiar to Alfred / TextMate searching method
         // TextMate takes into account camelcase while matching and is a little smarter, but you get the idea
         NSInteger score0 = [[search lowercaseString] compareWithWord:[[item fullName] lowercaseString] matchGain:10 missingCost:1];
@@ -1801,19 +1801,19 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
         NSInteger min = score0;
         if (score1 < min)
-{
+		{
             min = score1;
         }
         if (score2 < min)
-{
+		{
             min = score2;
         }
         if (score3 < min)
-{
+		{
             min = score3;
         }
         if (score4 < min)
-{
+		{
             min = score4;
         }
 
@@ -1821,8 +1821,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     }
 
     // sort list
-    NSArray *res = [results sortedArrayUsingComparator: (NSComparator)^(id obj1, id obj2)
-{
+    NSArray *res = [results sortedArrayUsingComparator: (NSComparator)^(id obj1, id obj2){
         return [[obj1 valueForKey:@"score"] compare:[obj2 valueForKey:@"score"]];
     }];
 
@@ -1833,15 +1832,15 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     int contactIndex = 0;
 
     while (i <= tries && contactIndex < [res count])
-{
+	{
         c = [[res objectAtIndex:contactIndex] objectForKey:@"item"];
         contactIndex++;
         for (int j=0;j<[[c phoneNumbers] count];j++)
-{
+		{
             number = [(PBPhoneNumber *)[(PBLabeledValue *)[[c phoneNumbers] objectAtIndex:j] value] getStringRepresentationForTextSender];
             i++;
             if (i == tries+1)
-{
+			{
                 break;
             }
         }
@@ -1867,7 +1866,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     PBContact *c = [contactInfo objectForKey:@"contact"];
     NSString *num = [contactInfo objectForKey:@"number"];
     if (c != NULL && num != NULL && contactsInfo != NULL)
-{
+	{
         // to maintain compatibility with old watchapp versions (<=v1.1)
         [dict setObject:[c fullName] forKey:CONTACT_NAME_KEY];
         [dict setObject:num forKey:CONTACT_NUMBER_KEY];
@@ -1882,7 +1881,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
         NSMutableArray *ids = [NSMutableArray array];
 
         for (int i=0; i<[contacts count]; i++)
-{
+		{
             [names addObject:[[contacts objectAtIndex:i] fullName]];
         }
         for (int i=0; i<[contacts count]; i++)
@@ -2707,9 +2706,9 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 	log(@"dump2");
 	dumpInstanceMethods([%c(PBEmailAppManager) class]);
 
-	NSArray *enabledEmailApps = [[PBEmailAppManager manager] emailApps];
-	NSArray *availableEmailApps = [[PBEmailAppManager manager] availableEmailApps];
-	log(@"email apps %@ %@", enabledEmailApps, availableEmailApps);
+	// NSArray *enabledEmailApps = [[%c(PBEmailAppManager) manager] emailApps];
+	// NSArray *availableEmailApps = [[%c(PBEmailAppManager) manager] availableEmailApps];
+	// log(@"email apps %@ %@", enabledEmailApps, availableEmailApps);
 
 	NSString *appID = (NSString *)arg1;
 	if (![appsArray containsObject:appID])
