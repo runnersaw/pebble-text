@@ -2702,6 +2702,9 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 		return %orig;
 	}
 
+	dumpClassMethods([PBEmailAppManager class]);
+	dumpInstanceMethods([PBEmailAppManager class]);
+
 	NSArray *enabledEmailApps = [[%c(PBEmailAppManager) manager] emailApps];
 	NSArray *availableEmailApps = [[%c(PBEmailAppManager) manager] availableEmailApps];
 	log(@"email apps %@ %@", enabledEmailApps, availableEmailApps);

@@ -1,3 +1,5 @@
+#import <objc/runtime.h>
+
 #define DEBUG 1
 
 #define SEND_DELAY 4.0
@@ -56,6 +58,31 @@ extern NSString *recentFileLocation;
 	#define log( s, ... ) NSLog( @"<%@:%d> %@", [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__,  [NSString stringWithFormat:(s), ##__VA_ARGS__] )
 #else
 	#define log( s, ... )
+#endif
+
+void dumpMethods(Class clz)
+{
+    unsigned int methodCount = 0;
+    Method *methods = class_copyMethodList(clz, &methodCount);
+
+    printf("Found %d methods on '%s'\n", methodCount, class_getName(clz));
+
+    for (unsigned int i = 0; i < methodCount; i++) {
+        Method method = methods[i];
+
+        printf("\t'%s' has method named '%s' of encoding '%s'\n",
+               class_getName(clz),
+               sel_getName(method_getName(method)),
+               method_getTypeEncoding(method));
+    }
+
+    free(methods);
+}
+
+#ifdef DEBUG
+	#define dumpInstanceMethods( c ) dumpMethods(c)
+#else
+	#define dumpClassMethods( c ) dumpMethods(object_getClass(c))
 #endif
 
 @interface NSDictionary (PBSMS)
