@@ -2733,6 +2733,10 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 		PBTimelineAction *action = [[orig actions] objectAtIndex:0];
 		for (PBTimelineAttribute *attribute in [action attributes])
 		{
+			if (![[attribute content] isKindOfClass:[NSString class]])
+			{
+				continue;
+			}
 			if ([(NSString *)[attribute content] isEqualToString:@"Action"])
 			{
 				shouldAddAction = YES;
