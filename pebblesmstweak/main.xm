@@ -2706,10 +2706,6 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 	dumpClassMethods([%c(PBEmailAppManager) class]);
 	log(@"dump2");
 	dumpInstanceMethods([%c(PBEmailAppManager) class]);
-	log(@"dump3");
-	dumpClassMethods([%c(PBEmailAppManager) alloc]);
-	log(@"dump4");
-	dumpInstanceMethods([%c(PBEmailAppManager) alloc]);
 
 	if ([%c(PBEmailAppManager) class])
 	{
