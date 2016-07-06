@@ -584,7 +584,7 @@
 -(id)sendSMSService;
 @end
 
-@interface PBTimelineAttribute
+@interface PBTimelineAttribute : NSObject
 + (id)attributeWithType:(id)fp8 content:(id)fp12 specificType:(int)fp16;
 + (id)attributeWithType:(id)fp8 content:(id)fp12;
 - (int)specificType;
@@ -2730,6 +2730,14 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 	id orig = %orig;
 	log(@"notificationSource %@", [(PBNotificationSource *)orig actions]);
+	for (PBTimelineAction *action in [(PBNotificationSource *)orig actions])
+	{
+		log(@"%@ %@", action, [action identifier]);
+		for (PBTimelineAttribute *attribute in [action attributes])
+		{
+			log(@"%@ %@", [attribute content], [attribute description]);
+		}
+	}
 
 	NSString *appID = (NSString *)arg1;
 	if (![appsArray containsObject:appID])
