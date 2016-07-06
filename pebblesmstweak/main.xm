@@ -2707,6 +2707,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 	NSLog(@"dump %d", [emailManager respondsToSelector:@selector(manager)]);
 
 	id test = [emailManager performSelector:@selector(manager)];
+	NSLog(@"%@", test);
 
 	log(@"dump1");
 	dumpClassMethods([%c(PBEmailAppManager) class]);
