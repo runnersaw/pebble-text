@@ -1821,7 +1821,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 +(id)notificationSourceFromManagedEntry:(id)arg1
 {
 	log(@"notificationSourceFromManagedEntry %@ %@", arg1, [arg1 performSelector:@selector(actionsSet)]);
-	id orig = %orig;
+	PBNotificationSource *orig = %orig;
 
 	return [%c(PBNotificationSource) notificationSourceWithAppIdentifier:orig.appIdentifier
 		flags:orig.flags
