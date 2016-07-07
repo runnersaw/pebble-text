@@ -1843,7 +1843,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     for (id object in actionsArr)
     {
         log(@"action %@", object);
-        [finalActions addObject:[%c(PBTimelineAction) timelineActionFromManagedTimelineItemAction:(PBManagedTimelineItemAction)]];
+        [finalActions addObject:[%c(PBTimelineAction) timelineActionFromManagedTimelineItemAction:(PBManagedTimelineItemAction *)object]];
     }
     log(@"updateActionsWithActions %d", [(PBManagedTimelineItemActionable *)arg1 updateActionsWithActions:finalActions]);
 
