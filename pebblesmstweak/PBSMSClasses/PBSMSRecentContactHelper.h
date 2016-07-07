@@ -1,6 +1,6 @@
 
 
-@interface PBSMSContact
+@interface PBSMSContact : NSObject
 
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *phone;
@@ -13,7 +13,7 @@
 
 @end
 
-@interface PBSMSRecentContactHelper
+@interface PBSMSRecentContactHelper : NSObject
 
 @property (nonatomic, readonly) NSArray *contacts;
 @property (nonatomic, readonly) NSArray *names;
