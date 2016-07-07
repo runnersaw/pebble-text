@@ -50,7 +50,7 @@
 
 @end
 
-@interface PBSMSRecentContactHelper
+@interface PBSMSRecentContactHelper ()
 
 @property (nonatomic, strong) NSMutableArray *mutableContacts;
 
