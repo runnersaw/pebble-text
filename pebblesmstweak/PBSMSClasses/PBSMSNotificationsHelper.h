@@ -8,7 +8,7 @@
 
 @property (nonatomic, copy) NSArray *notifications;
 
-+ (PBSMSTextHelper *)sharedHelper;
++ (PBSMSNotificationsHelper *)sharedHelper;
 
 // Notification handling
 - (NSArray *)notificationsForAppIdentifier:(NSString *)appIdentifier;
@@ -17,7 +17,7 @@
 - (void)saveNotification:(PBSMSNotification *)notification;
 
 // Saving Pebble Actions
-- (void)savePebbleAction:(PBSMSPebbleAction *)action
+- (void)savePebbleAction:(PBSMSPebbleAction *)action;
 - (void)loadPebbleActions;
 - (void)savePebbleActions;
 - (PBSMSPebbleAction *)pebbleActionForPebbleActionId:(NSNumber *)pebbleActionId;
