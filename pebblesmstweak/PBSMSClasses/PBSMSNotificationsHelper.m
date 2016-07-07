@@ -109,6 +109,7 @@
 
 - (void)saveNotificationForBulletin:(BBBulletin *)bulletin
 {
+	log(@"saveNotificationForBulletin %@", bulletin);
     NSString *bulletinId = [bulletin bulletinID];
     if ([self.bulletins objectForKey:bulletinId])
 	{
