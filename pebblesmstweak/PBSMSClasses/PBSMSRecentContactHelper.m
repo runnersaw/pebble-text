@@ -67,6 +67,16 @@
     return sharedContactHelper;
 }
 
+- (instancetype)init
+{
+	self = [super init];
+	if (self)
+	{
+		_mutableContacts = [NSMutableArray array];
+	}
+	return self;
+}
+
 - (void)addContact:(PBSMSContact *)contact
 {
 	[self loadContacts];
@@ -117,6 +127,11 @@
 - (void)loadContacts
 {
     NSArray *arr = [NSArray arrayWithContentsOfFile:recentFileLocation];
+
+    if (!arr)
+    {
+    	return;
+    }
 
     [self.mutableContacts removeAllObjects];
     for (id object in arr)

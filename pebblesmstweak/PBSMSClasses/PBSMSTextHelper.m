@@ -5,7 +5,7 @@
 
 @interface PBSMSTextHelper ()
 
-@property (nonatomic, strong) NSArray *messages;
+@property (nonatomic, strong) NSMutableArray *mutableMessages;
 
 @end
 
@@ -18,6 +18,15 @@
         sharedTextHelper = [[self alloc] init];
     });
     return sharedTextHelper;
+}
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+        _mutableMessages = [NSMutableArray array];
+    }
 }
 
 - (NSArray *)presets
@@ -40,35 +49,38 @@
     return _presets;
 }
 
+- (NSArray *)messages
+{
+    return [self.mutableMessages copy];
+}
+
 - (void)loadMessages
 {
     log(@"loadMessages");
     NSArray *arr = [NSArray arrayWithContentsOfFile:messagesFileLocation];
 
-    NSMutableArray *finalMessages = [[NSMutableArray alloc] init];
+    if (!arr)
+    {
+        return;
+    }
+
+    [self.mutableMessages removeAllObjects];
     for (id object in arr)
     {
         PBSMSTextMessage *textMessage = [PBSMSTextMessage deserializeFromObject:object];
         if (textMessage && !textMessage.isExpired)
         {
-            [finalMessages addObject:textMessage];
-        }
-        if (textMessage.isExpired)
-        {
-            [self removeMessage:textMessage];
+            [self.mutableMessages addObject:textMessage];
         }
     }
-
-    self.messages = [finalMessages copy];
 }
 
 - (void)saveMessages
 {
     log(@"saveMessages");
-    NSArray *messages = self.messages;
     NSMutableArray *serializedMessages = [NSMutableArray array];
 
-    for (PBSMSTextMessage *message in messages)
+    for (PBSMSTextMessage *message in self.mutableMessages)
     {
         [serializedMessages addObject:[message serializeToDictionary]];
     }
@@ -80,27 +92,7 @@
 {
     [self loadMessages];
 
-    NSMutableArray *messages = [NSMutableArray arrayWithArray:self.messages];
-    [messages addObject:message];
-
-    self.messages = [messages copy];
-}
-
-- (void)messageWasSent:(PBSMSTextMessage *)sentMessage
-{
-    log(@"messageWasSent %@", sentMessage);
-    NSArray *messages = self.messages;
-
-    NSMutableArray *messagesToKeep = [NSMutableArray array];
-    for (PBSMSTextMessage *message in messages)
-    {
-        if (![message.uuid isEqualToString:sentMessage.uuid])
-        {
-            [messagesToKeep addObject:message];
-        }
-    }
-
-    self.messages = [messagesToKeep copy];
+    [self.mutableMessages addObject:message];
 
     [self saveMessages];
 }
@@ -108,18 +100,14 @@
 - (void)removeMessage:(PBSMSTextMessage *)removedMessage
 {
     log(@"removeMessage %@", removedMessage);
-    NSArray *messages = self.messages;
 
-    NSMutableArray *messagesToKeep = [NSMutableArray array];
     for (PBSMSTextMessage *message in messages)
     {
         if (![message.uuid isEqualToString:removedMessage.uuid])
         {
-            [messagesToKeep addObject:message];
+            [self.mutableMessages removeObject:message];
         }
     }
-
-    self.messages = [messagesToKeep copy];
 
     [self saveMessages];
 }

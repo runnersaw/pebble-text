@@ -19,12 +19,27 @@
 // Notification handling
 - (NSArray *)notificationsForAppIdentifier:(NSString *)appIdentifier
 {
+	NSMutableArray *notifications = [NSMutableArray array];
 
+	for (PBSMSNotification *notification in self.notifications)
+	{
+		if ([notification.appIdentifier isEqualToString:appIdentifier])
+		{
+			[notifications addObject:notification];
+		}
+	}
+
+	return [notifications copy];
 }
 
 - (void)loadNotifications
 {
+	NSMutableArray *arr = [NSMutableArray arrayWithContentsOfFile:notificationsFileLocation];
 
+	if (dict)
+	{
+		[notificationActionsDictionary setDictionary:dict];
+	}
 }
 
 - (void)saveNotifications
