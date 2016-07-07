@@ -1816,56 +1816,22 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 +(id)notificationSourceFromManagedEntry:(id)arg1
 {
 	log(@"notificationSourceFromManagedEntry %@ %@", arg1, [arg1 performSelector:@selector(actionsSet)]);
-	id r = %orig;
-	if ([arg1 respondsToSelector:@selector(removeActions:)])
-	{
-		log(@"responsds to removeActions");
-	}
-	if ([arg1 respondsToSelector:@selector(removeActionsObject:)])
-	{
-		log(@"responsds to removeActionsObject");
-	}
-	if ([arg1 respondsToSelector:@selector(insertObject:inActionsAtIndex:)])
-	{
-		log(@"responsds to insertObject:inActionsAtIndex");
-	}
-	if ([arg1 respondsToSelector:@selector(removeObjectFromActionsAtIndex:)])
-	{
-		log(@"responsds to removeObjectFromActionsAtIndex:");
-	}
-	if ([arg1 respondsToSelector:@selector(insertActions:atIndexes:)])
-	{
-		log(@"responsds to insertActions:atIndexes");
-	}
-	if ([arg1 respondsToSelector:@selector(removeActionsAtIndexes:)])
-	{
-		log(@"responsds to removeActionsAtIndexes");
-	}
-	if ([arg1 respondsToSelector:@selector(replaceObjectInActionsAtIndex:withObject:)])
-	{
-		log(@"responsds to replaceObjectInActionsAtIndex:withObject");
-	}
-	if ([arg1 respondsToSelector:@selector(replaceActionsAtIndexes:withActions:)])
-	{
-		log(@"responsds to replaceActionsAtIndexes:withActions:");
-	}
-	if ([arg1 respondsToSelector:@selector(addActions:)])
-	{
-		log(@"responsds to addActions");
-	}
-	if ([arg1 respondsToSelector:@selector(actionsSet)])
-	{
-		log(@"responsds to actionsSet");
-	}
-
-	return r;
+	id orig = %orig;
+	[PBNotificationSource addActionsToNotificationSource:orig];
+	[arg1 performSelector:@selector(removeActions:) withObject:[arg1 performSelector:@selector(actionsSet)]];
+	return orig;
 }
 
 +(id)notificationSourceWithAppIdentifier:(id)arg1 flags:(unsigned)arg2 version:(unsigned short)arg3 attributes:(id)arg4 actions:(id)arg5
 {
-	BOOL shouldAddAction = NO;
-
+	log(@"notificationSourceWithAppIdentifier %@", arg1);
 	PBNotificationSource *orig = (PBNotificationSource *)%orig;
+	[PBNotificationSource addActionsToNotificationSource:orig];
+	return orig;
+}
+
++ (void)addActionsToNotificationSource:(PBNotificationSource *)orig
+{
 	if ([[orig actions] count] == 0)
 	{
 		shouldAddAction = YES;
@@ -1889,7 +1855,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 	if (!shouldAddAction)
 	{
-		return orig;
+		return;
 	}
 
 	log(@"Adding actions to %@", orig);
@@ -1902,9 +1868,10 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 	PBTimelineAttribute *attr1 = [[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:@"Action" specificType:0];
 	PBTimelineAction *b = [[%c(PBTimelineAction) alloc] initWithIdentifier:@(HAS_ACTIONS_IDENTIFIER) type:@"ANCSResponse" attributes:@[ attr1 ]];
-	id r = %orig(arg1, arg2, arg3, arg4, @[ b ]);
+	
+	orig.actions = @[ b ];
 
-	return r;
+	return;
 }
 
 %end
