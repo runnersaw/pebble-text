@@ -1843,13 +1843,26 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
     log(@"notificationSourceFromManagedEntry %@ %@", arg1, [arg1 performSelector:@selector(actionsSet)]);
     NSArray *actionsArr = [(NSSet *)[arg1 performSelector:@selector(actionsSet)] allObjects];
-    NSMutableArray *finalActions = [NSMutableArray array];
-    for (id object in actionsArr)
+    if (actionsArr.count == 1)
     {
-        log(@"action %@", object);
-        [finalActions addObject:[%c(PBTimelineAction) timelineActionFromManagedTimelineItemAction:(PBManagedTimelineItemAction *)object]];
+        PBManagedTimelineItemAction *managedAction = actionsArr[0];
+        PBTimelineAction *action = [%c(PBTimelineAction) timelineActionFromManagedTimelineItemAction:managedAction];
+        log(@"action %@", action);
+        for (PBTimelineAttribute *attribute in [action attributes])
+        {
+            if (![[attribute content] isKindOfClass:[NSString class]])
+            {
+                continue;
+            }
+            if ([(NSString *)[attribute content] isEqualToString:@"Action"])
+            {
+                PBTimelineAttribute *attr1 = [[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:@"Action" specificType:0];
+                PBTimelineAction *a = [[%c(PBTimelineAction) alloc] initWithIdentifier:@(HAS_ACTIONS_IDENTIFIER) type:@"ANCSResponse" attributes:@[ attr1 ]];
+                log(@"updateActionsWithActions %d", [(PBManagedTimelineItemActionable *)arg1 updateActionsWithActions:@[ a ]]);
+                break;
+            }
+        }
     }
-    log(@"updateActionsWithActions %d", [(PBManagedTimelineItemActionable *)arg1 updateActionsWithActions:finalActions]);
 
 	return [%c(PBNotificationSource) notificationSourceWithAppIdentifier:orig.appIdentifier
 		flags:orig.flags
