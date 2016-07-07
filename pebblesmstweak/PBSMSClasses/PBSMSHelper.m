@@ -22,15 +22,15 @@ NSString * const recentFileLocation = @"/var/mobile/Library/Preferences/com.sawy
 + (void)dumpMethods:(Class)c
 {
     unsigned int methodCount = 0;
-    Method *methods = class_copyMethodList(clz, &methodCount);
+    Method *methods = class_copyMethodList(c, &methodCount);
 
-    log(@"Found %d methods on '%s'\n", methodCount, class_getName(clz));
+    log(@"Found %d methods on '%s'\n", methodCount, class_getName(c));
 
     for (unsigned int i = 0; i < methodCount; i++) {
         Method method = methods[i];
 
         log(@"\t'%s' has method named '%s' of encoding '%s'\n",
-            class_getName(clz),
+            class_getName(c),
             sel_getName(method_getName(method)),
             method_getTypeEncoding(method));
     }
