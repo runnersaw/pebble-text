@@ -1819,43 +1819,43 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 	id r = %orig;
 	if ([arg1 respondsToSelector:@selector(removeActions:)])
 	{
-		log("responsds to removeActions");
+		log(@"responsds to removeActions");
 	}
 	if ([arg1 respondsToSelector:@selector(removeActionsObject:)])
 	{
-		log("responsds to removeActionsObject");
+		log(@"responsds to removeActionsObject");
 	}
 	if ([arg1 respondsToSelector:@selector(insertObject:inActionsAtIndex:)])
 	{
-		log("responsds to insertObject:inActionsAtIndex");
+		log(@"responsds to insertObject:inActionsAtIndex");
 	}
 	if ([arg1 respondsToSelector:@selector(removeObjectFromActionsAtIndex:)])
 	{
-		log("responsds to removeObjectFromActionsAtIndex:");
+		log(@"responsds to removeObjectFromActionsAtIndex:");
 	}
 	if ([arg1 respondsToSelector:@selector(insertActions:atIndexes:)])
 	{
-		log("responsds to insertActions:atIndexes");
+		log(@"responsds to insertActions:atIndexes");
 	}
 	if ([arg1 respondsToSelector:@selector(removeActionsAtIndexes:)])
 	{
-		log("responsds to removeActionsAtIndexes");
+		log(@"responsds to removeActionsAtIndexes");
 	}
 	if ([arg1 respondsToSelector:@selector(replaceObjectInActionsAtIndex:withObject:)])
 	{
-		log("responsds to replaceObjectInActionsAtIndex:withObject");
+		log(@"responsds to replaceObjectInActionsAtIndex:withObject");
 	}
 	if ([arg1 respondsToSelector:@selector(replaceActionsAtIndexes:withActions:)])
 	{
-		log("responsds to replaceActionsAtIndexes:withActions:");
+		log(@"responsds to replaceActionsAtIndexes:withActions:");
 	}
 	if ([arg1 respondsToSelector:@selector(addActions:)])
 	{
-		log("responsds to addActions");
+		log(@"responsds to addActions");
 	}
 	if ([arg1 respondsToSelector:@selector(actionsSet)])
 	{
-		log("responsds to actionsSet");
+		log(@"responsds to actionsSet");
 	}
 
 	return r;
