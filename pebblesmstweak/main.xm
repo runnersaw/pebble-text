@@ -1778,6 +1778,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 + (NSString *)bulletinIdentifierForInvokeANCSMessage:(PBTimelineInvokeANCSActionMessage *)message
 {
 	NSMutableArray *matchingNotifications = [NSMutableArray array];
+    [[PBSMSNotificationsHelper sharedHelper] loadNotifications];
 	NSArray *notificationsArray = [[PBSMSNotificationsHelper sharedHelper] notificationsForAppIdentifier:[message appIdentifier]];
 	for (PBSMSNotification *notification in notificationsArray)
 	{
