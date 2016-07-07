@@ -1781,6 +1781,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 	NSArray *notificationsArray = [[PBSMSNotificationsHelper sharedHelper] notificationsForAppIdentifier:[message appIdentifier]];
 	for (PBSMSNotification *notification in notificationsArray)
 	{
+        log(@"notification %@ %@ %@", notification, notification.message, notification.bulletinId);
+        log(@"message %@ %@", message, [message notificationBody]);
 		if ([notification.message isEqualToString:[message notificationBody]])
 		{
 			[matchingNotifications addObject:@{ @"bulletinID" : notification.bulletinId, @"timestamp" : notification.timestamp }];
