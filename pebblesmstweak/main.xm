@@ -94,7 +94,7 @@
 
 @interface PBNotificationSource (PebbleSMS)
 // new
-+ (void)addActionsToNotificationSource:(PBNotificationSource *)orig;
++ (PBNotificationSource *)notificationSourceWithAddedActionsFromNotificationSource:(PBNotificationSource *)orig;
 @end
 
 static NSUUID *appUUID = [[NSUUID alloc] initWithUUIDString:@"36BF8B7A-A043-4E1B-8518-B6BB389EC110"];
@@ -1822,20 +1822,19 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 {
 	log(@"notificationSourceFromManagedEntry %@ %@", arg1, [arg1 performSelector:@selector(actionsSet)]);
 	id orig = %orig;
-	[PBNotificationSource addActionsToNotificationSource:orig];
 	[arg1 performSelector:@selector(removeActions:) withObject:[arg1 performSelector:@selector(actionsSet)]];
-	return orig;
+	return [PBNotificationSource notificationSourceWithAddedActionsFromNotificationSource:orig];
 }
 
 +(id)notificationSourceWithAppIdentifier:(id)arg1 flags:(unsigned)arg2 version:(unsigned short)arg3 attributes:(id)arg4 actions:(id)arg5
 {
 	log(@"notificationSourceWithAppIdentifier %@", arg1);
 	PBNotificationSource *orig = (PBNotificationSource *)%orig;
-	[PBNotificationSource addActionsToNotificationSource:orig];
+	return [PBNotificationSource notificationSourceWithAddedActionsFromNotificationSource:orig];
 	return orig;
 }
 
-+ (void)addActionsToNotificationSource:(PBNotificationSource *)orig
++ (PBNotificationSource *)notificationSourceWithAddedActionsFromNotificationSource:(PBNotificationSource *)orig
 {
 	if ([[orig actions] count] == 0)
 	{
@@ -1860,7 +1859,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 	if (!shouldAddAction)
 	{
-		return;
+		return orig;
 	}
 
 	log(@"Adding actions to %@", orig);
@@ -1873,10 +1872,11 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 	PBTimelineAttribute *attr1 = [[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:@"Action" specificType:0];
 	PBTimelineAction *b = [[%c(PBTimelineAction) alloc] initWithIdentifier:@(HAS_ACTIONS_IDENTIFIER) type:@"ANCSResponse" attributes:@[ attr1 ]];
-	
-	orig.actions = @[ b ];
-
-	return;
+	return [PBNotificationSource notificationSourceWithAppIdentifier:orig.appIdentifier
+		flags:orig.flags
+		version:orig.version
+		attributes:orig.attributes
+		actions:@[ b ]];
 }
 
 %end
