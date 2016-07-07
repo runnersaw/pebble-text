@@ -60,14 +60,6 @@ extern NSString * const recentFileLocation;
 	#define log( s, ... )
 #endif
 
-#ifdef DEBUG
-	#define dumpInstanceMethods( c ) [PBSMSHelper dumpMethods:c]
-	#define dumpClassMethods( c ) [PBSMSHelper dumpMethods:object_getClass(c)]
-#else
-	#define dumpInstanceMethods( c )
-	#define dumpClassMethods( c )
-#endif
-
 @interface PBSMSHelper : NSObject
 + (void)dumpMethods:(Class)c;
 @end
