@@ -27,7 +27,7 @@
 
 #import "include.h"
 
-@interface SMSApplication : UIApplication
+@interface SMSApplication (PebbleSMS)
 // new
 - (void)sendMessagesForTextSender;
 - (void)sendMessageForTextSender:(PBSMSTextMessage *)message;
@@ -38,18 +38,18 @@
 - (void)handleMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo;
 @end
 
-@interface PBContact
+@interface PBContact (PebbleSMS)
 //new
 + (NSString *)phoneWithPrefix:(NSString *)number;
 - (NSNumber *)recordId;
 @end
 
-@interface PBPhoneNumber : NSObject
+@interface PBPhoneNumber (PebbleSMS)
 // new
 -(NSString *)getStringRepresentationForTextSender;
 @end
 
-@interface PBAddressBook
+@interface PBAddressBook (PebbleSMS)
 // new
 - (id)searchContacts:(NSString *)search tries:(int)tries;
 - (id)searchContactsList:(NSString *)search tries:(int)tries;
@@ -57,7 +57,7 @@
 - (id)contactWithPrefixedPhoneNumber:(NSString *)phoneNumber;
 @end
 
-@interface PBWatch
+@interface PBWatch (PebbleSMS)
 // new
 - (NSMutableDictionary *)getContactSearchResponse:(NSString *)name tries:(int)tries;
 - (NSMutableDictionary *)getSentResponse;
@@ -69,23 +69,23 @@
 + (void)sendSMS:(NSNumber *)recordId number:(NSString *)number withText:(NSString *)text;
 @end
 
-@interface PBAppDelegate
+@interface PBAppDelegate (PebbleSMS)
 // new
 + (NSNumber *)majorAppVersion;
 + (NSNumber *)minorAppVersion;
 @end
 
-@interface PBSMSSessionManager
+@interface PBSMSSessionManager (PebbleSMS)
 // new
 + (void)sendSMS:(NSString *)number withText:(NSString *)text;
 @end
 
-@interface PBSMSApiClient
+@interface PBSMSApiClient (PebbleSMS)
 // new
 + (void)sendSMS:(NSNumber *)recordId number:(NSString *)number withText:(NSString *)text;
 @end
 
-@interface PBANCSActionHandler
+@interface PBANCSActionHandler (PebbleSMS)
 // new
 + (void)performAction:(NSString *)actionID forBulletinID:(NSString *)bulletinID;
 + (void)performReply:(NSString *)reply forAction:(NSString *)actionID andBulletinID:(NSString *)bulletinID;
