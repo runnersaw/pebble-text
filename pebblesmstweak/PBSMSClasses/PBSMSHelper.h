@@ -63,10 +63,6 @@ extern NSString * const recentFileLocation;
 	#define log( s, ... )
 #endif
 
-@interface PBSMSCoreDataHelper : NSObject
-+ (void)deleteObject:(id)object;
-@end
-
 @interface PBSMSHelper : NSObject
 + (void)dumpMethods:(Class)c;
 @end

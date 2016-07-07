@@ -1857,7 +1857,11 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
             if ([(NSString *)[attribute content] isEqualToString:@"Action"])
             {
                 // We're going to replace the actions, so delete the managed object
-                [%c(PBSMSCoreDataHelper) deleteObject:arg1];
+                if ([arg1 isKindOfClass:[%c(NSManagedObject) class]])
+                {
+                    PBCoreDataManager *coreDataManager = [%c(PBCoreDataManager) defaultMyPebbleCoreDataManager];
+                    [coreDataManager.managedObjectContext deleteObject:(NSManagedObject *)arg1];
+                }
                 break;
             }
         }

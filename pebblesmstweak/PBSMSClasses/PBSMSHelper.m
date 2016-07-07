@@ -19,19 +19,6 @@ NSString * const actionsToPerformFileLocation = @"/var/mobile/Library/Preference
 NSString * const messagesFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.messages.plist";
 NSString * const recentFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.recent.plist";
 
-@implementation PBSMSCoreDataHelper
-
-+ (void)deleteObject:(id)object
-{
-    if ([object isKindOfClass:[NSManagedObject class]])
-    {
-        PBCoreDataManager *coreDataManager = [PBCoreDataManager defaultMyPebbleCoreDataManager];
-        [coreDataManager.managedObjectContext deleteObject:(NSManagedObject *)object];
-    }
-}
-
-@end
-
 @implementation PBSMSHelper : NSObject
 
 + (void)dumpMethods:(Class)c
