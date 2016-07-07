@@ -103,6 +103,7 @@
 		}
 	}
 
+	log(@"saveNotifications %@", self.mutableNotifications);
     [notificationsArr writeToFile:notificationsFileLocation atomically:YES];
 }
 
@@ -162,6 +163,7 @@
 		timestamp:timestamp
 		actions:actions];
 
+    log(@"saveNotification %@ %@ %@", notification, notification.appIdentifier, notification.message);
 	[self.mutableNotifications addObject:notification];
 
 	[self saveNotifications];

@@ -1779,6 +1779,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 {
 	NSMutableArray *matchingNotifications = [NSMutableArray array];
     [[PBSMSNotificationsHelper sharedHelper] loadNotifications];
+    log(@"all notifications %@", [[PBSMSNotificationsHelper sharedHelper] notificationsForAppIdentifier:[message appIdentifier]]);
 	NSArray *notificationsArray = [[PBSMSNotificationsHelper sharedHelper] notificationsForAppIdentifier:[message appIdentifier]];
 	for (PBSMSNotification *notification in notificationsArray)
 	{
