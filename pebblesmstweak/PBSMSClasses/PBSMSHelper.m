@@ -1,5 +1,6 @@
 #import "PBSMSHelper.h"
 
+#import <Foundation/Foundation.h>
 #import <objc/runtime.h>
 #import "../include.h"
 
