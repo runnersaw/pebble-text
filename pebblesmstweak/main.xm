@@ -1822,20 +1822,18 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 {
 	log(@"notificationSourceFromManagedEntry %@ %@", arg1, [arg1 performSelector:@selector(actionsSet)]);
 	id orig = %orig;
-	return [%c(PBNotificationSource) notificationSourceWithAddedActionsFromNotificationSource:orig];
+
+	return [%c(PBNotificationSource) notificationSourceWithAppIdentifier:orig.appIdentifier
+		flags:orig.flags
+		version:orig.version
+		attributes:orig.attributes
+		actions:orig.actions];
 }
 
 +(id)notificationSourceWithAppIdentifier:(id)arg1 flags:(unsigned)arg2 version:(unsigned short)arg3 attributes:(id)arg4 actions:(id)arg5
 {
 	log(@"notificationSourceWithAppIdentifier %@", arg1);
 	PBNotificationSource *orig = (PBNotificationSource *)%orig;
-	return [%c(PBNotificationSource) notificationSourceWithAddedActionsFromNotificationSource:orig];
-	return orig;
-}
-
-%new
-+ (PBNotificationSource *)notificationSourceWithAddedActionsFromNotificationSource:(PBNotificationSource *)orig
-{
 	BOOL shouldAddAction = NO;
 	if ([[orig actions] count] == 0)
 	{
@@ -1873,11 +1871,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 	PBTimelineAttribute *attr1 = [[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:@"Action" specificType:0];
 	PBTimelineAction *b = [[%c(PBTimelineAction) alloc] initWithIdentifier:@(HAS_ACTIONS_IDENTIFIER) type:@"ANCSResponse" attributes:@[ attr1 ]];
-	return [%c(PBNotificationSource) notificationSourceWithAppIdentifier:orig.appIdentifier
-		flags:orig.flags
-		version:orig.version
-		attributes:orig.attributes
-		actions:@[ b ]];
+	return %orig(arg1, arg2, arg3, arg4, @[ b ]);
 }
 
 %end
