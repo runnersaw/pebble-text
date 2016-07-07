@@ -2,6 +2,9 @@
 
 #define DEBUG 1
 
+#define MAX_CONTACTS 10;
+#define MAX_CONTACTS_TO_SEND 10;
+
 #define SEND_DELAY 4.0
 #define SECOND_SEND_DELAY 10.0
 #define NOTIFICATION_DELAY 0.2

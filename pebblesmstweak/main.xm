@@ -18,6 +18,7 @@
 #import "PBSMSClasses/PBSMSHelper.h"
 #import "PBSMSClasses/PBSMSTextMessage.h"
 #import "PBSMSClasses/PBSMSTextHelper.h"
+#import "PBSMSClasses/PBSMSRecentContactHelper.h"
 
 // NS EXTENSIONS
 
@@ -797,16 +798,11 @@
 - (id)init;
 @end
 
-static NSMutableArray *names = [NSMutableArray array];
-static NSMutableArray *phones = [NSMutableArray array];
-
 static NSUUID *appUUID = [[NSUUID alloc] initWithUUIDString:@"36BF8B7A-A043-4E1B-8518-B6BB389EC110"];
 
 static NSNumber *currentContactId = NULL;
 static BOOL isRecentContact = NO;
 
-static int maxContacts = 10;
-static int maxContactsToSend = 10;
 
 static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
@@ -816,67 +812,6 @@ static NSMutableArray *appsArray = [NSMutableArray array];
 static NSMutableDictionary *notificationActionsDictionary = [NSMutableDictionary dictionary];
 static NSMutableDictionary *actionsToPerformDictionary = [NSMutableDictionary dictionary];
 static NSMutableDictionary *bulletinsDict = [NSMutableDictionary dictionary];
-
-// RECENT CONTACTS
-
-static void loadRecentRecipients()
-{
-    NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:recentFileLocation];
-
-    [names removeAllObjects];
-    [phones removeAllObjects];
-
-    for (int i=0; i<maxContacts; i++)
-	{
-        NSString *name = [dict objectForKey:[NSString stringWithFormat:@"name%d", i]];
-        NSString *phone = [dict objectForKey:[NSString stringWithFormat:@"phone%d", i]];
-
-        if (name != nil && phone != nil)
-		{
-            [names addObject:name];
-            [phones addObject:phone];
-        }
-    }
-}
-
-static void saveRecentRecipient(NSString *name, NSString *phone)
-{
-    loadRecentRecipients();
-
-    for (int i=[names count]-1;i>=0;i--)
-	{
-        if ([[names objectAtIndex:i] isEqualToString:name] || [[phones objectAtIndex:i] isEqualToString:phone])
-		{
-            [names removeObjectAtIndex:i];
-            [phones removeObjectAtIndex:i];
-        }
-    }
-
-    [names insertObject:name atIndex:0];
-    while ([names count] > maxContacts)
-	{
-        [names removeLastObject];
-    }
-
-    [phones insertObject:phone atIndex:0];
-    while ([phones count] > maxContacts)
-	{
-        [phones removeLastObject];
-    }
-
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
-
-    for (int i=0; i<[names count]; i++)
-	{
-        NSString *name = [names objectAtIndex:i];
-        NSString *phone = [phones objectAtIndex:i];
-
-        [dict setObject:name forKey:[NSString stringWithFormat:@"name%d", i]];
-        [dict setObject:phone forKey:[NSString stringWithFormat:@"phone%d", i]];
-    }
-
-    [dict writeToFile:recentFileLocation atomically:YES];
-}
 
 static void loadNotificationActions()
 {
@@ -1249,12 +1184,6 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 - (void)handleMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo
 {
     log(@"handleMessageNamed %@", [userinfo description]);
-    PBSMSTextMessage *message = [PBSMSTextMessage deserializeFromObject:userinfo];
-    if (message)
-    {
-    	log(@"message %@", message);
-    	[self sendMessageForTextSender:message];
-    }
     if ([name isEqualToString:sendMessageCommand])
 	{
         [self sendMessagesForTextSender];
@@ -1264,6 +1193,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 %new
 - (void)sendMessageForTextSender:(PBSMSTextMessage *)message
 {
+	log(@"sendMessageForTextSender %@", message);
     if (message.isRecentContact && !message.isReply)
 	{
         [self sendMessageToNumber:message.number recordId:message.recordId withText:message.messageText notify:message.shouldNotify];
@@ -1279,19 +1209,11 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 %new
 - (void)sendMessagesForTextSender
 {
+	log(@"sendMessagesForTextSender");
 	NSArray *messages = [[PBSMSTextHelper sharedHelper] messages];
     for (PBSMSTextMessage *message in messages)
 	{
-        if (message.isRecentContact && !message.isReply)
-		{
-            [self sendMessageToNumber:message.number recordId:message.recordId withText:message.messageText notify:message.shouldNotify];
-        }
-        else
-		{
-            [self sendMessageTo:message.recordId number:message.number withText:message.messageText notify:message.shouldNotify];
-        }
-
-        [[PBSMSTextHelper sharedHelper] messageWasSent:message];
+		[self sendMessageForTextSender:message];
     }
 }
 
@@ -1911,19 +1833,20 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
             [names addObject:[[contacts objectAtIndex:i] fullName]];
         }
         for (int i=0; i<[contacts count]; i++)
-{
+		{
             [ids addObject:[NSNumber numberWithInt:[[[contacts objectAtIndex:i] recordId] intValue]]];
         }
         for (int i=0; i<[numbers count]; i++)
-{
+		{
             [phones addObject:[numbers objectAtIndex:i]];
         }
 
         [dict setObject:[names componentsJoinedByString:@"\n"] forKey:CONTACT_NAMES_KEY];
         [dict setObject:[phones componentsJoinedByString:@"\n"] forKey:CONTACT_NUMBERS_KEY];
         [dict setObject:[ids componentsJoinedByString:@"\n"] forKey:CONTACT_IDS_KEY];
-    } else
-{
+    }
+    else
+	{
         [dict setObject:@"No more contacts" forKey:CONTACT_NAME_KEY];
         [dict setObject:@"" forKey:CONTACT_NUMBER_KEY];
     }
@@ -1984,18 +1907,18 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 %new
 - (NSMutableDictionary *)getRecentContactsResponse
 {
-    // NSLog(@"PEBBLESMS: getRecentContactsResponse");
-    loadRecentRecipients();
+	[[PBSMSRecentContactHelper sharedHelper] loadContacts];
+	[PBSMSRecentContactHelper sharedHelper].contacts;
 
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
-
-    if ([names count] != 0 && [phones count] != 0)
-{
-        [dict setObject:[names componentsJoinedByString:@"\n"] forKey:RECENT_CONTACTS_NAME_KEY];
-        [dict setObject:[phones componentsJoinedByString:@"\n"] forKey:RECENT_CONTACTS_NUMBER_KEY];
+    if ([PBSMSRecentContactHelper sharedHelper].contacts.count != 0)
+	{
+        [dict setObject:[[PBSMSRecentContactHelper sharedHelper].names componentsJoinedByString:@"\n"] forKey:RECENT_CONTACTS_NAME_KEY];
+        [dict setObject:[[PBSMSRecentContactHelper sharedHelper].phones componentsJoinedByString:@"\n"] forKey:RECENT_CONTACTS_NUMBER_KEY];
         isRecentContact = YES;
     }
-    // NSLog(@"PB isRecentContact YES");
+
+    log(@"getRecentContactsResponse %@", @( [PBSMSRecentContactHelper sharedHelper].contacts.count ))
     
     return dict;
 }

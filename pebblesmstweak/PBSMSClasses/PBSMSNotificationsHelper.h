@@ -13,7 +13,10 @@
 - (void)saveNotification:(PBSMSNotification *)notification;
 
 // Saving Pebble Actions
-- (void)savePebbleAction
+- (void)savePebbleAction:(PBSMSPebbleAction *)action
+- (void)loadPebbleActions;
+- (void)savePebbleActions;
+- (PBSMSPebbleAction *)pebbleActionForPebbleActionId:(NSNumber *)pebbleActionId;
 
 // Action handling
 - (void)saveActionToPerform:(PBSMSNotificationAction *)action;
