@@ -1,6 +1,7 @@
 #import "PBSMSHelper.h"
 
 #import <objc/runtime.h>
+#import "../include.h"
 
 NSString * const sendMessageCommand = @"messageNeedsSending";
 NSString * const openMessagesCommand = @"messagesNeedsOpening";
@@ -16,6 +17,20 @@ NSString * const notificationsFileLocation = @"/var/mobile/Library/Preferences/c
 NSString * const actionsToPerformFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.perform-action.plist";
 NSString * const messagesFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.messages.plist";
 NSString * const recentFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.recent.plist";
+
+@class NSManagedObject;
+@interface PBSMSCoreDataHelper
+
++ (void)deleteObject:(id)object
+{
+    if ([object isKindOfClass:[NSManagedObject class]])
+    {
+        PBCoreDataManager *coreDataManager = [%c(PBCoreDataManager) defaultMyPebbleCoreDataManager];
+        [coreDataManager.managedObjectContext deleteObject:(NSManagedObject *)object];
+    }
+}
+
+@end
 
 @implementation PBSMSHelper : NSObject
 

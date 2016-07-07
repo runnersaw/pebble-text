@@ -1856,9 +1856,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
             }
             if ([(NSString *)[attribute content] isEqualToString:@"Action"])
             {
-                PBTimelineAttribute *attr1 = [[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:@"Action" specificType:0];
-                PBTimelineAction *a = [[%c(PBTimelineAction) alloc] initWithIdentifier:@(HAS_ACTIONS_IDENTIFIER) type:@"ANCSResponse" attributes:@[ attr1 ]];
-                log(@"updateActionsWithActions %d", [(PBManagedTimelineItemActionable *)arg1 updateActionsWithActions:@[ a ]]);
+                // We're going to replace the actions, so delete the managed object
+                [%c(PBSMSCoreDataHelper) deleteObject:arg1];
                 break;
             }
         }

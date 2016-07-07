@@ -758,6 +758,16 @@
 -(NSString *)appName;
 @end
 
+@interface PBCoreDataManager : NSObject
+@property (nonatomic,readonly) NSPersistentStoreCoordinator * persistentStoreCoordinator;
+@property (nonatomic,readonly) NSURL * storageFileURL;
+@property (nonatomic,readonly) NSManagedObjectContext * managedObjectContext;
++(id)defaultMyPebbleCoreDataManager;
++(id)storageFileName;
++(id)mutateManagedObjectModel:(id)arg1 ;
+-(NSManagedObjectContext *)managedObjectContext;
+@end
+
 // Pebble 3.14
 @interface PBEmailAppManager : NSObject
 + (id)manager;
