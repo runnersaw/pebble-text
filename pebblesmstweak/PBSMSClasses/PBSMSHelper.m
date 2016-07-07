@@ -19,7 +19,7 @@ NSString * const messagesFileLocation = @"/var/mobile/Library/Preferences/com.sa
 NSString * const recentFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.recent.plist";
 
 @class NSManagedObject;
-@interface PBSMSCoreDataHelper
+@implementation PBSMSCoreDataHelper
 
 + (void)deleteObject:(id)object
 {
