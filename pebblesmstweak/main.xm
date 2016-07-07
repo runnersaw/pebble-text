@@ -108,7 +108,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 static NSMutableArray *actionsToPerform = [NSMutableArray array];
 static NSMutableArray *appsArray = [NSMutableArray array];
 
-static NSMutableDictionary *notificationActionsDictionary = [NSMutableDictionary dictionary];
 static NSMutableDictionary *actionsToPerformDictionary = [NSMutableDictionary dictionary];
 static NSMutableDictionary *bulletinsDict = [NSMutableDictionary dictionary];
 
@@ -1618,7 +1617,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 	PBTimelineInvokeANCSActionMessage *m = (PBTimelineInvokeANCSActionMessage *)arg1;
 	log(@"handleInvokeANCSActionMessage %@ %@ %@", m, @( [m actionID] ), [m appIdentifier]);
 	log(@"%@ %@ %@ %@", [m notificationSender], [m notificationSubtitle], [m notificationBody], [m actionTitle]);
-	log(@"%@", [notificationActionsDictionary objectForKey:[m appIdentifier]]);
+	log(@"%@", [[PBSMSNotificationsHelper sharedHelper] notificationsForAppIdentifier:[m appIdentifier]]);
 
 	if ([m actionID] == HAS_ACTIONS_IDENTIFIER)
 	{
@@ -1779,15 +1778,12 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 + (NSString *)bulletinIdentifierForInvokeANCSMessage:(PBTimelineInvokeANCSActionMessage *)message
 {
 	NSMutableArray *matchingNotifications = [NSMutableArray array];
-	NSDictionary *notificationDict = [notificationActionsDictionary objectForKey:[message appIdentifier]];
-	for (NSString *bulletinID in [notificationDict allKeys])
+	NSArray *notificationsArray = [[PBSMSNotificationsHelper sharedHelper] notificationsForAppIdentifier:[message appIdentifier]];
+	for (PBSMSNotification *notification in notificationsArray)
 	{
-		NSDictionary *notificationInfo = notificationDict[bulletinID];
-		NSString *notificationText = notificationInfo[@"message"];
-		NSDate *timestamp = notificationInfo[@"timestamp"];
-		if ([notificationText isEqualToString:[message notificationBody]])
+		if ([notification.message isEqualToString:[message notificationBody]])
 		{
-			[matchingNotifications addObject:@{ @"bulletinID" : bulletinID, @"timestamp" : timestamp }];
+			[matchingNotifications addObject:@{ @"bulletinID" : notification.bulletinId, @"timestamp" : notification.timestamp }];
 		}
 	}
 	NSLog(@"matchingNotifications %@", matchingNotifications);
@@ -1847,6 +1843,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     {
         log(@"action %@", object);
     }
+    log(@"updateActionsWithActions %d", [(PBManagedTimelineItemActionable *)arg1 updateActionsWithActions:actionsArr]);
 
 	return [%c(PBNotificationSource) notificationSourceWithAppIdentifier:orig.appIdentifier
 		flags:orig.flags
