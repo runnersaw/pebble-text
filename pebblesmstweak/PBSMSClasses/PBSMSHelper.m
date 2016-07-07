@@ -24,7 +24,7 @@ NSString * const recentFileLocation = @"/var/mobile/Library/Preferences/com.sawy
 {
     if ([object isKindOfClass:[NSManagedObject class]])
     {
-        PBCoreDataManager *coreDataManager = [%c(PBCoreDataManager) defaultMyPebbleCoreDataManager];
+        PBCoreDataManager *coreDataManager = [PBCoreDataManager defaultMyPebbleCoreDataManager];
         [coreDataManager.managedObjectContext deleteObject:(NSManagedObject *)object];
     }
 }

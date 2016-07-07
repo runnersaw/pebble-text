@@ -32,10 +32,10 @@
 - (void)postNotificationName:(NSString *)notificationName object:(NSString *)notificationSender;
 @end
 
-@interface NSManagedObject
+@interface NSManagedObject : NSObject
 @end
 
-@interface NSManagedObjectContext
+@interface NSManagedObjectContext : NSObject
 - (void)deleteObject:(NSManagedObject *)object;
 @end
 
