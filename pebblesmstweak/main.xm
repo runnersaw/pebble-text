@@ -1836,6 +1836,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 + (PBNotificationSource *)notificationSourceWithAddedActionsFromNotificationSource:(PBNotificationSource *)orig
 {
+	BOOL shouldAddAction = NO;
 	if ([[orig actions] count] == 0)
 	{
 		shouldAddAction = YES;
@@ -1864,7 +1865,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 	log(@"Adding actions to %@", orig);
 
-	NSString *appID = (NSString *)arg1;
+	NSString *appID = orig.appIdentifier;
 	if (![appsArray containsObject:appID])
 	{
 		[appsArray addObject:appID];
