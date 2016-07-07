@@ -1619,7 +1619,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 	log(@"%@ %@ %@ %@", [m notificationSender], [m notificationSubtitle], [m notificationBody], [m actionTitle]);
 	log(@"%@", [[PBSMSNotificationsHelper sharedHelper] notificationsForAppIdentifier:[m appIdentifier]]);
 
-	if ([m actionID] == HAS_ACTIONS_IDENTIFIER)
+	if ([m actionID] == HAS_ACTIONS_IDENTIFIER || [m actionID] == 10)
 	{
 		[[PBSMSNotificationsHelper sharedHelper] loadNotifications];
 
