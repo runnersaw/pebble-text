@@ -1873,7 +1873,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 	PBTimelineAttribute *attr1 = [[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:@"Action" specificType:0];
 	PBTimelineAction *b = [[%c(PBTimelineAction) alloc] initWithIdentifier:@(HAS_ACTIONS_IDENTIFIER) type:@"ANCSResponse" attributes:@[ attr1 ]];
-	return [PBNotificationSource notificationSourceWithAppIdentifier:orig.appIdentifier
+	return [%c(PBNotificationSource) notificationSourceWithAppIdentifier:orig.appIdentifier
 		flags:orig.flags
 		version:orig.version
 		attributes:orig.attributes
