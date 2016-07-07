@@ -3,6 +3,8 @@
 #import "PBSMSHelper.h"
 #import "PBSMSNotificationAction.h"
 
+static NSTimeInterval notificationActionsExpiration = 60.*60.*24.;
+
 @implementation PBSMSNotification
 
 + (PBSMSNotification *)deserializeFromObject:(id)object
@@ -16,10 +18,13 @@
 
     NSString *appIdentifier = [dict safeObjectForKey:@"appIdentifier" ofType:[NSString class]];   
     NSString *bulletinId = [dict safeObjectForKey:@"bulletinId" ofType:[NSString class]];
+    NSString *title = [dict safeObjectForKey:@"title" ofType:[NSString class]];
+    NSString *subtitle = [dict safeObjectForKey:@"subtitle" ofType:[NSString class]];
     NSString *message = [dict safeObjectForKey:@"message" ofType:[NSString class]];
     NSDate *timestamp = [dict safeObjectForKey:@"timestamp" ofType:[NSDate class]];
     NSArray *actions = [dict safeObjectForKey:@"actions" ofType:[NSArray class]];
 
+    // title and subtitle are optional
     if (!appIdentifier ||
         !bulletinId ||
         !message ||
@@ -41,6 +46,8 @@
 
     PBSMSNotification *notification = [[PBSMSNotification alloc] initWithAppIdentifier:appIdentifier
 		bulletinId:bulletinId
+		title:title
+		subtitle:subtitle
 		message:message
 		timestamp:timestamp
 		actions:[finalActions copy]];
@@ -49,6 +56,8 @@
 
 - (instancetype)initWithAppIdentifier:(NSString *)appIdentifier
 	bulletinId:(NSString *)bulletinId
+	title:(NSString *)title
+	subtitle:(NSString *)subtitle
 	message:(NSString *)message
 	timestamp:(NSDate *)timestamp
 	actions:(NSArray *)actions
@@ -58,6 +67,8 @@
 	{
 		_appIdentifier = appIdentifier;
 		_bulletinId = bulletinId;
+		_title = (title ? title : @"");
+		_subtitle = (subtitle ? subtitle : @"");
 		_message = message;
 		_timestamp = timestamp;
 		_actions = actions;
@@ -71,6 +82,8 @@
 
 	[dict setObject:self.appIdentifier forKey:@"appIdentifier"];
 	[dict setObject:self.bulletinId forKey:@"bulletinId"];
+	[dict setObject:self.title forKey:@"title"];
+	[dict setObject:self.subtitle forKey:@"subtitle"];
 	[dict setObject:self.message forKey:@"message"];
 	[dict setObject:self.timestamp forKey:@"timestamp"];
 
@@ -82,6 +95,11 @@
 	[dict setObject:[serializedActions copy] forKey:@"actions"];
 
 	return [dict copy];
+}
+
+- (BOOL)isExpired
+{
+    return ([self.timestamp compare:[NSDate dateWithTimeIntervalSinceNow:notificationActionsExpiration]] == NSOrderedAscending);
 }
 
 @end

@@ -6,7 +6,8 @@
 
 @interface PBSMSNotificationsHelper : NSObject
 
-@property (nonatomic, copy) NSArray *notifications;
+@property (nonatomic, readonly) NSArray *notifications;
+@property (nonatomic, readonly) NSArray *pebbleActions;
 
 + (PBSMSNotificationsHelper *)sharedHelper;
 
@@ -14,16 +15,16 @@
 - (NSArray *)notificationsForAppIdentifier:(NSString *)appIdentifier;
 - (void)loadNotifications;
 - (void)saveNotifications;
-- (void)saveNotification:(PBSMSNotification *)notification;
+- (void)saveNotificationForBulletin:(BBBulletin *)bulletin;
 
 // Saving Pebble Actions
-- (void)savePebbleAction:(PBSMSPebbleAction *)action;
-- (void)loadPebbleActions;
-- (void)savePebbleActions;
-- (PBSMSPebbleAction *)pebbleActionForPebbleActionId:(NSNumber *)pebbleActionId;
+// - (void)savePebbleAction:(PBSMSPebbleAction *)action;
+// - (void)loadPebbleActions;
+// - (void)savePebbleActions;
+// - (PBSMSPebbleAction *)pebbleActionForPebbleActionId:(NSNumber *)pebbleActionId;
 
-// Action handling
-- (void)saveActionToPerform:(PBSMSNotificationAction *)action;
-- (NSArray *)actionsToPerform;
+// // Action handling
+// - (void)saveActionToPerform:(PBSMSNotificationAction *)action;
+// - (NSArray *)actionsToPerform;
 
 @end
