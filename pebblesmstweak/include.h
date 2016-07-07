@@ -704,13 +704,7 @@
 -(NSArray *)attributes;
 @end
 
-@interface _PBManagedTimelineItemActionable : PBManagedTimelineItemAttributable
-@property (nonatomic,readonly) PBManagedTimelineItemActionableID * objectID; 
-@property (nonatomic,retain) NSOrderedSet * actions; 
-+(id)entityName;
-+(id)entityInManagedObjectContext:(id)arg1 ;
-+(id)insertInManagedObjectContext:(id)arg1 ;
-+(id)keyPathsForValuesAffectingValueForKey:(id)arg1 ;
+@interface _PBManagedTimelineItemActionable : NSObject
 -(void)removeActions:(id)arg1 ;
 -(void)addActionsObject:(id)arg1 ;
 -(void)removeActionsObject:(id)arg1 ;
@@ -722,7 +716,6 @@
 -(void)replaceActionsAtIndexes:(id)arg1 withActions:(id)arg2 ;
 -(void)addActions:(id)arg1 ;
 -(id)actionsSet;
--(PBManagedTimelineItemActionableID *)objectID;
 @end
 
 @interface PBManagedTimelineItemActionable : _PBManagedTimelineItemActionable
@@ -731,49 +724,9 @@
 @end
 
 @interface _PBManagedNotificationSource : PBManagedTimelineItemActionable
-@property (nonatomic,readonly) PBManagedNotificationSourceID * objectID; 
-@property (nonatomic,retain) NSString * appIdentifier; 
-@property (nonatomic,retain) NSNumber * flags; 
-@property (assign) int flagsValue; 
-@property (nonatomic,retain) NSNumber * sourceDeleted; 
-@property (assign) BOOL sourceDeletedValue; 
-@property (nonatomic,retain) NSDate * updatedAt; 
-@property (nonatomic,retain) NSNumber * version; 
-@property (assign) short versionValue; 
-@property (nonatomic,retain) NSSet * statuses; 
-+(id)entityName;
-+(id)entityInManagedObjectContext:(id)arg1 ;
-+(id)insertInManagedObjectContext:(id)arg1 ;
-+(id)keyPathsForValuesAffectingValueForKey:(id)arg1 ;
--(id)statusesSet;
--(int)flagsValue;
--(void)setFlagsValue:(int)arg1 ;
--(int)primitiveFlagsValue;
--(void)setPrimitiveFlagsValue:(int)arg1 ;
--(BOOL)sourceDeletedValue;
--(void)setSourceDeletedValue:(BOOL)arg1 ;
--(BOOL)primitiveSourceDeletedValue;
--(void)setPrimitiveSourceDeletedValue:(BOOL)arg1 ;
--(short)versionValue;
--(void)setVersionValue:(short)arg1 ;
--(short)primitiveVersionValue;
--(void)setPrimitiveVersionValue:(short)arg1 ;
--(PBManagedNotificationSourceID *)objectID;
 @end
 
 @interface PBManagedNotificationSource : _PBManagedNotificationSource
-@property (readonly) unsigned long long hash; 
-@property (readonly) Class superclass; 
-@property (copy,readonly) NSString * description; 
-@property (copy,readonly) NSString * debugDescription; 
-@property (nonatomic,readonly) NSSet * blobEntryStatuses; 
-@property (assign,nonatomic) BOOL entryDeletedValue; 
-@property (nonatomic,retain) NSDate * updatedAt; 
-+(id)createBlobEntryWithIdentifier:(id)arg1 inManagedObjectContext:(id)arg2 ;
--(BOOL)entryDeletedValue;
--(void)setEntryDeletedValue:(BOOL)arg1 ;
--(NSSet *)blobEntryStatuses;
--(BOOL)updateValuesFromBlobEntryModel:(id)arg1 ;
 @end
 
 @interface PBNotificationSource : NSObject
