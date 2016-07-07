@@ -17,7 +17,7 @@ NSString * const actionsToPerformFileLocation = @"/var/mobile/Library/Preference
 NSString * const messagesFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.messages.plist";
 NSString * const recentFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.recent.plist";
 
-@interface PBSMSHelper : NSObject
+@implementation PBSMSHelper : NSObject
 
 + (void)dumpMethods:(Class)c
 {
