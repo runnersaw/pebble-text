@@ -1,5 +1,9 @@
 
 
+#import "PBSMSNotification.h"
+#import "PBSMSNotificationAction.h"
+#import "PBSMSPebbleAction.h"
+
 @interface PBSMSNotificationsHelper : NSObject
 
 @property (nonatomic, copy) NSArray *notifications;
