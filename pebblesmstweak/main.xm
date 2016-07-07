@@ -1619,7 +1619,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 -(void)handleInvokeANCSActionMessage:(id)arg1
 {
 	PBTimelineInvokeANCSActionMessage *m = (PBTimelineInvokeANCSActionMessage *)arg1;
-	NSLog(@"%@ %@ %@", m, @( [m actionID] ), [m appIdentifier]);
+	NSLog(@"handleInvokeANCSActionMessage %@ %@ %@", m, @( [m actionID] ), [m appIdentifier]);
 	NSLog(@"%@ %@ %@ %@", [m notificationSender], [m notificationSubtitle], [m notificationBody], [m actionTitle]);
 	NSLog(@"%@", [notificationActionsDictionary objectForKey:[m appIdentifier]]);
 
