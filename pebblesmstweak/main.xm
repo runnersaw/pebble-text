@@ -1834,6 +1834,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 	return orig;
 }
 
+%new
 + (PBNotificationSource *)notificationSourceWithAddedActionsFromNotificationSource:(PBNotificationSource *)orig
 {
 	BOOL shouldAddAction = NO;
