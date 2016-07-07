@@ -16,6 +16,8 @@
 // My headers
 
 #import "PBSMSClasses/PBSMSHelper.h"
+#import "PBSMSClasses/PBSMSNotification.h"
+#import "PBSMSClasses/PBSMSNotificationAction.h"
 #import "PBSMSClasses/PBSMSNotificationsHelper.h"
 #import "PBSMSClasses/PBSMSRecentContactHelper.h"
 #import "PBSMSClasses/PBSMSTextMessage.h"
@@ -419,7 +421,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
         [self sendMessageTo:message.recordId number:message.number withText:message.messageText notify:message.shouldNotify];
     }
 
-    [[PBSMSTextHelper sharedHelper] messageWasSent:message];
+    [[PBSMSTextHelper sharedHelper] removeMessage:message];
 }
 
 %new
@@ -1645,68 +1647,47 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 	if ([m actionID] == HAS_ACTIONS_IDENTIFIER)
 	{
-		loadNotificationActions();
-
-	    NSMutableDictionary *dict = [notificationActionsDictionary objectForKey:[m appIdentifier]];
+		[[PBSMSNotificationsHelper sharedHelper] loadNotifications];
 
 	    NSMutableArray *actions = [NSMutableArray array];
-		
+
+	    // Add dismiss actions
 		PBTimelineAttribute *a1 = [[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:@"Dismiss" specificType:0];
 		PBTimelineAttribute *a2 = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"" specificType:0];
-
 		[actions addObject:[[%c(PBTimelineAction) alloc] initWithIdentifier:@(DISMISS_IDENTIFIER) type:@"ANCSResponse" attributes:@[ a1, a2 ]]];
 
-	    if (dict)
-	   	{
-		   	NSArray *arr = [dict allKeys];
-		   	if ([arr count] > 0)
-		   	{
-		   		NSString *bulletinID = [%c(PBANCSActionHandler) bulletinIdentifierForInvokeANCSMessage:m];
-		   		if (!bulletinID)
-		   		{
-					PBTimelineAttribute *attr = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action failed!" specificType:0];
-					[self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
-					return;
-		   		}
-
-		   		NSDictionary *bulletinDict = [dict objectForKey:bulletinID];
-
-		   		if (bulletinDict)
-		   		{
-		   			NSDictionary *actionsDict = [bulletinDict objectForKey:@"actions"];
-
-		   			if (actionsDict)
-		   			{
-		   				NSArray *actionsArr = [actionsDict allKeys];
-			   			if (actionsArr)
-			   			{
-			   				for (NSString *actionName in actionsArr)
-			   				{
-			   					NSDictionary *actionInfo = actionsDict[actionName];
-			   					NSString *actionIdentifier = actionInfo[@"actionIdentifier"];
-			   					BOOL isQuickReply = [(NSNumber *)actionInfo[@"isQuickReply"] boolValue];
-
-								PBTimelineAttribute *attr1 = [[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:actionName specificType:0];
-								PBTimelineAttribute *attr2 = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"" specificType:0];
-
-								[actions addObject:[[%c(PBTimelineAction) alloc] initWithIdentifier:@(currentNumber) type:@"ANCSResponse" attributes:@[ attr1, attr2 ]]];
-
-								NSDictionary *actionToPerform = @{ @"actionIdentifier" : actionIdentifier,
-																   @"bulletinIdentifier" : bulletinID,
-																   @"ANCSIdentifier" : [m ANCSIdentifier],
-																   @"isComposeAction" : @( isQuickReply ),
-																   @"replyText" : @"" };
-								[actionsToPerformDictionary setObject:actionToPerform forKey:@(currentNumber)];
-
-								currentNumber = currentNumber + 1;
-			   				}
-						}
-					}
-		   		}
-		   	}
+		NSString *bulletinId = [%c(PBANCSActionHandler) bulletinIdentifierForInvokeANCSMessage:m];
+		if (!bulletinId)
+		{
+			PBTimelineAttribute *attr = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action failed!" specificType:0];
+			[self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
+			return;
 		}
 
-	   	// TODO send response 21 for quick reply
+	    PBSMSNotification *notification = [[PBSMSNotificationsHelper sharedHelper] notificationForBulletinId:bulletinId];
+	    if (!notification)
+	    {
+			PBTimelineAttribute *attr = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action failed!" specificType:0];
+			[self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
+			return;
+	    }
+
+		for (PBSMSNotificationAction *action in notification.actions)
+		{
+			PBTimelineAttribute *attr1 = [[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:action.title specificType:0];
+			PBTimelineAttribute *attr2 = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"" specificType:0];
+
+			[actions addObject:[[%c(PBTimelineAction) alloc] initWithIdentifier:@(currentNumber) type:@"ANCSResponse" attributes:@[ attr1, attr2 ]]];
+
+			NSDictionary *actionToPerform = @{ @"actionIdentifier" : actionIdentifier,
+											   @"bulletinIdentifier" : bulletinID,
+											   @"ANCSIdentifier" : [m ANCSIdentifier],
+											   @"isComposeAction" : @( isQuickReply ),
+											   @"replyText" : @"" };
+			[actionsToPerformDictionary setObject:actionToPerform forKey:@(currentNumber)];
+
+			currentNumber = currentNumber + 1;
+		}
 
 		PBTimelineAttribute *attr1 = [[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:@"Action" specificType:0];
 		PBTimelineAttribute *attr2 = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action" specificType:0];

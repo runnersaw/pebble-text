@@ -1,5 +1,6 @@
 
 
+#import "../include.h"
 #import "PBSMSNotification.h"
 #import "PBSMSNotificationAction.h"
 #import "PBSMSPebbleAction.h"
@@ -13,6 +14,7 @@
 
 // Notification handling
 - (NSArray *)notificationsForAppIdentifier:(NSString *)appIdentifier;
+- (PBSMSNotification *)notificationForBulletinId:(NSString *)bulletinId;
 - (void)loadNotifications;
 - (void)saveNotifications;
 - (void)saveNotificationForBulletin:(BBBulletin *)bulletin;

@@ -60,6 +60,19 @@ static NSTimeInterval
 	return [notifications copy];
 }
 
+- (PBSMSNotification *)notificationForBulletinId:(NSString *)bulletinId
+{
+	for (PBSMSNotification *notification in self.mutableNotifications)
+	{
+		if ([notification.bulletinId isEqualToString:bulletinId])
+		{
+			return notification;
+		}
+	}
+
+	return nil;
+}
+
 - (void)loadNotifications
 {
 	NSMutableArray *arr = [NSMutableArray arrayWithContentsOfFile:notificationsFileLocation];
