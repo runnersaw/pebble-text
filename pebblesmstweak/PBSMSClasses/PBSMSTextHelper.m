@@ -27,6 +27,7 @@
     {
         _mutableMessages = [NSMutableArray array];
     }
+    return self;
 }
 
 - (NSArray *)presets
