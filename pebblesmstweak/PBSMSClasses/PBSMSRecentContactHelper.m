@@ -101,7 +101,7 @@
 
 - (NSArray *)contacts
 {
-	return [mutableContacts copy];
+	return [self.mutableContacts copy];
 }
 
 - (NSArray *)names
