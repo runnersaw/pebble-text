@@ -1,8 +1,10 @@
+#import "PBSMSNotificationsHelper.h"
 
+#import "PBSMSNotification.h"
+#import "PBSMSNotificationAction.h"
+#import "PBSMSPebbleAction.h"
 
-@implementation PBSMSNotificationsHelper : NSObject
-
-@property (nonatomic, copy) NSArray *notifications;
+@implementation PBSMSNotificationsHelper
 
 + (PBSMSNotificationsHelper *)sharedHelper
 {
@@ -51,8 +53,20 @@
 
 }
 
+- (PBSMSPebbleAction *)pebbleActionForPebbleActionId:(NSNumber *)pebbleActionId
+{
+
+}
+
 // Action handling
-- (void)saveActionToPerform:(PBSMSNotificationAction *)action;
-- (NSArray *)actionsToPerform:
+- (void)saveActionToPerform:(PBSMSNotificationAction *)action
+{
+
+}
+
+- (NSArray *)actionsToPerform
+{
+
+}
 
 @end

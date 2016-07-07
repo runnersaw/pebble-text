@@ -20,6 +20,6 @@
 
 // Action handling
 - (void)saveActionToPerform:(PBSMSNotificationAction *)action;
-- (NSArray *)actionsToPerform:
+- (NSArray *)actionsToPerform;
 
 @end
