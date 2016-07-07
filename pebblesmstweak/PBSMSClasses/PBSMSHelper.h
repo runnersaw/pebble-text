@@ -61,14 +61,16 @@ extern NSString * const recentFileLocation;
 #endif
 
 #ifdef DEBUG
-	#define dumpInstanceMethods( c ) dumpMethods(c)
-	#define dumpClassMethods( c ) dumpMethods(object_getClass(c))
+	#define dumpInstanceMethods( c ) [PBSMSHelper dumpMethods:c]
+	#define dumpClassMethods( c ) [PBSMSHelper dumpMethods:object_getClass(c)]
 #else
 	#define dumpInstanceMethods( c )
 	#define dumpClassMethods( c )
 #endif
 
-void dumpMethods(Class clz);
+@interface PBSMSHelper : NSObject
++ (void)dumpMethods:(Class)c;
+@end
 
 @interface NSDictionary (PBSMS)
 - (id)safeObjectForKey:(id)key ofType:(Class)type;

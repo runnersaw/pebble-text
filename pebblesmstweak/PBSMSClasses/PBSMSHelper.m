@@ -17,7 +17,9 @@ NSString * const actionsToPerformFileLocation = @"/var/mobile/Library/Preference
 NSString * const messagesFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.messages.plist";
 NSString * const recentFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.recent.plist";
 
-void dumpMethods(Class clz)
+@interface PBSMSHelper : NSObject
+
++ (void)dumpMethods:(Class)c
 {
     unsigned int methodCount = 0;
     Method *methods = class_copyMethodList(clz, &methodCount);
@@ -35,6 +37,8 @@ void dumpMethods(Class clz)
 
     free(methods);
 }
+
+@end
 
 @implementation NSDictionary (PBSMS)
 
