@@ -1619,21 +1619,24 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 -(void)handleInvokeANCSActionMessage:(id)arg1
 {
 	PBTimelineInvokeANCSActionMessage *m = (PBTimelineInvokeANCSActionMessage *)arg1;
-	NSLog(@"handleInvokeANCSActionMessage %@ %@ %@", m, @( [m actionID] ), [m appIdentifier]);
-	NSLog(@"%@ %@ %@ %@", [m notificationSender], [m notificationSubtitle], [m notificationBody], [m actionTitle]);
-	NSLog(@"%@", [notificationActionsDictionary objectForKey:[m appIdentifier]]);
+	log(@"handleInvokeANCSActionMessage %@ %@ %@", m, @( [m actionID] ), [m appIdentifier]);
+	log(@"%@ %@ %@ %@", [m notificationSender], [m notificationSubtitle], [m notificationBody], [m actionTitle]);
+	log(@"%@", [notificationActionsDictionary objectForKey:[m appIdentifier]]);
 
 	if ([m actionID] == HAS_ACTIONS_IDENTIFIER)
 	{
 		[[PBSMSNotificationsHelper sharedHelper] loadNotifications];
 
+		log(@"loaded");
 	    NSMutableArray *actions = [NSMutableArray array];
 
+		log(@"Adding dismiss action");
 	    // Add dismiss actions
 		PBTimelineAttribute *a1 = [[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:@"Dismiss" specificType:0];
 		PBTimelineAttribute *a2 = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"" specificType:0];
 		[actions addObject:[[%c(PBTimelineAction) alloc] initWithIdentifier:@(DISMISS_IDENTIFIER) type:@"ANCSResponse" attributes:@[ a1, a2 ]]];
 
+		log(@"getting bulletin id");
 		NSString *bulletinId = [%c(PBANCSActionHandler) bulletinIdentifierForInvokeANCSMessage:m];
 		if (!bulletinId)
 		{
@@ -1641,6 +1644,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 			[self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
 			return;
 		}
+		log(@"got bulletin id %@", bulletinId);
 
 	    PBSMSNotification *notification = [[PBSMSNotificationsHelper sharedHelper] notificationForBulletinId:bulletinId];
 	    if (!notification)
@@ -1649,6 +1653,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 			[self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
 			return;
 	    }
+		log(@"got notification %@", notification);
 
 		for (PBSMSNotificationAction *action in notification.actions)
 		{
