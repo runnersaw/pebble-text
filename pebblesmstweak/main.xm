@@ -1871,6 +1871,19 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 		actions:orig.actions];
 }
 
++(id)notificationSourceWithBlob:(id)arg1 mapper:(id)arg2
+{
+    %log;
+    log(@"%@ %@ %@ %@", arg1, arg2, [arg1 class], [arg2 class]);
+    id r = %orig;
+    log(@"%@", r);
+    if ([r respondsToSelector:@selector(actions)])
+    {
+        log(@"%@", [r performSelector:@selector(actions)]);
+    }
+    return r;
+}
+
 +(id)notificationSourceWithAppIdentifier:(id)arg1 flags:(unsigned)arg2 version:(unsigned short)arg3 attributes:(id)arg4 actions:(id)arg5
 {
 	log(@"notificationSourceWithAppIdentifier %@", arg1);
