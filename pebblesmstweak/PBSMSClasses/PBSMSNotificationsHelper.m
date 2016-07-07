@@ -101,9 +101,13 @@
 		{
 			[notificationsArr addObject:[notification serializeToDictionary]];
 		}
+		else
+		{
+			log(@"Expired");
+		}
 	}
 
-	log(@"saveNotifications %@", self.mutableNotifications);
+	log(@"saveNotifications %@ %@", self.mutableNotifications, notificationsArr);
     [notificationsArr writeToFile:notificationsFileLocation atomically:YES];
 }
 
