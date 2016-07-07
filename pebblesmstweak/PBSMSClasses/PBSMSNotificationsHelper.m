@@ -113,6 +113,7 @@
     NSString *bulletinId = [bulletin bulletinID];
     if ([self.bulletins objectForKey:bulletinId])
 	{
+		log(@"already saved");
     	return;
     }
     [self.bulletins setObject:bulletin forKey:bulletinId];
@@ -133,6 +134,7 @@
         BOOL isQuickReply = ([action behavior] == 1);
         if (![action isAuthenticationRequired] && actionIdentifier && actionTitle)
 		{
+			log(@"hasActions");
 	        PBSMSNotificationAction *notificationAction = [[PBSMSNotificationAction alloc] initWithTitle:actionTitle
 				actionIdentifier:actionIdentifier
 				isQuickReply:isQuickReply];
@@ -140,12 +142,12 @@
 	        [actions addObject:notificationAction];
 
 	        hasActions = YES;
-        }
-
+	    }
     }
 
     if (!hasActions)
 	{
+        log(@"no actions");
         return;
     }
 
@@ -153,6 +155,7 @@
         !bulletinId ||
         !message)
     {
+        log(@"no data");
         return;
     }
 
