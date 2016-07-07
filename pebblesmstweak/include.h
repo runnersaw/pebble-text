@@ -775,6 +775,31 @@
 -(NSManagedObjectContext *)managedObjectContext;
 @end
 
+@interface PBNotificationSourceManager : NSObject
+@property (nonatomic,readonly) PBCannedResponseManager * cannedResponseManager;                              //@synthesize cannedResponseManager=_cannedResponseManager - In the implementation block
+@property (nonatomic,readonly) PBNotificationSourceAuthManager * notificationSourceAuthManager;              //@synthesize notificationSourceAuthManager=_notificationSourceAuthManager - In the implementation block
+@property (readonly) unsigned long long hash; 
+@property (readonly) Class superclass; 
+@property (copy,readonly) NSString * description; 
+@property (copy,readonly) NSString * debugDescription; 
+@property (nonatomic,readonly) RACSignal * notificationSourcesSignal; 
+-(void)deleteAllLocalNotificationSources;
+-(PBCannedResponseManager *)cannedResponseManager;
+-(id)initWithCannedResponseManager:(id)arg1 ;
+-(void)entryModelWasAdded:(id)arg1 ;
+-(void)watch:(id)arg1 didAddEntryModel:(id)arg2 ;
+-(id)actionByReplacingCannedResponsesForAction:(id)arg1 forAppIdentifier:(id)arg2 ;
+-(void)setActions:(id)arg1 forAppIdentifier:(id)arg2 ;
+-(void)handleCannedResponseDidChangeNotification:(id)arg1 ;
+-(void)updateCannedResponsesForAppIdentifier:(id)arg1 ;
+-(void)sendNotificationSourceCreationToAnalytics:(id)arg1 ;
+-(id)findNotificationSourceForAppIdentifier:(id)arg1 ;
+-(PBNotificationSourceAuthManager *)notificationSourceAuthManager;
+-(void)setMuteFlag:(unsigned char)arg1 forAppIdentifier:(id)arg2 ;
+-(RACSignal *)notificationSourcesSignal;
+-(void)dealloc;
+@end
+
 // Pebble 3.14
 @interface PBEmailAppManager : NSObject
 + (id)manager;
