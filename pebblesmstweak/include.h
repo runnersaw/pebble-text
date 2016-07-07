@@ -66,8 +66,6 @@
 - (NSDate *)timeDelivered;
 @end
 
-@interface 
-
 @interface IMChat
 -(NSArray *)participants;
 -(IMHandle *)recipient;

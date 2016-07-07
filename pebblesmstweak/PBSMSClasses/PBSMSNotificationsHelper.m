@@ -6,8 +6,6 @@
 #import "PBSMSNotificationAction.h"
 #import "PBSMSPebbleAction.h"
 
-static NSTimeInterval
-
 @interface PBSMSNotificationsHelper ()
 
 @property (nonatomic, strong) NSMutableArray *mutableNotifications;
@@ -110,12 +108,12 @@ static NSTimeInterval
 
 - (void)saveNotificationForBulletin:(BBBulletin *)bulletin
 {
-    NSString *bulletinID = [bulletin bulletinID];
-    if ([self.bulletins objectForKey:bulletinID])
+    NSString *bulletinId = [bulletin bulletinID];
+    if ([self.bulletins objectForKey:bulletinId])
 	{
     	return;
     }
-    [self.bulletins setObject:bulletin forKey:bulletinID];
+    [self.bulletins setObject:bulletin forKey:bulletinId];
 
     NSString *appIdentifier = [bulletin sectionID];
     BBContent *content = [bulletin content];
@@ -153,7 +151,7 @@ static NSTimeInterval
         !bulletinId ||
         !message)
     {
-        return nil;
+        return;
     }
 
     PBSMSNotification *notification = [[PBSMSNotification alloc] initWithAppIdentifier:appIdentifier
@@ -162,7 +160,7 @@ static NSTimeInterval
 		subtitle:subtitle
 		message:message
 		timestamp:timestamp
-		actions:actions]
+		actions:actions];
 
 	[self.mutableNotifications addObject:notification];
 
