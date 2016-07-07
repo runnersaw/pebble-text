@@ -694,6 +694,9 @@
 -(NSString *)localizationKey;
 @end
 
+@interface PBManagedTimelineItemAction : NSObject
+@end
+
 @interface PBTimelineAction : NSObject
 +(id)timelineActionFromManagedTimelineItemAction:(id)arg1;
 +(BOOL)isSystemIdentifier:(unsigned char)arg1;
