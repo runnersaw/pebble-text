@@ -1506,14 +1506,6 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 // THIS PART IS FOR ACTIONABLE NOTIFICATIONS
 
 %hook PBSMSReplyManager
--(NSSet *)smsApps
-{
-	NSSet *r = %orig;
-	NSMutableSet *set = [NSMutableSet setWithCapacity:3];
-	[set setSet:r];
-	[set addObjectsFromArray:appsArray];
-	return set;
-}
 -(NSSet *)ancsReplyEnabledApps
 {
 	NSSet *r = %orig;
@@ -1820,6 +1812,14 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 %end
 
 %hook PBNotificationSource
+
++(id)notificationSourceFromManagedEntry:(id)arg1
+{
+	log(@"notificationSourceFromManagedEntry %@", arg1);
+	id r = %orig;
+	log(@"%@", r);
+	return r;
+}
 
 +(id)notificationSourceWithAppIdentifier:(id)arg1 flags:(unsigned)arg2 version:(unsigned short)arg3 attributes:(id)arg4 actions:(id)arg5
 {
