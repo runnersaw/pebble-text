@@ -21,6 +21,7 @@
 
 + (PBSMSRecentContactHelper *)sharedHelper;
 
+- (void)addContact:(PBSMSContact *)contact;
 - (void)loadContacts;
 - (void)saveContacts;
 

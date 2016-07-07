@@ -1453,8 +1453,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
                 NSString *phone = [NSString stringWithString:(NSString *)[p description]];
                 NSString *name = [NSString stringWithString:(NSString *)[handle fullName]];
 
-                // NSLog(@"PEBBLESMS: phone %@", [phone class]);
-                saveRecentRecipient(name, phone);
+                PBSMSContact *contact = [[PBSMSContact alloc] initWithName:name phone:phone];
+                [[PBSMSRecentContactHelper sharedHelper] addContact:contact];
             }
         }
     }
@@ -1692,7 +1692,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     int i = 0;
     int contactIndex = 0;
 
-    while (i < tries * maxContactsToSend && contactIndex < [res count])
+    while (i < tries * MAX_CONTACTS_TO_SEND && contactIndex < [res count])
 	{
         c = [[res objectAtIndex:contactIndex] objectForKey:@"item"];
         contactIndex++;
@@ -1709,7 +1709,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
     NSMutableArray *contacts = [NSMutableArray array];
     NSMutableArray *numbers = [NSMutableArray array];
-    for (int k = i; i < k+maxContactsToSend;)
+    for (int k = i; i < k+MAX_CONTACTS_TO_SEND;)
 	{
         // NSLog(@"i %d", i);
         c = [[res objectAtIndex:contactIndex] objectForKey:@"item"];
@@ -1908,7 +1908,6 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 - (NSMutableDictionary *)getRecentContactsResponse
 {
 	[[PBSMSRecentContactHelper sharedHelper] loadContacts];
-	[PBSMSRecentContactHelper sharedHelper].contacts;
 
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
     if ([PBSMSRecentContactHelper sharedHelper].contacts.count != 0)
@@ -1918,7 +1917,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
         isRecentContact = YES;
     }
 
-    log(@"getRecentContactsResponse %@", @( [PBSMSRecentContactHelper sharedHelper].contacts.count ))
+    log(@"getRecentContactsResponse %@", @( [PBSMSRecentContactHelper sharedHelper].contacts.count ));
     
     return dict;
 }
