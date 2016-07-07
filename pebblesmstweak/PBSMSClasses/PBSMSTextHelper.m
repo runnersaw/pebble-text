@@ -101,7 +101,7 @@
 {
     log(@"removeMessage %@", removedMessage);
 
-    for (PBSMSTextMessage *message in messages)
+    for (PBSMSTextMessage *message in self.mutableMessages)
     {
         if (![message.uuid isEqualToString:removedMessage.uuid])
         {
