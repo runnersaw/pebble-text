@@ -1744,10 +1744,10 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 			[actions addObject:[[%c(PBTimelineAction) alloc] initWithIdentifier:@(currentNumber) type:@"ANCSResponse" attributes:@[ attr1, attr2 ]]];
 
-			NSDictionary *actionToPerform = @{ @"actionIdentifier" : actionIdentifier,
-											   @"bulletinIdentifier" : bulletinID,
+			NSDictionary *actionToPerform = @{ @"actionIdentifier" : action.actionIdentifier,
+											   @"bulletinIdentifier" : bulletinId,
 											   @"ANCSIdentifier" : [m ANCSIdentifier],
-											   @"isComposeAction" : @( isQuickReply ),
+											   @"isComposeAction" : @( action.isQuickReply ),
 											   @"replyText" : @"" };
 			[actionsToPerformDictionary setObject:actionToPerform forKey:@(currentNumber)];
 
