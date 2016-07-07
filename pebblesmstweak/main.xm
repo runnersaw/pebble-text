@@ -27,6 +27,71 @@
 
 #import "include.h"
 
+@interface SMSApplication : UIApplication
+// new
+- (void)sendMessagesForTextSender;
+- (void)sendMessageForTextSender:(PBSMSTextMessage *)message;
+- (void)sendMessageTo:(NSNumber *)personId number:(NSString *)number withText:(NSString *)text notify:(BOOL)notify;
+- (void)sendMessageToNumber:(NSString *)number recordId:(NSNumber *)recordId withText:(NSString *)text notify:(BOOL)notify;
+- (void)sendMessageToNewNumber:(NSString *)number withText:(NSString *)text notify:(BOOL)notify;
+- (void)sendNewMessageTo:(NSNumber *)personId number:(NSString *)number withText:(NSString *)text notify:(BOOL)notify;
+- (void)handleMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo;
+@end
+
+@interface PBContact
+//new
++ (NSString *)phoneWithPrefix:(NSString *)number;
+- (NSNumber *)recordId;
+@end
+
+@interface PBPhoneNumber : NSObject
+// new
+-(NSString *)getStringRepresentationForTextSender;
+@end
+
+@interface PBAddressBook
+// new
+- (id)searchContacts:(NSString *)search tries:(int)tries;
+- (id)searchContactsList:(NSString *)search tries:(int)tries;
+- (id)contactWithPhoneNumber:(PBPhoneNumber *)phoneNumber;
+- (id)contactWithPrefixedPhoneNumber:(NSString *)phoneNumber;
+@end
+
+@interface PBWatch
+// new
+- (NSMutableDictionary *)getContactSearchResponse:(NSString *)name tries:(int)tries;
+- (NSMutableDictionary *)getSentResponse;
+- (NSMutableDictionary *)getFailedResponse;
+- (NSMutableDictionary *)getFinalRecievedResponse;
+- (NSMutableDictionary *)getConnectionResponse;
+- (NSMutableDictionary *)getRecentContactsResponse;
+- (NSMutableDictionary *)getPresets;
++ (void)sendSMS:(NSNumber *)recordId number:(NSString *)number withText:(NSString *)text;
+@end
+
+@interface PBAppDelegate
+// new
++ (NSNumber *)majorAppVersion;
++ (NSNumber *)minorAppVersion;
+@end
+
+@interface PBSMSSessionManager
+// new
++ (void)sendSMS:(NSString *)number withText:(NSString *)text;
+@end
+
+@interface PBSMSApiClient
+// new
++ (void)sendSMS:(NSNumber *)recordId number:(NSString *)number withText:(NSString *)text;
+@end
+
+@interface PBANCSActionHandler
+// new
++ (void)performAction:(NSString *)actionID forBulletinID:(NSString *)bulletinID;
++ (void)performReply:(NSString *)reply forAction:(NSString *)actionID andBulletinID:(NSString *)bulletinID;
++ (NSString *)bulletinIdentifierForInvokeANCSMessage:(PBTimelineInvokeANCSActionMessage *)message;
+@end
+
 static NSUUID *appUUID = [[NSUUID alloc] initWithUUIDString:@"36BF8B7A-A043-4E1B-8518-B6BB389EC110"];
 
 static NSNumber *currentContactId = NULL;

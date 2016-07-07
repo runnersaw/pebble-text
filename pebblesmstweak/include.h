@@ -47,15 +47,6 @@
 
 @interface SMSApplication : UIApplication
 - (BOOL)application:(id)arg1 didFinishLaunchingWithOptions:(id)arg2;
-
-// new
-- (void)sendMessagesForTextSender;
-- (void)sendMessageForTextSender:(PBSMSTextMessage *)message;
-- (void)sendMessageTo:(NSNumber *)personId number:(NSString *)number withText:(NSString *)text notify:(BOOL)notify;
-- (void)sendMessageToNumber:(NSString *)number recordId:(NSNumber *)recordId withText:(NSString *)text notify:(BOOL)notify;
-- (void)sendMessageToNewNumber:(NSString *)number withText:(NSString *)text notify:(BOOL)notify;
-- (void)sendNewMessageTo:(NSNumber *)personId number:(NSString *)number withText:(NSString *)text notify:(BOOL)notify;
-- (void)handleMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo;
 @end
 
 @interface IMMessage
@@ -275,10 +266,6 @@
 -(id)computeOrderableName;
 -(id)orderableName;
 
-//new
-+ (NSString *)phoneWithPrefix:(NSString *)number;
-- (NSNumber *)recordId;
-
 @end
 
 @interface PBLabeledValue
@@ -306,9 +293,6 @@
 -(NSString *)stringRepresentationForWatch;
 -(NSString *)stringRepresentationForWeb;
 -(BOOL)isEqual:(id)arg1;
-
-// new
--(NSString *)getStringRepresentationForTextSender;
 @end
 
 @interface PBAddressBook
@@ -319,12 +303,6 @@
 - (id)initWithAddressBookRef:(void *)fp8;
 - (id)init;
 - (id)contactsMatchingQuery:(id)fp8;
-
-// new
-- (id)searchContacts:(NSString *)search tries:(int)tries;
-- (id)searchContactsList:(NSString *)search tries:(int)tries;
-- (id)contactWithPhoneNumber:(PBPhoneNumber *)phoneNumber;
-- (id)contactWithPrefixedPhoneNumber:(NSString *)phoneNumber;
 @end
 
 @interface PBPebbleCentral
@@ -354,16 +332,6 @@
 - (void)appMessagesPushUpdate:(id)arg1 onSent:(id)arg2;
 - (void)appMessagesPushUpdate:(id)arg1 withUUID:(id)arg2 onSent:(id)arg3;
 - (void)send:(id)fp8 onDone:(id)fp1001 onTimeout:(void *)fp12 processInQueue:(id)fp10301;
-
-// new
-- (NSMutableDictionary *)getContactSearchResponse:(NSString *)name tries:(int)tries;
-- (NSMutableDictionary *)getSentResponse;
-- (NSMutableDictionary *)getFailedResponse;
-- (NSMutableDictionary *)getFinalRecievedResponse;
-- (NSMutableDictionary *)getConnectionResponse;
-- (NSMutableDictionary *)getRecentContactsResponse;
-- (NSMutableDictionary *)getPresets;
-+ (void)sendSMS:(NSNumber *)recordId number:(NSString *)number withText:(NSString *)text;
 @end
 
 @interface PBAppDelegate
@@ -393,11 +361,6 @@
 - (BOOL)application:(id)fp8 willFinishLaunchingWithOptions:(id)fp12;
 - (void)sentCallbackWithNotification:(NSNotification *)myNotification;
 - (void)failedCallbackWithNotification:(NSNotification *)myNotification;
-
-// new
-+ (NSNumber *)majorAppVersion;
-+ (NSNumber *)minorAppVersion;
-
 @end
 
 @interface PBLockerAppManager
@@ -461,8 +424,6 @@
 @end
 
 @interface PBSMSSessionManager
-// new
-+ (void)sendSMS:(NSString *)number withText:(NSString *)text;
 - (id)sendSMSSendRequestWithMessage:(id)fp8 account:(id)fp12 transactionID:(id)fp16;
 @end
 
@@ -482,9 +443,6 @@
 -(id)SMSSessionManager;
 -(id)message;
 -(id)sendRequest;
-
-// new
-+ (void)sendSMS:(NSNumber *)recordId number:(NSString *)number withText:(NSString *)text;
 
 @end
 
@@ -614,7 +572,6 @@
 - (void)runInitialQuery;
 - (id)initWithIdentifier:(id)fp8 query:(id)fp12 delegate:(id)fp16 addressBookManager:(id)fp20 contactPreferredPhoneManager:(id)fp24;
 - (id)init;
-
 @end
 
 @interface PBTimelineInvokeANCSActionMessage : NSObject
@@ -645,11 +602,6 @@
 -(void)handleInvokeANCSActionMessage:(id)arg1;
 -(id)delegate;
 -(id)initWithDelegate:(id)arg1;
-
-// new
-+ (void)performAction:(NSString *)actionID forBulletinID:(NSString *)bulletinID;
-+ (void)performReply:(NSString *)reply forAction:(NSString *)actionID andBulletinID:(NSString *)bulletinID;
-+ (NSString *)bulletinIdentifierForInvokeANCSMessage:(PBTimelineInvokeANCSActionMessage *)message;
 @end
 
 @interface PBSMSNotificationActionHandler
