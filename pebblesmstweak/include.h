@@ -32,6 +32,9 @@
 - (void)postNotificationName:(NSString *)notificationName object:(NSString *)notificationSender;
 @end
 
+@interface NSManagedObject
+@end
+
 @interface UIApplication (PebbleSMS)
 +(id)sharedApplication;
 -(BOOL)launchApplicationWithIdentifier:(id)arg1 suspended:(BOOL)arg2;
