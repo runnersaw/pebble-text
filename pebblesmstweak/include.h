@@ -35,6 +35,10 @@
 @interface NSManagedObject
 @end
 
+@interface NSManagedObjectContext
+- (void)deleteObject:(NSManagedObject *)object;
+@end
+
 @interface UIApplication (PebbleSMS)
 +(id)sharedApplication;
 -(BOOL)launchApplicationWithIdentifier:(id)arg1 suspended:(BOOL)arg2;
