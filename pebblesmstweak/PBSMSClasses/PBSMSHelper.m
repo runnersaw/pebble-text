@@ -1,7 +1,7 @@
 #import "PBSMSHelper.h"
 
-#import <Applist/Applist.h>
 #import <objc/runtime.h>
+#import "../include.h"
 
 NSString * const sendMessageCommand = @"messageNeedsSending";
 NSString * const openMessagesCommand = @"messagesNeedsOpening";

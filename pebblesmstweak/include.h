@@ -10,6 +10,7 @@
 #import <AddressBook/AddressBook.h>
 #import <AppSupport/CPDistributedMessagingCenter.h>
 #import <UIKit/UIApplication.h>
+#import <Applist/AppList.h>
 
 // NS EXTENSIONS
 
