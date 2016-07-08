@@ -1519,6 +1519,14 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 // THIS PART IS FOR ACTIONABLE NOTIFICATIONS
 
 %hook PBSMSReplyManager
+-(NSSet *)smsApps
+{
+    NSSet *r = %orig;
+    NSMutableSet *set = [NSMutableSet setWithCapacity:3];
+    [set setSet:r];
+    [set addObjectsFromArray:appsArray];
+    return set;
+}
 -(NSSet *)ancsReplyEnabledApps
 {
 	NSSet *r = %orig;
