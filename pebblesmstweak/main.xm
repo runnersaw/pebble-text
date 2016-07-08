@@ -9,7 +9,7 @@
 #import <IMCore/IMHandle.h>
 #import <AddressBook/AddressBook.h>
 #import <AppSupport/CPDistributedMessagingCenter.h>
-#import <AppList.h>
+#import <Applist/AppList.h>
 #import <UIKit/UIApplication.h>
 #import <substrate.h>
 #import "rocketbootstrap.h"
