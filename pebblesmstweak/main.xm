@@ -1858,13 +1858,13 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 {
 	PBNotificationSource *orig = %orig;
 
-    log(@"notificationSourceFromManagedEntry %@ %@", arg1, [arg1 performSelector:@selector(actionsSet)]);
+    // log(@"notificationSourceFromManagedEntry %@ %@", arg1, [arg1 performSelector:@selector(actionsSet)]);
     NSArray *actionsArr = [(NSSet *)[arg1 performSelector:@selector(actionsSet)] allObjects];
     if (actionsArr.count == 1)
     {
         PBManagedTimelineItemAction *managedAction = actionsArr[0];
         PBTimelineAction *action = [%c(PBTimelineAction) timelineActionFromManagedTimelineItemAction:managedAction];
-        log(@"action %@", action);
+        // log(@"action %@", action);
         for (PBTimelineAttribute *attribute in [action attributes])
         {
             if (![[attribute content] isKindOfClass:[NSString class]])
@@ -1876,9 +1876,9 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
                 // We're going to replace the actions, so delete the managed object
                 if ([arg1 isKindOfClass:[%c(NSManagedObject) class]])
                 {
-                    log(@"Removing core data");
-                    PBCoreDataManager *coreDataManager = [%c(PBCoreDataManager) defaultMyPebbleCoreDataManager];
-                    [coreDataManager.managedObjectContext deleteObject:(NSManagedObject *)arg1];
+                    // log(@"Removing core data");
+                    // PBCoreDataManager *coreDataManager = [%c(PBCoreDataManager) defaultMyPebbleCoreDataManager];
+                    // [coreDataManager.managedObjectContext deleteObject:(NSManagedObject *)arg1];
                 }
                 break;
             }
@@ -1890,19 +1890,6 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 		version:orig.version
 		attributes:orig.attributes
 		actions:orig.actions];
-}
-
-+(id)notificationSourceWithBlob:(id)arg1 mapper:(id)arg2
-{
-    %log;
-    log(@"%@ %@ %@ %@", arg1, arg2, [arg1 class], [arg2 class]);
-    id r = %orig;
-    log(@"%@", r);
-    if ([r respondsToSelector:@selector(actions)])
-    {
-        log(@"%@", [r performSelector:@selector(actions)]);
-    }
-    return r;
 }
 
 +(id)notificationSourceWithAppIdentifier:(id)arg1 flags:(unsigned)arg2 version:(unsigned short)arg3 attributes:(id)arg4 actions:(id)arg5
