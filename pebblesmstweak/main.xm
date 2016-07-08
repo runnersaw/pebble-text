@@ -92,6 +92,10 @@
 + (NSString *)bulletinIdentifierForInvokeANCSMessage:(PBTimelineInvokeANCSActionMessage *)message;
 @end
 
+@interface PBSMSReplyManager (PebbleSMS)
++ (NSArray *)smsEnabledApps;
+@end
+
 @interface PBNotificationSource (PebbleSMS)
 // new
 + (PBNotificationSource *)notificationSourceWithAddedActionsFromNotificationSource:(PBNotificationSource *)orig;
@@ -1537,6 +1541,14 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 	[set addObjectsFromArray:appsArray];
 	return set;
 }
+
+%new
++ (NSArray *)smsEnabledApps
+{
+    return @[ @"com.apple.MobileSMS", 
+        @"com.apple.mobilephone", 
+        @"com.pebble.sendText" ];
+}
 %end
 
 %hook PBCannedResponseManager
@@ -1859,7 +1871,11 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 +(id)notificationSourceWithAppIdentifier:(id)arg1 flags:(unsigned)arg2 version:(unsigned short)arg3 attributes:(id)arg4 actions:(id)arg5
 {
 	log(@"notificationSourceWithAppIdentifier %@", arg1);
-	PBNotificationSource *orig = (PBNotificationSource *)%orig;
+    PBNotificationSource *orig = (PBNotificationSource *)%orig;
+    if ([[%c(PBSMSReplyManager) smsEnabledApps] containsObject:(NSString *)arg1])
+    {
+        return orig;
+    }
 	BOOL shouldAddAction = NO;
 	if ([[orig actions] count] == 0)
 	{
@@ -1868,22 +1884,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 	}
 	if ([[orig actions] count] == 1)
 	{
-		PBTimelineAction *action = [[orig actions] objectAtIndex:0];
-        log(@"1 action %@ %@ %@", action, [action attributes], [action identifier]);
-		for (PBTimelineAttribute *attribute in [action attributes])
-		{
-			if (![[attribute content] isKindOfClass:[NSString class]])
-			{
-				continue;
-			}
-            log(@"String action");
-			if ([(NSString *)[attribute content] isEqualToString:@"Action"])
-			{
-                log(@"shouldAddAction");
-				shouldAddAction = YES;
-				break;
-			}
-		}
+        log(@"1 action");
+		shouldAddAction = YES;
 	}
 
     log(@"shouldAddAction %d", shouldAddAction);
