@@ -1521,6 +1521,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 %hook PBSMSReplyManager
 -(NSSet *)smsApps
 {
+    %log;
     NSSet *r = %orig;
     NSMutableSet *set = [NSMutableSet setWithCapacity:3];
     [set setSet:r];
