@@ -9,7 +9,6 @@
 #import <IMCore/IMHandle.h>
 #import <AddressBook/AddressBook.h>
 #import <AppSupport/CPDistributedMessagingCenter.h>
-#import <Applist/AppList.h>
 #import <UIKit/UIApplication.h>
 #import <substrate.h>
 #import "rocketbootstrap.h"
@@ -111,7 +110,6 @@ static BOOL isRecentContact = NO;
 static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
 static NSMutableArray *actionsToPerform = [NSMutableArray array];
-static NSMutableArray *appsArray = [NSMutableArray array];
 
 static NSMutableDictionary *actionsToPerformDictionary = [NSMutableDictionary dictionary];
 static NSMutableDictionary *bulletinsDict = [NSMutableDictionary dictionary];
@@ -1526,21 +1524,15 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 %hook PBSMSReplyManager
 -(NSSet *)smsApps
 {
-    %log;
-    NSSet *r = %orig;
-    NSMutableSet *set = [NSMutableSet setWithCapacity:3];
-    [set setSet:r];
-    [set addObjectsFromArray:appsArray];
-    log(@"%@", set);
-    return set;
+    NSSet *finalSet = [NSSet setWithArray:[%c(PBSMSHelper) installedApplications]];
+    log(@"smsApps %@", finalSet);
+    return finalSet;
 }
 -(NSSet *)ancsReplyEnabledApps
 {
-	NSSet *r = %orig;
-	NSMutableSet *set = [NSMutableSet setWithCapacity:3];
-	[set setSet:r];
-	[set addObjectsFromArray:appsArray];
-	return set;
+    NSSet *finalSet = [NSSet setWithArray:[%c(PBSMSHelper) installedApplications]];
+    log(@"ancsReplyEnabledApps %@", finalSet);
+	return finalSet;
 }
 
 %new
@@ -1576,7 +1568,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 	NSDictionary * r = %orig;
 	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:r];
 
-	for (NSString *app in appsArray)
+	for (NSString *app in [%c(PBSMSHelper) installedApplications])
 	{
 		[dict setObject:[%c(PBANCSActionHandler) actionHandlerWithDelegate:self] forKey:app];
 	}
@@ -1896,13 +1888,6 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 	}
 
 	log(@"Adding actions to %@", orig);
-
-	NSString *appID = orig.appIdentifier;
-	if (![appsArray containsObject:appID])
-	{
-		[appsArray addObject:appID];
-	}
-
 	PBTimelineAttribute *attr1 = [[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:@"Action" specificType:0];
 	PBTimelineAction *b = [[%c(PBTimelineAction) alloc] initWithIdentifier:@(HAS_ACTIONS_IDENTIFIER) type:@"ANCSResponse" attributes:@[ attr1 ]];
 	return %orig(arg1, arg2, arg3, arg4, @[ b ]);

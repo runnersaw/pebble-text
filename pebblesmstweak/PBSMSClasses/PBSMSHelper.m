@@ -41,8 +41,8 @@ NSString * const recentFileLocation = @"/var/mobile/Library/Preferences/com.sawy
 
 + (NSArray *)installedApplications
 {
-    log(@"%@", [[ALApplicationList sharedApplicationList] applications]);
-    return [NSArray array];
+    NSDictionary *dict = [[ALApplicationList sharedApplicationList] applications];
+    return [dict allKeys];
 }
 
 @end
