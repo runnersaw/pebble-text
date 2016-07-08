@@ -776,7 +776,6 @@
 @end
 
 @interface PBNotificationSourceManager : NSObject
-@property (nonatomic,readonly) RACSignal * notificationSourcesSignal; 
 -(void)deleteAllLocalNotificationSources;
 -(PBCannedResponseManager *)cannedResponseManager;
 -(id)initWithCannedResponseManager:(id)arg1 ;
