@@ -1,5 +1,6 @@
 #import "PBSMSHelper.h"
 
+#import <Applist.h>
 #import <objc/runtime.h>
 
 NSString * const sendMessageCommand = @"messageNeedsSending";
@@ -36,6 +37,12 @@ NSString * const recentFileLocation = @"/var/mobile/Library/Preferences/com.sawy
     }
 
     free(methods);
+}
+
++ (NSArray *)installedApplications
+{
+    log(@"%@", [[ALApplicationList sharedApplicationList] applications];
+    return [NSArray array];
 }
 
 @end

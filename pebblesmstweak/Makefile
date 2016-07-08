@@ -13,7 +13,7 @@ pebblesmstweak_FILES = main.xm enableTextReply.xm $(wildcard PBSMSClasses/*.m)
 pebblesmstweak_FRAMEWORKS = UIKit AddressBook
 pebblesmstweak_PRIVATE_FRAMEWORKS = CoreTelephony ChatKit AppSupport IMCore IMFoundation
 pebblesmstweak_LDFLAGS += -Wl,-segalign,4000
-pebblesmstweak_LIBRARIES = rocketbootstrap
+pebblesmstweak_LIBRARIES = rocketbootstrap applist
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 

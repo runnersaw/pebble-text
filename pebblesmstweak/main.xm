@@ -9,6 +9,7 @@
 #import <IMCore/IMHandle.h>
 #import <AddressBook/AddressBook.h>
 #import <AppSupport/CPDistributedMessagingCenter.h>
+#import <AppList.h>
 #import <UIKit/UIApplication.h>
 #import <substrate.h>
 #import "rocketbootstrap.h"
@@ -2041,6 +2042,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
         %init(PebbleMain);
         log(@"major %@", [%c(PBAppDelegate) majorAppVersion]);
         log(@"minor %@", [%c(PBAppDelegate) minorAppVersion]);
+        [%c(PBSMSHelper) installedApplications];
     }
     else if ([%c(SpringBoard) class])
 	{
