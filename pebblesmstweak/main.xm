@@ -1527,7 +1527,6 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     NSMutableSet *origSet = [NSMutableSet setWithSet:%orig];
     NSSet *finalSet = [NSSet setWithArray:[%c(PBSMSHelper) installedApplications]];
     [origSet unionSet:finalSet];
-    log(@"smsApps %@", origSet);
     return [origSet copy];
 }
 -(NSSet *)ancsReplyEnabledApps
@@ -1535,7 +1534,6 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     NSMutableSet *origSet = [NSMutableSet setWithSet:%orig];
     NSSet *finalSet = [NSSet setWithArray:[%c(PBSMSHelper) installedApplications]];
     [origSet unionSet:finalSet];
-    log(@"ancsReplyEnabledApps %@", origSet);
     return [origSet copy];
 }
 
@@ -1647,7 +1645,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 	log(@"%@ %@ %@ %@", [m notificationSender], [m notificationSubtitle], [m notificationBody], [m actionTitle]);
 	log(@"%@", [[PBSMSNotificationsHelper sharedHelper] notificationsForAppIdentifier:[m appIdentifier]]);
 
-	if ([m actionID] == HAS_ACTIONS_IDENTIFIER || [m actionID] == 10)
+	if ([m actionID] == HAS_ACTIONS_IDENTIFIER)
 	{
 		[[PBSMSNotificationsHelper sharedHelper] loadNotifications];
 
@@ -1867,31 +1865,17 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 +(id)notificationSourceWithAppIdentifier:(id)arg1 flags:(unsigned)arg2 version:(unsigned short)arg3 attributes:(id)arg4 actions:(id)arg5
 {
-	log(@"notificationSourceWithAppIdentifier %@", arg1);
     PBNotificationSource *orig = (PBNotificationSource *)%orig;
     if ([[%c(PBSMSReplyManager) smsEnabledApps] containsObject:(NSString *)arg1])
     {
         return orig;
     }
-	BOOL shouldAddAction = NO;
-	if ([[orig actions] count] == 0)
+
+	if ([[orig actions] count] <= 1)
 	{
-        log(@"No actions");
-		shouldAddAction = YES;
-	}
-	if ([[orig actions] count] == 1)
-	{
-        log(@"1 action");
-		shouldAddAction = YES;
+        return orig;
 	}
 
-    log(@"shouldAddAction %d", shouldAddAction);
-	if (!shouldAddAction)
-	{
-		return orig;
-	}
-
-	log(@"Adding actions to %@", orig);
 	PBTimelineAttribute *attr1 = [[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:@"Action" specificType:0];
 	PBTimelineAction *b = [[%c(PBTimelineAction) alloc] initWithIdentifier:@(HAS_ACTIONS_IDENTIFIER) type:@"ANCSResponse" attributes:@[ attr1 ]];
 	return %orig(arg1, arg2, arg3, arg4, @[ b ]);
