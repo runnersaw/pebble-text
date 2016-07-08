@@ -1524,15 +1524,19 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 %hook PBSMSReplyManager
 -(NSSet *)smsApps
 {
+    NSSet *origSet = [NSMutableSet setWithSet:%orig];
     NSSet *finalSet = [NSSet setWithArray:[%c(PBSMSHelper) installedApplications]];
-    log(@"smsApps %@", finalSet);
-    return finalSet;
+    [origSet unionSet:finalSet];
+    log(@"smsApps %@", origSet);
+    return origSet;
 }
 -(NSSet *)ancsReplyEnabledApps
 {
+    NSSet *origSet = [NSMutableSet setWithSet:%orig];
     NSSet *finalSet = [NSSet setWithArray:[%c(PBSMSHelper) installedApplications]];
-    log(@"ancsReplyEnabledApps %@", finalSet);
-	return finalSet;
+    [origSet unionSet:finalSet];
+    log(@"ancsReplyEnabledApps %@", origSet);
+    return origSet;
 }
 
 %new
