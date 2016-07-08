@@ -1906,7 +1906,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 	if ([[orig actions] count] == 1)
 	{
 		PBTimelineAction *action = [[orig actions] objectAtIndex:0];
-        log(@"1 action %@", action);
+        log(@"1 action %@ %@ %@", action, [action attributes], [action identifier]);
 		for (PBTimelineAttribute *attribute in [action attributes])
 		{
 			if (![[attribute content] isKindOfClass:[NSString class]])
