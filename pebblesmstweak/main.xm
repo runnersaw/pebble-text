@@ -1900,10 +1900,12 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 	BOOL shouldAddAction = NO;
 	if ([[orig actions] count] == 0)
 	{
+        log(@"No actions");
 		shouldAddAction = YES;
 	}
 	if ([[orig actions] count] == 1)
 	{
+        log(@"1 action");
 		PBTimelineAction *action = [[orig actions] objectAtIndex:0];
 		for (PBTimelineAttribute *attribute in [action attributes])
 		{
@@ -1911,14 +1913,17 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 			{
 				continue;
 			}
+            log(@"String action");
 			if ([(NSString *)[attribute content] isEqualToString:@"Action"])
 			{
+                log(@"shouldAddAction");
 				shouldAddAction = YES;
 				break;
 			}
 		}
 	}
 
+    log(@"shouldAddAction %d", shouldAddAction);
 	if (!shouldAddAction)
 	{
 		return orig;
