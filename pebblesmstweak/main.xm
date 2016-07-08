@@ -1526,6 +1526,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     NSMutableSet *set = [NSMutableSet setWithCapacity:3];
     [set setSet:r];
     [set addObjectsFromArray:appsArray];
+    log(@"%@", set);
     return set;
 }
 -(NSSet *)ancsReplyEnabledApps
@@ -1854,44 +1855,6 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 %end
 
 %hook PBNotificationSource
-
-+(id)notificationSourceFromManagedEntry:(id)arg1
-{
-	PBNotificationSource *orig = %orig;
-
-    // log(@"notificationSourceFromManagedEntry %@ %@", arg1, [arg1 performSelector:@selector(actionsSet)]);
-    NSArray *actionsArr = [(NSSet *)[arg1 performSelector:@selector(actionsSet)] allObjects];
-    if (actionsArr.count == 1)
-    {
-        PBManagedTimelineItemAction *managedAction = actionsArr[0];
-        PBTimelineAction *action = [%c(PBTimelineAction) timelineActionFromManagedTimelineItemAction:managedAction];
-        // log(@"action %@", action);
-        for (PBTimelineAttribute *attribute in [action attributes])
-        {
-            if (![[attribute content] isKindOfClass:[NSString class]])
-            {
-                continue;
-            }
-            if ([(NSString *)[attribute content] isEqualToString:@"Action"])
-            {
-                // We're going to replace the actions, so delete the managed object
-                if ([arg1 isKindOfClass:[%c(NSManagedObject) class]])
-                {
-                    // log(@"Removing core data");
-                    // PBCoreDataManager *coreDataManager = [%c(PBCoreDataManager) defaultMyPebbleCoreDataManager];
-                    // [coreDataManager.managedObjectContext deleteObject:(NSManagedObject *)arg1];
-                }
-                break;
-            }
-        }
-    }
-
-	return [%c(PBNotificationSource) notificationSourceWithAppIdentifier:orig.appIdentifier
-		flags:orig.flags
-		version:orig.version
-		attributes:orig.attributes
-		actions:orig.actions];
-}
 
 +(id)notificationSourceWithAppIdentifier:(id)arg1 flags:(unsigned)arg2 version:(unsigned short)arg3 attributes:(id)arg4 actions:(id)arg5
 {
