@@ -221,42 +221,39 @@
 	BOOL success = NO;
 	log(@"performAction %@", action.actionIdentifier);
 
-	for (PBSMSPebbleAction *action in self.mutablePebbleActions)
+	BBBulletin *bulletin = [self.bulletins objectForKey:action.bulletinIdentifier];
+	NSLog(@"OHYESHERE %@", bulletin);
+	if (bulletin)
 	{
-		BBBulletin *bulletin = [self.bulletins objectForKey:action.bulletinIdentifier];
-		NSLog(@"OHYESHERE %@", bulletin);
-		if (bulletin)
+		for (BBAction *bbAction in [bulletin supplementaryActionsForLayout:1])
 		{
-			for (BBAction *bbAction in [bulletin supplementaryActionsForLayout:1])
+			if ([[bbAction identifier] isEqualToString:action.actionIdentifier])
 			{
-				if ([[bbAction identifier] isEqualToString:action.actionIdentifier])
+				BBResponse *bbResponse = [bulletin responseForAction:bbAction];
+				if (bbResponse)
 				{
-					BBResponse *bbResponse = [bulletin responseForAction:bbAction];
-					if (bbResponse)
+					NSLog(@"%@", bbResponse);
+					if (action.isReplyAction)
 					{
-						NSLog(@"%@", bbResponse);
-						if (action.isReplyAction)
-						{
-							NSDictionary *dict = @{ @"UIUserNotificationActionResponseTypedTextKey" : action.replyText };
-							NSDictionary *finalDict = @{ @"userResponseInfo" : dict };
-							[bbResponse setContext:finalDict];
-						}
+						NSDictionary *dict = @{ @"UIUserNotificationActionResponseTypedTextKey" : action.replyText };
+						NSDictionary *finalDict = @{ @"userResponseInfo" : dict };
+						[bbResponse setContext:finalDict];
+					}
 
-						SBBulletinBannerController *bannerController = [%c(SBBulletinBannerController) sharedInstance];
-						NSLog(@"bannerController %@", bannerController);
-						if (bannerController)
+					SBBulletinBannerController *bannerController = [%c(SBBulletinBannerController) sharedInstance];
+					NSLog(@"bannerController %@", bannerController);
+					if (bannerController)
+					{
+						id observer = MSHookIvar<id>(bannerController, "_observer");
+						if (observer)
 						{
-							id observer = MSHookIvar<id>(bannerController, "_observer");
-							if (observer)
+							NSLog(@"observer %@", observer);
+							if ([observer isKindOfClass:%c(BBObserver)])
 							{
-								NSLog(@"observer %@", observer);
-								if ([observer isKindOfClass:%c(BBObserver)])
-								{
-									BBObserver *bbObserver = (BBObserver *)observer;
-									[bbObserver sendResponse:bbResponse];
-									NSLog(@"SENT RESPONSE");
-									success = YES;
-								}
+								BBObserver *bbObserver = (BBObserver *)observer;
+								[bbObserver sendResponse:bbResponse];
+								NSLog(@"SENT RESPONSE");
+								success = YES;
 							}
 						}
 					}
