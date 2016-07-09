@@ -1871,7 +1871,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
         return orig;
     }
 
-	if ([[orig actions] count] <= 1)
+	if ([[orig actions] count] > 1)
 	{
         return orig;
 	}
