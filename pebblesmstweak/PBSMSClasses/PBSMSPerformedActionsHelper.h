@@ -2,7 +2,7 @@
 
 @interface PBSMSPerformedActionsHelper : NSObject
 
-@property (nonatomic, copy) NSArray *performedActions;
+@property (nonatomic, copy) NSMutableArray *performedActions;
 
 + (PBSMSPerformedActionsHelper *)sharedHelper;
 
