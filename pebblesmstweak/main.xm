@@ -230,7 +230,16 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     {
         log(@"NO ACTION: FAILED TO PERFORM");
     }
-    if (![[PBSMSPerformedActionsHelper sharedHelper].performedActions containsObject:action.pebbleActionId])
+    BOOL containsObject = NO;
+    for (NSNumber *pebbleActionId in [PBSMSPerformedActionsHelper sharedHelper].performedActions)
+    {
+        log(@"%@ %@", pebbleActionId, action.pebbleActionId);
+        if ([pebbleActionId isEqual:action.pebbleActionId])
+        {
+            containsObject = YES;
+        }
+    }
+    if (!containsObject)
     {
         log(@"performing");
         [[PBSMSNotificationsHelper sharedHelper] performAction:action];
