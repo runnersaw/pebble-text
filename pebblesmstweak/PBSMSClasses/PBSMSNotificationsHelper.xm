@@ -10,7 +10,6 @@
 
 @property (nonatomic, strong) NSMutableArray *mutableNotifications;
 @property (nonatomic, strong) NSMutableArray *mutablePebbleActions;
-@property (nonatomic, strong) NSMutableArray *mutableActionsToPerform;
 @property (nonatomic, strong) NSMutableDictionary *bulletins;
 
 @end
@@ -220,9 +219,9 @@
 - (BOOL)performAction:(PBSMSPebbleAction *)action
 {
 	BOOL success = NO;
-	log(@"performAction");
+	log(@"performAction %@", action.actionIdentifier);
 
-	for (PBSMSPebbleAction *action in self.mutableActionsToPerform)
+	for (PBSMSPebbleAction *action in self.mutablePebbleActions)
 	{
 		BBBulletin *bulletin = [self.bulletins objectForKey:action.bulletinIdentifier];
 		NSLog(@"OHYESHERE %@", bulletin);
