@@ -221,10 +221,8 @@
 {
 	BOOL success = NO;
 	log(@"performAction");
-	[[PBSMSNotificationsHelper sharedHelper] loadActionsToPerform];
-    NSArray *actionsToPerform = [[PBSMSNotificationsHelper sharedHelper] actionsToPerform];
 
-	for (PBSMSPebbleAction *action in actionsToPerform)
+	for (PBSMSPebbleAction *action in self.mutableActionsToPerform)
 	{
 		BBBulletin *bulletin = [self.bulletins objectForKey:action.bulletinIdentifier];
 		NSLog(@"OHYESHERE %@", bulletin);
@@ -258,7 +256,6 @@
 									BBObserver *bbObserver = (BBObserver *)observer;
 									[bbObserver sendResponse:bbResponse];
 									NSLog(@"SENT RESPONSE");
-									[self removeActionToPerform:action];
 									success = YES;
 								}
 							}
