@@ -6,7 +6,7 @@ static NSTimeInterval actionToPerformExpiration = 20.;
 
 @implementation PBSMSPebbleAction : NSObject
 
-+ (PBSMSPebbleAction *)deserializeFromObject:(id)object
++ (PBSMSPebbleAction *)deserializePebbleActionFromObject:(id)object
 {
     if (![object isKindOfClass:[NSDictionary class]])
     {

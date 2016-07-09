@@ -11,7 +11,7 @@
 @property (nonatomic, copy) NSString *replyText;
 @property (nonatomic, copy) NSDate *performActionRequestDate;
 
-+ (PBSMSPebbleAction *)deserializeFromObject:(id)object;
++ (PBSMSPebbleAction *)deserializePebbleActionFromObject:(id)object;
 
 - (instancetype)initWithPebbleActionId:(NSNumber *)pebbleActionId
 	actionIdentifier:(NSString *)actionIdentifier
