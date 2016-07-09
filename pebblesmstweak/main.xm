@@ -88,8 +88,7 @@
 
 @interface PBANCSActionHandler (PebbleSMS)
 // new
-+ (void)performAction:(NSString *)actionID forBulletinID:(NSString *)bulletinID;
-+ (void)performReply:(NSString *)reply forAction:(NSString *)actionID andBulletinID:(NSString *)bulletinID;
++ (void)performAction:(PBSMSPebbleAction *)action
 + (NSString *)bulletinIdentifierForInvokeANCSMessage:(PBTimelineInvokeANCSActionMessage *)message;
 @end
 
@@ -1474,7 +1473,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
         [[PBSMSNotificationsHelper sharedHelper] loadPebbleActions];
         [[PBSMSNotificationsHelper sharedHelper] loadActionsToPerform];
-        PBSMSPebbleAction *action = [[PBSMSNotificationsHelper sharedHelper] pebbleActionForANCSIdentifier:ancsIdentifier];
+        PBSMSPebbleAction *action = [[PBSMSNotificationsHelper sharedHelper] pebbleActionForANCSIdentifier:[ancsIdentifier UUIDString]];
 
         action.isReplyAction = YES;
         action.replyText = reply;
@@ -1552,16 +1551,16 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
 			[actions addObject:[[%c(PBTimelineAction) alloc] initWithIdentifier:@(currentNumber) type:@"ANCSResponse" attributes:@[ attr1, attr2 ]]];
 
-            PBSMSPebbleAction *action = [[PBSMSPebbleAction alloc] initWithPebbleActionId:@(currentNumber)
+            PBSMSPebbleAction *pebbleAction = [[PBSMSPebbleAction alloc] initWithPebbleActionId:@(currentNumber)
                 actionIdentifier:action.actionIdentifier
                 bulletinIdentifier:bulletinId
-                ANCSIdentifier:[m ANCSIdentifier]
-                isBeginQuickReplyAction:@( action.isQuickReply )
+                ANCSIdentifier:[[m ANCSIdentifier] UUIDString]
+                isBeginQuickReplyAction:action.isQuickReply
                 isReplyAction:NO
                 replyText:@""];
 
             [[PBSMSNotificationsHelper sharedHelper] loadPebbleActions];
-            [[PBSMSNotificationsHelper sharedHelper] savePebbleAction:action];
+            [[PBSMSNotificationsHelper sharedHelper] savePebbleAction:pebbleAction];
 
 			currentNumber = currentNumber + 1;
 		}
@@ -1580,7 +1579,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 	else if ([m actionID] > DISMISS_IDENTIFIER)
 	{
         [[PBSMSNotificationsHelper sharedHelper] loadPebbleActions];
-        PBSMSPebbleAction *action = [[PBSMSNotificationsHelper sharedHelper] pebbleActionForPebbleActionId:[m actionID]];
+        PBSMSPebbleAction *action = [[PBSMSNotificationsHelper sharedHelper] pebbleActionForPebbleActionId:@( [m actionID] )];
 
         if (action)
         {
