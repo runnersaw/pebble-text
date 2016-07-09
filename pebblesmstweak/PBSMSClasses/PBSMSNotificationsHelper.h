@@ -9,7 +9,6 @@
 
 @property (nonatomic, readonly) NSArray *notifications;
 @property (nonatomic, readonly) NSArray *pebbleActions;
-@property (nonatomic, readonly) NSArray *actionsToPerform;
 
 + (PBSMSNotificationsHelper *)sharedHelper;
 
@@ -25,17 +24,10 @@
 
 // Saving Pebble Actions
 - (void)savePebbleAction:(PBSMSPebbleAction *)action;
-- (void)loadPebbleActions;
-- (void)savePebbleActions;
 - (PBSMSPebbleAction *)pebbleActionForPebbleActionId:(NSNumber *)pebbleActionId;
 - (PBSMSPebbleAction *)pebbleActionForANCSIdentifier:(NSString *)ancsIdentifier;
 
 // // Action handling
-- (void)saveActionToPerform:(PBSMSPebbleAction *)action;
-- (void)removeActionToPerform:(PBSMSPebbleAction *)action;
-- (void)loadActionsToPerform;
-- (void)saveActionsToPerform;
-- (NSArray *)actionsToPerform;
 - (BOOL)performAction:(PBSMSPebbleAction *)action;
 
 @end

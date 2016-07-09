@@ -20,6 +20,7 @@
 #import "PBSMSClasses/PBSMSNotificationAction.h"
 #import "PBSMSClasses/PBSMSNotificationsHelper.h"
 #import "PBSMSClasses/PBSMSPebbleAction.h"
+#import "PBSMSClasses/PBSMSPerformedActionsHelper.h"
 #import "PBSMSClasses/PBSMSRecentContactHelper.h"
 #import "PBSMSClasses/PBSMSTextMessage.h"
 #import "PBSMSClasses/PBSMSTextHelper.h"
@@ -223,12 +224,21 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 %new
 - (void)notificationsMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo
 {
-    [[PBSMSNotificationsHelper sharedHelper] loadActionsToPerform];
-    NSArray *actionsToPerform = [[PBSMSNotificationsHelper sharedHelper] actionsToPerform];
-
-    for (PBSMSPebbleAction *action in actionsToPerform)
+    log(@"%@", userinfo);
+    PBSMSPebbleAction *action = [%c(PBSMSPebbleAction) deserializeFromObject:userinfo]
+    if (!action)
     {
+        log(@"NO ACTION: FAILED TO PERFORM");
+    }
+    if (![[PBSMSPerformedActionsHelper sharedHelper].performedActions contains:action.pebbleActionId])
+    {
+        log(@"performing");
         [[PBSMSNotificationsHelper sharedHelper] performAction:action];
+        [[PBSMSPerformedActionsHelper sharedHelper].performedActions addObject:action.pebbleActionId];
+    }
+    else
+    {
+        log(@"Already performed");
     }
 }
 
@@ -1471,8 +1481,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
         NSLog(@"reply %@", reply);
         NSLog(@"ANCSIdentifier %@", ancsIdentifier);
 
-        [[PBSMSNotificationsHelper sharedHelper] loadPebbleActions];
-        [[PBSMSNotificationsHelper sharedHelper] loadActionsToPerform];
         PBSMSPebbleAction *action = [[PBSMSNotificationsHelper sharedHelper] pebbleActionForANCSIdentifier:[ancsIdentifier UUIDString]];
 
         action.isReplyAction = YES;
@@ -1492,8 +1500,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 {
 	%log;
 
-    [[PBSMSNotificationsHelper sharedHelper] loadPebbleActions];
-    [[PBSMSNotificationsHelper sharedHelper] loadActionsToPerform];
     PBSMSPebbleAction *action = [[PBSMSNotificationsHelper sharedHelper] pebbleActionForANCSIdentifier:[(NSUUID *)arg1 UUIDString]];
 
     if (action)
@@ -1559,7 +1565,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
                 isReplyAction:NO
                 replyText:@""];
 
-            [[PBSMSNotificationsHelper sharedHelper] loadPebbleActions];
             [[PBSMSNotificationsHelper sharedHelper] savePebbleAction:pebbleAction];
 
 			currentNumber = currentNumber + 1;
@@ -1579,7 +1584,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 	}
 	else if ([m actionID] > DISMISS_IDENTIFIER)
 	{
-        [[PBSMSNotificationsHelper sharedHelper] loadPebbleActions];
         PBSMSPebbleAction *action = [[PBSMSNotificationsHelper sharedHelper] pebbleActionForPebbleActionId:@( [m actionID] )];
 
         if (action)
@@ -1613,25 +1617,29 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 %new
 + (void)performAction:(PBSMSPebbleAction *)action
 {
-    [[PBSMSNotificationsHelper sharedHelper] loadActionsToPerform];
-	[[PBSMSNotificationsHelper sharedHelper] saveActionToPerform:action];
-
     CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
     rocketbootstrap_distributedmessagingcenter_apply(c);
-    [c sendMessageName:performNotificationActionCommand userInfo:NULL];
+    [c sendMessageName:performNotificationActionCommand userInfo:[action serializeToDictionary]];
 
     // send message after 5 seconds
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SEND_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
         rocketbootstrap_distributedmessagingcenter_apply(c);
-        [c sendMessageName:performNotificationActionCommand userInfo:NULL];
+        [c sendMessageName:performNotificationActionCommand userInfo:[action serializeToDictionary]];
     });
 
     // send message after 10 seconds
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SECOND_SEND_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
         rocketbootstrap_distributedmessagingcenter_apply(c);
-        [c sendMessageName:performNotificationActionCommand userInfo:NULL];
+        [c sendMessageName:performNotificationActionCommand userInfo:[action serializeToDictionary]];
+    });
+
+    // remove action eventually after 10 seconds
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SECOND_SEND_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
+        rocketbootstrap_distributedmessagingcenter_apply(c);
+        [c sendMessageName:performNotificationActionCommand userInfo:[action serializeToDictionary]];
     });
 }
 
