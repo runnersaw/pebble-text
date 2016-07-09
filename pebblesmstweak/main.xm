@@ -1510,15 +1510,6 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 %end
 
-%hook PBNotificationSourceManager
--(void)deleteAllLocalNotificationSources{%log;%orig;}
--(id)actionByReplacingCannedResponsesForAction:(id)arg1 forAppIdentifier:(id)arg2{%log;id r=%orig;log(@"%@",r);return r;}
--(void)setActions:(id)arg1 forAppIdentifier:(id)arg2{%log;%orig;}
--(void)handleCannedResponseDidChangeNotification:(id)arg1{%log;%orig;}
--(void)updateCannedResponsesForAppIdentifier:(id)arg1{%log;%orig;}
--(id)findNotificationSourceForAppIdentifier:(id)arg1{%log;id r=%orig;log(@"%@",r);return r;}
-%end
-
 // THIS PART IS FOR ACTIONABLE NOTIFICATIONS
 
 %hook PBSMSReplyManager
