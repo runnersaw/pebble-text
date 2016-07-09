@@ -1564,6 +1564,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
 			currentNumber = currentNumber + 1;
 		}
+        log(@"m ANCSIdentifier %@", [m ANCSIdentifier]);
 
 		PBTimelineAttribute *attr1 = [[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:@"Action" specificType:0];
 		PBTimelineAttribute *attr2 = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action" specificType:0];

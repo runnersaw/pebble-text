@@ -253,12 +253,14 @@
 
 - (void)saveActionToPerform:(PBSMSPebbleAction *)action
 {
+	log(@"saveActionToPerform %@", action);
 	[self.mutableActionsToPerform addObject:action];
 	[self saveActionsToPerform];
 }
 
 - (void)removeActionToPerform:(PBSMSPebbleAction *)action
 {
+	log(@"removeActionToPerform %@", action);
 	[self.mutableActionsToPerform removeObject:action];
 	[self saveActionsToPerform];
 }
