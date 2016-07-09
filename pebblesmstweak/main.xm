@@ -1860,7 +1860,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
     BOOL alreadyAdded = NO;
     if ([[orig actions] count] == 1)
     {
-        for (PBTimelineAttribute *attr in [[[orig actions] objectAtIndex:0] attributes])
+        for (PBTimelineAttribute *attribute in [[[orig actions] objectAtIndex:0] attributes])
         {
             if (![[attribute content] isKindOfClass:[NSString class]])
             {
