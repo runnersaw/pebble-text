@@ -1481,7 +1481,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 -(void)handleActionWithActionIdentifier:(unsigned char)arg1 attributes:(id)arg2
 {
 	NSLog(@"PBANCSActionHandler %@ %@", @( arg1 ), arg2);
-    if (arg1 == 10)
+    if (arg1 == HAS_ACTIONS_IDENTIFIER)
 	{
         // NSLog(@"HANDLING");
         NSData *d = [(PBTimelineItemAttributeBlob *)[(NSArray *)arg2 objectAtIndex:0] content];
