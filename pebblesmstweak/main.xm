@@ -1842,25 +1842,6 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 %end
 
-%hook _PBManagedTimelineItemActionable
--(void)removeActions:(id)arg1{%log;%orig;}
--(void)addActionsObject:(id)arg1{%log;%orig;}
--(void)removeActionsObject:(id)arg1{%log;%orig;}
--(void)insertObject:(id)arg1 inActionsAtIndex:(unsigned long long)arg2{%log;%orig;}
--(void)removeObjectFromActionsAtIndex:(unsigned long long)arg1{%log;%orig;}
--(void)insertActions:(id)arg1 atIndexes:(id)arg2{%log;%orig;}
--(void)removeActionsAtIndexes:(id)arg1{%log;%orig;}
--(void)replaceObjectInActionsAtIndex:(unsigned long long)arg1 withObject:(id)arg2{%log;%orig;}
--(void)replaceActionsAtIndexes:(id)arg1 withActions:(id)arg2{%log;%orig;}
--(void)addActions:(id)arg1{%log;%orig;}
--(id)actionsSet{%log;return %orig;}
-%end
-
-%hook PBManagedTimelineItemActionable
--(BOOL)updateActionsWithActions:(id)arg1{%log;return %orig;}
--(id)findOrCreateActionWithIdentifier:(id)arg1{%log;return %orig;}
-%end
-
 %hook PBNotificationSource
 
 +(id)notificationSourceWithAppIdentifier:(id)arg1 flags:(unsigned)arg2 version:(unsigned short)arg3 attributes:(id)arg4 actions:(id)arg5
