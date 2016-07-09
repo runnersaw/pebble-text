@@ -38,6 +38,18 @@
 	return self;
 }
 
+- (NSSet *)appIdentifiers
+{
+	NSMutableSet *appIdentifiersSet = [NSMutableSet set];
+
+	for (PBSMSNotification *notification in self.mutableNotifications)
+	{
+		[appIdentifiersSet addObject:notification.appIdentifier];
+	}
+
+	return [appIdentifiersSet copy];
+}
+
 - (NSArray *)notifications
 {
 	return [self.mutableNotifications copy];

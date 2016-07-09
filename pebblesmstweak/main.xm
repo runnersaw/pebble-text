@@ -1515,16 +1515,18 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 %hook PBSMSReplyManager
 -(NSSet *)smsApps
 {
+    [[PBSMSNotificationsHelper sharedHelper] loadNotifications];
+    NSSet *notificationsSet = [[PBSMSNotificationsHelper sharedHelper] appIdentifiers];
     NSMutableSet *origSet = [NSMutableSet setWithSet:%orig];
-    NSSet *finalSet = [NSSet setWithArray:[%c(PBSMSHelper) installedApplications]];
-    [origSet unionSet:finalSet];
+    [origSet unionSet:notificationsSet];
     return [origSet copy];
 }
 -(NSSet *)ancsReplyEnabledApps
 {
+    [[PBSMSNotificationsHelper sharedHelper] loadNotifications];
+    NSSet *notificationsSet = [[PBSMSNotificationsHelper sharedHelper] appIdentifiers];
     NSMutableSet *origSet = [NSMutableSet setWithSet:%orig];
-    NSSet *finalSet = [NSSet setWithArray:[%c(PBSMSHelper) installedApplications]];
-    [origSet unionSet:finalSet];
+    [origSet unionSet:notificationsSet];
     return [origSet copy];
 }
 
@@ -1549,7 +1551,7 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 	}
 	else
 	{
-		return [NSMutableArray array];
+        return %orig(@"com.pebble.sendText");
 	}
 }
 %end

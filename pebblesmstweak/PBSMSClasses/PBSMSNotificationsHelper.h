@@ -12,6 +12,9 @@
 
 + (PBSMSNotificationsHelper *)sharedHelper;
 
+// Notifications
+- (NSSet *)appIdentifiers;
+
 // Notification handling
 - (NSArray *)notificationsForAppIdentifier:(NSString *)appIdentifier;
 - (PBSMSNotification *)notificationForBulletinId:(NSString *)bulletinId;
