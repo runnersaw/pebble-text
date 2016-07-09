@@ -88,7 +88,7 @@
 
 @interface PBANCSActionHandler (PebbleSMS)
 // new
-+ (void)performAction:(PBSMSPebbleAction *)action
++ (void)performAction:(PBSMSPebbleAction *)action;
 + (NSString *)bulletinIdentifierForInvokeANCSMessage:(PBTimelineInvokeANCSActionMessage *)message;
 @end
 
@@ -1498,7 +1498,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
     if (action)
     {
-        [self setHandlingIdentifier:actionID];
+        [self setHandlingIdentifier:arg1];
         return YES;
     }
 
