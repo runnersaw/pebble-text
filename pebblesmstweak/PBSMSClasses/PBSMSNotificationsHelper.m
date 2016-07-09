@@ -10,6 +10,7 @@
 
 @property (nonatomic, strong) NSMutableArray *mutableNotifications;
 @property (nonatomic, strong) NSMutableArray *mutablePebbleActions;
+@property (nonatomic, strong) NSMutableArray *mutableActionsToPerform;
 @property (nonatomic, strong) NSMutableDictionary *bulletins;
 
 @end
@@ -96,7 +97,7 @@
 	for (id object in arr)
 	{
 		PBSMSNotification *notification = [PBSMSNotification deserializeFromObject:object];
-		if (notification)
+		if (notification && ![notification isExpired])
 		{
 			[self.mutableNotifications addObject:notification];
 		}
@@ -113,23 +114,16 @@
 		{
 			[notificationsArr addObject:[notification serializeToDictionary]];
 		}
-		else
-		{
-			log(@"Expired");
-		}
 	}
 
-	log(@"saveNotifications %@ %@", self.mutableNotifications, notificationsArr);
     [notificationsArr writeToFile:notificationsFileLocation atomically:YES];
 }
 
 - (void)saveNotificationForBulletin:(BBBulletin *)bulletin
 {
-	log(@"saveNotificationForBulletin %@", bulletin);
     NSString *bulletinId = [bulletin bulletinID];
     if ([self.bulletins objectForKey:bulletinId])
 	{
-		log(@"already saved");
     	return;
     }
     [self.bulletins setObject:bulletin forKey:bulletinId];
@@ -150,7 +144,6 @@
         BOOL isQuickReply = ([action behavior] == 1);
         if (![action isAuthenticationRequired] && actionIdentifier && actionTitle)
 		{
-			log(@"hasActions");
 	        PBSMSNotificationAction *notificationAction = [[PBSMSNotificationAction alloc] initWithTitle:actionTitle
 				actionIdentifier:actionIdentifier
 				isQuickReply:isQuickReply];
@@ -183,47 +176,188 @@
 		timestamp:timestamp
 		actions:actions];
 
-    log(@"saveNotification %@ %@ %@", notification, notification.appIdentifier, notification.message);
 	[self.mutableNotifications addObject:notification];
 
 	[self saveNotifications];
 }
 
-// - (NSArray *)pebbleActions
-// {
-// 	return [self.mutablePebbleActions copy];
-// }
+- (void)savePebbleAction:(PBSMSPebbleAction *)action
+{
+	[self.mutablePebbleActions addObject:action];
 
-// - (void)savePebbleAction:(PBSMSPebbleAction *)action
-// {
-// 	[self.mutablePebbleActions addObject:action];
-// 	[self saveNotifications];
-// }
+	[self savePebbleActions];
+}
 
-// - (void)savePebbleActions
-// {
+- (void)loadPebbleActions
+{
+	NSMutableArray *arr = [NSMutableArray arrayWithContentsOfFile:pebbleActionsFileLocation];
 
-// }
+	if (!arr)
+	{
+		return;
+	}
 
-// - (void)loadPebbleActions
-// {
+	[self.mutablePebbleActions removeAllObjects];
+	for (id object in arr)
+	{
+		PBSMSPebbleAction *action = [PBSMSPebbleAction deserializeFromObject:object];
+		if (action)
+		{
+			[self.mutablePebbleActions addObject:action];
+		}
+	}
+}
 
-// }
+- (void)savePebbleActions
+{
+	NSMutableArray *actionsArr = [NSMutableArray array];
 
-// - (PBSMSPebbleAction *)pebbleActionForPebbleActionId:(NSNumber *)pebbleActionId
-// {
+	for (PBSMSPebbleAction *action in self.mutablePebbleActions)
+	{
+		[actionsArr addObject:[action serializeToDictionary]];
+	}
 
-// }
+    [actionsArr writeToFile:pebbleActionsFileLocation atomically:YES];
+}
 
-// // Action handling
-// - (void)saveActionToPerform:(PBSMSNotificationAction *)action
-// {
+- (PBSMSPebbleAction *)pebbleActionForANCSIdentifier:(NSString *)ancsIdentifier
+{
+	for (PBSMSPebbleAction *action in self.mutablePebbleActions)
+	{
+		if ([ancsIdentifier isEqualToString:action.ANCSIdentifier])
+		{
+			return action;
+		}
+	}
 
-// }
+	return nil;
+}
 
-// - (NSArray *)actionsToPerform
-// {
+- (PBSMSPebbleAction *)pebbleActionForPebbleActionId:(NSNumber *)pebbleActionId
+{
+	for (PBSMSPebbleAction *action in self.mutablePebbleActions)
+	{
+		if ([pebbleActionId isEqual:action.pebbleActionId])
+		{
+			return action;
+		}
+	}
 
-// }
+	return nil;
+}
+
+- (NSArray *)pebbleActions
+{
+	return [self.mutablePebbleActions copy];
+}
+
+- (void)saveActionToPerform:(PBSMSPebbleAction *)action
+{
+	[self.mutableActionsToPerform addObject:action];
+	[self saveActionsToPerform];
+}
+
+- (void)removeActionToPerform:(PBSMSPebbleAction *)action
+{
+	[self.mutableActionsToPerform removeObject:action];
+	[self saveActionsToPerform];
+}
+
+- (void)loadActionsToPerform
+{
+	NSMutableArray *arr = [NSMutableArray arrayWithContentsOfFile:actionsToPerformFileLocation];
+
+	if (!arr)
+	{
+		return;
+	}
+
+	[self.mutableActionsToPerform removeAllObjects];
+	for (id object in arr)
+	{
+		PBSMSPebbleAction *action = [PBSMSPebbleAction deserializeFromObject:object];
+		if (action && ![action isExpired])
+		{
+			[self.mutableActionsToPerform addObject:action];
+		}
+	}
+	log(@"loadActionsToPerform %@", self.mutableActionsToPerform);
+}
+
+- (void)saveActionsToPerform
+{
+	NSMutableArray *actionsArr = [NSMutableArray array];
+
+	for (PBSMSPebbleAction *action in self.mutableActionsToPerform)
+	{
+		if (![action isExpired])
+		{
+			[actionsArr addObject:[action serializeToDictionary]];
+		}
+	}
+	log(@"saveActionsToPerform %@", actionsArr);
+
+    [actionsArr writeToFile:actionsToPerformFileLocation atomically:YES];
+}
+
+- (NSArray *)actionsToPerform
+{
+	return [self.mutableActionsToPerform copy];
+}
+
+- (BOOL)performAction:(PBSMSPebbleAction *)action
+{
+	BOOL success = NO;
+	log(@"performAction");
+	[[PBSMSNotificationsHelper sharedHelper] loadActionsToPerform];
+    NSArray *actionsToPerform = [[PBSMSNotificationsHelper sharedHelper] actionsToPerform];
+
+	for (PBSMSPebbleAction *action in actionsToPerform)
+	{
+		BBBulletin *bulletin = [self.bulletins objectForKey:action.bulletinIdentifier];
+		NSLog(@"OHYESHERE %@", bulletin);
+		if (bulletin)
+		{
+			for (BBAction *action in [bulletin supplementaryActionsForLayout:1])
+			{
+				if ([[action identifier] isEqualToString:actionID])
+				{
+					BBResponse *response = [bulletin responseForAction:action];
+					if (response)
+					{
+						NSLog(@"%@", response);
+						if (action.isReplyAction)
+						{
+							NSDictionary *dict = @{ @"UIUserNotificationActionResponseTypedTextKey" : action.replyText };
+							NSDictionary *finalDict = @{ @"userResponseInfo" : dict };
+							[response setContext:finalDict];
+						}
+
+						SBBulletinBannerController *bannerController = [%c(SBBulletinBannerController) sharedInstance];
+						NSLog(@"bannerController %@", bannerController);
+						if (bannerController)
+						{
+							id observer = MSHookIvar<id>(bannerController, "_observer");
+							if (observer)
+							{
+								NSLog(@"observer %@", observer);
+								if ([observer isKindOfClass:%c(BBObserver)])
+								{
+									BBObserver *bbObserver = (BBObserver *)observer;
+									[observer sendResponse:response];
+									NSLog(@"SENT RESPONSE");
+									[self removeActionToPerform:action];
+									success = YES;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return success;
+}
 
 @end

@@ -9,6 +9,7 @@
 @property (nonatomic, readwrite) BOOL isBeginQuickReplyAction;
 @property (nonatomic, readwrite) BOOL isReplyAction;
 @property (nonatomic, copy) NSString *replyText;
+@property (nonatomic, copy) NSDate *performActionRequestDate;
 
 + (PBSMSPebbleAction *)deserializeFromObject:(id)object;
 
@@ -21,5 +22,7 @@
 	replyText:(NSString *)replyText;
 	
 - (NSDictionary *)serializeToDictionary;
+
+- (BOOL)isExpired;
 
 @end

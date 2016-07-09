@@ -53,6 +53,7 @@ extern NSString * const rocketbootstrapSpringboardCenterName;
 extern NSString * const distributedCenterName;
 
 extern NSString * const notificationsFileLocation;
+extern NSString * const pebbleActionsFileLocation;
 extern NSString * const actionsToPerformFileLocation;
 extern NSString * const messagesFileLocation;
 extern NSString * const recentFileLocation;

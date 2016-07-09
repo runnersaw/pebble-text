@@ -2,6 +2,8 @@
 
 #import "PBSMSHelper.h"
 
+static NSTimeInterval actionToPerformExpiration = 20.;
+
 @implementation PBSMSPebbleAction : NSObject
 
 + (PBSMSPebbleAction *)deserializeFromObject:(id)object
@@ -77,6 +79,13 @@
 	[dict setObject:self.replyText forKey:@"replyText"];
 
 	return [dict copy];
+}
+
+- (BOOL)isExpired
+{
+	NSDate *earliestValidDate = [NSDate dateWithTimeIntervalSinceNow:-actionToPerformExpiration];
+	NSDate *requestDate = self.performActionRequestDate;
+    return ([earliestValidDate compare:requestDate] == NSOrderedDescending);
 }
 
 @end

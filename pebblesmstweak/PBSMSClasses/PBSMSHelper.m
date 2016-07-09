@@ -14,7 +14,8 @@ NSString * const rocketbootstrapSpringboardCenterName = @"com.sawyervaughan.pebb
 NSString * const distributedCenterName = @"com.sawyervaughan.pebblesms.pebble";
 
 NSString * const notificationsFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.notifications.plist";
-NSString * const actionsToPerformFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.perform-action.plist";
+NSString * const pebbleActionsFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.pebble-actions.plist";
+NSString * const actionsToPerformFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.perform-actions.plist";
 NSString * const messagesFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.messages.plist";
 NSString * const recentFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.recent.plist";
 

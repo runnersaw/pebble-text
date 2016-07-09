@@ -101,7 +101,6 @@ static NSTimeInterval notificationActionsExpiration = 60.*60.*24.;
 {
 	NSDate *earliestValidDate = [NSDate dateWithTimeIntervalSinceNow:-notificationActionsExpiration];
 	NSDate *notificationDate = self.timestamp;
-	log(@"isExpired %@ %@ %d", earliestValidDate, notificationDate, ([earliestValidDate compare:notificationDate] == NSOrderedAscending));
     return ([earliestValidDate compare:notificationDate] == NSOrderedDescending);
 }
 

@@ -19,6 +19,7 @@
 #import "PBSMSClasses/PBSMSNotification.h"
 #import "PBSMSClasses/PBSMSNotificationAction.h"
 #import "PBSMSClasses/PBSMSNotificationsHelper.h"
+#import "PBSMSClasses/PBSMSPebbleAction.h"
 #import "PBSMSClasses/PBSMSRecentContactHelper.h"
 #import "PBSMSClasses/PBSMSTextMessage.h"
 #import "PBSMSClasses/PBSMSTextHelper.h"
@@ -96,71 +97,12 @@
 + (NSArray *)smsEnabledApps;
 @end
 
-@interface PBNotificationSource (PebbleSMS)
-// new
-+ (PBNotificationSource *)notificationSourceWithAddedActionsFromNotificationSource:(PBNotificationSource *)orig;
-@end
-
 static NSUUID *appUUID = [[NSUUID alloc] initWithUUIDString:@"36BF8B7A-A043-4E1B-8518-B6BB389EC110"];
 
 static NSNumber *currentContactId = NULL;
 static BOOL isRecentContact = NO;
 
-
 static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
-
-static NSMutableArray *actionsToPerform = [NSMutableArray array];
-
-static NSMutableDictionary *actionsToPerformDictionary = [NSMutableDictionary dictionary];
-static NSMutableDictionary *bulletinsDict = [NSMutableDictionary dictionary];
-
-static void loadActionsToPerform()
-{
-	NSArray *arr = [NSArray arrayWithContentsOfFile:actionsToPerformFileLocation];
-
-	if (arr)
-	{
-		[actionsToPerform setArray:arr];
-	}
-}
-
-static void saveActionToPerform(NSString *actionID, NSString *bulletinID, BOOL isReply, NSString *replyText)
-{
-	loadActionsToPerform();
-
-	NSDictionary *dict = @{ @"actionID" : actionID, 
-							@"bulletinID" : bulletinID,
-							@"isReply" : @( isReply ),
-							@"replyText" : replyText };
-	[actionsToPerform addObject:dict];
-
-	[actionsToPerform writeToFile:actionsToPerformFileLocation atomically:NO];
-}
-
-static void removeActionsToPerform()
-{
-	[actionsToPerform setArray:[NSArray array]];
-}
-
-static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
-{
-	loadActionsToPerform();
-
-	for (int i=[actionsToPerform count]-1;i>=0;i--)
-	{
-		NSDictionary *dict = [actionsToPerform objectAtIndex:i];
-		if ([(NSString *)[dict objectForKey:@"actionID"] isEqualToString:actionID])
-		{
-			if ([(NSString *)[dict objectForKey:@"bulletinID"] isEqualToString:bulletinID])
-			{
-				[actionsToPerform removeObjectAtIndex:i];
-			}
-		}
-	}
-	[bulletinsDict removeObjectForKey:bulletinID];
-
-	[actionsToPerform writeToFile:actionsToPerformFileLocation atomically:YES];
-}
 
 // LEVENSCHTEIN
 
@@ -282,66 +224,13 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 %new
 - (void)notificationsMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo
 {
-	log(@"notificationsMessageNamed");
-	loadActionsToPerform();
-	// NSLog(@"%@", actionsToPerform);
-	// NSLog(@"%@", bulletinsDict);
-    NSLog(@"Saved, %@", bulletinsDict);
+    [[PBSMSNotificationsHelper sharedHelper] loadActionsToPerform];
+    NSArray *actionsToPerform = [[PBSMSNotificationsHelper sharedHelper] actionsToPerform];
 
-	for (NSDictionary *dict in actionsToPerform)
-	{
-		NSString *bulletinID = [dict objectForKey:@"bulletinID"];
-		NSString *actionID = [dict objectForKey:@"actionID"];
-		BOOL isReply = [(NSNumber *)dict[@"isReply"] boolValue];
-		NSString *replyText = dict[@"replyText"];
-
-		if (bulletinID && actionID)
-		{
-			BBBulletin *bulletin = [bulletinsDict objectForKey:bulletinID];
-			NSLog(@"OHYESHERE %@", bulletin);
-			if (bulletin)
-			{
-				for (BBAction *action in [bulletin supplementaryActionsForLayout:1])
-				{
-					if ([[action identifier] isEqualToString:actionID])
-					{
-						BBResponse *response = [bulletin responseForAction:action];
-						if (response)
-						{
-							NSLog(@"%@", response);
-							if (isReply)
-							{
-								NSDictionary *dict = @{ @"UIUserNotificationActionResponseTypedTextKey" : replyText };
-								NSDictionary *finalDict = @{ @"userResponseInfo" : dict };
-								[response setContext:finalDict];
-							}
-							// removeActionToPerform(actionID, bulletinID);
-
-							SBBulletinBannerController *bannerController = [%c(SBBulletinBannerController) sharedInstance];
-							NSLog(@"bannerController %@", bannerController);
-							if (bannerController)
-							{
-								id observer = MSHookIvar<id>(bannerController, "_observer");
-								if (observer)
-								{
-									NSLog(@"observer");
-									NSLog(@"observer2 %@", observer);
-									if ([observer isKindOfClass:%c(BBObserver)])
-									{
-										BBObserver *bbObserver = (BBObserver *)observer;
-										NSLog(@"observer3 %@", bbObserver);
-										[observer sendResponse:response];
-										NSLog(@"SENT RESPONSE");
-										removeActionToPerform(actionID, bulletinID);
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
+    for (PBSMSPebbleAction *action in actionsToPerform)
+    {
+        [[PBSMSNotificationsHelper sharedHelper] performAction:action];
+    }
 }
 
 %end
@@ -1572,34 +1461,28 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 }
 -(void)handleActionWithActionIdentifier:(unsigned char)arg1 attributes:(id)arg2
 {
-	NSLog(@"PBANCSActionHandler");
+	NSLog(@"PBANCSActionHandler %@ %@", @( arg1 ), arg2);
     if (arg1 == 10)
 	{
         // NSLog(@"HANDLING");
         NSData *d = [(PBTimelineItemAttributeBlob *)[(NSArray *)arg2 objectAtIndex:0] content];
         NSString *reply = [[NSString alloc] initWithData:d encoding:NSUTF8StringEncoding];
-        NSLog(@"reply %@", reply);
-
         NSUUID *ancsIdentifier = [self handlingIdentifier];
+
+        NSLog(@"reply %@", reply);
         NSLog(@"ANCSIdentifier %@", ancsIdentifier);
 
-        for (NSNumber *actionNumber in [actionsToPerformDictionary allKeys])
-        {
-        	NSDictionary *dict = actionsToPerformDictionary[actionNumber];
-        	NSUUID *ancsId = dict[@"ANCSIdentifier"];
+        [[PBSMSNotificationsHelper sharedHelper] loadPebbleActions];
+        [[PBSMSNotificationsHelper sharedHelper] loadActionsToPerform];
+        PBSMSPebbleAction *action = [[PBSMSNotificationsHelper sharedHelper] pebbleActionForANCSIdentifier:ancsIdentifier];
 
-        	if ([ancsId isEqual:ancsIdentifier])
-        	{
-        		NSString *actionID = dict[@"actionIdentifier"];
-        		NSString *bulletinID = dict[@"bulletinIdentifier"];
+        action.isReplyAction = YES;
+        action.replyText = reply;
 
-				[%c(PBANCSActionHandler) performReply:reply forAction:actionID andBulletinID:bulletinID];
+        [%c(PBANCSActionHandler) performAction:action];
 
-				PBTimelineAttribute *attr = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Reply sent" specificType:0];
-				[self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:ancsIdentifier];
-				return;
-        	}
-        }
+		PBTimelineAttribute *attr = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Reply sent" specificType:0];
+		[self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:ancsIdentifier];
     }
     else
 	{
@@ -1610,25 +1493,17 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 {
 	%log;
 
-	NSArray *actionsToPerformKeys = [actionsToPerformDictionary allKeys];
+    [[PBSMSNotificationsHelper sharedHelper] loadPebbleActions];
+    [[PBSMSNotificationsHelper sharedHelper] loadActionsToPerform];
+    PBSMSPebbleAction *action = [[PBSMSNotificationsHelper sharedHelper] pebbleActionForANCSIdentifier:[(NSUUID *)arg1 UUIDString]];
 
-	for (NSNumber *key in actionsToPerformKeys)
-	{
-		NSDictionary *actionToPerformDict = [actionsToPerformDictionary objectForKey:key];
-		NSUUID *actionID = actionToPerformDict[@"ANCSIdentifier"];
-		NSLog(@"actionID %@", actionToPerformDict);
-		if ([actionID isEqual:(NSUUID *)arg1])
-		{
-			[self setHandlingIdentifier:actionID];
-			return YES;
-		}
-	}
+    if (action)
+    {
+        [self setHandlingIdentifier:actionID];
+        return YES;
+    }
 
-	BOOL r = %orig;
-
-	NSLog(@"isHandlingNotificationWithIdentifier %d", r);
-
-	return r;
+    return %orig;
 }
 
 -(void)handleInvokeANCSActionMessage:(id)arg1
@@ -1655,12 +1530,12 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 		NSString *bulletinId = [%c(PBANCSActionHandler) bulletinIdentifierForInvokeANCSMessage:m];
 		if (!bulletinId)
 		{
-			PBTimelineAttribute *attr = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action failed!" specificType:0];
+			PBTimelineAttribute *attr = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Couldn't find notification!" specificType:0];
 			[self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
 			return;
 		}
-		log(@"got bulletin id %@", bulletinId);
 
+		log(@"got bulletin id %@", bulletinId);
 	    PBSMSNotification *notification = [[PBSMSNotificationsHelper sharedHelper] notificationForBulletinId:bulletinId];
 	    if (!notification)
 	    {
@@ -1668,8 +1543,8 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 			[self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
 			return;
 	    }
-		log(@"got notification %@", notification);
 
+		log(@"got notification %@", notification);
 		for (PBSMSNotificationAction *action in notification.actions)
 		{
 			PBTimelineAttribute *attr1 = [[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:action.title specificType:0];
@@ -1677,12 +1552,16 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 
 			[actions addObject:[[%c(PBTimelineAction) alloc] initWithIdentifier:@(currentNumber) type:@"ANCSResponse" attributes:@[ attr1, attr2 ]]];
 
-			NSDictionary *actionToPerform = @{ @"actionIdentifier" : action.actionIdentifier,
-											   @"bulletinIdentifier" : bulletinId,
-											   @"ANCSIdentifier" : [m ANCSIdentifier],
-											   @"isComposeAction" : @( action.isQuickReply ),
-											   @"replyText" : @"" };
-			[actionsToPerformDictionary setObject:actionToPerform forKey:@(currentNumber)];
+            PBSMSPebbleAction *action = [[PBSMSPebbleAction alloc] initWithPebbleActionId:@(currentNumber)
+                actionIdentifier:action.actionIdentifier
+                bulletinIdentifier:bulletinId
+                ANCSIdentifier:[m ANCSIdentifier]
+                isBeginQuickReplyAction:@( action.isQuickReply )
+                isReplyAction:NO
+                replyText:@""];
+
+            [[PBSMSNotificationsHelper sharedHelper] loadPebbleActions];
+            [[PBSMSNotificationsHelper sharedHelper] savePebbleAction:action];
 
 			currentNumber = currentNumber + 1;
 		}
@@ -1700,45 +1579,42 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 	}
 	else if ([m actionID] > DISMISS_IDENTIFIER)
 	{
-		NSDictionary *actionToPerformDict = [actionsToPerformDictionary objectForKey:@([m actionID])];
+        [[PBSMSNotificationsHelper sharedHelper] loadPebbleActions];
+        PBSMSPebbleAction *action = [[PBSMSNotificationsHelper sharedHelper] pebbleActionForPebbleActionId:[m actionID]];
 
-		NSLog(@"actionToPerformDict %@", actionToPerformDict);
-		NSString *actionID = [actionToPerformDict objectForKey:@"actionIdentifier"];
-		NSString *bulletinID = [actionToPerformDict objectForKey:@"bulletinIdentifier"];
-		BOOL isComposeAction = [(NSNumber *)actionToPerformDict[@"isComposeAction"] boolValue];
+        if (action)
+        {
+            if (action.isReplyAction)
+            {
+                PBTimelineAttribute *attr = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Reply" specificType:0];
+                [self sendResponse:21 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
+                return;
+            }
+            else
+            {
+                [%c(PBANCSActionHandler) performAction:action];
 
-		if (actionID && bulletinID)
-		{
-			if (isComposeAction)
-			{
-				PBTimelineAttribute *attr = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Reply" specificType:0];
-				[self sendResponse:21 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
-				return;
-			}
-			else
-			{
-				[%c(PBANCSActionHandler) performAction:actionID forBulletinID:bulletinID];
-
-				PBTimelineAttribute *attr = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action done" specificType:0];
-				[self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
-				return;
-			}
-		}
-		else
-		{
-			PBTimelineAttribute *attr = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action failed!" specificType:0];
-			[self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
-			return;
-		}
+                PBTimelineAttribute *attr = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action done" specificType:0];
+                [self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
+                return;
+            }
+        }
+        else
+        {
+            PBTimelineAttribute *attr = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action failed!" specificType:0];
+            [self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
+            return;
+        }
 	}
 
 	%orig; 
 }
 
 %new
-+ (void)performAction:(NSString *)actionID forBulletinID:(NSString *)bulletinID
++ (void)performAction:(PBSMSPebbleAction *)action
 {
-	saveActionToPerform(actionID, bulletinID, NO, @"");
+    [[PBSMSNotificationsHelper sharedHelper] loadActionsToPerform];
+	[[PBSMSNotificationsHelper sharedHelper] saveActionToPerform:action];
 
     CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
     rocketbootstrap_distributedmessagingcenter_apply(c);
@@ -1756,40 +1632,6 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
         CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
         rocketbootstrap_distributedmessagingcenter_apply(c);
         [c sendMessageName:performNotificationActionCommand userInfo:NULL];
-    });
-
-    // send message after 12 seconds
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)((SECOND_SEND_DELAY+2.) * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-    	removeActionsToPerform();
-    });
-}
-
-%new
-+ (void)performReply:(NSString *)reply forAction:(NSString *)actionID andBulletinID:(NSString *)bulletinID
-{
-	saveActionToPerform(actionID, bulletinID, YES, reply);
-
-    CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
-    rocketbootstrap_distributedmessagingcenter_apply(c);
-    [c sendMessageName:performNotificationActionCommand userInfo:NULL];
-
-    // send message after 5 seconds
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SEND_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
-        rocketbootstrap_distributedmessagingcenter_apply(c);
-        [c sendMessageName:performNotificationActionCommand userInfo:NULL];
-    });
-
-    // send message after 10 seconds
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SECOND_SEND_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
-        rocketbootstrap_distributedmessagingcenter_apply(c);
-        [c sendMessageName:performNotificationActionCommand userInfo:NULL];
-    });
-
-    // send message after 12 seconds
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)((SECOND_SEND_DELAY+2.) * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-    	removeActionsToPerform();
     });
 }
 
@@ -1878,129 +1720,6 @@ static void removeActionToPerform(NSString *actionID, NSString *bulletinID)
 	return %orig(arg1, arg2, arg3, arg4, @[ b ]);
 }
 
-%end
-
-%hook PBTimelineActionsWatchService
--(id)timelineWatchService{
-	%log;
-	id r = %orig;
-	log(@"%@", r);
-	return r;
-}
--(void)ANCSActionHandler:(id)arg1 didSendResponse:(unsigned char)arg2 withAttributes:(id)arg3 actions:(id)arg4 forItemIdentifier:(id)arg5{
-	%log;
-	%orig;
-}
--(void)sendTextAppActionHandler:(id)arg1 didSendResponse:(unsigned char)arg2 withAttributes:(id)arg3 forItemIdentifier:(id)arg4{
-	%log;
-	%orig;
-}
--(void)registerInvokeActionHandler{
-	%log;
-	%orig;
-}
--(void)registerInvokeANCSActionHandler{
-	%log;
-	%orig;
-}
--(id)invokeActionHandler{
-	%log;
-	id r = %orig;
-	log(@"%@", r);
-	return r;
-}
--(id)ANCSActionHandler{
-	%log;
-	id r = %orig;
-	log(@"%@", r);
-	return r;
-}
--(void)handleANCSActionForInvokeActionMessage:(id)arg1{
-	%log;
-	PBTimelineInvokeANCSActionMessage *message = (PBTimelineInvokeANCSActionMessage *)arg1;
-	log(@"%@", [%c(PBANCSActionHandler) bulletinIdentifierForInvokeANCSMessage:message]);
-	%orig;
-}
--(void)handleActionForItemIdentifier:(id)arg1 actionIdentifier:(unsigned char)arg2 attributes:(id)arg3{
-	%log;
-	%orig;
-}
--(id)notificationHandler{
-	%log;
-	id r = %orig;
-	log(@"%@", r);
-	return r;
-}
--(id)sendTextAppActionHandler{
-	%log;
-	id r = %orig;
-	log(@"%@", r);
-	return r;
-}
--(void)handleActionForItem:(id)arg1 actionIdentifier:(unsigned char)arg2 attributes:(id)arg3{
-	%log;
-	%orig;
-}
--(void)sendResponseForItemIdentifier:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4{
-	%log;
-	%orig;
-}
--(void)processAction:(id)arg1 forItem:(id)arg2 attributes:(id)arg3{
-	%log;
-	%orig;
-}
--(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3{
-	%log;
-	%orig;
-}
--(id)subtitleAttributeForLocalizedString:(id)arg1{
-	%log;
-	id r = %orig;
-	log(@"%@", r);
-	return r;
-}
--(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 subtitle:(id)arg3 icon:(id)arg4{
-	%log;
-	%orig;
-}
--(NSString *)accountUserID{
-	%log;
-	id r = %orig;
-	log(@"%@", r);
-	return r;
-}
--(id)httpActionSessionManager{
-	%log;
-	id r = %orig;
-	log(@"%@", r);
-	return r;
-}
--(id)subtitleAttributeForString:(id)arg1{
-	%log;
-	id r = %orig;
-	log(@"%@", r);
-	return r;
-}
--(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 subtitle:(id)arg3 icon:(id)arg4 specificType:(long long)arg5{
-	%log;
-	%orig;
-}
--(void)sendResponseForItemIdentifier:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4 mapperSignal:(id)arg5{
-	%log;
-	%orig;
-}
--(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4{
-	%log;
-	%orig;
-}
--(void)sendANCSResponseForItemIdentifier:(id)arg1 response:(unsigned char)arg2 attributes:(id)arg3 actions:(id)arg4{
-	%log;
-	%orig;
-}
--(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2{
-	%log;
-	%orig;
-}
 %end
 
 %end
