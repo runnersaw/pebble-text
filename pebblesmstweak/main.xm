@@ -225,7 +225,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 - (void)notificationsMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo
 {
     log(@"%@", userinfo);
-    PBSMSPebbleAction *action = [%c(PBSMSPebbleAction) deserializeFromObject:userinfo]
+    PBSMSPebbleAction *action = [%c(PBSMSPebbleAction) deserializeFromObject:userinfo];
     if (!action)
     {
         log(@"NO ACTION: FAILED TO PERFORM");
