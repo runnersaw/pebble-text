@@ -330,7 +330,7 @@
 						{
 							NSDictionary *dict = @{ @"UIUserNotificationActionResponseTypedTextKey" : action.replyText };
 							NSDictionary *finalDict = @{ @"userResponseInfo" : dict };
-							[response setContext:finalDict];
+							[bbResponse setContext:finalDict];
 						}
 
 						SBBulletinBannerController *bannerController = [%c(SBBulletinBannerController) sharedInstance];
@@ -344,7 +344,7 @@
 								if ([observer isKindOfClass:%c(BBObserver)])
 								{
 									BBObserver *bbObserver = (BBObserver *)observer;
-									[bbObserver sendResponse:response];
+									[bbObserver sendResponse:bbResponse];
 									NSLog(@"SENT RESPONSE");
 									[self removeActionToPerform:action];
 									success = YES;
