@@ -225,6 +225,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 - (void)notificationsMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo
 {
     log(@"%@", userinfo);
+    log(@"%@", [PBSMSPerformedActionsHelper sharedHelper].performedActions);
     PBSMSPebbleAction *action = [%c(PBSMSPebbleAction) deserializePebbleActionFromObject:userinfo];
     if (!action)
     {
@@ -1495,6 +1496,8 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
         action.isReplyAction = YES;
         action.replyText = reply;
 
+        log(@"action %@", [action serializeToDictionary]);
+
         [%c(PBANCSActionHandler) performAction:action];
 
 		PBTimelineAttribute *attr = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Reply sent" specificType:0];
@@ -1595,9 +1598,11 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 	{
         PBSMSPebbleAction *action = [[PBSMSNotificationsHelper sharedHelper] pebbleActionForPebbleActionId:@( [m actionID] )];
 
+
+        log(@"action %@", [action serializeToDictionary]);
         if (action)
         {
-            if (action.isReplyAction)
+            if (action.isBeginQuickReplyAction)
             {
                 PBTimelineAttribute *attr = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Reply" specificType:0];
                 [self sendResponse:21 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
