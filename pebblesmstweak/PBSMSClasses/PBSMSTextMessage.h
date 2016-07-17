@@ -13,7 +13,7 @@
 @property (nonatomic, copy) NSDate *expirationDate;
 @property (nonatomic, readonly) BOOL isExpired;
 
-+ (PBSMSTextMessage *)deserializeFromObject:(id)object;
++ (PBSMSTextMessage *)deserializeTextMessageFromObject:(id)object;
 
 - (instancetype)initWithNumber:(NSString *)number
 	messageText:(NSString *)messageText
