@@ -1311,10 +1311,15 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
 	for (NSString *app in [%c(PBSMSHelper) installedApplications])
 	{
+        if ([[%c(PBSMSReplyManager) allPossibleEnabledApps] containsObject:app])
+        {
+            continue;
+        }
 		[dict setObject:[%c(PBANCSActionHandler) actionHandlerWithDelegate:self] forKey:app];
 	}
+    log(@"dict %@", dict);
 
-	return dict; 
+	return [dict copy]; 
 }
 
 -(void)handleActionWithActionIdentifier:(unsigned char)arg1 attributes:(id)arg2
@@ -1341,10 +1346,9 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
         %orig; 
     }
 }
+
 -(BOOL)isHandlingNotificationWithIdentifier:(id)arg1
 {
-	%log;
-
     PBSMSPebbleAction *action = [[PBSMSNotificationsHelper sharedHelper] pebbleActionForANCSIdentifier:[(NSUUID *)arg1 UUIDString]];
 
     if (action)
