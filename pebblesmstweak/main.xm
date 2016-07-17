@@ -60,13 +60,13 @@
 
 @interface PBWatch (PebbleSMS)
 // new
-- (NSMutableDictionary *)getContactSearchResponse:(NSString *)name;
-- (NSMutableDictionary *)getSentResponse;
-- (NSMutableDictionary *)getFailedResponse;
-- (NSMutableDictionary *)getFinalRecievedResponse;
-- (NSMutableDictionary *)getConnectionResponse;
-- (NSMutableDictionary *)getRecentContactsResponse;
-- (NSMutableDictionary *)getPresets;
+- (NSDictionary *)getContactSearchResponse:(NSString *)name;
+- (NSDictionary *)getSentResponse;
+- (NSDictionary *)getFailedResponse;
+- (NSDictionary *)getFinalRecievedResponse;
+- (NSDictionary *)getConnectionResponse;
+- (NSDictionary *)getRecentContactsResponse;
+- (NSDictionary *)getPresets;
 + (void)sendSMS:(NSNumber *)recordId number:(NSString *)number withText:(NSString *)text;
 @end
 
@@ -284,7 +284,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 {
     if ([name isEqualToString:sendMessageCommand])
 	{
-        [self sendMessageForTextSender:[%c(PBSMSTextMessage) deserializeFromObject:[userinfo description]]];
+        [self sendMessageForTextSender:[%c(PBSMSTextMessage) deserializeTextMessageFromObject:[userinfo description]]];
     }
 }
 
@@ -776,7 +776,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 %hook PBWatch
 
 %new
-- (NSMutableDictionary *)getContactSearchResponse:(NSString *)name
+- (NSDictionary *)getContactSearchResponse:(NSString *)name
 {
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
@@ -810,53 +810,53 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
     isRecentContact = NO;
 
-    return dict;
+    return [dict copy];
 }
 
 %new
-- (NSMutableDictionary *)getFinalRecievedResponse
+- (NSDictionary *)getFinalRecievedResponse
 {
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
     [dict setObject:@"Sending..." forKey:RECIEVED_FINAL_MESSAGE_KEY];
     
-    return dict;
+    return [dict copy];
 }
 
 %new
-- (NSMutableDictionary *)getSentResponse
+- (NSDictionary *)getSentResponse
 {
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
     [dict setObject:@"Sent" forKey:MESSAGE_CONFIRMATION_KEY];
     [dict setObject:[NSNumber numberWithInt:1] forKey:IS_PEBBLE_SMS_KEY];
     
-    return dict;
+    return [dict copy];
 }
 
 %new
-- (NSMutableDictionary *)getFailedResponse
+- (NSDictionary *)getFailedResponse
 {
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
     [dict setObject:@"Sending failed" forKey:MESSAGE_CONFIRMATION_KEY];
     [dict setObject:[NSNumber numberWithInt:1] forKey:IS_PEBBLE_SMS_KEY];
     
-    return dict;
+    return [dict copy];
 }
 
 %new
-- (NSMutableDictionary *)getConnectionResponse
+- (NSDictionary *)getConnectionResponse
 {
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
     [dict setObject:@"Connected" forKey:CONNECTION_TEST_KEY];
     
-    return dict;
+    return [dict copy];
 }
 
 %new
-- (NSMutableDictionary *)getRecentContactsResponse
+- (NSDictionary *)getRecentContactsResponse
 {
 	[[PBSMSRecentContactHelper sharedHelper] loadContacts];
 
@@ -868,11 +868,11 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
         isRecentContact = YES;
     }
     
-    return dict;
+    return [dict copy];
 }
 
 %new
-- (NSMutableDictionary *)getPresets
+- (NSDictionary *)getPresets
 {
 	return @{ PRESETS_KEY : [[PBSMSTextHelper sharedHelper].presets componentsJoinedByString:@"\n"] };
 }
@@ -883,7 +883,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     id isSMS = [message objectForKey:IS_PEBBLE_SMS_KEY];
     if (isSMS && [isSMS intValue] == [[NSNumber numberWithInt:1] intValue])
 	{
-        NSMutableDictionary *response;
+        NSDictionary *response;
         BOOL initialized = NO;
         
         id connectionTest = [message objectForKey:CONNECTION_TEST_KEY];

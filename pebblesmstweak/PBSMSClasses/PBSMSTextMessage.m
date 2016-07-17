@@ -4,7 +4,7 @@
 
 @implementation PBSMSTextMessage
 
-+ (PBSMSTextMessage *)deserializeFromObject:(id)object
++ (PBSMSTextMessage *)deserializeTextMessageFromObject:(id)object
 {
     if (![object isKindOfClass:[NSDictionary class]])
     {
