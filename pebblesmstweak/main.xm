@@ -53,15 +53,14 @@
 
 @interface PBAddressBook (PebbleSMS)
 // new
-- (id)searchContacts:(NSString *)search tries:(int)tries;
-- (id)searchContactsList:(NSString *)search tries:(int)tries;
+- (id)searchContactsList:(NSString *)search;
 - (id)contactWithPhoneNumber:(PBPhoneNumber *)phoneNumber;
 - (id)contactWithPrefixedPhoneNumber:(NSString *)phoneNumber;
 @end
 
 @interface PBWatch (PebbleSMS)
 // new
-- (NSMutableDictionary *)getContactSearchResponse:(NSString *)name tries:(int)tries;
+- (NSMutableDictionary *)getContactSearchResponse:(NSString *)name;
 - (NSMutableDictionary *)getSentResponse;
 - (NSMutableDictionary *)getFailedResponse;
 - (NSMutableDictionary *)getFinalRecievedResponse;
@@ -95,6 +94,7 @@
 
 @interface PBSMSReplyManager (PebbleSMS)
 + (NSArray *)smsEnabledApps;
++ (NSArray *)allPossibleEnabledApps;
 @end
 
 static NSUUID *appUUID = [[NSUUID alloc] initWithUUIDString:@"36BF8B7A-A043-4E1B-8518-B6BB389EC110"];
@@ -224,8 +224,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 %new
 - (void)notificationsMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo
 {
-    log(@"%@", userinfo);
-    log(@"%@", [PBSMSPerformedActionsHelper sharedHelper].performedActions);
     PBSMSPebbleAction *action = [%c(PBSMSPebbleAction) deserializePebbleActionFromObject:userinfo];
     if (!action)
     {
@@ -272,8 +270,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 {
     BOOL s = %orig;
 
-    [self sendMessagesForTextSender];
-
     // register to recieve notifications when messages need to be sent
     CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSmsCenterName];
     rocketbootstrap_distributedmessagingcenter_apply(c);
@@ -286,10 +282,9 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 %new
 - (void)handleMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo
 {
-    log(@"handleMessageNamed %@", [userinfo description]);
     if ([name isEqualToString:sendMessageCommand])
 	{
-        [self sendMessagesForTextSender];
+        [self sendMessageForTextSender:[%c(PBSMSTextMessage) deserializeFromObject:[userinfo description]]];
     }
 }
 
@@ -307,17 +302,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     }
 
     [[PBSMSTextHelper sharedHelper] removeMessage:message];
-}
-
-%new
-- (void)sendMessagesForTextSender
-{
-	log(@"sendMessagesForTextSender");
-	NSArray *messages = [[PBSMSTextHelper sharedHelper] messages];
-    for (PBSMSTextMessage *message in messages)
-	{
-		[self sendMessageForTextSender:message];
-    }
 }
 
 %new
@@ -361,14 +345,12 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
             }
         }
     }
-    log(@"finalPhone %@", finalPhone);
 
     if (finalPhone == NULL)
 	{
         if (notify)
 		{
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                // NSLog(@"PB Send not success");
                 NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
                 [center postNotificationName:messageFailedNotification object:distributedCenterName userInfo:nil deliverImmediately:YES];
             });
@@ -397,7 +379,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     if (notify)
 	{
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            // NSLog(@"PEBBLESMS: Send success");
             NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
             [center postNotificationName:messageSendNotification object:distributedCenterName userInfo:nil deliverImmediately:YES];
         });
@@ -407,13 +388,10 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 %new
 - (void)sendMessageToNumber:(NSString *)number recordId:(NSNumber *)recordId withText:(NSString *)text notify:(BOOL)notify
 {
-    // NSLog(@"PEBBLESMS: sendMessageToNumber withText notify");
-    // NSLog(@"PB sendmessageto number");
     NSString *num = [@"+" stringByAppendingString:[[number componentsSeparatedByCharactersInSet: [[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""]];
 
     CKConversationList *conversationList = [%c(CKConversationList) sharedConversationList];
     CKConversation *conversation = [conversationList conversationForExistingChatWithGroupID:num];
-    // NSLog(@"PEBBLESMS: conversation %@", [conversation class]);
 
     if (conversation == NULL)
 	{
@@ -433,7 +411,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     if (notify)
 	{
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            // NSLog(@"PEBBLESMS: Send success");
             NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
             [center postNotificationName:messageSendNotification object:distributedCenterName userInfo:nil deliverImmediately:YES];
         });
@@ -443,9 +420,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 %new
 - (void)sendNewMessageTo:(NSNumber *)personId number:(NSString *)number withText:(NSString *)text notify:(BOOL)notify
 {
-    // NSLog(@"PEBBLESMS: sendNewMessageTo number withText notify");
-    // NSLog(@"PB sendmessageto personId");
-    // NSLog(@"PEBBLESMS: sendNewMessageTo");
     IMPerson *person = [[IMPerson alloc] initWithABRecordID:(ABRecordID)[personId intValue]];
     NSArray *handles = [%c(IMHandle) imHandlesForIMPerson:person];
 
@@ -484,14 +458,12 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
             }
         }
     }
-    // NSLog(@"PEBBLESMS: finalHandle == NULL %d", (finalHandle == NULL));
 
     if (finalHandle == NULL)
 	{
         if (notify)
 		{
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                // NSLog(@"PB Send not success");
                 NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
                 [center postNotificationName:messageFailedNotification object:distributedCenterName userInfo:nil deliverImmediately:YES];
             });
@@ -501,7 +473,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
     CKConversationList *conversationList = [%c(CKConversationList) sharedConversationList];
     CKConversation *conversation = [conversationList conversationForHandles:@[finalHandle] displayName:[finalHandle nickname] joinedChatsOnly:NO create:YES];
-    // NSLog(@"PB new conversation %@", [conversation class]);
 
     NSAttributedString* t = [[NSAttributedString alloc] initWithString:text];
     CKComposition* composition = [[CKComposition alloc] initWithText:t subject:nil];
@@ -514,7 +485,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     if (notify)
 	{
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NOTIFICATION_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            // NSLog(@"PB Send success");
             NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
             [center postNotificationName:messageSendNotification object:distributedCenterName userInfo:nil deliverImmediately:YES];
         });
@@ -529,27 +499,20 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
 - (void)sendMessage:(id)arg1 onService:(id)arg2 newComposition:(BOOL)arg3
 {
-    // NSLog(@"PEBBLESMS: sendMessage");
     %orig;
     
-    // NSLog(@"PEBBLESMS: sentMessage");
     [self saveRecipient];
-    // NSLog(@"PEBBLESMS: savedRecipient");
 }
 
 %new
 - (void)saveRecipient
 {
-    // NSLog(@"PEBBLESMS: saveRecipient");
-
     NSArray *handles = [self handles];
-    // NSLog(@"PEBBLESMS: handles %@", [handles class]);
     if (handles != NULL)
 	{
         if ([handles count] == 1)
 		{
             IMHandle *handle = (IMHandle *)[handles objectAtIndex:0];
-            // NSLog(@"PEBBLESMS: handle == NULL %d", (handle == NULL));
             id p = [handle phoneNumberRef];
             if (p)
 			{
@@ -571,25 +534,23 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
 - (void)account:(id)arg1 chat:(id)arg2 style:(unsigned char)arg3 chatProperties:(id)arg4 messageReceived:(id)arg5
 {
-    // NSLog(@"PEBBLESMS: account chat style chatProperties messageReceived");
     if ([arg5 isKindOfClass:[IMMessageItem class]])
-{
+    {
         NSString *sender = [(IMMessageItem *)arg5 sender];
-        // NSLog(@"PEBBLESMS: sender %@", [sender class]);
         if (![arg5 isFromMe])
-{
+        {
             CKConversationList *conversationList = [%c(CKConversationList) sharedConversationList];
             if (conversationList != NULL)
-{
+            {
                 CKConversation *conversation = [conversationList conversationForExistingChatWithGroupID:sender];
-                // NSLog(@"PEBBLESMS: conversation %@", [conversation class]);
                 if (conversation != NULL)
-{
+                {
                     [conversation saveRecipient];
                 }
             }
         }
     }
+
     %orig;
 }
 
@@ -606,19 +567,18 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 %new
 -(NSString *)getStringRepresentationForTextSender
 {
-    // NSLog(@"PEBBLESMS: getStringRepresentationForTextSender");
     if ([self respondsToSelector:@selector(stringValue)])
-{
+    {
         return [NSString stringWithString:[self stringValue]];
-    } else
-{
-        // NSLog(@"PEBBLESMS: %@ %@ %@ %@", [self rawStringValue], [self countryCallingCode], [self stringRepresentationForWatch], [self stringRepresentationForWeb]);
+    }
+    else
+    {
         if ([self stringRepresentationForWeb] != NULL && ![[self stringRepresentationForWeb] isEqual:@""])
-{
+        {
             return [NSString stringWithString:[self stringRepresentationForWeb]];
         }
         if ([self rawStringValue] != NULL)
-{
+        {
             return [NSString stringWithString:[self rawStringValue]];
         }
         return @"";
@@ -632,7 +592,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 %new
 + (NSString *)phoneWithPrefix:(NSString *)number
 {
-    // NSLog(@"PEBBLESMS: phoneWithPrefix");
     NSDictionary *dictCodes = [NSDictionary dictionaryWithObjectsAndKeys:
         @"93",@"AF",@"355",@"AL",@"213",@"DZ",@"1",@"AS", @"376",@"AD",@"244",@"AO",@"1",@"AI",@"1",@"AG",@"54",@"AR",@"374",@"AM",@"297",@"AW",@"61",@"AU",@"43",@"AT",@"994",@"AZ",@"1",@"BS",@"973",@"BH",
         @"880",@"BD",@"1",@"BB",@"375",@"BY",@"32",@"BE",@"501",@"BZ",@"229",@"BJ",@"1",@"BM",@"975",@"BT",@"387",@"BA",@"267",@"BW",@"55",@"BR",@"246",@"IO",@"359",@"BG",@"226",@"BF",@"257",@"BI",@"855",@"KH",
@@ -657,11 +616,11 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
     NSString *n;
     if ([number rangeOfString:@"+"].location == NSNotFound && callingCode != NULL)
-{
-        // NSLog(@"PB prefix %@", callingCode);
+    {
         n = [callingCode stringByAppendingString:number];
-    } else
-{
+    }
+    else
+    {
         n = number;
     }
     NSString *num = [@"+" stringByAppendingString:[[n componentsSeparatedByCharactersInSet: [[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""]];
@@ -672,7 +631,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 %new
 - (NSNumber *)recordId
 {
-    // NSLog(@"PEBBLESMS: recordId");
     return [NSNumber numberWithInt:(int)ABRecordGetRecordID([self recordRef])];
 }
 
@@ -683,14 +641,13 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 %new
 - (id)contactWithPhoneNumber:(PBPhoneNumber *)phoneNumber
 {
-    // NSLog(@"PEBBLESMS: contactWithPhoneNumber");
     for (PBContact *contact in (NSArray *)[self allContacts])
-{
+    {
         for (PBLabeledValue *label in (NSArray *)[contact phoneNumbers])
-{
+        {
             NSString *contactPhone = [(PBPhoneNumber *)[label value] getStringRepresentationForTextSender];
             if ([contactPhone isEqualToString:[phoneNumber getStringRepresentationForTextSender]])
-{
+            {
                 return contact;
             }
         }
@@ -701,7 +658,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 %new
 - (id)contactWithPrefixedPhoneNumber:(NSString *)phoneNumber
 {
-    // NSLog(@"PEBBLESMS: contactWithPrefixedPhoneNumber");
     PBContact *finalContact = NULL;
     int highestCount = 0;
 
@@ -709,7 +665,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 	{
         for (PBLabeledValue *label in (NSArray *)[contact phoneNumbers])
 		{
-
             NSString *number = [%c(PBContact) phoneWithPrefix:[(PBPhoneNumber *)[label value] getStringRepresentationForTextSender]];
             NSString *phone = [@"+" stringByAppendingString:[[phoneNumber componentsSeparatedByCharactersInSet: [[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""]];
 
@@ -737,9 +692,9 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
         }
     }
 
-    // NSLog(@"PEBBLESMS: finalContact == NULL %d", (finalContact == NULL));
+    // just double check that there was actually a find
     if (highestCount >= 6)
-	{ // just double check that there was actually a find
+	{
         return finalContact;
     }
 
@@ -747,15 +702,12 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 }
 
 %new
-- (id)searchContactsList:(NSString *)search tries:(int)tries
+- (id)searchContactsList:(NSString *)search
 {
-    // NSLog(@"PEBBLESMS: searchContactsList");
     NSMutableArray *results = [NSMutableArray array];
 
     for (id item in (NSArray *)[self allContacts])
 	{
-        // note the modified weighting, this ends up working similiar to Alfred / TextMate searching method
-        // TextMate takes into account camelcase while matching and is a little smarter, but you get the idea
         NSInteger score0 = [[search lowercaseString] compareWithWord:[[item fullName] lowercaseString] matchGain:10 missingCost:1];
         NSInteger score1 = [[search lowercaseString] compareWithWord:[[item firstName] lowercaseString] matchGain:10 missingCost:1];
         NSInteger score2 = [[search lowercaseString] compareWithWord:[[item lastName] lowercaseString] matchGain:10 missingCost:1];
@@ -784,7 +736,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     }
 
     // sort list
-    NSArray *res = [results sortedArrayUsingComparator: (NSComparator)^(id obj1, id obj2)
+    NSArray *res = [results sortedArrayUsingComparator:(NSComparator)^(id obj1, id obj2)
 	{
         return [[obj1 valueForKey:@"score"] compare:[obj2 valueForKey:@"score"]];
     }];
@@ -795,36 +747,19 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     int i = 0;
     int contactIndex = 0;
 
-    while (i < tries * MAX_CONTACTS_TO_SEND && contactIndex < [res count])
-	{
-        c = [[res objectAtIndex:contactIndex] objectForKey:@"item"];
-        contactIndex++;
-        for (int j=0;j<[[c phoneNumbers] count];j++)
-		{
-            number = [(PBPhoneNumber *)[(PBLabeledValue *)[[c phoneNumbers] objectAtIndex:j] value] getStringRepresentationForTextSender];
-            i++;
-            if (i == tries+1)
-			{
-                break;
-            }
-        }
-    }
-
     NSMutableArray *contacts = [NSMutableArray array];
     NSMutableArray *numbers = [NSMutableArray array];
-    for (int k = i; i < k+MAX_CONTACTS_TO_SEND;)
+    while (i < MAX_CONTACTS_TO_SEND && contactIndex < [res count])
 	{
-        // NSLog(@"i %d", i);
         c = [[res objectAtIndex:contactIndex] objectForKey:@"item"];
         contactIndex++;
         for (int j=0;j<[[c phoneNumbers] count];j++)
 		{
             number = [(PBPhoneNumber *)[(PBLabeledValue *)[[c phoneNumbers] objectAtIndex:j] value] getStringRepresentationForTextSender];
-            // NSLog(@"i %d %@ %@", i, [c fullName], number);
             [contacts addObject:c];
             [numbers addObject:number];
             i++;
-            if (i == tries+1)
+            if (i == MAX_CONTACTS_TO_SEND)
 			{
                 break;
             }
@@ -834,72 +769,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     return [NSDictionary dictionaryWithObjectsAndKeys:contacts, @"contacts", numbers, @"numbers", nil];
 }
 
-%new
-- (id)searchContacts:(NSString *)search tries:(int)tries
-{
-    // NSLog(@"PEBBLESMS: searchContacts tries");
-    NSMutableArray *results = [NSMutableArray array];
-
-    for (id item in (NSArray *)[self allContacts])
-	{
-        // note the modified weighting, this ends up working similiar to Alfred / TextMate searching method
-        // TextMate takes into account camelcase while matching and is a little smarter, but you get the idea
-        NSInteger score0 = [[search lowercaseString] compareWithWord:[[item fullName] lowercaseString] matchGain:10 missingCost:1];
-        NSInteger score1 = [[search lowercaseString] compareWithWord:[[item firstName] lowercaseString] matchGain:10 missingCost:1];
-        NSInteger score2 = [[search lowercaseString] compareWithWord:[[item lastName] lowercaseString] matchGain:10 missingCost:1];
-        NSInteger score3 = [[search lowercaseString] compareWithWord:[[item nickname] lowercaseString] matchGain:10 missingCost:1];
-        NSInteger score4 = [[search lowercaseString] compareWithWord:[[item middleName] lowercaseString] matchGain:10 missingCost:1];
-
-        NSInteger min = score0;
-        if (score1 < min)
-		{
-            min = score1;
-        }
-        if (score2 < min)
-		{
-            min = score2;
-        }
-        if (score3 < min)
-		{
-            min = score3;
-        }
-        if (score4 < min)
-		{
-            min = score4;
-        }
-
-        [results addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInteger:min], @"score", item, @"item", nil]];
-    }
-
-    // sort list
-    NSArray *res = [results sortedArrayUsingComparator: (NSComparator)^(id obj1, id obj2){
-        return [[obj1 valueForKey:@"score"] compare:[obj2 valueForKey:@"score"]];
-    }];
-
-    PBContact *c;
-    NSString *number;
-
-    int i = 0;
-    int contactIndex = 0;
-
-    while (i <= tries && contactIndex < [res count])
-	{
-        c = [[res objectAtIndex:contactIndex] objectForKey:@"item"];
-        contactIndex++;
-        for (int j=0;j<[[c phoneNumbers] count];j++)
-		{
-            number = [(PBPhoneNumber *)[(PBLabeledValue *)[[c phoneNumbers] objectAtIndex:j] value] getStringRepresentationForTextSender];
-            i++;
-            if (i == tries+1)
-			{
-                break;
-            }
-        }
-    }
-
-    return [NSDictionary dictionaryWithObjectsAndKeys:c, @"contact", number, @"number", nil];
-}
-
 %end
 
 // APP COMMUNICATION
@@ -907,23 +776,13 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 %hook PBWatch
 
 %new
-- (NSMutableDictionary *)getContactSearchResponse:(NSString *)name tries:(int)tries
+- (NSMutableDictionary *)getContactSearchResponse:(NSString *)name
 {
-    // NSLog(@"PEBBLESMS: getContactSearchResponse");
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
-    NSMutableDictionary *contactInfo = [[%c(PBAddressBook) addressBook] searchContacts:name tries:tries];
-    NSMutableDictionary *contactsInfo = [[%c(PBAddressBook) addressBook] searchContactsList:name tries:tries];
-    PBContact *c = [contactInfo objectForKey:@"contact"];
-    NSString *num = [contactInfo objectForKey:@"number"];
-    if (c != NULL && num != NULL && contactsInfo != NULL)
+    NSMutableDictionary *contactsInfo = [[%c(PBAddressBook) addressBook] searchContactsList:name];
+    if (contactsInfo)
 	{
-        // to maintain compatibility with old watchapp versions (<=v1.1)
-        [dict setObject:[c fullName] forKey:CONTACT_NAME_KEY];
-        [dict setObject:num forKey:CONTACT_NUMBER_KEY];
-        currentContactId = [c recordId];
-
-        // for newer watchapp models (>v1.1)
         NSMutableArray *contacts = [contactsInfo objectForKey:@"contacts"];
         NSMutableArray *numbers = [contactsInfo objectForKey:@"numbers"];
 
@@ -948,15 +807,8 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
         [dict setObject:[phones componentsJoinedByString:@"\n"] forKey:CONTACT_NUMBERS_KEY];
         [dict setObject:[ids componentsJoinedByString:@"\n"] forKey:CONTACT_IDS_KEY];
     }
-    else
-	{
-        [dict setObject:@"No more contacts" forKey:CONTACT_NAME_KEY];
-        [dict setObject:@"" forKey:CONTACT_NUMBER_KEY];
-    }
 
     isRecentContact = NO;
-    // NSLog(@"PB isRecentContact NO");
-    // NSLog(@"PB Response %@", dict);
 
     return dict;
 }
@@ -964,7 +816,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 %new
 - (NSMutableDictionary *)getFinalRecievedResponse
 {
-    // NSLog(@"PEBBLESMS: getFinalRecievedResponse");
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
     [dict setObject:@"Sending..." forKey:RECIEVED_FINAL_MESSAGE_KEY];
@@ -975,7 +826,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 %new
 - (NSMutableDictionary *)getSentResponse
 {
-    // NSLog(@"PEBBLESMS: getSentResponse");
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
     [dict setObject:@"Sent" forKey:MESSAGE_CONFIRMATION_KEY];
@@ -987,7 +837,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 %new
 - (NSMutableDictionary *)getFailedResponse
 {
-    // NSLog(@"PEBBLESMS: getFailedResponse");
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
     [dict setObject:@"Sending failed" forKey:MESSAGE_CONFIRMATION_KEY];
@@ -999,7 +848,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 %new
 - (NSMutableDictionary *)getConnectionResponse
 {
-    // NSLog(@"PEBBLESMS: getConnectionResponse");
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
     [dict setObject:@"Connected" forKey:CONNECTION_TEST_KEY];
@@ -1019,8 +867,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
         [dict setObject:[[PBSMSRecentContactHelper sharedHelper].phones componentsJoinedByString:@"\n"] forKey:RECENT_CONTACTS_NUMBER_KEY];
         isRecentContact = YES;
     }
-
-    log(@"getRecentContactsResponse %@", @( [PBSMSRecentContactHelper sharedHelper].contacts.count ));
     
     return dict;
 }
@@ -1028,37 +874,34 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 %new
 - (NSMutableDictionary *)getPresets
 {
-	log(@"presets2 %@", [PBSMSTextHelper sharedHelper].presets);
-	return [NSMutableDictionary dictionaryWithDictionary:@{ PRESETS_KEY : [PBSMSTextHelper sharedHelper].presets }];
+	return @{ PRESETS_KEY : [[PBSMSTextHelper sharedHelper].presets componentsJoinedByString:@"\n"] };
 }
 
 - (void)appMessagesPushUpdate:(id)fp8 onSent:(id)fp1001 uuid:(id)fp12 launcher:(id)fp16
 {
-    // NSLog(@"PEBBLESMS: appMessagesPushUpdate");
     NSMutableDictionary *message = (NSMutableDictionary *)fp8;
     id isSMS = [message objectForKey:IS_PEBBLE_SMS_KEY];
-    if (isSMS != NULL && [isSMS intValue] == [[NSNumber numberWithInt:1] intValue])
+    if (isSMS && [isSMS intValue] == [[NSNumber numberWithInt:1] intValue])
 	{
         NSMutableDictionary *response;
         BOOL initialized = NO;
         
         id connectionTest = [message objectForKey:CONNECTION_TEST_KEY];
-        if (connectionTest != NULL)
+        if (connectionTest)
 		{
             response = [self getConnectionResponse];
             initialized = YES;
         }
 
         id confirmation = [message objectForKey:MESSAGE_CONFIRMATION_KEY];
-        if (confirmation != NULL)
+        if (confirmation)
 		{
-            // NSLog(@"PB sending confirmation %@", [message description]);
             %orig;
             return;
         }
 
         NSNumber *state = [message objectForKey:STATE_KEY];
-        if (state != NULL)
+        if (state)
 		{
             if ([state intValue] == [GETTING_RECENT_CONTACTS_STATE intValue])
 			{
@@ -1074,11 +917,10 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
             
             if ([state intValue] == [CHECKING_CONTACT_STATE intValue])
 			{
-                NSNumber *tries = [message objectForKey:ATTEMPT_NUMBER_KEY];
                 NSString *name = [message objectForKey:DICTATED_NAME_KEY];
-                if (tries != NULL && name != NULL)
+                if (name)
 				{
-                    response = [self getContactSearchResponse:name tries: [tries intValue]];
+                    response = [self getContactSearchResponse:name];
                     initialized = YES;
                 }
             }
@@ -1088,20 +930,18 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
                 NSString *number = [message objectForKey:CONTACT_NUMBER_KEY];
                 NSString *m = [message objectForKey:FINAL_MESSAGE_KEY];
 
-                if (number != NULL && m != NULL)
+                if (number && m)
 				{
                     NSString *contactId = [message objectForKey:CONTACT_ID_KEY];
                     NSNumber *finalContactId = NULL;
-                    if (contactId != NULL && ![contactId isEqual:@""])
+                    if (contactId && ![contactId isEqual:@""])
 					{
                         NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
                         f.numberStyle = NSNumberFormatterDecimalStyle;
                         finalContactId = [f numberFromString:contactId];
                     }
 
-                    // NSLog(@"finalContactId %@", finalContactId);
-
-                    if (finalContactId != NULL)
+                    if (finalContactId)
 					{
                         [%c(PBWatch) sendSMS:finalContactId number:[%c(PBContact) phoneWithPrefix:number] withText:m];
                     }
@@ -1117,7 +957,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
         if (initialized)
 		{
-            // NSLog(@"PEBBLESMS: %@", response);
             %orig(response, fp1001, fp12, fp16); 
         }
         else
@@ -1164,7 +1003,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     [c sendMessageName:openMessagesCommand userInfo:NULL];
 
     // send message after 5 seconds
-    // TODO: Think about changing these to static vars?
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SEND_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSmsCenterName];
         rocketbootstrap_distributedmessagingcenter_apply(c);
@@ -1187,7 +1025,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
 - (id)sendSMSSendRequestWithMessage:(id)fp8 account:(id)fp12 transactionID:(id)fp16
 {
-    // NSLog(@"PEBBLESMS: sendSMSSendRequestWithMessage");
     PBSMSMessage *message = (PBSMSMessage *)fp8;
     NSString *text = [message text];
     PBPhoneNumber *number = [[message recipients] objectAtIndex:0];
@@ -1230,7 +1067,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
         rocketbootstrap_distributedmessagingcenter_apply(c);
         [c sendMessageName:sendMessageCommand userInfo:userInfo];
     });
-
 }
 
 %end
@@ -1244,16 +1080,13 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     %orig;
 
     if ([%c(PBAddressBookAuthorizationManager) authorizationStatus] == kABAuthorizationStatusNotDetermined)
-{
+    {
         [%c(PBAddressBookAuthorizationManager) requestAuthorizationWithCompletion:^(BOOL granted,CFErrorRef error){}];
     }
 }
 
 - (BOOL)application:(id)arg1 didFinishLaunchingWithOptions:(id)arg2
 {
-
-    // NSLog(@"PB pebble got launched");
-
     BOOL s = %orig;
 
     // register to recieve notifications when messages need to be sent
@@ -1317,7 +1150,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 - (id)cannedResponsesForAppIdentifier:(id)fp8
 {
     id r = %orig;
-	log(@"cannedResponses %@ %@", fp8, r);
     if ([(NSString *)fp8 isEqualToString:@"com.apple.MobileSMS"])
 	{
         [PBSMSTextHelper sharedHelper].presets = (NSArray *)r;
@@ -1330,7 +1162,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 	{
         [PBSMSTextHelper sharedHelper].presets = (NSArray *)fp8;
     }
-	log(@"setCannedResponses %@ %@", fp12, fp8);
     %orig; 
 }
 
@@ -1345,9 +1176,11 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 	{
         NSData *d = [(PBTimelineItemAttributeBlob *)[(NSArray *)fp12 objectAtIndex:0] content];
         NSString *reply = [[NSString alloc] initWithData:d encoding:NSUTF8StringEncoding];
+
         PBContact *contact = [[self addressBookQuerySession] selectedContact];
         PBPhoneNumber *pbPhoneNumber = (PBPhoneNumber *)[(PBLabeledValue *)[[self addressBookQuerySession] selectedLabeledValue] value];
         NSString *phone = [pbPhoneNumber getStringRepresentationForTextSender];
+
         PBTimelineAttributeContentLocalizedString *localString = [[%c(PBTimelineAttributeContentLocalizedString) alloc] initWithLocalizationKey:@"Sending..."];
         PBTimelineAttribute *attr = [%c(PBTimelineAttribute) attributeWithType:@"subtitle" content:localString];
         [(PBANCSActionHandler *)[self delegate] notificationHandler:self didSendResponse:15 withAttributes:@[attr] actions:NULL];
@@ -1378,7 +1211,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
         PBContact *contact = [[%c(PBAddressBook) addressBook] contactWithPhoneNumber:pbPhone];
 
         PBContact *finalContact;
-        if (contact == NULL)
+        if (!contact)
 		{
             NSString *prefixedPhone = [%c(PBContact) phoneWithPrefix:phone];
             finalContact = [[%c(PBAddressBook) addressBook] contactWithPrefixedPhoneNumber:prefixedPhone];
@@ -1388,7 +1221,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
             finalContact = contact;
         }
 
-        if (finalContact != NULL)
+        if (finalContact)
 		{
             PBTimelineAttributeContentLocalizedString *localString = [[%c(PBTimelineAttributeContentLocalizedString) alloc] initWithLocalizationKey:@"Sending..."];
             PBTimelineAttribute *attr = [%c(PBTimelineAttribute) attributeWithType:@"subtitle" content:localString];
@@ -1421,6 +1254,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     [origSet unionSet:notificationsSet];
     return [origSet copy];
 }
+
 -(NSSet *)ancsReplyEnabledApps
 {
     [[PBSMSNotificationsHelper sharedHelper] loadNotifications];
@@ -1437,14 +1271,26 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
         @"com.apple.mobilephone", 
         @"com.pebble.sendText" ];
 }
+
+%new
++ (NSArray *)allPossibleEnabledApps
+{
+    return @[ @"com.apple.MobileSMS", 
+        @"com.apple.mobilephone", 
+        @"com.pebble.sendText",
+        @"com.google.Gmail",
+        @"com.google.inbox",
+        @"com.microsoft.Office.Outlook",
+        @"com.apple.mobilemail" ];
+}
+
 %end
 
 %hook PBCannedResponseManager
+
 -(id)defaultResponsesForAppIdentifier:(id)arg1
 {
-	NSArray *enabledApps = @[ @"com.apple.MobileSMS", 
-		@"com.apple.mobilephone", 
-		@"com.pebble.sendText" ];
+	NSArray *enabledApps = [%c(PBSMSReplyManager) allPossibleEnabledApps];
 	if ([enabledApps containsObject:(NSString *)arg1])
 	{
 		return %orig;
@@ -1470,25 +1316,20 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
 	return dict; 
 }
+
 -(void)handleActionWithActionIdentifier:(unsigned char)arg1 attributes:(id)arg2
 {
-	NSLog(@"PBANCSActionHandler %@ %@", @( arg1 ), arg2);
+	log(@"PBANCSActionHandler %@ %@", @( arg1 ), arg2);
     if (arg1 == HAS_ACTIONS_IDENTIFIER)
 	{
-        // NSLog(@"HANDLING");
         NSData *d = [(PBTimelineItemAttributeBlob *)[(NSArray *)arg2 objectAtIndex:0] content];
         NSString *reply = [[NSString alloc] initWithData:d encoding:NSUTF8StringEncoding];
         NSUUID *ancsIdentifier = [self handlingIdentifier];
-
-        NSLog(@"reply %@", reply);
-        NSLog(@"ANCSIdentifier %@", ancsIdentifier);
 
         PBSMSPebbleAction *action = [[PBSMSNotificationsHelper sharedHelper] pebbleActionForANCSIdentifier:[ancsIdentifier UUIDString]];
 
         action.isReplyAction = YES;
         action.replyText = reply;
-
-        log(@"action %@", [action serializeToDictionary]);
 
         [%c(PBANCSActionHandler) performAction:action];
 
@@ -1519,61 +1360,49 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 {
 	PBTimelineInvokeANCSActionMessage *m = (PBTimelineInvokeANCSActionMessage *)arg1;
 	log(@"handleInvokeANCSActionMessage %@ %@ %@", m, @( [m actionID] ), [m appIdentifier]);
-	log(@"%@ %@ %@ %@", [m notificationSender], [m notificationSubtitle], [m notificationBody], [m actionTitle]);
-	log(@"%@", [[PBSMSNotificationsHelper sharedHelper] notificationsForAppIdentifier:[m appIdentifier]]);
 
 	if ([m actionID] == HAS_ACTIONS_IDENTIFIER)
 	{
 		[[PBSMSNotificationsHelper sharedHelper] loadNotifications];
 
-		log(@"loaded");
 	    NSMutableArray *actions = [NSMutableArray array];
 
-		log(@"Adding dismiss action");
 	    // Add dismiss actions
 		PBTimelineAttribute *a1 = [[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:@"Dismiss" specificType:0];
 		PBTimelineAttribute *a2 = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"" specificType:0];
 		[actions addObject:[[%c(PBTimelineAction) alloc] initWithIdentifier:@(DISMISS_IDENTIFIER) type:@"ANCSResponse" attributes:@[ a1, a2 ]]];
 
-		log(@"getting bulletin id");
 		NSString *bulletinId = [%c(PBANCSActionHandler) bulletinIdentifierForInvokeANCSMessage:m];
-		if (!bulletinId)
+		if (bulletinId)
 		{
-			PBTimelineAttribute *attr = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Couldn't find notification!" specificType:0];
-			[self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
-			return;
+            PBSMSNotification *notification = [[PBSMSNotificationsHelper sharedHelper] notificationForBulletinId:bulletinId];
+            if (!notification)
+            {
+                PBTimelineAttribute *attr = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action failed!" specificType:0];
+                [self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
+                return;
+            }
+
+            for (PBSMSNotificationAction *action in notification.actions)
+            {
+                PBTimelineAttribute *attr1 = [[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:action.title specificType:0];
+                PBTimelineAttribute *attr2 = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"" specificType:0];
+
+                [actions addObject:[[%c(PBTimelineAction) alloc] initWithIdentifier:@(currentNumber) type:@"ANCSResponse" attributes:@[ attr1, attr2 ]]];
+
+                PBSMSPebbleAction *pebbleAction = [[PBSMSPebbleAction alloc] initWithPebbleActionId:@(currentNumber)
+                    actionIdentifier:action.actionIdentifier
+                    bulletinIdentifier:bulletinId
+                    ANCSIdentifier:[[m ANCSIdentifier] UUIDString]
+                    isBeginQuickReplyAction:action.isQuickReply
+                    isReplyAction:NO
+                    replyText:@""];
+
+                [[PBSMSNotificationsHelper sharedHelper] savePebbleAction:pebbleAction];
+
+                currentNumber = currentNumber + 1;
+            }
 		}
-
-		log(@"got bulletin id %@", bulletinId);
-	    PBSMSNotification *notification = [[PBSMSNotificationsHelper sharedHelper] notificationForBulletinId:bulletinId];
-	    if (!notification)
-	    {
-			PBTimelineAttribute *attr = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action failed!" specificType:0];
-			[self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
-			return;
-	    }
-
-		log(@"got notification %@", notification);
-		for (PBSMSNotificationAction *action in notification.actions)
-		{
-			PBTimelineAttribute *attr1 = [[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:action.title specificType:0];
-			PBTimelineAttribute *attr2 = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"" specificType:0];
-
-			[actions addObject:[[%c(PBTimelineAction) alloc] initWithIdentifier:@(currentNumber) type:@"ANCSResponse" attributes:@[ attr1, attr2 ]]];
-
-            PBSMSPebbleAction *pebbleAction = [[PBSMSPebbleAction alloc] initWithPebbleActionId:@(currentNumber)
-                actionIdentifier:action.actionIdentifier
-                bulletinIdentifier:bulletinId
-                ANCSIdentifier:[[m ANCSIdentifier] UUIDString]
-                isBeginQuickReplyAction:action.isQuickReply
-                isReplyAction:NO
-                replyText:@""];
-
-            [[PBSMSNotificationsHelper sharedHelper] savePebbleAction:pebbleAction];
-
-			currentNumber = currentNumber + 1;
-		}
-        log(@"m ANCSIdentifier %@", [m ANCSIdentifier]);
 
 		PBTimelineAttribute *attr1 = [[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:@"Action" specificType:0];
 		PBTimelineAttribute *attr2 = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action" specificType:0];
@@ -1590,14 +1419,13 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 	{
         PBSMSPebbleAction *action = [[PBSMSNotificationsHelper sharedHelper] pebbleActionForPebbleActionId:@( [m actionID] )];
 
-
-        log(@"action %@", [action serializeToDictionary]);
         if (action)
         {
             if (action.isBeginQuickReplyAction)
             {
-                PBTimelineAttribute *attr = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Reply" specificType:0];
-                [self sendResponse:21 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
+                PBTimelineAttribute *attr1 = [[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:@"Reply" specificType:0];
+                PBTimelineAttribute *attr2 = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Reply" specificType:0];
+                [self sendResponse:21 withAttributes:@[ attr1, attr2 ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
                 return;
             }
             else
@@ -1652,9 +1480,9 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 %new
 + (NSString *)bulletinIdentifierForInvokeANCSMessage:(PBTimelineInvokeANCSActionMessage *)message
 {
-	NSMutableArray *matchingNotifications = [NSMutableArray array];
     [[PBSMSNotificationsHelper sharedHelper] loadNotifications];
-    log(@"all notifications %@", [[PBSMSNotificationsHelper sharedHelper] notificationsForAppIdentifier:[message appIdentifier]]);
+
+    NSMutableArray *matchingNotifications = [NSMutableArray array];
 	NSArray *notificationsArray = [[PBSMSNotificationsHelper sharedHelper] notificationsForAppIdentifier:[message appIdentifier]];
 	for (PBSMSNotification *notification in notificationsArray)
 	{
@@ -1665,7 +1493,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 			[matchingNotifications addObject:@{ @"bulletinID" : notification.bulletinId, @"timestamp" : notification.timestamp }];
 		}
 	}
-	NSLog(@"matchingNotifications %@", matchingNotifications);
 
 	NSString *finalBulletinID = nil;
 	NSDate *earliestTimestamp = nil;
@@ -1673,13 +1500,11 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 	{
 		NSString *bulletinID = dict[@"bulletinID"];
 		NSDate *timestamp = dict[@"timestamp"];
-		NSLog(@"%@ %@ %@ %@", finalBulletinID, earliestTimestamp, bulletinID, timestamp);
-		if (earliestTimestamp == nil)
+		if (!earliestTimestamp)
 		{
 			finalBulletinID = bulletinID;
-			continue;
 		}
-		if ([timestamp compare:earliestTimestamp] == NSOrderedDescending)
+		else if ([timestamp compare:earliestTimestamp] == NSOrderedDescending)
 		{
 			earliestTimestamp = timestamp;
 			finalBulletinID = bulletinID;
@@ -1701,6 +1526,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
         return orig;
     }
 
+    // For emails, which have more than 1 action enabled.
 	if ([[orig actions] count] > 1)
 	{
         return orig;
@@ -1709,13 +1535,14 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     BOOL alreadyAdded = NO;
     if ([[orig actions] count] == 1)
     {
-        for (PBTimelineAttribute *attribute in [[[orig actions] objectAtIndex:0] attributes])
+        PBTimelineAction *action = [[orig actions] objectAtIndex:0];
+        for (PBTimelineAttribute *attribute in [action attributes])
         {
             if (![[attribute content] isKindOfClass:[NSString class]])
             {
                 continue;
             }
-            if ([(NSString *)[attribute content] isEqualToString:@"Action"])
+            if ([(NSString *)[attribute content] isEqualToString:@"Action"] && action.identifier.intValue == HAS_ACTIONS_IDENTIFIER)
             {
                 alreadyAdded = YES;
                 break;
@@ -1745,7 +1572,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
         %init(PebbleMain);
         log(@"major %@", [%c(PBAppDelegate) majorAppVersion]);
         log(@"minor %@", [%c(PBAppDelegate) minorAppVersion]);
-        [%c(PBSMSHelper) installedApplications];
     }
     else if ([%c(SpringBoard) class])
 	{
