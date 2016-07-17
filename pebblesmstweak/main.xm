@@ -1445,6 +1445,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
         }
 	}
 
+    log(@"doing orig");
 	%orig; 
 }
 
