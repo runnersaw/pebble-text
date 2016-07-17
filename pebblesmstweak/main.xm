@@ -1521,16 +1521,10 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 +(id)notificationSourceWithAppIdentifier:(id)arg1 flags:(unsigned)arg2 version:(unsigned short)arg3 attributes:(id)arg4 actions:(id)arg5
 {
     PBNotificationSource *orig = (PBNotificationSource *)%orig;
-    if ([[%c(PBSMSReplyManager) smsEnabledApps] containsObject:(NSString *)arg1])
+    if ([[%c(PBSMSReplyManager) allPossibleEnabledApps] containsObject:(NSString *)arg1])
     {
         return orig;
     }
-
-    // For emails, which have more than 1 action enabled.
-	if ([[orig actions] count] > 1)
-	{
-        return orig;
-	}
 
     BOOL alreadyAdded = NO;
     if ([[orig actions] count] == 1)
