@@ -1310,7 +1310,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 	NSDictionary * r = %orig;
 	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:r];
 
-	for (NSString *app in [%c(PBSMSHelper) installedApplications])
+	for (NSString *app in [[PBSMSHelper sharedHelper] installedApplications])
 	{
         if ([[%c(PBSMSReplyManager) allPossibleEnabledApps] containsObject:app])
         {
