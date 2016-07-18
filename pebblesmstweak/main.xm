@@ -1290,7 +1290,8 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
 -(id)defaultResponsesForAppIdentifier:(id)arg1
 {
-	NSArray *enabledApps = [%c(PBSMSReplyManager) allPossibleEnabledApps];
+	log(@"defaultResponsesForAppIdentifier %@", arg1);
+	NSArray *enabledApps = [%c(PBSMSReplyManager) smsEnabledApps];
 	if ([enabledApps containsObject:(NSString *)arg1])
 	{
 		return %orig;

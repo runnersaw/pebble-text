@@ -19,7 +19,22 @@ NSString * const actionsToPerformFileLocation = @"/var/mobile/Library/Preference
 NSString * const messagesFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.messages.plist";
 NSString * const recentFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.recent.plist";
 
+@interface PBSMSHelper ()
+
+@property (nonatomic, strong) NSArray *applicationsArray;
+
+@end
+
 @implementation PBSMSHelper : NSObject
+
++ (id)sharedHelper {
+    static PBSMSHelper *sharedHelper = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedHelper = [[self alloc] init];
+    });
+    return sharedHelper;
+}
 
 + (void)dumpMethods:(Class)c
 {
@@ -40,10 +55,14 @@ NSString * const recentFileLocation = @"/var/mobile/Library/Preferences/com.sawy
     free(methods);
 }
 
-+ (NSArray *)installedApplications
+- (NSArray *)installedApplications
 {
-    NSDictionary *dict = [[ALApplicationList sharedApplicationList] applications];
-    return [dict allKeys];
+    if (!self.applicationsArray)
+    {
+        NSDictionary *dict = [[ALApplicationList sharedApplicationList] applications];
+        self.applicationsArray = [dict allKeys];
+    }
+    return self.applicationsArray;
 }
 
 @end

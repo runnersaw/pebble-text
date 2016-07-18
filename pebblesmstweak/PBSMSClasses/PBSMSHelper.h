@@ -65,8 +65,9 @@ extern NSString * const recentFileLocation;
 #endif
 
 @interface PBSMSHelper : NSObject
++ (instancetype)sharedHelper;
 + (void)dumpMethods:(Class)c;
-+ (NSArray *)installedApplications;
+- (NSArray *)installedApplications;
 @end
 
 @interface NSDictionary (PBSMS)
