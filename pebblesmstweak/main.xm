@@ -1325,7 +1325,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
         }
 		[dict setObject:[%c(PBANCSActionHandler) actionHandlerWithDelegate:self] forKey:app];
 	}
-    log(@"dict %@", dict);
 
 	return [dict copy]; 
 }
