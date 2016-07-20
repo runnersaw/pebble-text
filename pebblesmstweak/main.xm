@@ -754,8 +754,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
     NSMutableArray *contacts = [NSMutableArray array];
     NSMutableArray *numbers = [NSMutableArray array];
-    PBContact *prevContact;
-    NSString *prevNumber;
+    NSMutableArray *usedNumbers = [NSMutableArray array];
     while (i < MAX_CONTACTS_TO_SEND && contactIndex < [res count])
 	{
         c = [[res objectAtIndex:contactIndex] objectForKey:@"item"];
@@ -763,10 +762,11 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
         for (int j=0;j<[[c phoneNumbers] count];j++)
 		{
             number = [(PBPhoneNumber *)[(PBLabeledValue *)[[c phoneNumbers] objectAtIndex:j] value] getStringRepresentationForTextSender];
-            if ([prevNumber isEqualToString:number])
+            if ([usedNumbers containsObject:number])
             {
                 continue;
             }
+            [usedNumbers addObject:number];
             [contacts addObject:c];
             [numbers addObject:number];
             i++;
