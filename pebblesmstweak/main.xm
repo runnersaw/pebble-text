@@ -284,7 +284,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 {
     if ([name isEqualToString:sendMessageCommand])
 	{
-        [self sendMessageForTextSender:[%c(PBSMSTextMessage) deserializeTextMessageFromObject:[userinfo description]]];
+        [self sendMessageForTextSender:[%c(PBSMSTextMessage) deserializeTextMessageFromObject:userinfo]];
     }
 }
 
@@ -749,6 +749,8 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
     NSMutableArray *contacts = [NSMutableArray array];
     NSMutableArray *numbers = [NSMutableArray array];
+    PBContact *prevContact;
+    NSString *prevNumber;
     while (i < MAX_CONTACTS_TO_SEND && contactIndex < [res count])
 	{
         c = [[res objectAtIndex:contactIndex] objectForKey:@"item"];
@@ -756,6 +758,10 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
         for (int j=0;j<[[c phoneNumbers] count];j++)
 		{
             number = [(PBPhoneNumber *)[(PBLabeledValue *)[[c phoneNumbers] objectAtIndex:j] value] getStringRepresentationForTextSender];
+            if ([prevNumber isEqualToString:number])
+            {
+                continue;
+            }
             [contacts addObject:c];
             [numbers addObject:number];
             i++;
@@ -763,6 +769,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 			{
                 break;
             }
+            prevNumber = number;
         }
     }
 
