@@ -5,8 +5,6 @@
 
 @interface PBSMSTextHelper ()
 
-@property (nonatomic, strong) NSMutableArray *mutableMessages;
-
 @end
 
 @implementation PBSMSTextHelper
@@ -25,7 +23,7 @@
     self = [super init];
     if (self)
     {
-        _mutableMessages = [NSMutableArray array];
+        _messagesSent = [NSMutableArray array];
     }
     return self;
 }
@@ -48,69 +46,6 @@
     }
 
     return _presets;
-}
-
-- (NSArray *)messages
-{
-    return [self.mutableMessages copy];
-}
-
-- (void)loadMessages
-{
-    log(@"loadMessages");
-    NSArray *arr = [NSArray arrayWithContentsOfFile:messagesFileLocation];
-
-    if (!arr)
-    {
-        return;
-    }
-
-    [self.mutableMessages removeAllObjects];
-    for (id object in arr)
-    {
-        PBSMSTextMessage *textMessage = [PBSMSTextMessage deserializeFromObject:object];
-        if (textMessage && !textMessage.isExpired)
-        {
-            [self.mutableMessages addObject:textMessage];
-        }
-    }
-}
-
-- (void)saveMessages
-{
-    log(@"saveMessages");
-    NSMutableArray *serializedMessages = [NSMutableArray array];
-
-    for (PBSMSTextMessage *message in self.mutableMessages)
-    {
-        [serializedMessages addObject:[message serializeToDictionary]];
-    }
-
-    [serializedMessages writeToFile:messagesFileLocation atomically:YES];
-}
-
-- (void)saveMessageToSend:(PBSMSTextMessage *)message
-{
-    [self loadMessages];
-
-    [self.mutableMessages addObject:message];
-
-    [self saveMessages];
-}
-
-- (void)removeMessage:(PBSMSTextMessage *)removedMessage
-{
-    log(@"removeMessage %@", removedMessage);
-
-    for (PBSMSTextMessage *message in self.mutableMessages)
-    {
-        if (![message.uuid isEqualToString:removedMessage.uuid])
-        {
-            [self.mutableMessages removeObject:message];
-        }
-    }
-
-    [self saveMessages];
 }
 
 @end

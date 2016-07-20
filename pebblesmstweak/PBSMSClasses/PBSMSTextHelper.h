@@ -3,13 +3,8 @@
 @interface PBSMSTextHelper : NSObject
 
 @property (nonatomic, copy) NSArray *presets;
-@property (nonatomic, readonly) NSArray *messages;
+@property (nonatomic, strong) NSMutableArray *messagesSent;
 
 + (PBSMSTextHelper *)sharedHelper;
-
-- (void)loadMessages;
-- (void)saveMessages;
-- (void)saveMessageToSend:(PBSMSTextMessage *)message;
-- (void)removeMessage:(PBSMSTextMessage *)removedMessage;
 
 @end

@@ -292,6 +292,13 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 - (void)sendMessageForTextSender:(PBSMSTextMessage *)message
 {
 	log(@"sendMessageForTextSender %@", message);
+    if (message && [[PBSMSTextHelper sharedHelper].messagesSent containsObject:message.uuid])
+    {
+        return;
+    }
+
+    [[PBSMSTextHelper sharedHelper].messagesSent addObject:message.uuid];
+
     if (message.isRecentContact && !message.isReply)
 	{
         [self sendMessageToNumber:message.number recordId:message.recordId withText:message.messageText notify:message.shouldNotify];
@@ -300,8 +307,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 	{
         [self sendMessageTo:message.recordId number:message.number withText:message.messageText notify:message.shouldNotify];
     }
-
-    [[PBSMSTextHelper sharedHelper] removeMessage:message];
 }
 
 %new
@@ -1001,8 +1006,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 		isNewNumber:NO
 		expirationDate:[NSDate dateWithTimeIntervalSinceNow:MESSAGE_SEND_TIMEOUT]];
 
-    [[PBSMSTextHelper sharedHelper] saveMessageToSend:message];
-
     NSDictionary *userInfo = [message serializeToDictionary];
 
     CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
@@ -1052,8 +1055,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 		shouldNotify:NO
 		isNewNumber:NO
 		expirationDate:[NSDate dateWithTimeIntervalSinceNow:MESSAGE_SEND_TIMEOUT]];
-
-    [[PBSMSTextHelper sharedHelper] saveMessageToSend:message];
 
     NSDictionary *userInfo = [message serializeToDictionary];
 
