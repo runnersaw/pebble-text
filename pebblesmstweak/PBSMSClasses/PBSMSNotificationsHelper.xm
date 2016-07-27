@@ -149,6 +149,7 @@
 				actionIdentifier:actionIdentifier
 				isQuickReply:isQuickReply];
 
+			log(@"Adding action %@", actionTitle);
 	        [actions addObject:notificationAction];
 
 	        hasActions = YES;
