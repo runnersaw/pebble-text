@@ -18,8 +18,7 @@
     NSNumber *isQuickReply = [dict safeObjectForKey:@"isQuickReply" ofType:[NSNumber class]];
 
     if (!title ||
-        !actionIdentifier ||
-        !isQuickReply)
+        !actionIdentifier)
     {
         return nil;
     }

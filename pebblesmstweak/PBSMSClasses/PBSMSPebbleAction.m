@@ -27,8 +27,6 @@ static NSTimeInterval actionToPerformExpiration = 20.;
         !actionIdentifier ||
         !bulletinIdentifier ||
         !ANCSIdentifier ||
-        !isBeginQuickReplyAction ||
-        !isReplyAction ||
         !replyText)
     {
         return nil;

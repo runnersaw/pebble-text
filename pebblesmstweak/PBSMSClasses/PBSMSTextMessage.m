@@ -25,11 +25,6 @@
 
     if (!number ||
         !messageText ||
-        !shouldNotify ||
-        !isNewNumber ||
-        !isRecentContact ||
-        !isReply ||
-        !recordId ||
         !uuid ||
         !expirationDate)
     {
