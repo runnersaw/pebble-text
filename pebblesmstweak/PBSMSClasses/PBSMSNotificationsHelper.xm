@@ -141,7 +141,7 @@
         NSString *actionIdentifier = [action identifier];
         NSString *actionTitle = [(BBAppearance *)[action appearance] title];
         BOOL isQuickReply = ([action behavior] == 1);
-        log(@"%@ %@ %@", [action identifier], actionTitle, [action behavior]);
+        log(@"%@ %@ %d %@", [action identifier], actionTitle, [action behavior], [action isAuthenticationRequired]);
         if (![action isAuthenticationRequired] && actionIdentifier && actionTitle)
 		{
 	        PBSMSNotificationAction *notificationAction = [[PBSMSNotificationAction alloc] initWithTitle:actionTitle
