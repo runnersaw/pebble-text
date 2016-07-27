@@ -4,7 +4,7 @@
 
 @implementation PBSMSNotificationAction
 
-+ (PBSMSNotificationAction *)deserializeFromObject:(id)object
++ (PBSMSNotificationAction *)deserializeNotificationActionFromObject:(id)object
 {
     if (![object isKindOfClass:[NSDictionary class]])
     {

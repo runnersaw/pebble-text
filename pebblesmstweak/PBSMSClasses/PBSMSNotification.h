@@ -10,7 +10,7 @@
 @property (nonatomic, copy) NSDate *timestamp;
 @property (nonatomic, copy) NSArray *actions;
 
-+ (PBSMSNotification *)deserializeFromObject:(id)object;
++ (PBSMSNotification *)deserializeNotificationFromObject:(id)object;
 
 - (instancetype)initWithAppIdentifier:(NSString *)appIdentifier
 	bulletinId:(NSString *)bulletinId

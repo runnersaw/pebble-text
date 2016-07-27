@@ -6,7 +6,7 @@
 @property (nonatomic, copy) NSString *actionIdentifier;
 @property (nonatomic, readwrite) BOOL isQuickReply;
 
-+ (PBSMSNotificationAction *)deserializeFromObject:(id)object;
++ (PBSMSNotificationAction *)deserializeNotificationActionFromObject:(id)object;
 
 - (instancetype)initWithTitle:(NSString *)title
 	actionIdentifier:(NSString *)actionIdentifier

@@ -95,7 +95,7 @@
 	[self.mutableNotifications removeAllObjects];
 	for (id object in arr)
 	{
-		PBSMSNotification *notification = [PBSMSNotification deserializeFromObject:object];
+		PBSMSNotification *notification = [PBSMSNotification deserializeNotificationFromObject:object];
 		if (notification && ![notification isExpired])
 		{
 			[self.mutableNotifications addObject:notification];
