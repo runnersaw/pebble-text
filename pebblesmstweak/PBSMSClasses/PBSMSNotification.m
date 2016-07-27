@@ -37,6 +37,7 @@ static NSTimeInterval notificationActionsExpiration = 60.*60.*24.;
     NSMutableArray *finalActions = [NSMutableArray array];
     for (id a in actions)
     {
+    	log(@"deserializing action %@", a);
     	PBSMSNotificationAction *action = [PBSMSNotificationAction deserializeFromObject:a];
     	if (action)
     	{
