@@ -136,6 +136,7 @@
 
     BOOL hasActions = NO;
     NSMutableArray *actions = [NSMutableArray array];
+    log(@"%@", [bulletin supplementaryActionsForLayout:1]);
     for (BBAction *action in [bulletin supplementaryActionsForLayout:1])
 	{
         NSString *actionIdentifier = [action identifier];
