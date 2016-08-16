@@ -249,25 +249,34 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 - (void)observer:(id)arg1 removeBulletin:(id)arg2
 {
 	%orig;
+	%log;
 
 	NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
-	[center postNotificationName:bulletinRemovedNotification object:distributedCenterName userInfo:@{ activeBulletinIdKey : ((BBBulletin *)arg2).bulletinID } deliverImmediately:YES];
+	NSString *bulletinID = ((BBBulletin *)arg2).bulletinID;
+	log(@"%@", bulletinID);
+	[center postNotificationName:bulletinRemovedNotification object:distributedCenterName userInfo:@{ activeBulletinIdKey : bulletinID } deliverImmediately:YES];
 }
 
 - (void)observer:(id)arg1 addBulletin:(id)arg2 forFeed:(unsigned long long)arg3 playLightsAndSirens:(_Bool)arg4 withReply:(id)arg5
 {
 	%orig;
+	%log;
 
 	NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
-	[center postNotificationName:bulletinAddedNotification object:distributedCenterName userInfo:@{ activeBulletinIdKey : ((BBBulletin *)arg2).bulletinID } deliverImmediately:YES];
+	NSString *bulletinID = ((BBBulletin *)arg2).bulletinID;
+	log(@"%@", bulletinID);
+	[center postNotificationName:bulletinAddedNotification object:distributedCenterName userInfo:@{ activeBulletinIdKey : bulletinID } deliverImmediately:YES];
 }
 
 - (void)observer:(id)arg1 addBulletin:(id)arg2 forFeed:(unsigned long long)arg3
 {
 	%orig;
+	%log;
 
 	NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
-	[center postNotificationName:bulletinAddedNotification object:distributedCenterName userInfo:@{ activeBulletinIdKey : ((BBBulletin *)arg2).bulletinID } deliverImmediately:YES];
+	NSString *bulletinID = ((BBBulletin *)arg2).bulletinID;
+	log(@"%@", bulletinID);
+	[center postNotificationName:bulletinAddedNotification object:distributedCenterName userInfo:@{ activeBulletinIdKey : bulletinID } deliverImmediately:YES];
 }
 
 %end

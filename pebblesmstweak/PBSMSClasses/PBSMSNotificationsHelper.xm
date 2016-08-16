@@ -37,6 +37,7 @@
 		_mutableActionEnabledApps = [NSMutableArray array];
 		_mutablePebbleActions = [NSMutableArray array];
 		_bulletins = [NSMutableDictionary dictionary];
+		_activeBulletinIDs = [NSMutableArray array];
 		
 		[self loadEnabledApps];
 	}
