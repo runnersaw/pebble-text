@@ -244,6 +244,34 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
 %end
 
+%hook SBBulletinBannerController
+
+- (void)observer:(id)arg1 removeBulletin:(id)arg2
+{
+	%orig;
+
+	NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
+	[center postNotificationName:bulletinRemovedNotification object:distributedCenterName userInfo:@{ activeBulletinIdKey : ((BBBulletin *)arg2).bulletinID } deliverImmediately:YES];
+}
+
+- (void)observer:(id)arg1 addBulletin:(id)arg2 forFeed:(unsigned long long)arg3 playLightsAndSirens:(_Bool)arg4 withReply:(id)arg5
+{
+	%orig;
+
+	NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
+	[center postNotificationName:bulletinAddedNotification object:distributedCenterName userInfo:@{ activeBulletinIdKey : ((BBBulletin *)arg2).bulletinID } deliverImmediately:YES];
+}
+
+- (void)observer:(id)arg1 addBulletin:(id)arg2 forFeed:(unsigned long long)arg3
+{
+	%orig;
+
+	NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
+	[center postNotificationName:bulletinAddedNotification object:distributedCenterName userInfo:@{ activeBulletinIdKey : ((BBBulletin *)arg2).bulletinID } deliverImmediately:YES];
+}
+
+%end
+
 %hook BBBulletin
 
 + (id)addBulletinToCache:(id)arg1
@@ -1100,6 +1128,8 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(sentCallbackWithNotification:) name:messageSendNotification object:distributedCenterName];
     [center addObserver:self selector:@selector(failedCallbackWithNotification:) name:messageFailedNotification object:distributedCenterName];
+    [center addObserver:self selector:@selector(bulletinAdded:) name:bulletinAddedNotification object:distributedCenterName];
+    [center addObserver:self selector:@selector(bulletinRemoved:) name:bulletinRemovedNotification object:distributedCenterName];
 
     return s;
 }
@@ -1113,6 +1143,20 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
         PBWatch *watch = [[central connectedWatches] objectAtIndex:i];
         [watch appMessagesPushUpdate:[watch getSentResponse] onSent:^(PBWatch *watch, NSDictionary *update, NSError *error){} uuid:appUUID launcher:NULL];
     }
+}
+
+%new
+- (void)bulletinAdded:(NSNotification *)myNotification
+{
+	NSString *bulletinID = myNotification.userInfo[activeBulletinIdKey];
+	[[PBSMSNotificationsHelper sharedHelper] addActiveBulletinID:bulletinID];
+}
+
+%new
+- (void)bulletinRemoved:(NSNotification *)myNotification
+{
+	NSString *bulletinID = myNotification.userInfo[activeBulletinIdKey];
+	[[PBSMSNotificationsHelper sharedHelper] removeActiveBulletinID:bulletinID];
 }
 
 %new
@@ -1255,8 +1299,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 %hook PBSMSReplyManager
 -(NSSet *)smsApps
 {
-    [[PBSMSNotificationsHelper sharedHelper] loadNotifications];
-    NSSet *notificationsSet = [[PBSMSNotificationsHelper sharedHelper] appIdentifiers];
+    NSSet *notificationsSet = [[PBSMSNotificationsHelper sharedHelper] enabledApps];
     NSMutableSet *origSet = [NSMutableSet setWithSet:%orig];
     [origSet unionSet:notificationsSet];
     return [origSet copy];
@@ -1264,8 +1307,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
 -(NSSet *)ancsReplyEnabledApps
 {
-    [[PBSMSNotificationsHelper sharedHelper] loadNotifications];
-    NSSet *notificationsSet = [[PBSMSNotificationsHelper sharedHelper] appIdentifiers];
+    NSSet *notificationsSet = [[PBSMSNotificationsHelper sharedHelper] enabledApps];
     NSMutableSet *origSet = [NSMutableSet setWithSet:%orig];
     [origSet unionSet:notificationsSet];
     return [origSet copy];
@@ -1389,7 +1431,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
             PBSMSNotification *notification = [[PBSMSNotificationsHelper sharedHelper] notificationForBulletinId:bulletinId];
             if (!notification)
             {
-                PBTimelineAttribute *attr = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Action failed!" specificType:0];
+                PBTimelineAttribute *attr = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Notification not found!" specificType:0];
                 [self sendResponse:15 withAttributes:@[ attr ] actions:NULL forItemIdentifier:[m ANCSIdentifier]];
                 return;
             }

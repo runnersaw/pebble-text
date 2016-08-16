@@ -9,8 +9,10 @@
 @interface PBSMSNotificationsHelper ()
 
 @property (nonatomic, strong) NSMutableArray *mutableNotifications;
+@property (nonatomic, strong) NSMutableArray *mutableActionEnabledApps;
 @property (nonatomic, strong) NSMutableArray *mutablePebbleActions;
 @property (nonatomic, strong) NSMutableDictionary *bulletins;
+@property (nonatomic, strong) NSMutableArray *activeBulletinIDs;
 
 @end
 
@@ -32,27 +34,13 @@
 	if (self)
 	{
 		_mutableNotifications = [NSMutableArray array];
+		_mutableActionEnabledApps = [NSMutableArray array];
 		_mutablePebbleActions = [NSMutableArray array];
 		_bulletins = [NSMutableDictionary dictionary];
+		
+		[self loadEnabledApps];
 	}
 	return self;
-}
-
-- (NSSet *)appIdentifiers
-{
-	NSMutableSet *appIdentifiersSet = [NSMutableSet set];
-
-	for (PBSMSNotification *notification in self.mutableNotifications)
-	{
-		[appIdentifiersSet addObject:notification.appIdentifier];
-	}
-
-	return [appIdentifiersSet copy];
-}
-
-- (NSArray *)notifications
-{
-	return [self.mutableNotifications copy];
 }
 
 - (NSArray *)notificationsForAppIdentifier:(NSString *)appIdentifier
@@ -61,7 +49,7 @@
 
 	for (PBSMSNotification *notification in self.mutableNotifications)
 	{
-		if ([notification.appIdentifier isEqualToString:appIdentifier])
+		if ([notification.appIdentifier isEqualToString:appIdentifier] && [self.activeBulletinIDs containsObject:notification.bulletinId])
 		{
 			[notifications addObject:notification];
 		}
@@ -81,6 +69,23 @@
 	}
 
 	return nil;
+}
+
+- (void)loadEnabledApps
+{
+	NSMutableArray *arr = [NSMutableArray arrayWithContentsOfFile:enabledAppsFileLocation];
+
+	if (!arr)
+	{
+		return;
+	}
+
+	self.mutableActionEnabledApps = arr;
+}
+
+- (NSSet *)enabledApps
+{
+	return [NSSet setWithArray:[self.mutableActionEnabledApps copy]];
 }
 
 - (void)loadNotifications
@@ -115,7 +120,8 @@
 		}
 	}
 
-    [notificationsArr writeToFile:notificationsFileLocation atomically:YES];
+	[self.mutableActionEnabledApps writeToFile:enabledAppsFileLocation atomically:NO];
+    [notificationsArr writeToFile:notificationsFileLocation atomically:NO];
 }
 
 - (void)saveNotificationForBulletin:(BBBulletin *)bulletin
@@ -143,7 +149,7 @@
         NSString *actionTitle = [(BBAppearance *)[action appearance] title];
         BOOL isQuickReply = ([action behavior] == 1);
         log(@"%@ %@ %d %d %d %@", [action identifier], actionTitle, [action behavior], [action isAuthenticationRequired], [action canBypassPinLock], [action behaviorParameters]);
-        if (![action isAuthenticationRequired] && actionIdentifier && actionTitle)
+        if (actionIdentifier && actionTitle)
 		{
 	        PBSMSNotificationAction *notificationAction = [[PBSMSNotificationAction alloc] initWithTitle:actionTitle
 				actionIdentifier:actionIdentifier
@@ -179,8 +185,27 @@
 		actions:actions];
 
 	[self.mutableNotifications addObject:notification];
+	if (![self.mutableActionEnabledApps containsObject:appIdentifier])
+	{
+		[self.mutableActionEnabledApps addObject:appIdentifier];
+	}
 
 	[self saveNotifications];
+}
+
+- (void)addActiveBulletinID:(NSString *)bulletinID
+{
+	log(@"addActiveBulletinID %@", bulletinID);
+	if (![self.activeBulletinIDs containsObject:bulletinID])
+	{
+		[self.activeBulletinIDs addObject:bulletinID];
+	}
+}
+
+- (void)removeActiveBulletinID:(NSString *)bulletinID
+{
+	log(@"removeActiveBulletinID %@", bulletinID);
+	[self.activeBulletinIDs removeObject:bulletinID];
 }
 
 - (void)savePebbleAction:(PBSMSPebbleAction *)action
@@ -244,6 +269,7 @@
 					}
 
 					SBBulletinBannerController *bannerController = [%c(SBBulletinBannerController) sharedInstance];
+					NSLog(@"bulletinQueue %@", MSHookIvar<NSMutableArray *>(bannerController, "_bulletinQueue"));
 					NSLog(@"bannerController %@", bannerController);
 					if (bannerController)
 					{
@@ -251,6 +277,9 @@
 						if (observer)
 						{
 							NSLog(@"observer %@", observer);
+							[observer getBulletinsWithCompletion:^(NSArray *bulletins) {
+								NSLog(@"bulletins %@", bulletins);
+							}];
 							if ([observer isKindOfClass:%c(BBObserver)])
 							{
 								BBObserver *bbObserver = (BBObserver *)observer;

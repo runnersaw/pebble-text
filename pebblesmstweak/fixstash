@@ -1,0 +1,4 @@
+#!/bin/bash
+
+mv /var/stash/usrbin/clang /usr/bin/clang
+mv /var/stash/usrbin/clang++ /usr/bin/clang++
