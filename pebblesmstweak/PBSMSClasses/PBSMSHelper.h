@@ -47,12 +47,17 @@ extern NSString * const openMessagesCommand;
 extern NSString * const performNotificationActionCommand;
 extern NSString * const messageSendNotification;
 extern NSString * const messageFailedNotification;
+extern NSString * const bulletinAddedNotification;
+extern NSString * const bulletinRemovedNotification;
+
+extern NSString * const activeBulletinIdKey;
 
 extern NSString * const rocketbootstrapSmsCenterName;
 extern NSString * const rocketbootstrapSpringboardCenterName;
 extern NSString * const distributedCenterName;
 
 extern NSString * const notificationsFileLocation;
+extern NSString * const enabledAppsFileLocation;
 extern NSString * const pebbleActionsFileLocation;
 extern NSString * const actionsToPerformFileLocation;
 extern NSString * const messagesFileLocation;

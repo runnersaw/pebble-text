@@ -9,18 +9,19 @@
 
 @property (nonatomic, readonly) NSArray *notifications;
 @property (nonatomic, readonly) NSArray *pebbleActions;
+@property (nonatomic, readonly) NSSet *enabledApps;
 
 + (PBSMSNotificationsHelper *)sharedHelper;
-
-// Notifications
-- (NSSet *)appIdentifiers;
 
 // Notification handling
 - (NSArray *)notificationsForAppIdentifier:(NSString *)appIdentifier;
 - (PBSMSNotification *)notificationForBulletinId:(NSString *)bulletinId;
+- (void)loadEnabledApps;
 - (void)loadNotifications;
 - (void)saveNotifications;
 - (void)saveNotificationForBulletin:(BBBulletin *)bulletin;
+- (void)addActiveBulletinID:(NSString *)bulletinID;
+- (void)removeActiveBulletinID:(NSString *)bulletinID;
 
 // Saving Pebble Actions
 - (void)savePebbleAction:(PBSMSPebbleAction *)action;

@@ -8,12 +8,17 @@ NSString * const openMessagesCommand = @"messagesNeedsOpening";
 NSString * const performNotificationActionCommand = @"performNotificationAction";
 NSString * const messageSendNotification = @"pebbleMessageSend";
 NSString * const messageFailedNotification = @"pebbleMessageFailed";
+NSString * const bulletinAddedNotification = @"bulletinAddedNotification";
+NSString * const bulletinRemovedNotification = @"bulletinRemovedNotification";
+
+NSString * const activeBulletinIdKey = @"activeBulletinIdKey";
 
 NSString * const rocketbootstrapSmsCenterName = @"com.sawyervaughan.pebblesms.sms";
 NSString * const rocketbootstrapSpringboardCenterName = @"com.sawyervaughan.pebblesms.springboard";
 NSString * const distributedCenterName = @"com.sawyervaughan.pebblesms.pebble";
 
 NSString * const notificationsFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.notifications.plist";
+NSString * const enabledAppsFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.enabled-apps.plist";
 NSString * const pebbleActionsFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.pebble-actions.plist";
 NSString * const actionsToPerformFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.perform-actions.plist";
 NSString * const messagesFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.messages.plist";

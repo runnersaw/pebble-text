@@ -59,6 +59,9 @@
 + (id)_sharedInstanceCreateIfNecessary:(_Bool)arg1;
 - (void)_showTestBanner:(_Bool)arg1;
 - (id)init;
+- (void)observer:(id)arg1 removeBulletin:(id)arg2;
+- (void)observer:(id)arg1 addBulletin:(id)arg2 forFeed:(unsigned long long)arg3 playLightsAndSirens:(_Bool)arg4 withReply:(id)arg5;
+- (void)observer:(id)arg1 addBulletin:(id)arg2 forFeed:(unsigned long long)arg3;
 @end
 
 // SMS STUFF HEADERS
@@ -252,6 +255,7 @@
 @end
 
 @interface BBObserver : NSObject
+- (void)getBulletinsWithCompletion:(id /* block */)arg1;
 - (void)noteServerReceivedResponseForBulletin:(id)arg1;
 - (void)sendResponse:(id)arg1;
 - (id)init;
