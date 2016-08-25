@@ -66,3 +66,15 @@ fastlane/screenshots
 beta-testers.csv
 pebblesmstweak/logs/
 pebblesmstweak/pebble312headers/PebbleTime
+
+pebble-text-demo*
+
+com.sawyervaughan.pebblesmstweakbeta*
+obj/
+.theos/
+_/
+*.deb
+
+theos
+pebblesmstweak/theos
+
