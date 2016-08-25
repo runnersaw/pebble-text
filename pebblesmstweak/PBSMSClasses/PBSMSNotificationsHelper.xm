@@ -251,7 +251,6 @@
 	log(@"performAction %@", action.actionIdentifier);
 
 	BBBulletin *bulletin = [self.bulletins objectForKey:action.bulletinIdentifier];
-	NSLog(@"OHYESHERE %@", bulletin);
 	if (bulletin)
 	{
 		for (BBAction *bbAction in [bulletin supplementaryActionsForLayout:1])
@@ -261,7 +260,7 @@
 				BBResponse *bbResponse = [bulletin responseForAction:bbAction];
 				if (bbResponse)
 				{
-					NSLog(@"%@", bbResponse);
+					log(@"%@", bbResponse);
 					if (action.isReplyAction)
 					{
 						NSDictionary *dict = @{ @"UIUserNotificationActionResponseTypedTextKey" : action.replyText };
@@ -270,22 +269,16 @@
 					}
 
 					SBBulletinBannerController *bannerController = [%c(SBBulletinBannerController) sharedInstance];
-					NSLog(@"bulletinQueue %@", MSHookIvar<NSMutableArray *>(bannerController, "_bulletinQueue"));
-					NSLog(@"bannerController %@", bannerController);
 					if (bannerController)
 					{
 						id observer = MSHookIvar<id>(bannerController, "_observer");
 						if (observer)
 						{
-							NSLog(@"observer %@", observer);
-							[observer getBulletinsWithCompletion:^(NSArray *bulletins) {
-								NSLog(@"bulletins %@", bulletins);
-							}];
 							if ([observer isKindOfClass:%c(BBObserver)])
 							{
 								BBObserver *bbObserver = (BBObserver *)observer;
 								[bbObserver sendResponse:bbResponse];
-								NSLog(@"SENT RESPONSE");
+								log(@"SENT RESPONSE");
 								success = YES;
 							}
 						}

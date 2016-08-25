@@ -1623,21 +1623,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
 %end
 
-%hook PBNotificationSourceManager
--(void)deleteAllLocalNotificationSources { %log; %orig; }
--(PBCannedResponseManager *)cannedResponseManager { %log; id r = %orig; return r; }
--(id)initWithCannedResponseManager:(id)arg1 { %log; id r = %orig; return r; }
--(void)entryModelWasAdded:(id)arg1 { %log; %orig; }
--(void)handleCannedResponseDidChangeNotification:(id)arg1 { %log; %orig; }
--(void)updateCannedResponsesForAppIdentifier:(id)arg1 { %log; %orig; }
--(void)sendNotificationSourceCreationToAnalytics:(id)arg1 { %log; %orig; }
--(id)findNotificationSourceForAppIdentifier:(id)arg1 { %log; id r = %orig; return r; }
--(id)actionByReplacingCannedResponsesForAction:(id)arg1 forAppIdentifier:(id)arg2 { %log; id r = %orig; return r; }
--(void)setActions:(id)arg1 forAppIdentifier:(id)arg2 { %log; %orig; }
--(void)setMuteFlag:(unsigned char)arg1 forAppIdentifier:(id)arg2 { %log; %orig; }
--(RACSignal *)notificationSourcesSignal { %log; RACSignal *r = %orig; [r subscribeNext:^(id x){NSLog(@"%@", x);}]; return r; }
-%end
-
 %end
 
 %ctor
