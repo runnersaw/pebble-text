@@ -43,6 +43,7 @@ NSString * const recentFileLocation = @"/var/mobile/Library/Preferences/com.sawy
 
 + (void)dumpMethods:(Class)c
 {
+#if DEBUG
     unsigned int methodCount = 0;
     Method *methods = class_copyMethodList(c, &methodCount);
 
@@ -58,6 +59,7 @@ NSString * const recentFileLocation = @"/var/mobile/Library/Preferences/com.sawy
     }
 
     free(methods);
+#endif
 }
 
 - (NSArray *)installedApplications
