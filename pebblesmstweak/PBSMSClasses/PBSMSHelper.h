@@ -63,7 +63,7 @@ extern NSString * const actionsToPerformFileLocation;
 extern NSString * const messagesFileLocation;
 extern NSString * const recentFileLocation;
 
-#ifdef DEBUG
+#if DEBUG
 	#define log( s, ... ) NSLog( @"<%@:%d> %@", [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__,  [NSString stringWithFormat:(s), ##__VA_ARGS__] )
 #else
 	#define log( s, ... )
