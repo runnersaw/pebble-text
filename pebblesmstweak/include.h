@@ -558,7 +558,7 @@
 - (id)init;
 @end
 
-@interface PBCannedResponseManager
+@interface PBCannedResponseManager : NSObject
 + (id)userDefaults;
 - (id)cannedResponseDefaults;
 - (id)defaultResponses;

@@ -1633,7 +1633,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 -(void)setActions:(id)arg1 forAppIdentifier:(id)arg2 { %log; %orig; }
 -(void)setMuteFlag:(unsigned char)arg1 forAppIdentifier:(id)arg2 { %log; %orig; }
 -(RACSignal *)notificationSourcesSignal { %log; RACSignal *r = %orig; [r subscribeNext:^(id x){NSLog(@"%@", x);}]; return r; }
--(void)dealloc { %log; %orig; }
 %end
 
 %end
