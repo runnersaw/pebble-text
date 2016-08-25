@@ -1620,7 +1620,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
 %end
 
-@interface PBNotificationSourceManager : NSObject
+@interface RACSignal : NSObject
 - (id)subscribeNext:(void(^)(id))nextBlock;
 @end
 
