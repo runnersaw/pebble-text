@@ -1621,19 +1621,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 %end
 
 @interface PBNotificationSourceManager : NSObject
--(void)deleteAllLocalNotificationSources;
--(PBCannedResponseManager *)cannedResponseManager;
--(id)initWithCannedResponseManager:(id)arg1 ;
--(void)entryModelWasAdded:(id)arg1 ;
--(void)handleCannedResponseDidChangeNotification:(id)arg1 ;
--(void)updateCannedResponsesForAppIdentifier:(id)arg1 ;
--(void)sendNotificationSourceCreationToAnalytics:(id)arg1 ;
--(id)findNotificationSourceForAppIdentifier:(id)arg1 ;
--(id)actionByReplacingCannedResponsesForAction:(id)arg1 forAppIdentifier:(id)arg2 ;
--(void)setActions:(id)arg1 forAppIdentifier:(id)arg2 ;
--(void)setMuteFlag:(unsigned char)arg1 forAppIdentifier:(id)arg2 ;
--(RACSignal *)notificationSourcesSignal;
--(void)dealloc;
+- (id)subscribeNext:(void(^)(id))nextBlock;
 @end
 
 %hook PBNotificationSourceManager
@@ -1648,7 +1636,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 -(id)actionByReplacingCannedResponsesForAction:(id)arg1 forAppIdentifier:(id)arg2 { %log; id r = %orig; return r; }
 -(void)setActions:(id)arg1 forAppIdentifier:(id)arg2 { %log; %orig; }
 -(void)setMuteFlag:(unsigned char)arg1 forAppIdentifier:(id)arg2 { %log; %orig; }
--(RACSignal *)notificationSourcesSignal { %log; id r = %orig; return r; }
+-(RACSignal *)notificationSourcesSignal { %log; RACSignal *r = %orig; [r subscribeNext:^(id x){NSLog(@"%@", x);}]; subreturn r; }
 -(void)dealloc { %log; %orig; }
 %end
 
