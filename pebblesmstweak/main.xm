@@ -1308,19 +1308,19 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 %hook PBSMSReplyManager
 -(NSSet *)smsApps
 {
-    NSSet *notificationsSet = [[PBSMSNotificationsHelper sharedHelper] enabledApps];
+    NSSet *notificationsSet = [[PBSMSHelper sharedHelper] installedApplications];
     NSMutableSet *origSet = [NSMutableSet setWithSet:%orig];
     [origSet unionSet:notificationsSet];
     return [origSet copy];
 }
 
--(NSSet *)ancsReplyEnabledApps
-{
-    NSSet *notificationsSet = [[PBSMSNotificationsHelper sharedHelper] enabledApps];
-    NSMutableSet *origSet = [NSMutableSet setWithSet:%orig];
-    [origSet unionSet:notificationsSet];
-    return [origSet copy];
-}
+// -(NSSet *)ancsReplyEnabledApps
+// {
+//     NSSet *notificationsSet = [[PBSMSNotificationsHelper sharedHelper] enabledApps];
+//     NSMutableSet *origSet = [NSMutableSet setWithSet:%orig];
+//     [origSet unionSet:notificationsSet];
+//     return [origSet copy];
+// }
 
 %new
 + (NSArray *)smsEnabledApps
