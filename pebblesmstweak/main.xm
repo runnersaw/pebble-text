@@ -1620,10 +1620,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
 %end
 
-@interface RACSignal : NSObject
-- (id)subscribeNext:(void(^)(id))nextBlock;
-@end
-
 %hook PBNotificationSourceManager
 -(void)deleteAllLocalNotificationSources { %log; %orig; }
 -(PBCannedResponseManager *)cannedResponseManager { %log; id r = %orig; return r; }
@@ -1636,7 +1632,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 -(id)actionByReplacingCannedResponsesForAction:(id)arg1 forAppIdentifier:(id)arg2 { %log; id r = %orig; return r; }
 -(void)setActions:(id)arg1 forAppIdentifier:(id)arg2 { %log; %orig; }
 -(void)setMuteFlag:(unsigned char)arg1 forAppIdentifier:(id)arg2 { %log; %orig; }
--(RACSignal *)notificationSourcesSignal { %log; RACSignal *r = %orig; [r subscribeNext:^(id x){NSLog(@"%@", x);}]; subreturn r; }
+-(RACSignal *)notificationSourcesSignal { %log; RACSignal *r = %orig; [r subscribeNext:^(id x){NSLog(@"%@", x);}]; return r; }
 -(void)dealloc { %log; %orig; }
 %end
 

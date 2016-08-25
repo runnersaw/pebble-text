@@ -780,6 +780,10 @@
 -(NSManagedObjectContext *)managedObjectContext;
 @end
 
+@interface RACSignal : NSObject
+- (id)subscribeNext:(void(^)(id))nextBlock;
+@end
+
 @interface PBNotificationSourceManager : NSObject
 -(void)deleteAllLocalNotificationSources;
 -(PBCannedResponseManager *)cannedResponseManager;
@@ -792,6 +796,7 @@
 -(void)updateCannedResponsesForAppIdentifier:(id)arg1 ;
 -(void)sendNotificationSourceCreationToAnalytics:(id)arg1 ;
 -(id)findNotificationSourceForAppIdentifier:(id)arg1 ;
+-(RACSignal *)notificationSourcesSignal;
 -(void)setMuteFlag:(unsigned char)arg1 forAppIdentifier:(id)arg2 ;
 -(void)dealloc;
 @end
