@@ -233,8 +233,11 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     if (![[PBSMSPerformedActionsHelper sharedHelper].performedActions containsObject:action.pebbleActionId])
     {
         log(@"performing");
-        [[PBSMSNotificationsHelper sharedHelper] performAction:action];
-        [[PBSMSPerformedActionsHelper sharedHelper].performedActions addObject:action.pebbleActionId];
+        BOOL success = [[PBSMSNotificationsHelper sharedHelper] performAction:action];
+        if (success)
+        {
+            [[PBSMSPerformedActionsHelper sharedHelper].performedActions addObject:action.pebbleActionId];
+        }
     }
     else
     {
@@ -1644,7 +1647,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
         %init(PebbleMain);
         log(@"major %@", [%c(PBAppDelegate) majorAppVersion]);
         log(@"minor %@", [%c(PBAppDelegate) minorAppVersion]);
-
     }
     else if ([%c(SpringBoard) class])
 	{
