@@ -1644,10 +1644,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
         %init(PebbleMain);
         log(@"major %@", [%c(PBAppDelegate) majorAppVersion]);
         log(@"minor %@", [%c(PBAppDelegate) minorAppVersion]);
-        PBCannedResponseManager *responseManager = [[%c(PBCannedResponseManager) alloc] initWithUserDefaults:[%c(PBCannedResponseManager) userDefaults]];
-        log(@"%@", responseManager);
-        PBNotificationSourceManager *notificationManager = [[%c(PBNotificationSourceManager) alloc] initWithCannedResponseManager:responseManager];
-        log(@"%@", notificationManager);
 
     }
     else if ([%c(SpringBoard) class])
