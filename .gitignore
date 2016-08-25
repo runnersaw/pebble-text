@@ -75,6 +75,6 @@ obj/
 _/
 *.deb
 
-theos/
-pebblesmstweak/theos/
+theos
+pebblesmstweak/theos
 
