@@ -246,6 +246,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     }
 }
 
+%new
 - (void)deletedNotificationSourcesMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo
 {
     log(@"set already deleted notifications");
