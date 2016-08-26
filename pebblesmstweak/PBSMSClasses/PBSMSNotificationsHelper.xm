@@ -86,6 +86,20 @@
 
 - (NSSet *)enabledApps
 {
+	NSArray *forceEnabledApps = @[ @"net.whatsapp.Whatsapp",
+		@"ph.telegra.Telegraph",
+		@"com.facebook.Messenger",
+		@"com.google.hangouts"
+		@"com.atebits.Tweetie2" ];
+
+	for (NSString *app in forceEnabledApps)
+	{
+		if (![self.mutableActionEnabledApps containsObject:app])
+		{
+			[self.mutableActionEnabledApps addObject:app];
+		}
+	}
+
 	return [NSSet setWithArray:[self.mutableActionEnabledApps copy]];
 }
 
