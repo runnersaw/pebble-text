@@ -1356,6 +1356,18 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 }
 %end
 
+%hook PBNotificationSourceManager
+
+- (id)initWithCannedResponseManager:(id)arg1
+{
+    PBNotificationSourceManager *r = %orig;
+    [r deleteAllLocalNotificationSources];
+    log(@"deleteAllLocalNotificationSources");
+    return r;
+}
+
+%end
+
 %hook PBANCSActionHandler
 
 -(NSDictionary *)actionHandlersByAppIdentifier
