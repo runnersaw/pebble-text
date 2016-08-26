@@ -13,6 +13,8 @@
 
 + (PBSMSNotificationsHelper *)sharedHelper;
 
+- (void)setNeedsDeleteNotificationSources:(BOOL)needsDelete;
+
 // Notification handling
 - (NSArray *)notificationsForAppIdentifier:(NSString *)appIdentifier;
 - (PBSMSNotification *)notificationForBulletinId:(NSString *)bulletinId;

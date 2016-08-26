@@ -49,6 +49,7 @@ extern NSString * const messageSendNotification;
 extern NSString * const messageFailedNotification;
 extern NSString * const bulletinAddedNotification;
 extern NSString * const bulletinRemovedNotification;
+extern NSString * const notificationSourcesDeletedNotification;
 
 extern NSString * const activeBulletinIdKey;
 
@@ -62,6 +63,7 @@ extern NSString * const pebbleActionsFileLocation;
 extern NSString * const actionsToPerformFileLocation;
 extern NSString * const messagesFileLocation;
 extern NSString * const recentFileLocation;
+extern NSString * const needsDeleteNotificationSourcesFileLocation;
 
 #if DEBUG
 	#define log( s, ... ) NSLog( @"<%@:%d> %@", [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__,  [NSString stringWithFormat:(s), ##__VA_ARGS__] )

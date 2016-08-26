@@ -213,6 +213,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     [c runServerOnCurrentThread];
     [c registerForMessageName:openMessagesCommand target:self selector:@selector(messagesMessageNamed:withUserInfo:)];
     [c registerForMessageName:performNotificationActionCommand target:self selector:@selector(notificationsMessageNamed:withUserInfo:)];
+    [c registerForMessageName:notificationSourcesDeletedNotification target:self selector:@selector(deletedNotificationSourcesMessageNamed:withUserInfo:)];
 }
  
 %new
@@ -243,6 +244,12 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     {
         log(@"Already performed");
     }
+}
+
+- (void)deletedNotificationSourcesMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo
+{
+    log(@"set already deleted notifications");
+    [[PBSMSNotificationsHelper sharedHelper] setNeedsDeleteNotificationSources:NO];
 }
 
 %end
@@ -1362,8 +1369,18 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 - (id)initWithCannedResponseManager:(id)arg1
 {
     PBNotificationSourceManager *r = %orig;
-    [r deleteAllLocalNotificationSources];
-    log(@"deleteAllLocalNotificationSources");
+
+    NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:needsDeleteNotificationSourcesFileLocation];
+    BOOL needsDelete = ((NSNumber *)dict[notificationSourcesDeletedNotification]).boolValue;
+    if (needsDelete)
+    {
+        log(@"deleteAllLocalNotificationSources");
+        [r deleteAllLocalNotificationSources];
+
+        CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
+        rocketbootstrap_distributedmessagingcenter_apply(c);
+        [c sendMessageName:notificationSourcesDeletedNotification userInfo:NULL];
+    }
     return r;
 }
 

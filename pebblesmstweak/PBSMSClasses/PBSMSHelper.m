@@ -10,6 +10,7 @@ NSString * const messageSendNotification = @"pebbleMessageSend";
 NSString * const messageFailedNotification = @"pebbleMessageFailed";
 NSString * const bulletinAddedNotification = @"bulletinAddedNotification";
 NSString * const bulletinRemovedNotification = @"bulletinRemovedNotification";
+NSString * const notificationSourcesDeletedNotification = @"notificationSourcesDeleted";
 
 NSString * const activeBulletinIdKey = @"activeBulletinIdKey";
 
@@ -23,6 +24,7 @@ NSString * const pebbleActionsFileLocation = @"/var/mobile/Library/Preferences/c
 NSString * const actionsToPerformFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.perform-actions.plist";
 NSString * const messagesFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.messages.plist";
 NSString * const recentFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.recent.plist";
+NSString * const needsDeleteNotificationSourcesFileLocation = @"/var/mobile/Library/Preferences/com.sawyervaughan.pebblesms.needs-delete.plist";
 
 @interface PBSMSHelper ()
 

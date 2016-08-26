@@ -44,6 +44,12 @@
 	return self;
 }
 
+- (void)setNeedsDeleteNotificationSources:(BOOL)needsDelete
+{
+	NSDictionary *dict = @{ notificationSourcesDeletedNotification : @(needsDelete) };
+	[dict writeToFile:needsDeleteNotificationSourcesFileLocation atomically:NO];
+}
+
 - (NSArray *)notificationsForAppIdentifier:(NSString *)appIdentifier
 {
 	NSMutableArray *notifications = [NSMutableArray array];
@@ -203,6 +209,7 @@
 	if (![self.mutableActionEnabledApps containsObject:appIdentifier])
 	{
 		[self.mutableActionEnabledApps addObject:appIdentifier];
+
 	}
 
 	[self saveNotifications];
