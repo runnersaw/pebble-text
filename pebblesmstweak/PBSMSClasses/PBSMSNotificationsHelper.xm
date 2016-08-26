@@ -89,7 +89,7 @@
 	NSArray *forceEnabledApps = @[ @"net.whatsapp.Whatsapp",
 		@"ph.telegra.Telegraph",
 		@"com.facebook.Messenger",
-		@"com.google.hangouts"
+		@"com.google.hangouts",
 		@"com.atebits.Tweetie2" ];
 
 	for (NSString *app in forceEnabledApps)
