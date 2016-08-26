@@ -1309,6 +1309,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 // THIS PART IS FOR ACTIONABLE NOTIFICATIONS
 
 %hook PBSMSReplyManager
+
 -(NSSet *)smsApps
 {
     NSSet *notificationsSet = [[PBSMSNotificationsHelper sharedHelper] enabledApps];
