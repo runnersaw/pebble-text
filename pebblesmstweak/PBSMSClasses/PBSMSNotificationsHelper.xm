@@ -209,7 +209,7 @@
 	if (![self.mutableActionEnabledApps containsObject:appIdentifier])
 	{
 		[self.mutableActionEnabledApps addObject:appIdentifier];
-
+		[self setNeedsDeleteNotificationSources:YES];
 	}
 
 	[self saveNotifications];
