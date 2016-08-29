@@ -1,11 +1,39 @@
 This tweak allows Pebble users to send texts directly from their watches. Users can install the watchapp "TextSender for Pebble" in the Pebble app store in order to send texts from the watch, or use the Pebble "Send Text" app. 
 
-If you're on a Time-series watch, this tweak will enable native text replies on the watch for all users, and enable the "Send Text" app. Unlike Pebble native text sending, the texts will show up in your Messages application. 
+If you're on a Time-series watch, this tweak will enable native text replies on the watch for all users, and enable the "Send Text" app. Unlike Pebble native text sending, the texts will show up in your Messages application.
 
-This tweak also enables the Pebble "Send Text" app. 
+Update 2.0 allows you to perform actionable notifications on your Pebble! You will be able to perform actions on any iOS notification that has actions, including quick replies. This means that you'll be able to reply to Whatsapp, Facebook Messenger, Twitter, and more, right from your Pebble! (Note: Quick reply for some apps is only available on certain iOS versions. The apps mentioned here have only been tested to be compatible with quick reply on iOS 9.3.3).
+
+An "Action" option will appear in the menu for the notification, if actions are available. Actions can only be performed if the notification has not been dismissed and still appears on the lock screen (this is an iOS limitation, not a TextSender limitation). Actions can only be taken on a notification one time. If a notification has already been dismissed or acted upon, only a "Dismiss" action will be shown.
+
+The "Action" option won't appear the first time a notification appears from an app. It will appear after the app sends a notification and the Pebble app is restarted (killed in the app switcher and relaunched). For example, the first time I recieve a Whatsapp notification, "Action" won't appear. You will have to kill the Pebble app and relaunch it *after* Whatsapp has already sent a notification.
+
+Note: As a workaround to force Pebble to reload notification actions, TextSender will occasionally force the Pebble app to delete its database of apps which send notifications. This causes the 'Muted' state of apps to revert to 'Unmuted'.
+
+Note: The "Action" option may not disappear after TextSender is uninstalled. However, it will not be functional. To remove the "Action" option after uninstalling TextSender, you will probably have to uninstall and reinstall the Pebble app.
 
 This tweak requires the new Pebble iPhone app (not the one marked 'Pebble OLD VERSION' on the App Store) and Pebble watches on the new 3.X firmware. 
 
-This was tested on an iPhone 5s running iOS 9.0.2 with a Pebble Time on firmware version 3.12 and Pebble app version 3.12. 
+This was tested on an iPhone 5s running iOS 9.3.3 with a Pebble Time on firmware version 3.14 and Pebble app version 3.14.
 
-This tweak does not work for sending a text to multiple contacts.
+FAQ:
+
+Do I have to use the TextSender for Pebble app to create text messages?
+
+No. You can also use Pebble's native "Send Text" app. The TextSender watchapp will allow you to search for contacts, while the "Send Text" app will allow you to set favorite contacts. Other than that, there isn't much difference between the two.
+
+Can I reply or send a message to multiple recipients?
+
+No, TextSender does not currently support this.
+
+Will this work to send iMessages if I don't have an SMS plan?
+
+I doubt it. TextSender *does* enable sending iMessages. However, there appears to be an iOS bug that requres the first message from TextSender to be sent as an SMS. This means that if you don't have an SMS plan, TextSender will likely not work for you.
+
+Why isn't the "Action" option isn't showing up for *insert app here*?
+
+Wait until you have recieved at least one notification from the app, and then kill the Pebble app and relaunch it. The "Action" option should show for that app from now on.
+
+What will happen if I try to reply to a notification on an OG Pebble or Pebble Steel?
+
+I have no idea, you'll have to test this yourself.
