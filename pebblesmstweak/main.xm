@@ -265,7 +265,10 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 	NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
 	NSString *bulletinID = ((BBBulletin *)arg2).bulletinID;
 	log(@"%@", bulletinID);
-	[center postNotificationName:bulletinRemovedNotification object:distributedCenterName userInfo:@{ activeBulletinIdKey : bulletinID } deliverImmediately:YES];
+    if (bulletinID)
+    {
+        [center postNotificationName:bulletinRemovedNotification object:distributedCenterName userInfo:@{ activeBulletinIdKey : bulletinID } deliverImmediately:YES];
+    }
 }
 
 - (void)observer:(id)arg1 addBulletin:(id)arg2 forFeed:(unsigned long long)arg3 playLightsAndSirens:(_Bool)arg4 withReply:(id)arg5
@@ -276,7 +279,10 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 	NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
 	NSString *bulletinID = ((BBBulletin *)arg2).bulletinID;
 	log(@"%@", bulletinID);
-	[center postNotificationName:bulletinAddedNotification object:distributedCenterName userInfo:@{ activeBulletinIdKey : bulletinID } deliverImmediately:YES];
+    if (bulletinID)
+    {
+        [center postNotificationName:bulletinAddedNotification object:distributedCenterName userInfo:@{ activeBulletinIdKey : bulletinID } deliverImmediately:YES];
+    }
 }
 
 - (void)observer:(id)arg1 addBulletin:(id)arg2 forFeed:(unsigned long long)arg3
@@ -287,7 +293,10 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 	NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
 	NSString *bulletinID = ((BBBulletin *)arg2).bulletinID;
 	log(@"%@", bulletinID);
-	[center postNotificationName:bulletinAddedNotification object:distributedCenterName userInfo:@{ activeBulletinIdKey : bulletinID } deliverImmediately:YES];
+    if (bulletinID)
+    {
+        [center postNotificationName:bulletinAddedNotification object:distributedCenterName userInfo:@{ activeBulletinIdKey : bulletinID } deliverImmediately:YES];
+    }
 }
 
 %end

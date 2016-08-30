@@ -1,10 +1,8 @@
-This tweak allows Pebble users to send texts directly from their watches. Users can install the watchapp "TextSender for Pebble" in the Pebble app store in order to send texts from the watch, or use the Pebble "Send Text" app. 
-
-If you're on a Time-series watch, this tweak will enable native text replies on the watch for all users, and enable the "Send Text" app. Unlike Pebble native text sending, the texts will show up in your Messages application.
-
+This tweak allows Pebble users to send texts directly from their watches. Users can install the watchapp <a href="https://apps.getpebble.com/applications/570534f2d7fa4e6ad300003c">"TextSender for Pebble"</a> in the Pebble app store in order to send texts from the watch, or use the Pebble "Send Text" app. If you're on a Time-series watch, this tweak will enable native text replies on the watch for all users. Unlike Pebble native text sending, all texts sent will show up in your Messages application.
+	
 Update 2.0 allows you to perform actionable notifications on your Pebble! You will be able to perform actions on any iOS notification that has actions, including quick replies. This means that you'll be able to reply to Whatsapp, Facebook Messenger, Twitter, and more, right from your Pebble! (Note: Quick reply for some apps is only available on certain iOS versions. The apps mentioned here have only been tested to be compatible with quick reply on iOS 9.3.3).
 
-An "Action" option will appear in the menu for the notification, if actions are available. Actions can only be performed if the notification has not been dismissed and still appears on the lock screen (this is an iOS limitation, not a TextSender limitation). Actions can only be taken on a notification one time. If a notification has already been dismissed or acted upon, only a "Dismiss" action will be shown.
+An "Action" option will appear in the menu for the notification, if actions are available. Actions can only be performed if the notification has not been dismissed and still appears on the lock screen. Actions can only be taken on a notification one time. If a notification has already been dismissed or acted upon, only a "Dismiss" action will be shown.
 
 The "Action" option won't appear the first time a notification appears from an app. It will appear after the app sends a notification and the Pebble app is restarted (killed in the app switcher and relaunched). For example, the first time I recieve a Whatsapp notification, "Action" won't appear. You will have to kill the Pebble app and relaunch it *after* Whatsapp has already sent a notification.
 
@@ -12,7 +10,7 @@ Note: As a workaround to force Pebble to reload notification actions, TextSender
 
 Note: The "Action" option may not disappear after TextSender is uninstalled. However, it will not be functional. To remove the "Action" option after uninstalling TextSender, you will probably have to uninstall and reinstall the Pebble app.
 
-This tweak requires the new Pebble iPhone app (not the one marked 'Pebble OLD VERSION' on the App Store) and Pebble watches on the new 3.X firmware. 
+This tweak requires the new <a href="https://itunes.apple.com/us/app/pebble/id957997620>Pebble iPhone app</a> (not the one marked 'Pebble OLD VERSION' on the App Store) and Pebble watches on the new 3.X firmware. 
 
 This was tested on an iPhone 5s running iOS 9.3.3 with a Pebble Time on firmware version 3.14 and Pebble app version 3.14.
 
