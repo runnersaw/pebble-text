@@ -1,6 +1,3 @@
-#import <CoreTelephony/CTMessageCenter.h>
-#import <CoreTelephony/CTCarrier.h>
-#import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #import <ChatKit/CKEntity.h>
 #import <ChatKit/CKConversation.h>
 #import <ChatKit/CKConversationList.h>
@@ -10,7 +7,7 @@
 #import <AddressBook/AddressBook.h>
 #import <AppSupport/CPDistributedMessagingCenter.h>
 #import <UIKit/UIApplication.h>
-#import <Applist/AppList.h>
+#import <AppList/AppList.h>
 
 // NS EXTENSIONS
 
