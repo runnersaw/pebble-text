@@ -216,6 +216,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 %new
 - (void)messagesMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo
 {
+    log(@"launching mobile sms");
     [[%c(UIApplication) sharedApplication] launchApplicationWithIdentifier:@"com.apple.MobileSMS" suspended:YES];
 }
 
@@ -323,6 +324,8 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 - (BOOL)application:(id)arg1 didFinishLaunchingWithOptions:(id)arg2
 {
     BOOL s = %orig;
+
+    log(@"registering for sms notif");
 
     // register to recieve notifications when messages need to be sent
     CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSmsCenterName];
