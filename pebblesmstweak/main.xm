@@ -1675,7 +1675,9 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     }
     else if ([%c(SMSApplication) class])
 	{
+        log(@"sms application");
         %init(MobileSMSHooks);
     }
+    log(@"ctor");
     %init;
 }
