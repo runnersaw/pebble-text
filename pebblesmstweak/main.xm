@@ -116,25 +116,25 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 {
     CGFloat averageSmallestDistance = 0.0;
     CGFloat smallestDistance;
-    
+
     NSString *mStringA = [self stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
     NSString *mStringB = [stringB stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
-    
+
     NSArray *arrayA = [mStringA componentsSeparatedByString: @" "];
     NSArray *arrayB = [mStringB componentsSeparatedByString: @" "];
-    
+
     for (NSString *tokenA in arrayA)
 	{
         smallestDistance = 99999999.0;
-        
+
         for (NSString *tokenB in arrayB)
 		{
             smallestDistance = MIN((CGFloat) [tokenA compareWithWord:tokenB matchGain:gain missingCost:cost], smallestDistance);
         }
-        
+
         averageSmallestDistance += smallestDistance;
     }
-    
+
     return averageSmallestDistance / (CGFloat) [arrayA count];
 }
 
@@ -145,35 +145,35 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     // normalize strings
     NSString * stringA = [NSString stringWithString: self];
     stringA = [[stringA stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] lowercaseString];
-    stringB = [[stringB stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] lowercaseString];    
-    
+    stringB = [[stringB stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] lowercaseString];
+
     // Step 1
     NSInteger k, i, j, change, *d, distance;
-    
+
     NSUInteger n = [stringA length];
-    NSUInteger m = [stringB length];    
-    
+    NSUInteger m = [stringB length];
+
     if( n++ != 0 && m++ != 0 )
 	{
         d = (NSInteger *)malloc( sizeof(NSInteger) * m * n );
-        
+
         // Step 2
         for( k = 0; k < n; k++)
         {
             d[k] = k;
         }
-        
+
         for( k = 0; k < m; k++)
         {
             d[k * n] = k;
         }
-        
+
         // Step 3 and 4
         for(i=1; i < n; i++)
 		{
             for(j=1; j < m; j++)
 			{
-                
+
                 // Step 5
                 if([stringA characterAtIndex: i-1] == [stringB characterAtIndex: j-1])
 				{
@@ -183,17 +183,17 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 				{
                     change = cost;
                 }
-                
+
                 // Step 6
                 d[j * n + i] = MIN(d[(j - 1)*n + i] + 1, MIN(d[j*n + i - 1] + 1, d[(j - 1)*n + i - 1] + change));
             }
         }
-        
+
         distance = d[ n * m - 1 ];
         free(d);
         return distance;
     }
-    
+
     return 0;
 }
 
@@ -215,7 +215,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     [c registerForMessageName:performNotificationActionCommand target:self selector:@selector(notificationsMessageNamed:withUserInfo:)];
     [c registerForMessageName:notificationSourcesDeletedNotification target:self selector:@selector(deletedNotificationSourcesMessageNamed:withUserInfo:)];
 }
- 
+
 %new
 - (void)messagesMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo
 {
@@ -230,7 +230,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     {
         log(@"NO ACTION: FAILED TO PERFORM");
     }
-    
+
     if (![[PBSMSPerformedActionsHelper sharedHelper].performedActions containsObject:action.pebbleActionId])
     {
         log(@"performing");
@@ -305,12 +305,12 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
 + (id)addBulletinToCache:(id)arg1
 {
-    id r = %orig; 
+    id r = %orig;
     if (![r isMemberOfClass:%c(BBBulletinRequest)])
 	{
     	[[PBSMSNotificationsHelper sharedHelper] saveNotificationForBulletin:[%c(BBBulletin) bulletinWithBulletin:(BBBulletin *)r]];
     }
-    return r; 
+    return r;
 }
 
 %end
@@ -321,7 +321,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
 %group MobileSMSHooks
 
-%hook SMSApplication 
+%hook SMSApplication
 
 - (BOOL)application:(id)arg1 didFinishLaunchingWithOptions:(id)arg2
 {
@@ -335,7 +335,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
     return s;
 }
- 
+
 %new
 - (void)handleMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo
 {
@@ -562,7 +562,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 - (void)sendMessage:(id)arg1 onService:(id)arg2 newComposition:(BOOL)arg3
 {
     %orig;
-    
+
     [self saveRecipient];
 }
 
@@ -592,31 +592,31 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
 // LISTENING FOR NEW MESSAGES
 
-%hook IMDaemonListener
+// %hook IMDaemonListener
 
-- (void)account:(id)arg1 chat:(id)arg2 style:(unsigned char)arg3 chatProperties:(id)arg4 messageReceived:(id)arg5
-{
-    if ([arg5 isKindOfClass:[IMMessageItem class]])
-    {
-        NSString *sender = [(IMMessageItem *)arg5 sender];
-        if (![arg5 isFromMe])
-        {
-            CKConversationList *conversationList = [%c(CKConversationList) sharedConversationList];
-            if (conversationList != NULL)
-            {
-                CKConversation *conversation = [conversationList conversationForExistingChatWithGroupID:sender];
-                if (conversation != NULL)
-                {
-                    [conversation saveRecipient];
-                }
-            }
-        }
-    }
+// - (void)account:(id)arg1 chat:(id)arg2 style:(unsigned char)arg3 chatProperties:(id)arg4 messageReceived:(id)arg5
+// {
+//     if ([arg5 isKindOfClass:[IMMessageItem class]])
+//     {
+//         NSString *sender = [(IMMessageItem *)arg5 sender];
+//         if (![arg5 isFromMe])
+//         {
+//             CKConversationList *conversationList = [%c(CKConversationList) sharedConversationList];
+//             if (conversationList != NULL)
+//             {
+//                 CKConversation *conversation = [conversationList conversationForExistingChatWithGroupID:sender];
+//                 if (conversation != NULL)
+//                 {
+//                     [conversation saveRecipient];
+//                 }
+//             }
+//         }
+//     }
 
-    %orig;
-}
+//     %orig;
+// }
 
-%end
+// %end
 
 %end
 
@@ -887,7 +887,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
     [dict setObject:@"Sending..." forKey:RECIEVED_FINAL_MESSAGE_KEY];
-    
+
     return [dict copy];
 }
 
@@ -898,7 +898,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
     [dict setObject:@"Sent" forKey:MESSAGE_CONFIRMATION_KEY];
     [dict setObject:[NSNumber numberWithInt:1] forKey:IS_PEBBLE_SMS_KEY];
-    
+
     return [dict copy];
 }
 
@@ -909,7 +909,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
     [dict setObject:@"Sending failed" forKey:MESSAGE_CONFIRMATION_KEY];
     [dict setObject:[NSNumber numberWithInt:1] forKey:IS_PEBBLE_SMS_KEY];
-    
+
     return [dict copy];
 }
 
@@ -919,7 +919,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
 
     [dict setObject:@"Connected" forKey:CONNECTION_TEST_KEY];
-    
+
     return [dict copy];
 }
 
@@ -935,7 +935,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
         [dict setObject:[[PBSMSRecentContactHelper sharedHelper].phones componentsJoinedByString:@"\n"] forKey:RECENT_CONTACTS_NUMBER_KEY];
         isRecentContact = YES;
     }
-    
+
     return [dict copy];
 }
 
@@ -953,7 +953,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 	{
         NSDictionary *response;
         BOOL initialized = NO;
-        
+
         id connectionTest = [message objectForKey:CONNECTION_TEST_KEY];
         if (connectionTest)
 		{
@@ -976,13 +976,13 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
                 response = [self getRecentContactsResponse];
                 initialized = YES;
             }
-            
+
             if ([state intValue] == [GETTING_PRESETS_STATE intValue])
 			{
                 response = [self getPresets];
                 initialized = YES;
             }
-            
+
             if ([state intValue] == [CHECKING_CONTACT_STATE intValue])
 			{
                 NSString *name = [message objectForKey:DICTATED_NAME_KEY];
@@ -992,7 +992,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
                     initialized = YES;
                 }
             }
-            
+
             if ([state intValue] == [SENDING_FINAL_MESSAGE_STATE intValue])
 			{
                 NSString *number = [message objectForKey:CONTACT_NUMBER_KEY];
@@ -1025,7 +1025,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
         if (initialized)
 		{
-            %orig(response, fp1001, fp12, fp16); 
+            %orig(response, fp1001, fp12, fp16);
         }
         else
 		{
@@ -1234,7 +1234,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 	{
         [PBSMSTextHelper sharedHelper].presets = (NSArray *)r;
     }
-    return r; 
+    return r;
 }
 - (void)setCannedResponses:(id)fp8 forAppIdentifier:(id)fp12
 {
@@ -1242,7 +1242,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 	{
         [PBSMSTextHelper sharedHelper].presets = (NSArray *)fp8;
     }
-    %orig; 
+    %orig;
 }
 
 %end
@@ -1268,7 +1268,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     }
     else
 	{
-        %orig; 
+        %orig;
     }
 }
 
@@ -1317,7 +1317,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     }
     else
 	{
-        %orig; 
+        %orig;
     }
 }
 
@@ -1338,16 +1338,16 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 %new
 + (NSArray *)smsEnabledApps
 {
-    return @[ @"com.apple.MobileSMS", 
-        @"com.apple.mobilephone", 
+    return @[ @"com.apple.MobileSMS",
+        @"com.apple.mobilephone",
         @"com.pebble.sendText" ];
 }
 
 %new
 + (NSArray *)allPossibleEnabledApps
 {
-    return @[ @"com.apple.MobileSMS", 
-        @"com.apple.mobilephone", 
+    return @[ @"com.apple.MobileSMS",
+        @"com.apple.mobilephone",
         @"com.pebble.sendText",
         @"com.google.Gmail",
         @"com.google.inbox",
@@ -1412,7 +1412,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 		[dict setObject:[%c(PBANCSActionHandler) actionHandlerWithDelegate:self] forKey:app];
 	}
 
-	return [dict copy]; 
+	return [dict copy];
 }
 
 -(void)handleActionWithActionIdentifier:(unsigned char)arg1 attributes:(id)arg2
@@ -1436,7 +1436,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     }
     else
 	{
-        %orig; 
+        %orig;
     }
 }
 
@@ -1543,7 +1543,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 	}
 
     log(@"doing orig");
-	%orig; 
+	%orig;
 }
 
 %new

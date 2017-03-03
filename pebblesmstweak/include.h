@@ -91,10 +91,10 @@
 - (void)account:(id)arg1 chat:(id)arg2 style:(unsigned char)arg3 chatProperties:(id)arg4 messageReceived:(id)arg5;
 @end
 
-@interface IMMessageItem : NSObject
--(id)sender;
--(BOOL)isFromMe;
-@end
+// @interface IMMessageItem : NSObject
+// -(id)sender;
+// -(BOOL)isFromMe;
+// @end
 
 // BULLETIN BOARD
 
