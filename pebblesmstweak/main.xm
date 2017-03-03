@@ -1,6 +1,3 @@
-#import <CoreTelephony/CTMessageCenter.h>
-#import <CoreTelephony/CTCarrier.h>
-#import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #import <ChatKit/CKEntity.h>
 #import <ChatKit/CKConversation.h>
 #import <ChatKit/CKConversationList.h>
