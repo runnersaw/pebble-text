@@ -339,6 +339,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 %new
 - (void)handleMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo
 {
+    log(@"handleMessageNamed %@", userinfo);
     if ([name isEqualToString:sendMessageCommand])
 	{
         [self sendMessageForTextSender:[%c(PBSMSTextMessage) deserializeTextMessageFromObject:userinfo]];
@@ -1009,6 +1010,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
                         finalContactId = [f numberFromString:contactId];
                     }
 
+                    log(@"Sending %@", finalContactId);
                     if (finalContactId)
 					{
                         [%c(PBWatch) sendSMS:finalContactId number:[%c(PBContact) phoneWithPrefix:number] withText:m];
@@ -1052,6 +1054,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
         rId = [NSNumber numberWithInt:[recordId intValue]];
     }
 
+    log(@"%@ %@", number, text);
     PBSMSTextMessage *message = [[PBSMSTextMessage alloc] initWithNumber:number
 		messageText:text
 		uuid:[[NSUUID UUID] UUIDString]
@@ -1070,6 +1073,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
     // send message after 5 seconds
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SEND_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        log(@"Sending message now");
         CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSmsCenterName];
         rocketbootstrap_distributedmessagingcenter_apply(c);
         [c sendMessageName:sendMessageCommand userInfo:userInfo];
