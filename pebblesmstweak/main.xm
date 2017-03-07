@@ -1069,7 +1069,8 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
     CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
     rocketbootstrap_distributedmessagingcenter_apply(c);
-    [c sendMessageName:openMessagesCommand userInfo:NULL];
+    BOOL success = [c sendMessageName:openMessagesCommand userInfo:NULL];
+    log(@"send %d", success);
 
     // send message after 5 seconds
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SEND_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
