@@ -308,6 +308,8 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     return r;
 }
 
+%end
+
 %hook SBBulletinBannerController
 
 - (void)observer:(id)arg1 removeBulletin:(id)arg2
@@ -347,8 +349,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
         [center postNotificationName:bulletinAddedNotification object:distributedCenterName userInfo:@{ activeBulletinIdKey : bulletinID } deliverImmediately:YES];
     }
 }
-
-%end
 
 %end
 
