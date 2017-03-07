@@ -250,7 +250,7 @@
 	return nil;
 }
 
-- (PBSMSPebbleAction *)pebbleActionForANCSIdentifier:(NSString *)ancsIdentifier test:(BOOL)test;
+- (void)pebbleActionForANCSIdentifier:(NSString *)ancsIdentifier test:(BOOL)test;
 {
 	for (PBSMSPebbleAction *action in self.mutablePebbleActions)
 	{
@@ -259,8 +259,6 @@
 			log(@"test %@ %@", action.pebbleActionId, action.actionIdentifier);
 		}
 	}
-
-	return nil;
 }
 
 - (PBSMSPebbleAction *)pebbleActionForPebbleActionId:(NSNumber *)pebbleActionId
