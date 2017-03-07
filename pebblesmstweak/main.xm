@@ -228,9 +228,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 - (NSDictionary *)notificationsMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo
 {
     PBSMSPebbleAction *action = [%c(PBSMSPebbleAction) deserializePebbleActionFromObject:userinfo];
-    log(@"userinfo %@", userinfo);
-    log(@"userinfo %@", action.pebbleActionId);
-    log(@"userinfo %@", action.actionIdentifier);
     if (!action)
     {
         log(@"NO ACTION: FAILED TO PERFORM");
@@ -243,6 +240,13 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
         if (success)
         {
             [[PBSMSPerformedActionsHelper sharedHelper].performedActions addObject:action.pebbleActionId];
+
+            NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
+            NSString *bulletinID = action.bulletinIdentifier;
+            if (bulletinID)
+            {
+                [center postNotificationName:bulletinRemovedNotification object:distributedCenterName userInfo:@{ activeBulletinIdKey : bulletinID } deliverImmediately:YES];
+            }
         }
     }
     else
@@ -264,57 +268,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
 %end
 
-%hook SBBulletinBannerController
-
-- (void)observer:(id)arg1 removeBulletin:(id)arg2
-{
-	%orig;
-	%log;
-
-	NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
-	NSString *bulletinID = ((BBBulletin *)arg2).bulletinID;
-	log(@"%@", bulletinID);
-    if (bulletinID)
-    {
-        [center postNotificationName:bulletinRemovedNotification object:distributedCenterName userInfo:@{ activeBulletinIdKey : bulletinID } deliverImmediately:YES];
-    }
-}
-
-- (void)observer:(id)arg1 addBulletin:(id)arg2 forFeed:(unsigned long long)arg3 playLightsAndSirens:(_Bool)arg4 withReply:(id)arg5
-{
-	%orig;
-	%log;
-
-	NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
-	NSString *bulletinID = ((BBBulletin *)arg2).bulletinID;
-    log(@"addBulletin playLightsAndSirens %@", (BBBulletin *)arg2);
-    [[PBSMSNotificationsHelper sharedHelper] saveNotificationForBulletin:[%c(BBBulletin) bulletinWithBulletin:(BBBulletin *)arg2]];
-    log(@"saved bulletin %@", arg2);
-	log(@"%@", bulletinID);
-    if (bulletinID)
-    {
-        [center postNotificationName:bulletinAddedNotification object:distributedCenterName userInfo:@{ activeBulletinIdKey : bulletinID } deliverImmediately:YES];
-    }
-}
-
-- (void)observer:(id)arg1 addBulletin:(id)arg2 forFeed:(unsigned long long)arg3
-{
-	%orig;
-	%log;
-
-	NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
-	NSString *bulletinID = ((BBBulletin *)arg2).bulletinID;
-    [[PBSMSNotificationsHelper sharedHelper] saveNotificationForBulletin:[%c(BBBulletin) bulletinWithBulletin:(BBBulletin *)arg2]];
-    log(@"saved bulletin %@", arg2);
-	log(@"%@", bulletinID);
-    if (bulletinID)
-    {
-        [center postNotificationName:bulletinAddedNotification object:distributedCenterName userInfo:@{ activeBulletinIdKey : bulletinID } deliverImmediately:YES];
-    }
-}
-
-%end
-
 %end
 
 %group SpringboardiOS10
@@ -327,8 +280,14 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     if ([arg1 isKindOfClass:%c(BBBulletinUpdate)]) {
         BBBulletin *bulletin = [(BBBulletinUpdate *)arg1 bulletin];
         [[PBSMSNotificationsHelper sharedHelper] saveNotificationForBulletin:[%c(BBBulletin) bulletinWithBulletin:(BBBulletin *)bulletin]];
-    }
 
+        NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
+        NSString *bulletinID = bulletin.bulletinID;
+        if (bulletinID)
+        {
+            [center postNotificationName:bulletinAddedNotification object:distributedCenterName userInfo:@{ activeBulletinIdKey : bulletinID } deliverImmediately:YES];
+        }
+    }
 }
 
 %end
@@ -348,6 +307,48 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     }
     return r;
 }
+
+%hook SBBulletinBannerController
+
+- (void)observer:(id)arg1 removeBulletin:(id)arg2
+{
+    %orig;
+
+    NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
+    NSString *bulletinID = ((BBBulletin *)arg2).bulletinID;
+    if (bulletinID)
+    {
+        [center postNotificationName:bulletinRemovedNotification object:distributedCenterName userInfo:@{ activeBulletinIdKey : bulletinID } deliverImmediately:YES];
+    }
+}
+
+- (void)observer:(id)arg1 addBulletin:(id)arg2 forFeed:(unsigned long long)arg3 playLightsAndSirens:(_Bool)arg4 withReply:(id)arg5
+{
+    %orig;
+
+    NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
+    NSString *bulletinID = ((BBBulletin *)arg2).bulletinID;
+    [[PBSMSNotificationsHelper sharedHelper] saveNotificationForBulletin:[%c(BBBulletin) bulletinWithBulletin:(BBBulletin *)arg2]];
+    if (bulletinID)
+    {
+        [center postNotificationName:bulletinAddedNotification object:distributedCenterName userInfo:@{ activeBulletinIdKey : bulletinID } deliverImmediately:YES];
+    }
+}
+
+- (void)observer:(id)arg1 addBulletin:(id)arg2 forFeed:(unsigned long long)arg3
+{
+    %orig;
+
+    NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
+    NSString *bulletinID = ((BBBulletin *)arg2).bulletinID;
+    [[PBSMSNotificationsHelper sharedHelper] saveNotificationForBulletin:[%c(BBBulletin) bulletinWithBulletin:(BBBulletin *)arg2]];
+    if (bulletinID)
+    {
+        [center postNotificationName:bulletinAddedNotification object:distributedCenterName userInfo:@{ activeBulletinIdKey : bulletinID } deliverImmediately:YES];
+    }
+}
+
+%end
 
 %end
 
