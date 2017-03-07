@@ -263,6 +263,8 @@
 			}
 		}
 	}
+
+	return nil;
 }
 
 - (PBSMSPebbleAction *)pebbleActionForPebbleActionId:(NSNumber *)pebbleActionId
