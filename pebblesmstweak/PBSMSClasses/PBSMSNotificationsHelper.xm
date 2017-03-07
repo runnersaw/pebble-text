@@ -38,7 +38,7 @@
 		_mutablePebbleActions = [NSMutableArray array];
 		_bulletins = [NSMutableDictionary dictionary];
 		_activeBulletinIDs = [NSMutableArray array];
-		
+
 		[self loadEnabledApps];
 	}
 	return self;
@@ -53,6 +53,8 @@
 - (NSArray *)notificationsForAppIdentifier:(NSString *)appIdentifier
 {
 	NSMutableArray *notifications = [NSMutableArray array];
+
+	log(@"notificationsForAppIdentifier %@", self.mutableNotifications);
 
 	for (PBSMSNotification *notification in self.mutableNotifications)
 	{

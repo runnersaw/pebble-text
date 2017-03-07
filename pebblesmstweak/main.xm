@@ -321,11 +321,9 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 - (void)_queue_updateAddBulletin:(id)arg1 withReply:(id /* block */)arg2 {
     %orig;
 
-    log(@"_queue_updateAddBulletin %@", arg1);
     if ([arg1 isKindOfClass:%c(BBBulletinUpdate)]) {
         BBBulletin *bulletin = [(BBBulletinUpdate *)arg1 bulletin];
         [[PBSMSNotificationsHelper sharedHelper] saveNotificationForBulletin:[%c(BBBulletin) bulletinWithBulletin:(BBBulletin *)bulletin]];
-        log(@"saved bulletin %@", bulletin);
     }
 
 }
@@ -1629,6 +1627,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
     NSMutableArray *matchingNotifications = [NSMutableArray array];
 	NSArray *notificationsArray = [[PBSMSNotificationsHelper sharedHelper] notificationsForAppIdentifier:[message appIdentifier]];
+    log(@"bulletinIdentifierForInvokeANCSMessage %@", notificationsArray);
 	for (PBSMSNotification *notification in notificationsArray)
 	{
         log(@"notification %@ %@ %@", notification, notification.message, notification.bulletinId);

@@ -16,7 +16,7 @@ static NSTimeInterval notificationActionsExpiration = 60.*60.*24.;
 
     NSDictionary *dict = (NSDictionary *)object;
 
-    NSString *appIdentifier = [dict safeObjectForKey:@"appIdentifier" ofType:[NSString class]];   
+    NSString *appIdentifier = [dict safeObjectForKey:@"appIdentifier" ofType:[NSString class]];
     NSString *bulletinId = [dict safeObjectForKey:@"bulletinId" ofType:[NSString class]];
     NSString *title = [dict safeObjectForKey:@"title" ofType:[NSString class]];
     NSString *subtitle = [dict safeObjectForKey:@"subtitle" ofType:[NSString class]];
@@ -37,11 +37,11 @@ static NSTimeInterval notificationActionsExpiration = 60.*60.*24.;
     NSMutableArray *finalActions = [NSMutableArray array];
     for (id a in actions)
     {
-    	log(@"deserializing action %@", a);
+    	// log(@"deserializing action %@", a);
     	PBSMSNotificationAction *action = [PBSMSNotificationAction deserializeNotificationActionFromObject:a];
     	if (action)
     	{
-    		log(@"deserialized action %@", action);
+    		// log(@"deserialized action %@", action);
     		[finalActions addObject:action];
     	}
     }
@@ -77,7 +77,7 @@ static NSTimeInterval notificationActionsExpiration = 60.*60.*24.;
 	}
 	return self;
 }
-	
+
 - (NSDictionary *)serializeToDictionary
 {
 	NSMutableDictionary *dict = [NSMutableDictionary dictionary];
@@ -94,7 +94,7 @@ static NSTimeInterval notificationActionsExpiration = 60.*60.*24.;
 	{
 		[serializedActions addObject:[action serializeToDictionary]];
 	}
-	log(@"serializedActions %@", serializedActions);
+	// log(@"serializedActions %@", serializedActions);
 	[dict setObject:[serializedActions copy] forKey:@"actions"];
 
 	return [dict copy];
