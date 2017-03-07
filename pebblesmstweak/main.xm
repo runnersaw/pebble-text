@@ -357,6 +357,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     rocketbootstrap_distributedmessagingcenter_apply(c);
     [c runServerOnCurrentThread];
     [c registerForMessageName:sendMessageCommand target:self selector:@selector(handleMessageNamed:withUserInfo:)];
+    log(@"%@", c);
 
     return s;
 }
