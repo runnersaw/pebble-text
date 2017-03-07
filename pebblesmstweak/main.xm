@@ -301,15 +301,35 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
 %end
 
+%end
+
+@interface BBObserver : NSObject
+- (void)_queue_updateAddBulletin:(id)arg1 withReply:(id /* block */)arg2;
+@end
+
+%group SpringboardiOS9
+
+%hook BBObserver
+
+- (void)_queue_updateAddBulletin:(id)arg1 withReply:(id /* block */)arg2 {
+    %orig;
+    log(@"%@", arg1);
+}
+
+%end
+
+%end
+
+%group SpringboardiOS9
+
 %hook BBBulletin
 
-%new
 + (id)addBulletinToCache:(id)arg1
 {
     id r = %orig;
     if (![r isMemberOfClass:%c(BBBulletinRequest)])
-	{
-    	[[PBSMSNotificationsHelper sharedHelper] saveNotificationForBulletin:[%c(BBBulletin) bulletinWithBulletin:(BBBulletin *)r]];
+    {
+        [[PBSMSNotificationsHelper sharedHelper] saveNotificationForBulletin:[%c(BBBulletin) bulletinWithBulletin:(BBBulletin *)r]];
     }
     return r;
 }
@@ -1676,6 +1696,11 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     else if ([%c(SpringBoard) class])
 	{
         %init(SpringboardHooks);
+        if (kCFCoreFoundationVersionNumber >= 1348.0) {
+            %init(SpringboardiOS10);
+        } else {
+            %init(SpringboardiOS9);
+        }
     }
     else if ([%c(SMSApplication) class])
 	{
