@@ -1109,11 +1109,10 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     BOOL success = [c sendMessageName:openMessagesCommand userInfo:NULL];
     log(@"send %d", success);
 
-    NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] init];
-    [userInfo setObject:[NSBundle mainBundle].bundleIdentifier forKey:@"id"];
-    [userInfo setObject:@"SpringBoard" forKey:@"type"];
-    [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"com.sawyervaughan.pebblesms.springboard" object:nil userInfo:userInfo];
-    [userInfo release];
+    NSMutableDictionary *info = [[NSMutableDictionary alloc] init];
+    [info setObject:[NSBundle mainBundle].bundleIdentifier forKey:@"id"];
+    [info setObject:@"SpringBoard" forKey:@"type"];
+    [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"com.sawyervaughan.pebblesms.springboard" object:nil userInfo:info];
 
     // send message after 5 seconds
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SEND_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
