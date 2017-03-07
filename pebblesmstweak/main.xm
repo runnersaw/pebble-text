@@ -284,6 +284,9 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
 	NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
 	NSString *bulletinID = ((BBBulletin *)arg2).bulletinID;
+    log(@"addBulletin playLightsAndSirens %@", (BBBulletin *)arg2);
+    [[PBSMSNotificationsHelper sharedHelper] saveNotificationForBulletin:[%c(BBBulletin) bulletinWithBulletin:(BBBulletin *)arg2]];
+    log(@"saved bulletin %@", bulletin);
 	log(@"%@", bulletinID);
     if (bulletinID)
     {
@@ -298,6 +301,8 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
 	NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
 	NSString *bulletinID = ((BBBulletin *)arg2).bulletinID;
+    [[PBSMSNotificationsHelper sharedHelper] saveNotificationForBulletin:[%c(BBBulletin) bulletinWithBulletin:(BBBulletin *)arg2]];
+    log(@"saved bulletin %@", bulletin);
 	log(@"%@", bulletinID);
     if (bulletinID)
     {
@@ -316,6 +321,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 - (void)_queue_updateAddBulletin:(id)arg1 withReply:(id /* block */)arg2 {
     %orig;
 
+    log(@"_queue_updateAddBulletin %@", arg1);
     if ([arg1 isMemberOfClass:%c(BBBulletinUpdate)]) {
         BBBulletin *bulletin = [(BBBulletinUpdate *)arg1 bulletin];
         [[PBSMSNotificationsHelper sharedHelper] saveNotificationForBulletin:[%c(BBBulletin) bulletinWithBulletin:(BBBulletin *)bulletin]];
@@ -1216,6 +1222,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 - (void)bulletinAdded:(NSNotification *)myNotification
 {
 	NSString *bulletinID = myNotification.userInfo[activeBulletinIdKey];
+    log(@"bulletin added %@", bulletinID);
 	[[PBSMSNotificationsHelper sharedHelper] addActiveBulletinID:bulletinID];
 }
 
