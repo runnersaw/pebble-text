@@ -40,7 +40,7 @@ def stripString(s):
 	return s
 
 def writeFile(s):
-	f = open('./pebble314.h', 'w')
+	f = open('./pebble43.h', 'w')
 	f.write(s)
 	f.close()
 
