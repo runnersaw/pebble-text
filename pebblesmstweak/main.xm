@@ -307,7 +307,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 - (void)_queue_updateAddBulletin:(id)arg1 withReply:(id /* block */)arg2;
 @end
 
-%group SpringboardiOS9
+%group SpringboardiOS10
 
 %hook BBObserver
 
