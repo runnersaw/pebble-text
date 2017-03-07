@@ -45,7 +45,7 @@ NSString * const needsDeleteNotificationSourcesFileLocation = @"/var/mobile/Libr
 
 + (void)dumpMethods:(Class)c
 {
-#if DEBUG
+#if PBSMS_DEBUG
     unsigned int methodCount = 0;
     Method *methods = class_copyMethodList(c, &methodCount);
 
