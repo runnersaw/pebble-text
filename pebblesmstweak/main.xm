@@ -213,10 +213,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     [c registerForMessageName:performNotificationActionCommand target:self selector:@selector(notificationsMessageNamed:withUserInfo:)];
     [c registerForMessageName:notificationSourcesDeletedNotification target:self selector:@selector(deletedNotificationSourcesMessageNamed:withUserInfo:)];
     log(@"%@", c);
-
-    [[NSDistributedNotificationCenter defaultCenter] addObserverForName:@"com.sawyervaughan.pebblesms.springboard" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
-        NSLog(@"Received NSDistributedNotificationCenter message %@ (%@)", [notification.userInfo objectForKey:@"id"], [notification.userInfo objectForKey:@"type"]);
-    }];
 }
 
 %new
@@ -1108,11 +1104,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     log(@"%@", c);
     BOOL success = [c sendMessageName:openMessagesCommand userInfo:NULL];
     log(@"send %d", success);
-
-    NSMutableDictionary *info = [[NSMutableDictionary alloc] init];
-    [info setObject:[NSBundle mainBundle].bundleIdentifier forKey:@"id"];
-    [info setObject:@"SpringBoard" forKey:@"type"];
-    [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"com.sawyervaughan.pebblesms.springboard" object:nil userInfo:info];
 
     // send message after 5 seconds
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SEND_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
