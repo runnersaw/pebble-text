@@ -1564,7 +1564,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 	}
 	else if ([m actionID] > DISMISS_IDENTIFIER)
 	{
-        log(@"actionID %@", [m actionID]);
+        log(@"actionID %@", @([m actionID]));
         PBSMSPebbleAction *action = [[PBSMSNotificationsHelper sharedHelper] pebbleActionForPebbleActionId:@( [m actionID] )];
 
         if (action)
