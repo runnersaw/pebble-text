@@ -1469,8 +1469,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
         NSString *reply = [[NSString alloc] initWithData:d encoding:NSUTF8StringEncoding];
         NSUUID *ancsIdentifier = [self handlingIdentifier];
 
-        PBSMSPebbleAction *action = [[PBSMSNotificationsHelper sharedHelper] pebbleActionForANCSIdentifier:[ancsIdentifier UUIDString]];
-        [[PBSMSNotificationsHelper sharedHelper] pebbleActionForANCSIdentifier:[ancsIdentifier UUIDString] test:YES];
+        PBSMSPebbleAction *action = [[PBSMSNotificationsHelper sharedHelper] pebbleReplyActionForANCSIdentifier:[ancsIdentifier UUIDString];
 
         action.isReplyAction = YES;
         action.replyText = reply;
