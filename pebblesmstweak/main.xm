@@ -1514,9 +1514,12 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 		[actions addObject:[[%c(PBTimelineAction) alloc] initWithIdentifier:@(DISMISS_IDENTIFIER) type:@"ANCSResponse" attributes:@[ a1, a2 ]]];
 
 		NSString *bulletinId = [%c(PBANCSActionHandler) bulletinIdentifierForInvokeANCSMessage:m];
+        log(@"get actions for %@", bulletinId);
 		if (bulletinId)
 		{
             PBSMSNotification *notification = [[PBSMSNotificationsHelper sharedHelper] notificationForBulletinId:bulletinId];
+            log(@"got notification %@", notification);
+            log(@"got notification %@", [notification serializeToDictionary]);
             if (!notification)
             {
                 PBTimelineAttribute *attr = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Notification not found!" specificType:0];
