@@ -260,6 +260,10 @@
 - (id)initWithQueue:(id)arg1 asGateway:(id)arg2 priority:(unsigned int)arg3;
 - (id)initWithQueue:(id)arg1 forGateway:(id)arg2;
 - (void)updateBulletin:(id)arg1 forFeeds:(unsigned int)arg2 withReply:(id /* block */)arg3;
+
+// iOS 10, maybe
+- (void)_queue_updateAddBulletin:(id)arg1 withReply:(id /* block */)arg2;
+
 @end
 
 // PEBBLE HEADERS
