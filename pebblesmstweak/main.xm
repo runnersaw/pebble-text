@@ -286,7 +286,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 	NSString *bulletinID = ((BBBulletin *)arg2).bulletinID;
     log(@"addBulletin playLightsAndSirens %@", (BBBulletin *)arg2);
     [[PBSMSNotificationsHelper sharedHelper] saveNotificationForBulletin:[%c(BBBulletin) bulletinWithBulletin:(BBBulletin *)arg2]];
-    log(@"saved bulletin %@", bulletin);
+    log(@"saved bulletin %@", arg2);
 	log(@"%@", bulletinID);
     if (bulletinID)
     {
@@ -302,7 +302,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 	NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
 	NSString *bulletinID = ((BBBulletin *)arg2).bulletinID;
     [[PBSMSNotificationsHelper sharedHelper] saveNotificationForBulletin:[%c(BBBulletin) bulletinWithBulletin:(BBBulletin *)arg2]];
-    log(@"saved bulletin %@", bulletin);
+    log(@"saved bulletin %@", arg2);
 	log(@"%@", bulletinID);
     if (bulletinID)
     {
