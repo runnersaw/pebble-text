@@ -58,7 +58,7 @@
 
 	for (PBSMSNotification *notification in self.mutableNotifications)
 	{
-		if ([notification.appIdentifier isEqualToString:appIdentifier])// && [self.activeBulletinIDs containsObject:notification.bulletinId])
+		if ([notification.appIdentifier isEqualToString:appIdentifier] && [self.activeBulletinIDs containsObject:notification.bulletinId])
 		{
 			[notifications addObject:notification];
 		}
@@ -215,6 +215,8 @@
 	}
 
 	[self saveNotifications];
+	[self addActiveBulletinID:bulletinId];
+
 }
 
 - (void)addActiveBulletinID:(NSString *)bulletinID
@@ -320,6 +322,7 @@
 								[bbObserver sendResponse:bbResponse];
 								log(@"SENT RESPONSE");
 								success = YES;
+								[self removeActiveBulletinID:action.bulletinIdentifier];
 							}
 						}
 					}
