@@ -213,17 +213,23 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     [c registerForMessageName:performNotificationActionCommand target:self selector:@selector(notificationsMessageNamed:withUserInfo:)];
     [c registerForMessageName:notificationSourcesDeletedNotification target:self selector:@selector(deletedNotificationSourcesMessageNamed:withUserInfo:)];
     log(@"%@", c);
+
+    [[NSDistributedNotificationCenter defaultCenter] addObserverForName:@"com.sawyervaughan.pebblesms.springboard" object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notification) {
+        NSLog(@"Received NSDistributedNotificationCenter message %@ (%@)", [notification.userInfo objectForKey:@"id"], [notification.userInfo objectForKey:@"type"]);
+    }];
 }
 
 %new
-- (void)messagesMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo
+- (NSDictionary *)messagesMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo
 {
     log(@"launching mobile sms");
     [[%c(UIApplication) sharedApplication] launchApplicationWithIdentifier:@"com.apple.MobileSMS" suspended:YES];
+
+    return nil;
 }
 
 %new
-- (void)notificationsMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo
+- (NSDictionary *)notificationsMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo
 {
     PBSMSPebbleAction *action = [%c(PBSMSPebbleAction) deserializePebbleActionFromObject:userinfo];
     if (!action)
@@ -244,13 +250,17 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     {
         log(@"Already performed");
     }
+
+    return nil;
 }
 
 %new
-- (void)deletedNotificationSourcesMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo
+- (NSDictionary *)deletedNotificationSourcesMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo
 {
     log(@"set already deleted notifications");
     [[PBSMSNotificationsHelper sharedHelper] setNeedsDeleteNotificationSources:NO];
+
+    return nil;
 }
 
 %end
@@ -1098,6 +1108,12 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     log(@"%@", c);
     BOOL success = [c sendMessageName:openMessagesCommand userInfo:NULL];
     log(@"send %d", success);
+
+    NSMutableDictionary *userInfo = [[NSMutableDictionary alloc] init];
+    [userInfo setObject:[NSBundle mainBundle].bundleIdentifier forKey:@"id"];
+    [userInfo setObject:@"SpringBoard" forKey:@"type"];
+    [[NSDistributedNotificationCenter defaultCenter] postNotificationName:@"com.sawyervaughan.pebblesms.springboard" object:nil userInfo:userInfo];
+    [userInfo release];
 
     // send message after 5 seconds
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SEND_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
