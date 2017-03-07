@@ -207,18 +207,15 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     // register to recieve notifications when messages need to be sent
     CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
     rocketbootstrap_distributedmessagingcenter_apply(c);
-    log(@"%@", c);
     [c runServerOnCurrentThread];
     [c registerForMessageName:openMessagesCommand target:self selector:@selector(messagesMessageNamed:withUserInfo:)];
     [c registerForMessageName:performNotificationActionCommand target:self selector:@selector(notificationsMessageNamed:withUserInfo:)];
     [c registerForMessageName:notificationSourcesDeletedNotification target:self selector:@selector(deletedNotificationSourcesMessageNamed:withUserInfo:)];
-    log(@"%@", c);
 }
 
 %new
 - (NSDictionary *)messagesMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo
 {
-    log(@"launching mobile sms");
     [[%c(UIApplication) sharedApplication] launchApplicationWithIdentifier:@"com.apple.MobileSMS" suspended:YES];
 
     return nil;
@@ -235,10 +232,10 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
     if (![[PBSMSPerformedActionsHelper sharedHelper].performedActions containsObject:action.pebbleActionId])
     {
-        log(@"performing");
         BOOL success = [[PBSMSNotificationsHelper sharedHelper] performAction:action];
         if (success)
         {
+            log(@"Action performed!");
             [[PBSMSPerformedActionsHelper sharedHelper].performedActions addObject:action.pebbleActionId];
 
             NSDistributedNotificationCenter *center = [NSDistributedNotificationCenter defaultCenter];
@@ -260,7 +257,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 %new
 - (NSDictionary *)deletedNotificationSourcesMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo
 {
-    log(@"set already deleted notifications");
     [[PBSMSNotificationsHelper sharedHelper] setNeedsDeleteNotificationSources:NO];
 
     return nil;
@@ -364,14 +360,11 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 {
     BOOL s = %orig;
 
-    log(@"registering for sms notif");
-
     // register to recieve notifications when messages need to be sent
     CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSmsCenterName];
     rocketbootstrap_distributedmessagingcenter_apply(c);
     [c runServerOnCurrentThread];
     [c registerForMessageName:sendMessageCommand target:self selector:@selector(handleMessageNamed:withUserInfo:)];
-    log(@"%@", c);
 
     return s;
 }
@@ -379,7 +372,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 %new
 - (void)handleMessageNamed:(NSString *)name withUserInfo:(NSDictionary *)userinfo
 {
-    log(@"handleMessageNamed %@", userinfo);
     if ([name isEqualToString:sendMessageCommand])
 	{
         [self sendMessageForTextSender:[%c(PBSMSTextMessage) deserializeTextMessageFromObject:userinfo]];
@@ -389,7 +381,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 %new
 - (void)sendMessageForTextSender:(PBSMSTextMessage *)message
 {
-	log(@"sendMessageForTextSender %@", message);
     if (message && [[PBSMSTextHelper sharedHelper].messagesSent containsObject:message.uuid])
     {
         return;
@@ -1050,7 +1041,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
                         finalContactId = [f numberFromString:contactId];
                     }
 
-                    log(@"Sending %@", finalContactId);
                     if (finalContactId)
 					{
                         [%c(PBWatch) sendSMS:finalContactId number:[%c(PBContact) phoneWithPrefix:number] withText:m];
@@ -1094,7 +1084,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
         rId = [NSNumber numberWithInt:[recordId intValue]];
     }
 
-    log(@"%@ %@", number, text);
     PBSMSTextMessage *message = [[PBSMSTextMessage alloc] initWithNumber:number
 		messageText:text
 		uuid:[[NSUUID UUID] UUIDString]
@@ -1109,13 +1098,10 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
     CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
     rocketbootstrap_distributedmessagingcenter_apply(c);
-    log(@"%@", c);
     BOOL success = [c sendMessageName:openMessagesCommand userInfo:NULL];
-    log(@"send %d", success);
 
     // send message after 5 seconds
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(SEND_DELAY * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        log(@"Sending message now");
         CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSmsCenterName];
         rocketbootstrap_distributedmessagingcenter_apply(c);
         [c sendMessageName:sendMessageCommand userInfo:userInfo];
@@ -1224,7 +1210,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 - (void)bulletinAdded:(NSNotification *)myNotification
 {
 	NSString *bulletinID = myNotification.userInfo[activeBulletinIdKey];
-    log(@"bulletin added %@", bulletinID);
 	[[PBSMSNotificationsHelper sharedHelper] addActiveBulletinID:bulletinID];
 }
 
@@ -1475,7 +1460,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
         action.isReplyAction = YES;
         action.replyText = reply;
 
-        log(@"reply %@", reply);
         [%c(PBANCSActionHandler) performAction:action];
 
 		PBTimelineAttribute *attr = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Reply sent" specificType:0];
@@ -1517,12 +1501,9 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 		[actions addObject:[[%c(PBTimelineAction) alloc] initWithIdentifier:@(DISMISS_IDENTIFIER) type:@"ANCSResponse" attributes:@[ a1, a2 ]]];
 
 		NSString *bulletinId = [%c(PBANCSActionHandler) bulletinIdentifierForInvokeANCSMessage:m];
-        log(@"get actions for %@", bulletinId);
 		if (bulletinId)
 		{
             PBSMSNotification *notification = [[PBSMSNotificationsHelper sharedHelper] notificationForBulletinId:bulletinId];
-            log(@"got notification %@", notification);
-            log(@"got notification %@", [notification serializeToDictionary]);
             if (!notification)
             {
                 PBTimelineAttribute *attr = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Notification not found!" specificType:0];
@@ -1564,7 +1545,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 	}
 	else if ([m actionID] > DISMISS_IDENTIFIER)
 	{
-        log(@"actionID %@", @([m actionID]));
         PBSMSPebbleAction *action = [[PBSMSNotificationsHelper sharedHelper] pebbleActionForPebbleActionId:@( [m actionID] )];
 
         if (action)
@@ -1593,7 +1573,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
         }
 	}
 
-    log(@"doing orig");
 	%orig;
 }
 
@@ -1633,11 +1612,8 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
     NSMutableArray *matchingNotifications = [NSMutableArray array];
 	NSArray *notificationsArray = [[PBSMSNotificationsHelper sharedHelper] notificationsForAppIdentifier:[message appIdentifier]];
-    log(@"bulletinIdentifierForInvokeANCSMessage %@", notificationsArray);
 	for (PBSMSNotification *notification in notificationsArray)
 	{
-        log(@"notification %@ %@ %@", notification, notification.message, notification.bulletinId);
-        log(@"message %@ %@", message, [message notificationBody]);
 		if ([notification.message isEqualToString:[message notificationBody]])
 		{
 			[matchingNotifications addObject:@{ @"bulletinID" : notification.bulletinId, @"timestamp" : notification.timestamp }];
@@ -1713,8 +1689,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     if ([%c(PBAppDelegate) class])
 	{
         %init(PebbleMain);
-        log(@"major %@", [%c(PBAppDelegate) majorAppVersion]);
-        log(@"minor %@", [%c(PBAppDelegate) minorAppVersion]);
     }
     else if ([%c(SpringBoard) class])
 	{
@@ -1727,9 +1701,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     }
     else if ([%c(SMSApplication) class])
 	{
-        log(@"sms application");
         %init(MobileSMSHooks);
     }
-    log(@"ctor");
     %init;
 }

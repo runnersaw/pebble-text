@@ -37,11 +37,9 @@ static NSTimeInterval notificationActionsExpiration = 60.*60.*24.;
     NSMutableArray *finalActions = [NSMutableArray array];
     for (id a in actions)
     {
-    	// log(@"deserializing action %@", a);
     	PBSMSNotificationAction *action = [PBSMSNotificationAction deserializeNotificationActionFromObject:a];
     	if (action)
     	{
-    		// log(@"deserialized action %@", action);
     		[finalActions addObject:action];
     	}
     }
@@ -94,7 +92,6 @@ static NSTimeInterval notificationActionsExpiration = 60.*60.*24.;
 	{
 		[serializedActions addObject:[action serializeToDictionary]];
 	}
-	// log(@"serializedActions %@", serializedActions);
 	[dict setObject:[serializedActions copy] forKey:@"actions"];
 
 	return [dict copy];
