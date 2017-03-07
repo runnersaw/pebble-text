@@ -1653,7 +1653,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
         return orig;
     }
 
-    log(@"Adding actions to %@", [orig appIdentifier]);
 	PBTimelineAttribute *attr1 = [[%c(PBTimelineAttribute) alloc] initWithType:@"title" content:@"Action" specificType:0];
 	PBTimelineAction *b = [[%c(PBTimelineAction) alloc] initWithIdentifier:@(HAS_ACTIONS_IDENTIFIER) type:@"ANCSResponse" attributes:@[ attr1 ]];
 	return %orig(arg1, arg2, arg3, arg4, @[ b ]);
