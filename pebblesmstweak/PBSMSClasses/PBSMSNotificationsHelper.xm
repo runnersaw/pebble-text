@@ -250,6 +250,19 @@
 	return nil;
 }
 
+- (PBSMSPebbleAction *)pebbleActionForANCSIdentifier:(NSString *)ancsIdentifier test:(BOOL)test;
+{
+	for (PBSMSPebbleAction *action in self.mutablePebbleActions)
+	{
+		if ([ancsIdentifier isEqualToString:action.ANCSIdentifier])
+		{
+			log(@"test %@ %@", action.pebbleActionId, action.actionIdentifier);
+		}
+	}
+
+	return nil;
+}
+
 - (PBSMSPebbleAction *)pebbleActionForPebbleActionId:(NSNumber *)pebbleActionId
 {
 	for (PBSMSPebbleAction *action in self.mutablePebbleActions)
