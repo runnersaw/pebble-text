@@ -207,10 +207,12 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     // register to recieve notifications when messages need to be sent
     CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
     rocketbootstrap_distributedmessagingcenter_apply(c);
+    log(@"%@", c);
     [c runServerOnCurrentThread];
     [c registerForMessageName:openMessagesCommand target:self selector:@selector(messagesMessageNamed:withUserInfo:)];
     [c registerForMessageName:performNotificationActionCommand target:self selector:@selector(notificationsMessageNamed:withUserInfo:)];
     [c registerForMessageName:notificationSourcesDeletedNotification target:self selector:@selector(deletedNotificationSourcesMessageNamed:withUserInfo:)];
+    log(@"%@", c);
 }
 
 %new
@@ -301,6 +303,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
 %hook BBBulletin
 
+%new
 + (id)addBulletinToCache:(id)arg1
 {
     id r = %orig;
