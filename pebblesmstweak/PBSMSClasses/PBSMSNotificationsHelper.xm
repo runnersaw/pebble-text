@@ -250,26 +250,13 @@
 	return nil;
 }
 
-- (PBSMSPebbleAction *)pebbleActionForANCSIdentifier:(NSString *)ancsIdentifier actionId:(NSNumber *)actionId
-{
-	for (PBSMSPebbleAction *action in self.mutablePebbleActions)
-	{
-		if ([ancsIdentifier isEqualToString:action.ANCSIdentifier] && [actionId isEqualToNumber:action.pebbleActionId])
-		{
-			return action;
-		}
-	}
-
-	return nil;
-}
-
-- (void)pebbleReplyActionForANCSIdentifier:(NSString *)ancsIdentifier
+- (PBSMSPebbleAction *)pebbleReplyActionForANCSIdentifier:(NSString *)ancsIdentifier
 {
 	for (PBSMSPebbleAction *action in self.mutablePebbleActions)
 	{
 		if ([ancsIdentifier isEqualToString:action.ANCSIdentifier])
 		{
-			log(@"test %@ %@ %@", action.pebbleActionId, action.actionIdentifier, action.isBeginQuickReplyAction);
+			log(@"test %@ %@ %@", action.pebbleActionId, action.actionIdentifier, @(action.isBeginQuickReplyAction));
 			if (action.isBeginQuickReplyAction)
 			{
 				return action;
