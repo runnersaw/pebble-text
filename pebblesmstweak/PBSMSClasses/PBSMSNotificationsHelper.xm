@@ -200,9 +200,6 @@
         return;
     }
 
-	[self addActiveBulletinID:bulletinId];
-	log(@"%@", self.activeBulletinIDs);
-
     PBSMSNotification *notification = [[PBSMSNotification alloc] initWithAppIdentifier:appIdentifier
 		bulletinId:bulletinId
 		title:title
