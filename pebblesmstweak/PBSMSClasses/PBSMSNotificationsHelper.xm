@@ -58,6 +58,7 @@
 
 	for (PBSMSNotification *notification in self.mutableNotifications)
 	{
+		log(@"%@", self.activeBulletinIDs);
 		if ([notification.appIdentifier isEqualToString:appIdentifier] && [self.activeBulletinIDs containsObject:notification.bulletinId])
 		{
 			[notifications addObject:notification];
@@ -199,6 +200,9 @@
         return;
     }
 
+	[self addActiveBulletinID:bulletinId];
+	log(@"%@", self.activeBulletinIDs);
+
     PBSMSNotification *notification = [[PBSMSNotification alloc] initWithAppIdentifier:appIdentifier
 		bulletinId:bulletinId
 		title:title
@@ -215,7 +219,6 @@
 	}
 
 	[self saveNotifications];
-	[self addActiveBulletinID:bulletinId];
 
 }
 
