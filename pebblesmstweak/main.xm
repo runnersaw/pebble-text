@@ -629,22 +629,22 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 - (void)account:(id)arg1 chat:(id)arg2 style:(unsigned char)arg3 chatProperties:(id)arg4 messageReceived:(id)arg5
 {
     log(@"%@", arg5);
-    // if ([arg5 isKindOfClass:[IMMessageItem class]])
-    // {
-    //     NSString *sender = [(IMMessageItem *)arg5 sender];
-    //     if (![arg5 isFromMe])
-    //     {
-    //         CKConversationList *conversationList = [%c(CKConversationList) sharedConversationList];
-    //         if (conversationList != NULL)
-    //         {
-    //             CKConversation *conversation = [conversationList conversationForExistingChatWithGroupID:sender];
-    //             if (conversation != NULL)
-    //             {
-    //                 [conversation saveRecipient];
-    //             }
-    //         }
-    //     }
-    // }
+    if ([arg5 isKindOfClass:[IMMessageItem class]])
+    {
+        NSString *sender = [(IMMessageItem *)arg5 sender];
+        if (![arg5 isFromMe])
+        {
+            CKConversationList *conversationList = [%c(CKConversationList) sharedConversationList];
+            if (conversationList != NULL)
+            {
+                CKConversation *conversation = [conversationList conversationForExistingChatWithGroupID:sender];
+                if (conversation != NULL)
+                {
+                    [conversation saveRecipient];
+                }
+            }
+        }
+    }
 
     %orig;
 }
