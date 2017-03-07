@@ -266,6 +266,10 @@
 
 @end
 
+@interface BBBulletinUpdate : NSObject
+- (id)bulletin;
+@end
+
 // PEBBLE HEADERS
 
 @interface PBContact

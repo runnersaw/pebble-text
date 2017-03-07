@@ -309,7 +309,13 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
 - (void)_queue_updateAddBulletin:(id)arg1 withReply:(id /* block */)arg2 {
     %orig;
-    log(@"%@", arg1);
+
+    if ([arg1 isMemberOfClass:%c(BBBulletinUpdate)]) {
+        BBBulletin *bulletin = [(BBBulletinUpdate *)arg1 bulletin];
+        [[PBSMSNotificationsHelper sharedHelper] saveNotificationForBulletin:[%c(BBBulletin) bulletinWithBulletin:(BBBulletin *)bulletin]];
+        log(@"saved bulletin %@", bulletin);
+    }
+
 }
 
 %end
