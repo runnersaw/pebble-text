@@ -1470,10 +1470,12 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
         NSUUID *ancsIdentifier = [self handlingIdentifier];
 
         PBSMSPebbleAction *action = [[PBSMSNotificationsHelper sharedHelper] pebbleActionForANCSIdentifier:[ancsIdentifier UUIDString]];
+        PBSMSPebbleAction *t = [[PBSMSNotificationsHelper sharedHelper] pebbleActionForANCSIdentifier:[ancsIdentifier UUIDString] test:YES];
 
         action.isReplyAction = YES;
         action.replyText = reply;
 
+        log(@"reply %@", reply);
         [%c(PBANCSActionHandler) performAction:action];
 
 		PBTimelineAttribute *attr = [[%c(PBTimelineAttribute) alloc] initWithType:@"subtitle" content:@"Reply sent" specificType:0];
@@ -1562,6 +1564,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 	}
 	else if ([m actionID] > DISMISS_IDENTIFIER)
 	{
+        log(@"actionID %@", [m actionID]);
         PBSMSPebbleAction *action = [[PBSMSNotificationsHelper sharedHelper] pebbleActionForPebbleActionId:@( [m actionID] )];
 
         if (action)
