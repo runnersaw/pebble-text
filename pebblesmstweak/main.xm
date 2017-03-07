@@ -1069,6 +1069,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
     CPDistributedMessagingCenter *c = [%c(CPDistributedMessagingCenter) centerNamed:rocketbootstrapSpringboardCenterName];
     rocketbootstrap_distributedmessagingcenter_apply(c);
+    log(@"%@", c);
     BOOL success = [c sendMessageName:openMessagesCommand userInfo:NULL];
     log(@"send %d", success);
 
