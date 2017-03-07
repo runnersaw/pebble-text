@@ -1470,7 +1470,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
         NSUUID *ancsIdentifier = [self handlingIdentifier];
 
         PBSMSPebbleAction *action = [[PBSMSNotificationsHelper sharedHelper] pebbleActionForANCSIdentifier:[ancsIdentifier UUIDString]];
-        PBSMSPebbleAction *t = [[PBSMSNotificationsHelper sharedHelper] pebbleActionForANCSIdentifier:[ancsIdentifier UUIDString] test:YES];
+        [[PBSMSNotificationsHelper sharedHelper] pebbleActionForANCSIdentifier:[ancsIdentifier UUIDString] test:YES];
 
         action.isReplyAction = YES;
         action.replyText = reply;
