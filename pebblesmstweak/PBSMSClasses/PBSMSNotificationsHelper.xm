@@ -58,7 +58,7 @@
 
 	for (PBSMSNotification *notification in self.mutableNotifications)
 	{
-		if ([notification.appIdentifier isEqualToString:appIdentifier] && [self.activeBulletinIDs containsObject:notification.bulletinId])
+		if ([notification.appIdentifier isEqualToString:appIdentifier])// && [self.activeBulletinIDs containsObject:notification.bulletinId])
 		{
 			[notifications addObject:notification];
 		}
