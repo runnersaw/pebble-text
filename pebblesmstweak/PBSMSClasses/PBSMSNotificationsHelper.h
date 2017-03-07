@@ -29,7 +29,7 @@
 - (void)savePebbleAction:(PBSMSPebbleAction *)action;
 - (PBSMSPebbleAction *)pebbleActionForPebbleActionId:(NSNumber *)pebbleActionId;
 - (PBSMSPebbleAction *)pebbleActionForANCSIdentifier:(NSString *)ancsIdentifier;
-- (void)pebbleActionForANCSIdentifier:(NSString *)ancsIdentifier test:(BOOL)test;
+- (PBSMSPebbleAction *)pebbleReplyActionForANCSIdentifier:(NSString *)ancsIdentifier;
 
 // // Action handling
 - (BOOL)performAction:(PBSMSPebbleAction *)action;
