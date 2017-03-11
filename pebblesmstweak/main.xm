@@ -666,7 +666,7 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
 // %end
 
-%end
+// %end
 
 // CONTACT HANDLING
 
