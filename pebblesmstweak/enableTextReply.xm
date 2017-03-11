@@ -188,7 +188,7 @@
 
 %end
 
-%hook PBLinkedAccountsSessionManager : PBHTTPSessionManager
+%hook PBLinkedAccountsSessionManager
 
 -(id)revokeLinkedAccount:(id)arg1 withReason:(id)arg2 {
 	%log;
