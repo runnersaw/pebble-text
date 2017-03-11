@@ -192,7 +192,7 @@
 
 -(id)revokeLinkedAccount:(id)arg1 withReason:(id)arg2 {
 	%log;
-	%orig;
+	return %orig;
 }
 
 %end
