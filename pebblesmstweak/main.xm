@@ -403,7 +403,11 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 %new
 - (void)sendMessageTo:(NSNumber *)personId number:(NSString *)number withText:(NSString *)text notify:(BOOL)notify
 {
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     IMPerson *person = [[IMPerson alloc] initWithABRecordID:(ABRecordID)[personId intValue]];
+    #pragma GCC diagnostic pop
+
     NSArray *handles = [%c(IMHandle) imHandlesForIMPerson:person];
 
     NSString *finalPhone = NULL;
@@ -516,7 +520,10 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 %new
 - (void)sendNewMessageTo:(NSNumber *)personId number:(NSString *)number withText:(NSString *)text notify:(BOOL)notify
 {
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     IMPerson *person = [[IMPerson alloc] initWithABRecordID:(ABRecordID)[personId intValue]];
+    #pragma GCC diagnostic pop
     NSArray *handles = [%c(IMHandle) imHandlesForIMPerson:person];
 
     IMHandle *finalHandle = NULL;
@@ -727,7 +734,10 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 %new
 - (NSNumber *)recordId
 {
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     return [NSNumber numberWithInt:(int)ABRecordGetRecordID([self recordRef])];
+    #pragma GCC diagnostic pop
 }
 
 %end
@@ -1177,10 +1187,13 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 {
     %orig;
 
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
     if ([%c(PBAddressBookAuthorizationManager) authorizationStatus] == kABAuthorizationStatusNotDetermined)
     {
         [%c(PBAddressBookAuthorizationManager) requestAuthorizationWithCompletion:^(BOOL granted,CFErrorRef error){}];
     }
+    #pragma GCC diagnostic pop
 }
 
 - (BOOL)application:(id)arg1 didFinishLaunchingWithOptions:(id)arg2
