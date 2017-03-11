@@ -39,8 +39,6 @@
 -(void)removeSMSAccountWithReason:(id)arg1;
 @end
 
-@end
-
 @interface PBTimelineAttribute
 
 + (id)attributeWithType:(id)fp8 content:(id)fp12 specificType:(int)fp16;
