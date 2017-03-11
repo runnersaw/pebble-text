@@ -121,7 +121,7 @@
 -(void)migrateSMSAccountFrom3Dot6To3Dot7ForProvider:(unsigned char)arg1;
 @end
 
-@interface PBLinkedAccountsSessionManager : PBHTTPSessionManager
+@interface PBLinkedAccountsSessionManager
 -(id)authorizationURLRequestForProvider:(unsigned char)arg1 ;
 -(id)revokeLinkedAccount:(id)arg1 withReason:(id)arg2 ;
 -(id)refreshLinkedAccount:(id)arg1 ;
