@@ -633,6 +633,12 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 
 // LISTENING FOR NEW MESSAGES
 
+%end
+
+// MOBILESMS TWEAKING
+
+%group MobileSMSHooksiOS9
+
 %hook IMDaemonListener
 
 - (void)account:(id)arg1 chat:(id)arg2 style:(unsigned char)arg3 chatProperties:(id)arg4 messageReceived:(id)arg5
@@ -1717,6 +1723,9 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     else if ([%c(SMSApplication) class])
 	{
         %init(MobileSMSHooks);
+        if (kCFCoreFoundationVersionNumber < 1348.0) {
+            %init(MobileSMSHooksiOS9);
+        }
     }
     %init;
 }
