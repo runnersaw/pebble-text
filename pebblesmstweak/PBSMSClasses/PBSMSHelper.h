@@ -1,6 +1,6 @@
 
 
-#define PBSMS_DEBUG 1
+#define PBSMS_DEBUG 0
 
 #define MAX_CONTACTS 10
 #define MAX_CONTACTS_TO_SEND 10
