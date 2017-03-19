@@ -94,8 +94,6 @@
 + (NSArray *)allPossibleEnabledApps;
 @end
 
-%config(warnings=none);
-
 static NSUUID *appUUID = [[NSUUID alloc] initWithUUIDString:@"36BF8B7A-A043-4E1B-8518-B6BB389EC110"];
 
 static NSNumber *currentContactId = NULL;
