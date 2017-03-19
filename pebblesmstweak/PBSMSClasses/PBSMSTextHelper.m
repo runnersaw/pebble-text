@@ -30,18 +30,17 @@
 
 - (NSArray *)presets
 {
-    log(@"presets %@", _presets);
     if (_presets.count == 0)
     {
-        _presets = @[ @"OK", 
-            @"Yes", 
-            @"No", 
-            @"Call me", 
-            @"Call you later", 
-            @"Thank you", 
-            @"See you soon", 
-            @"Running late", 
-            @"On my way", 
+        _presets = @[ @"OK",
+            @"Yes",
+            @"No",
+            @"Call me",
+            @"Call you later",
+            @"Thank you",
+            @"See you soon",
+            @"Running late",
+            @"On my way",
             @"Busy right now - give me a second?" ];
     }
 

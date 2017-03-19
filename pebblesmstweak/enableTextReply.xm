@@ -35,6 +35,8 @@
 -(NSSet *)ancsReplyEnabledApps;
 -(id)networkInfo;
 
+// 4.3
+-(void)removeSMSAccountWithReason:(id)arg1;
 @end
 
 @interface PBTimelineAttribute
@@ -119,6 +121,16 @@
 -(void)migrateSMSAccountFrom3Dot6To3Dot7ForProvider:(unsigned char)arg1;
 @end
 
+@interface PBLinkedAccountsSessionManager
+-(id)authorizationURLRequestForProvider:(unsigned char)arg1 ;
+-(id)revokeLinkedAccount:(id)arg1 withReason:(id)arg2 ;
+-(id)refreshLinkedAccount:(id)arg1 ;
+-(id)createReauthSession:(id)arg1 ;
+-(id)sendVerifyPinRequest:(id)arg1 linkedAccount:(id)arg2 sessionID:(id)arg3 ;
+-(id)handleForCredentialError:(id)arg1 ;
+-(id)initWithBaseURL:(id)arg1 sessionConfiguration:(id)arg2 ;
+@end
+
 %group PebbleTextReply
 
 %hook PBSMSReplyManager
@@ -135,11 +147,18 @@
 	%orig(YES);
 }
 
+- (void)disableSMSActions {
+}
+
+-(void)removeSMSAccountWithReason:(id)arg1 {
+}
+
 %end
 
 %hook PBLinkedAccountsManager
 
 -(BOOL)hasLinkedAccountForApp:(id)arg1 {
+
 	if ([arg1 isKindOfClass:[%c(PBMobilePhoneApp) class]])
 	{
 		return YES;

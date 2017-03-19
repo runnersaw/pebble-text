@@ -38,7 +38,7 @@
 		_mutablePebbleActions = [NSMutableArray array];
 		_bulletins = [NSMutableDictionary dictionary];
 		_activeBulletinIDs = [NSMutableArray array];
-		
+
 		[self loadEnabledApps];
 	}
 	return self;
@@ -163,7 +163,6 @@
 
     BOOL hasActions = NO;
     NSMutableArray *actions = [NSMutableArray array];
-    log(@"%@", [bulletin supplementaryActionsForLayout:1]);
     for (BBAction *action in [bulletin supplementaryActionsForLayout:1])
 	{
         NSString *actionIdentifier = [action identifier];
@@ -176,7 +175,6 @@
 				actionIdentifier:actionIdentifier
 				isQuickReply:isQuickReply];
 
-			log(@"Adding action %@", actionTitle);
 	        [actions addObject:notificationAction];
 
 	        hasActions = YES;
@@ -213,11 +211,11 @@
 	}
 
 	[self saveNotifications];
+
 }
 
 - (void)addActiveBulletinID:(NSString *)bulletinID
 {
-	log(@"addActiveBulletinID %@", bulletinID);
 	if (![self.activeBulletinIDs containsObject:bulletinID])
 	{
 		[self.activeBulletinIDs addObject:bulletinID];
@@ -226,7 +224,6 @@
 
 - (void)removeActiveBulletinID:(NSString *)bulletinID
 {
-	log(@"removeActiveBulletinID %@", bulletinID);
 	[self.activeBulletinIDs removeObject:bulletinID];
 }
 
@@ -242,6 +239,22 @@
 		if ([ancsIdentifier isEqualToString:action.ANCSIdentifier])
 		{
 			return action;
+		}
+	}
+
+	return nil;
+}
+
+- (PBSMSPebbleAction *)pebbleReplyActionForANCSIdentifier:(NSString *)ancsIdentifier
+{
+	for (PBSMSPebbleAction *action in self.mutablePebbleActions)
+	{
+		if ([ancsIdentifier isEqualToString:action.ANCSIdentifier])
+		{
+			if (action.isBeginQuickReplyAction)
+			{
+				return action;
+			}
 		}
 	}
 
@@ -269,7 +282,6 @@
 - (BOOL)performAction:(PBSMSPebbleAction *)action
 {
 	BOOL success = NO;
-	log(@"performAction %@", action.actionIdentifier);
 
 	BBBulletin *bulletin = [self.bulletins objectForKey:action.bulletinIdentifier];
 	if (bulletin)
@@ -281,7 +293,6 @@
 				BBResponse *bbResponse = [bulletin responseForAction:bbAction];
 				if (bbResponse)
 				{
-					log(@"%@", bbResponse);
 					if (action.isReplyAction)
 					{
 						NSDictionary *dict = @{ @"UIUserNotificationActionResponseTypedTextKey" : action.replyText };
@@ -299,8 +310,9 @@
 							{
 								BBObserver *bbObserver = (BBObserver *)observer;
 								[bbObserver sendResponse:bbResponse];
-								log(@"SENT RESPONSE");
+								log(@"Performed action! Sent.");
 								success = YES;
+								[self removeActiveBulletinID:action.bulletinIdentifier];
 							}
 						}
 					}

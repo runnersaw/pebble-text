@@ -1,7 +1,7 @@
 Package: com.sawyervaughan.pebblesmstweak
 Name: TextSender for Pebble
-Depends: mobilesubstrate, com.rpetrich.rocketbootstrap (>= 1.0.2), firmware (>= 8.0), applist
-Version: 2.0.2
+Depends: mobilesubstrate, com.rpetrich.rocketbootstrap (>= 1.0.5), firmware (>= 8.0), applist
+Version: 3.0.0
 Architecture: iphoneos-arm
 Description: This app allows you to send texts directly from your Pebble Time watch. You can choose a contact by inputting text, dictating, or choosing a recent contact. You can then dictate a message, type with the watch, or select from a customizable list of presets. You can also perform actionable notifications from your watch! This includes replies to Facebook Messenger, Whatsapp, and any other quick-reply enabled iOS app.
 Maintainer: Sawyer Vaughan

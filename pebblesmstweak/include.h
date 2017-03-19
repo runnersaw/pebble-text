@@ -1,6 +1,3 @@
-#import <CoreTelephony/CTMessageCenter.h>
-#import <CoreTelephony/CTCarrier.h>
-#import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #import <ChatKit/CKEntity.h>
 #import <ChatKit/CKConversation.h>
 #import <ChatKit/CKConversationList.h>
@@ -10,7 +7,7 @@
 #import <AddressBook/AddressBook.h>
 #import <AppSupport/CPDistributedMessagingCenter.h>
 #import <UIKit/UIApplication.h>
-#import <Applist/AppList.h>
+#import <AppList/AppList.h>
 
 // NS EXTENSIONS
 
@@ -263,6 +260,14 @@
 - (id)initWithQueue:(id)arg1 asGateway:(id)arg2 priority:(unsigned int)arg3;
 - (id)initWithQueue:(id)arg1 forGateway:(id)arg2;
 - (void)updateBulletin:(id)arg1 forFeeds:(unsigned int)arg2 withReply:(id /* block */)arg3;
+
+// iOS 10, maybe
+- (void)_queue_updateAddBulletin:(id)arg1 withReply:(id /* block */)arg2;
+
+@end
+
+@interface BBBulletinUpdate : NSObject
+- (id)bulletin;
 @end
 
 // PEBBLE HEADERS
