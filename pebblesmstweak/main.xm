@@ -1333,8 +1333,31 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 	log(@"handleAction %@ %@ %@", @( arg1 ), arg2, arg3);
     if (arg1 == 2)
 	{
-        NSData *responseData = [(PBTimelineItemAttributeBlob *)[self responseFromAttributes:arg3] content];
-        NSData *phoneData = [(PBTimelineItemAttributeBlob *)[self phoneNumberFromAttributes:arg3] content];
+        NSData *responseData = nil;
+        NSData *phoneData = nil;
+
+        if ([[%c(PBAppDelegate) majorAppVersion] intValue] >= 4)
+        {
+            for (id attr in (NSArray *)arg3)
+            {
+                PBTimelineItemAttributeBlob *blob = (PBTimelineItemAttributeBlob *)attr;
+
+                // Experimentally determined. Sketch but seems to work on <=4.3
+                if ([blob type] == 1)
+                {
+                    responseData = [blob content];
+                }
+                else if ([blob type] == 12)
+                {
+                    phoneData = [blob content];
+                }
+            }
+        }
+        else
+        {
+            responseData = [(PBTimelineItemAttributeBlob *)[self responseFromAttributes:arg3] content];
+            phoneData = [(PBTimelineItemAttributeBlob *)[self phoneNumberFromAttributes:arg3] content];
+        }
 
         NSString *response = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
         NSString *phone = [[NSString alloc] initWithData:phoneData encoding:NSUTF8StringEncoding];
@@ -1357,14 +1380,28 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 		{
             PBTimelineAttributeContentLocalizedString *localString = [[%c(PBTimelineAttributeContentLocalizedString) alloc] initWithLocalizationKey:@"Sending..."];
             PBTimelineAttribute *attr = [%c(PBTimelineAttribute) attributeWithType:@"subtitle" content:localString];
-            [(PBTimelineActionsWatchService *)[self delegate] sendTextAppActionHandler:self didSendResponse:0 withAttributes:@[attr] forItemIdentifier:arg2];
+            if ([[%c(PBAppDelegate) majorAppVersion] intValue] >= 4)
+            {
+                [(PBTimelineActionsWatchService *)[self delegate] watchAppActionHandler:self didSendResponse:0 withAttributes:@[attr] forItemIdentifier:arg2];
+            }
+            else
+            {
+                [(PBTimelineActionsWatchService *)[self delegate] sendTextAppActionHandler:self didSendResponse:0 withAttributes:@[attr] forItemIdentifier:arg2];
+            }
             [%c(PBSMSSessionManager) sendSMS:[finalContact recordId] number:phone withText:response];
         }
         else
 		{
             NSString *message = [NSString stringWithFormat:@"Sending failed to %@", phone];
             PBTimelineAttribute *attr = [%c(PBTimelineAttribute) attributeWithType:@"subtitle" content:message];
-            [(PBTimelineActionsWatchService *)[self delegate] sendTextAppActionHandler:self didSendResponse:0 withAttributes:@[attr] forItemIdentifier:arg2];
+            if ([[%c(PBAppDelegate) majorAppVersion] intValue] >= 4)
+            {
+                [(PBTimelineActionsWatchService *)[self delegate] watchAppActionHandler:self didSendResponse:0 withAttributes:@[attr] forItemIdentifier:arg2];
+            }
+            else
+            {
+                [(PBTimelineActionsWatchService *)[self delegate] sendTextAppActionHandler:self didSendResponse:0 withAttributes:@[attr] forItemIdentifier:arg2];
+            }
         }
     }
     else
