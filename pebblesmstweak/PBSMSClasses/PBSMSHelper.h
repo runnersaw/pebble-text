@@ -1,6 +1,6 @@
 
 
-#define DEBUG 0
+#define PBSMS_DEBUG 1
 
 #define MAX_CONTACTS 10
 #define MAX_CONTACTS_TO_SEND 10
@@ -65,7 +65,7 @@ extern NSString * const messagesFileLocation;
 extern NSString * const recentFileLocation;
 extern NSString * const needsDeleteNotificationSourcesFileLocation;
 
-#if DEBUG
+#if PBSMS_DEBUG
 	#define log( s, ... ) NSLog( @"<%@:%d> %@", [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__,  [NSString stringWithFormat:(s), ##__VA_ARGS__] )
 #else
 	#define log( s, ... )
