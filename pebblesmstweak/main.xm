@@ -1343,6 +1343,8 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
             for (id attr in (NSArray *)arg3)
             {
                 PBTimelineItemAttributeBlob *blob = (PBTimelineItemAttributeBlob *)attr;
+
+                // Experimentally determined. Sketch but seems to work on <=4.3
                 if ([blob type] == 1)
                 {
                     responseData = [blob content];
