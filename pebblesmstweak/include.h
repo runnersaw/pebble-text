@@ -700,6 +700,9 @@
 -(void)sendResponseForItem:(id)arg1 response:(unsigned char)arg2;
 -(id)init;
 -(id)watch;
+
+// 4.3
+-(void)watchAppActionHandler:(id)arg1 didSendResponse:(unsigned char)arg2 withAttributes:(id)arg3 forItemIdentifier:(id)arg4 ;
 @end
 
 @interface PBTimelineAttributeContentLocalizedString : NSObject

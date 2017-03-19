@@ -1382,14 +1382,28 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 		{
             PBTimelineAttributeContentLocalizedString *localString = [[%c(PBTimelineAttributeContentLocalizedString) alloc] initWithLocalizationKey:@"Sending..."];
             PBTimelineAttribute *attr = [%c(PBTimelineAttribute) attributeWithType:@"subtitle" content:localString];
-            [(PBTimelineActionsWatchService *)[self delegate] sendTextAppActionHandler:self didSendResponse:0 withAttributes:@[attr] forItemIdentifier:arg2];
+            if ([[%c(PBAppDelegate) majorAppVersion] intValue] >= 4)
+            {
+                [(PBTimelineActionsWatchService *)[self delegate] watchAppActionHandler:self didSendResponse:0 withAttributes:@[attr] forItemIdentifier:arg2];
+            }
+            else
+            {
+                [(PBTimelineActionsWatchService *)[self delegate] sendTextAppActionHandler:self didSendResponse:0 withAttributes:@[attr] forItemIdentifier:arg2];
+            }
             [%c(PBSMSSessionManager) sendSMS:[finalContact recordId] number:phone withText:response];
         }
         else
 		{
             NSString *message = [NSString stringWithFormat:@"Sending failed to %@", phone];
             PBTimelineAttribute *attr = [%c(PBTimelineAttribute) attributeWithType:@"subtitle" content:message];
-            [(PBTimelineActionsWatchService *)[self delegate] sendTextAppActionHandler:self didSendResponse:0 withAttributes:@[attr] forItemIdentifier:arg2];
+            if ([[%c(PBAppDelegate) majorAppVersion] intValue] >= 4)
+            {
+                [(PBTimelineActionsWatchService *)[self delegate] watchAppActionHandler:self didSendResponse:0 withAttributes:@[attr] forItemIdentifier:arg2];
+            }
+            else
+            {
+                [(PBTimelineActionsWatchService *)[self delegate] sendTextAppActionHandler:self didSendResponse:0 withAttributes:@[attr] forItemIdentifier:arg2];
+            }
         }
     }
     else
