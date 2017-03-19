@@ -1333,13 +1333,11 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 	log(@"handleAction %@ %@ %@", @( arg1 ), arg2, arg3);
     if (arg1 == 2)
 	{
-        log(@"%@", arg3);
         NSData *responseData = nil;
         NSData *phoneData = nil;
 
         if ([[%c(PBAppDelegate) majorAppVersion] intValue] >= 4)
         {
-            log(@"%@", arg3);
             for (id attr in (NSArray *)arg3)
             {
                 PBTimelineItemAttributeBlob *blob = (PBTimelineItemAttributeBlob *)attr;
