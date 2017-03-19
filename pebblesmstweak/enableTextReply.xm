@@ -148,18 +148,9 @@
 }
 
 - (void)disableSMSActions {
-	%log;
-	%orig;
-}
-
-- (void)enableSMSActions {
-	%log;
-	%orig;
 }
 
 -(void)removeSMSAccountWithReason:(id)arg1 {
-	%log;
-	%orig;
 }
 
 %end
@@ -167,7 +158,7 @@
 %hook PBLinkedAccountsManager
 
 -(BOOL)hasLinkedAccountForApp:(id)arg1 {
-	%log;
+
 	if ([arg1 isKindOfClass:[%c(PBMobilePhoneApp) class]])
 	{
 		return YES;
@@ -177,21 +168,6 @@
 		return YES;
 	}
 
-	return %orig;
-}
--(id)linkedAccountsForApp:(id)arg1 {
-	id r = %orig;
-	%log;
-	log(@"%@", r);
-	return r;
-}
-
-%end
-
-%hook PBLinkedAccountsSessionManager
-
--(id)revokeLinkedAccount:(id)arg1 withReason:(id)arg2 {
-	%log;
 	return %orig;
 }
 
