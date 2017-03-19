@@ -1334,22 +1334,33 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
     if (arg1 == 2)
 	{
         log(@"%@", arg3);
-        NSString *response = nil;
-        NSString *phone = nil;
+        NSData *responseData = nil;
+        NSData *phoneData = nil;
+
         if ([[%c(PBAppDelegate) majorAppVersion] intValue] >= 4)
         {
             log(@"%@", arg3);
-            response = @"HI";
-            phone = @"+17208791626";
+            for (id attr in (NSArray *)arg3)
+            {
+                PBTimelineItemAttributeBlob *blob = (PBTimelineItemAttributeBlob *)attr;
+                if ([blob type] == 1)
+                {
+                    responseData = [blob content];
+                }
+                else if ([blob type] == 12)
+                {
+                    phoneData = [blob content];
+                }
+            }
         }
         else
         {
-            NSData *responseData = [(PBTimelineItemAttributeBlob *)[self responseFromAttributes:arg3] content];
-            NSData *phoneData = [(PBTimelineItemAttributeBlob *)[self phoneNumberFromAttributes:arg3] content];
-
-            response = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-            phone = [[NSString alloc] initWithData:phoneData encoding:NSUTF8StringEncoding];
+            responseData = [(PBTimelineItemAttributeBlob *)[self responseFromAttributes:arg3] content];
+            phoneData = [(PBTimelineItemAttributeBlob *)[self phoneNumberFromAttributes:arg3] content];
         }
+
+        NSString *response = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+        NSString *phone = [[NSString alloc] initWithData:phoneData encoding:NSUTF8StringEncoding];
 
         PBPhoneNumber *pbPhone = [[%c(PBPhoneNumber) alloc] initWithStringValue:phone];
         PBContact *contact = [[%c(PBAddressBook) addressBook] contactWithPhoneNumber:pbPhone];
