@@ -1286,8 +1286,15 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
 	{
         [PBSMSTextHelper sharedHelper].presets = (NSArray *)r;
     }
+
+    NSArray *enabledApps = [%c(PBSMSReplyManager) smsEnabledApps];
+    if (![enabledApps containsObject:(NSString *)fp8])
+    {
+        return %orig(@"com.pebble.sendText");
+    }
     return r;
 }
+
 - (void)setCannedResponses:(id)fp8 forAppIdentifier:(id)fp12
 {
     if ([(NSString *)fp12 isEqualToString:@"com.apple.MobileSMS"])
@@ -1295,6 +1302,19 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
         [PBSMSTextHelper sharedHelper].presets = (NSArray *)fp8;
     }
     %orig;
+}
+
+-(id)defaultResponsesForAppIdentifier:(id)arg1
+{
+    NSArray *enabledApps = [%c(PBSMSReplyManager) smsEnabledApps];
+    if ([enabledApps containsObject:(NSString *)arg1])
+    {
+        return %orig;
+    }
+    else
+    {
+        return %orig(@"com.pebble.sendText");
+    }
 }
 
 %end
@@ -1444,22 +1464,6 @@ static long long currentNumber = HAS_ACTIONS_IDENTIFIER + 2;
         @"com.apple.mobilemail" ];
 }
 
-%end
-
-%hook PBCannedResponseManager
-
--(id)defaultResponsesForAppIdentifier:(id)arg1
-{
-	NSArray *enabledApps = [%c(PBSMSReplyManager) smsEnabledApps];
-	if ([enabledApps containsObject:(NSString *)arg1])
-	{
-		return %orig;
-	}
-	else
-	{
-        return %orig(@"com.pebble.sendText");
-	}
-}
 %end
 
 %hook PBNotificationSourceManager
